@@ -1,0 +1,10 @@
+baseurl: "http://sdqali.in"
+title: "Sadique Ali"
+layoutdir: "layouts"
+contentdir: "content"
+publishdir: "public"
+indexes:
+    category: "categories"
+permalinks:
+    post: /blog/:year/:month/:day/:title/
+metadataformat: "yaml"
