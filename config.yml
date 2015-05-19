@@ -9,4 +9,4 @@ permalinks:
     blog: /blog/:year/:month/:day/:title/
 metadataformat: "yaml"
 params:
-  description: "I write about the Code I write and the Technologies I use. And other things that interest me."
+  description: "A blog about the Code I write and the Technologies I use. And other things that interest me."
