@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Understanding Python&#39;s &#34;with&#34; statement &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>Sadique Ali</h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Understanding Python&#39;s &#34;with&#34; statement</h1>
+  <span class="post-date">Mon, Jul 9, 2012</span>
+      
+
+<h2 id="what-is-it:ac4d2c4b2f71b3b47d24799d64503bb3">What is it?</h2>
+
+<p>Python&rsquo;s <code>with</code> statement provides a very convenient way of dealing with the situation where you have to do a setup and teardown to make something happen. A very good example for this is the situation where you want to gain a handler to a file, read data from the file and the close the file handler.</p>
+
+<p>Without the <code>with</code> statement, one would write something along the lines of:</p>
+
+<pre><code class="language-python">file = open(&quot;/tmp/foo.txt&quot;)
+data = file.read()
+file.close()
+</code></pre>
+
+<p>There are two annoying things here. First, you end up forgetting to close the file handler. The second is how to handle exceptions that may occur once the file handler has been obtained. One could write something like this to get around this:</p>
+
+<pre><code class="language-python">file = open(&quot;/tmp/foo.txt&quot;)
+try:
+    data = file.read()
+finally:
+    file.close()
+</code></pre>
+
+<p>While this works well, it is unnecessarily verbose. This is where <code>with</code> is useful. The good thing about <code>with</code> apart from the better syntax is that it is very good handling exceptions. The above code would look like this, when using <code>with</code>:</p>
+
+<pre><code class="language-python">with open(&quot;/tmp/foo.txt&quot;) as file:
+   data = file.read()
+</code></pre>
+
+<h2 id="how-does-it-work:ac4d2c4b2f71b3b47d24799d64503bb3">How does it work?</h2>
+
+<p>While this might look like magic, the way Python handles <code>with</code> is more clever than magic. The basic idea is that the statement after <code>with</code> has to evaluate an object that responds to an <code>__enter__()</code> as well as an <code>__exit__()</code> function.</p>
+
+<p>After the statement that follows <code>with</code> is evaluated, the <code>__enter__()</code> function on the resulting object is called. The value returned by this function is assigned to the variable following <code>as</code>. After every statement in the block is evaluated, the <code>__exit__()</code> function is called.</p>
+
+<p>This can be demonstrated with the following example:</p>
+
+<pre><code class="language-python">#!/usr/bin/env python
+# with_example01.py
+
+
+class Sample:
+    def __enter__(self):
+        print &quot;In __enter__()&quot;
+        return &quot;Foo&quot;
+
+    def __exit__(self, type, value, trace):
+        print &quot;In __exit__()&quot;
+
+
+def get_sample():
+    return Sample()
+
+
+with get_sample() as sample:
+    print &quot;sample:&quot;, sample
+</code></pre>
+
+<p>When executed, this will result in:</p>
+
+<pre><code class="language-bash">bash-3.2$ ./with_example01.py
+In __enter__()
+sample: Foo
+In __exit__()
+</code></pre>
+
+<p>As you can see,</p>
+
+<ol>
+<li>The <code>__enter__()</code> function is executed</li>
+<li>The value returned by it - in this case <code>&quot;Foo&quot;</code> is assigned to <code>sample</code></li>
+<li>The body of the block is executed, thereby printing the value of <code>sample</code> ie. <code>&quot;Foo&quot;</code></li>
+<li>The <code>__exit__()</code> function is called.</li>
+</ol>
+
+<p>What makes <code>with</code> really powerful is the fact that it can handle exceptions. You would have noticed that the <code>__exit__()</code> function for <code>Sample</code> takes three arguments - <code>val</code>, <code>type</code> and <code>trace</code>. These are useful in exception handling. Let&rsquo;s see how this works by modifying the above example.</p>
+
+<pre><code class="language-python">#!/usr/bin/env python
+# with_example02.py
+
+
+class Sample:
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, trace):
+        print &quot;type:&quot;, type
+        print &quot;value:&quot;, value
+        print &quot;trace:&quot;, trace
+
+    def do_something(self):
+        bar = 1/0
+        return bar + 10
+
+with Sample() as sample:
+    sample.do_something()
+</code></pre>
+
+<p>Notice how in this example, instead of <code>get_sample()</code>, <code>with</code> takes <code>Sample()</code>. It does not matter, as long as the statement that follows <code>with</code> evaluates to an object that has an <code>__enter__()</code> and <code>__exit__()</code> functions. In this case, <code>Sample()</code>&rsquo;s <code>__enter__()</code> returns the newly created instance of <code>Sample</code> and that is what gets passed to <code>sample</code>.</p>
+
+<p>When executed:</p>
+
+<pre><code class="language-bash">bash-3.2$ ./with_example02.py
+type: &lt;type 'exceptions.ZeroDivisionError'&gt;
+value: integer division or modulo by zero
+trace: &lt;traceback object at 0x1004a8128&gt;
+Traceback (most recent call last):
+  File &quot;./with_example02.py&quot;, line 19, in &lt;module&gt;
+    sample.do_something()
+  File &quot;./with_example02.py&quot;, line 15, in do_something
+    bar = 1/0
+ZeroDivisionError: integer division or modulo by zero
+</code></pre>
+
+<p>Essentially, if there are exceptions being thrown from anywhere inside the block, the <code>__exit__()</code> function for the object is called. As you can see, the type, value and the stack trace associated with the exception thrown is passed to this function. In this case, you can see that there was a <code>ZeroDivisionError</code> exception being thrown. People implementing libraries can write code that clean up resources, close files etc. in their <code>__exit__()</code> functions.</p>
+
+<p>Thus, Python&rsquo;s <code>with</code> is a nifty construct that makes code a little less verbose and makes cleaning up during exceptions a bit easier.</p>
+
+<p>I have put the code examples given here on <a href="https://github.com/sdqali/python_dojo/tree/master/with">Github</a>.</p>
+
+</div>
+</div>
+
+  </body>
+</html>

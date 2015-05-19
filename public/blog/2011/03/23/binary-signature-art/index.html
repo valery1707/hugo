@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Binary Signature Art &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>Sadique Ali</h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Binary Signature Art</h1>
+  <span class="post-date">Wed, Mar 23, 2011</span>
+      <p>I was reading this very interesting <a href="http://forums.xkcd.com/viewtopic.php?f=7&amp;t=11765">thread</a> on the xkcd forum when I noticed a post from a user with the following signature in binary:</p>
+
+<pre><code class="language-bash">01001101 01100001 01100100 01100101 00100000 01011001 01101111 01110101 00100000 01001100 01101111 01101111 01101011 00100001&quot;
+</code></pre>
+
+<p>At first, that did not particularly entice me, mostly because the topic being discussed was really interesting, but it did come back to my focus when I saw that another user had quoted the signature, along with the comment <code>Yeah, you know it. LOL :-)</code>. I had to find what the original message was.</p>
+
+<p>So couple of minutes of Ruby later, I figured it out. His message was simple - <code>Made You Look!</code>. Yeah, he sure did!</p>
+
+<p>Here is the rather simple Ruby code snippet that did the trick:</p>
+
+<pre><code class="language-ruby">code = &quot;01001101 01100001 01100100 01100101 00100000 01011001 01101111 01110101 00100000 01001100 01101111 01101111 01101011 00100001&quot;
+
+parts = code.split &quot; &quot;
+
+text = parts.map do |p|
+  p.to_i(2).chr
+end.to_s
+
+puts text
+</code></pre>
+
+</div>
+</div>
+
+  </body>
+</html>

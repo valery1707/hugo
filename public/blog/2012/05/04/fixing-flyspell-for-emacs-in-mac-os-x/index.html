@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Fixing Flyspell for Emacs in Mac OS X &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>Sadique Ali</h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Fixing Flyspell for Emacs in Mac OS X</h1>
+  <span class="post-date">Fri, May 4, 2012</span>
+      
+
+<p>I use the <a href="http://www.emacswiki.org/emacs/FlySpell">flyspell-mode</a> as a spell checking mechanism in emacs. Recently, I moved to Mac OS X, and I began to get this error whenever I started emacs:
+{% codeblock lang:bash %}
+Error enabling Flyspell mode:
+(Searching for program No such file or directory aspell)
+{% endcodeblock %}</p>
+
+<p>I had installed aspell with Homebrew. The issue seemed to be that Emacs was unable to find the aspell binary. Homebrew installs binaries in <strong>/usr/local/bin</strong> and it was in my $PATH. It turns out Emacs uses it&rsquo;s own exec path to look for binaries to execute in sub-processes. So the fix is to add the <strong>/usr/local/bin</strong> path to the exec-path. This is the change needed to the <strong>~/.emacs</strong> file:
+{% codeblock lang:clojure %}
+ &lsquo;(exec-path (quote (&ldquo;/usr/bin&rdquo; &ldquo;/bin&rdquo; &ldquo;/usr/sbin&rdquo; &ldquo;/sbin&rdquo; &ldquo;/usr/local/bin&rdquo;))))
+{% endcodeblock %}</p>
+
+<p>Notice the <strong>/usr/local/bin</strong> in there.</p>
+
+<h2 id="update:edc0a2a8bcd338c2e4cd3b014777c98f">Update</h2>
+
+<p>This does not seem to work. A better way to do this is to add the
+following:</p>
+
+<pre><code class="language-clojure">(setenv &quot;PATH&quot; (concat (getenv &quot;PATH&quot;) &quot;:/usr/local/bin&quot;))
+(setq exec-path (append exec-path '(&quot;/usr/local/bin&quot;)))
+</code></pre>
+
+</div>
+</div>
+
+  </body>
+</html>

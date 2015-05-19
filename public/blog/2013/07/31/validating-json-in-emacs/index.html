@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Validating JSON in Emacs &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>Sadique Ali</h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Validating JSON in Emacs</h1>
+  <span class="post-date">Wed, Jul 31, 2013</span>
+      <p>At work, I have to deal with Amazon CloudFormation <sup class="footnote-ref" id="fnref:b6f5919ed39f22c8068bb14b6b3e4c14:1"><a rel="footnote" href="#fn:b6f5919ed39f22c8068bb14b6b3e4c14:1">1</a></sup> templates a fair bit. These templates are JSON files. More and more members of our team are moving away from TextMate to Emacs which makes me really happy. We would like to validate these CloudFormation templates in Emacs. Today we set this up and I hope this turns out to be of help to some one else trying to do the same.</p>
+
+<ul>
+<li>Grab jsonlint. It is a command line utility that validates JSON. There seems to be two flavors of jsonlint available. A pure JavaScript implementation <sup class="footnote-ref" id="fnref:b6f5919ed39f22c8068bb14b6b3e4c14:2"><a rel="footnote" href="#fn:b6f5919ed39f22c8068bb14b6b3e4c14:2">2</a></sup> that runs on the Node.js runtime and a native Mac OS X <sup class="footnote-ref" id="fnref:b6f5919ed39f22c8068bb14b6b3e4c14:3"><a rel="footnote" href="#fn:b6f5919ed39f22c8068bb14b6b3e4c14:3">3</a></sup> version. We use the Node.js version.</li>
+<li>Ensure that your Emacs can find the jsonlint binary. This can be done by adding the following snippet in your Emacs configuration:</li>
+</ul>
+
+<pre><code class="language-cl">(setenv &quot;PATH&quot; (concat (getenv &quot;PATH&quot;) &quot;:/usr/local/share/npm/bin&quot;))
+(setq exec-path (append exec-path '(&quot;/usr/local/share/npm/bin&quot;)))
+</code></pre>
+
+<p>Of course, the path you add will depend on where your installation process put the binary.</p>
+
+<ul>
+<li>Install <code>flymake-json</code> <sup class="footnote-ref" id="fnref:b6f5919ed39f22c8068bb14b6b3e4c14:4"><a rel="footnote" href="#fn:b6f5919ed39f22c8068bb14b6b3e4c14:4">4</a></sup>, using your Emacs package manager.</li>
+<li>Bind a key to <code>flymake-json-load</code> which is the command to perform jsonlint on the current file. This can be done with the following snippet:</li>
+</ul>
+
+<pre><code class="language-cl">(global-set-key (kbd &quot;C-c j v&quot;) 'flymake-json-load)
+</code></pre>
+
+<p>Enjoy!</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:b6f5919ed39f22c8068bb14b6b3e4c14:1"><a href="http://aws.amazon.com/cloudformation/">CloudFormation</a>
+ <a class="footnote-return" href="#fnref:b6f5919ed39f22c8068bb14b6b3e4c14:1"><sup>[return]</sup></a></li>
+<li id="fn:b6f5919ed39f22c8068bb14b6b3e4c14:2"><a href="https://github.com/zaach/jsonlint">zaach/jsonlint</a>
+ <a class="footnote-return" href="#fnref:b6f5919ed39f22c8068bb14b6b3e4c14:2"><sup>[return]</sup></a></li>
+<li id="fn:b6f5919ed39f22c8068bb14b6b3e4c14:3"><a href="https://github.com/atomicbird/jsonlint">atomicbird/jsonlint</a>
+ <a class="footnote-return" href="#fnref:b6f5919ed39f22c8068bb14b6b3e4c14:3"><sup>[return]</sup></a></li>
+<li id="fn:b6f5919ed39f22c8068bb14b6b3e4c14:4"><a href="http://marmalade-repo.org/packages/flymake-json">A flymake handler for json using jsonlint</a>
+ <a class="footnote-return" href="#fnref:b6f5919ed39f22c8068bb14b6b3e4c14:4"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+</div>
+</div>
+
+  </body>
+</html>
