@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Copy text
+    </title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <a href="#" id="share-page">Share this page</a>
+    <div id="shareable" style="display:none;">
+      <div>
+        <a href="#">Example</a> Page
+      </div>
+    </div>
+    <script>
+jQuery(document).ready(function() {
+  jQuery("#share-page").click(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var copyable = jQuery("#shareable");
+    var hideCopyable = function(e) {
+      if (e.target !== copyable[0] && copyable.has(e.target).size() === 0) {
+        copyable.hide();
+        jQuery(document).unbind("click", hideCopyable);
+      }
+    };
+
+    var selectText = function() {
+      var text = jQuery("#shareable")[0];
+      if (document.body.createTextRange) { // ms
+        var range = document.body.createTextRange();
+        range.moveToElementText(text);
+        range.select();
+      } else if (window.getSelection) {
+        var selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    };
+
+    copyable.show();
+    selectText();
+    jQuery(document).click(hideCopyable);
+  });
+});
+    </script>
+  </body>
+</html>
