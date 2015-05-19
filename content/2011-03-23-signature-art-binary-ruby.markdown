@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: Binary Signature Art
-date: 2011-03-23 13:19
+date: 2011-03-23
 comments: true
 categories: code ruby
 ---

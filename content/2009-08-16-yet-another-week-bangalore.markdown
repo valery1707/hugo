@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: Yet another week in Bangalore
-date: 2009-08-16 13:19
+date: 2009-08-16
 comments: true
 categories: life reflection football
 ---

@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Indian and Pakistani cricketers - who make better debuts?"
-date: 2012-05-11 23:26
+date: 2012-05-11
 comments: true
 categories: data visualisation javascript d3.js cricket india pakistan
 ---

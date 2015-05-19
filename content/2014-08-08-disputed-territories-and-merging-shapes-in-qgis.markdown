@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Disputed territories and merging shapes and features"
-date: 2014-08-08 21:39
+date: 2014-08-08
 comments: true
 categories: maps gis kashmir india qjis javascript geojson
 ---

@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Configure Git's comment character"
-date: 2013-04-14 12:18
+date: 2013-04-14
 comments: true
 categories: code git
 ---

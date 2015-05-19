@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Leaving College"
-date: 2009-06-14 13:16
+date: 2009-06-14
 comments: true
 categories: life college
 ---

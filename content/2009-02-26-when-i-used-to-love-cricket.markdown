@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "When I used to love Cricket"
-date: 2009-02-26 12:57
+date: 2009-02-26
 comments: true
 categories: life cricket school
 ---

@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "D3.js Workshop"
-date: 2012-08-01 22:29
+date: 2012-08-01
 comments: true
 categories: talk code d3.js visualisation
 ---

@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Why I am not on Facebook"
-date: 2012-08-11 16:04
+date: 2012-08-11
 comments: true
 categories: facebook social-network
 ---

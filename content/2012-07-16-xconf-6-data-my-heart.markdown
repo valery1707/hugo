@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "XConf 6 - Data, My Heart!"
-date: 2012-07-16 20:49
+date: 2012-07-16
 comments: true
 categories: talk visualisation d3.js javascript data deck.js
 ---

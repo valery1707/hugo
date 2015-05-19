@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "A brief History of Times New Roman"
-date: 2013-08-21 20:55
+date: 2013-08-21
 comments: true
 categories: type
 ---

@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "First week in San Francisco"
-date: 2013-01-21 10:58
+date: 2013-01-21
 comments: true
 categories: life
 ---

@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "മഴയുടെ ഓർമ്മകൾ"
-date: 2013-07-24 22:39
+date: 2013-07-24
 comments: true
 categories: rain
 ---

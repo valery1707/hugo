@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Graph databases 1 - Modeling"
-date: 2013-08-02 19:50
+date: 2013-08-02
 comments: true
 categories: code graphdb neo4j cypher
 ---

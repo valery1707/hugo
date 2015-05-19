@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: Understanding Python's "with" statement
-date: 2012-07-09 21:04
+date: 2012-07-09
 comments: true
 categories: code python
 alias: /blog/2012/07/09/unerstanding-pythons-with/

@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Looking up Compiler params used to compile a Ruby version"
-date: 2013-09-08 11:32
+date: 2013-09-08
 comments: true
 categories:
 ---

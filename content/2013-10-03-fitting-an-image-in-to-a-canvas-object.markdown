@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Fitting an Image in to a Canvas object"
-date: 2013-10-03 22:43
+date: 2013-10-03
 comments: true
 categories: javascript canvas image code
 ---

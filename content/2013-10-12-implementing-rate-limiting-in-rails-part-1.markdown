@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Implementing Rate Limiting in Rails - Part 1"
-date: 2013-10-12 19:23
+date: 2013-10-12
 comments: true
 categories: rails code rate-limiting redis
 ---

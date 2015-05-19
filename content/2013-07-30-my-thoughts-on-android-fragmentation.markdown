@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "My thoughts on Android fragmentation -  It is not a bad thing"
-date: 2013-07-30 18:53
+date: 2013-07-30
 comments: true
 categories: android technology
 ---

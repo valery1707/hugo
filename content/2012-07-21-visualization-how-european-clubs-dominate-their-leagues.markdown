@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Visualisation - How European clubs dominate their leagues"
-Date: 2012-07-21 12:06
+date: 2012-07-21
 comments: true
 categories: football visualisation data d3.js jqueryui code
 ---

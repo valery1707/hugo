@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "The Spiral of Learning"
-date: 2012-05-30 01:03
+date: 2012-05-30
 comments: true
 categories: code learning
 ---

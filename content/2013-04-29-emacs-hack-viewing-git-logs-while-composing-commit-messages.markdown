@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Emacs hack: Viewing Git logs while composing commit messages"
-date: 2013-04-29 00:13
+date: 2013-04-29
 comments: true
 categories: code elisp emacs git
 ---

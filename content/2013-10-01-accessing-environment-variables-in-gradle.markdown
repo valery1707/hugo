@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Accessing Environment Variables in Gradle"
-date: 2013-10-01 22:38
+date: 2013-10-01
 comments: true
 categories: gradle android code groovy
 ---

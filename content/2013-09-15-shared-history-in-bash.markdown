@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Shared history in Bash"
-date: 2013-09-15 11:16
+date: 2013-09-15
 comments: true
 categories: code bash
 ---

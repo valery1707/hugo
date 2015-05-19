@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "My experience working remotely"
-date: 2013-04-11 17:47
+date: 2013-04-11
 comments: true
 categories: programming work
 ---

@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Python's bool type"
-date: 2013-08-15 23:20
+date: 2013-08-15
 comments: true
 categories: code python
 ---

@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: Java Arrays in JRuby
-date: 2010-03-16 13:19
+date: 2010-03-16
 comments: true
 categories: code jruby ruby java
 ---

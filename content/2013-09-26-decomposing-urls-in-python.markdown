@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Decomposing URLs in Python"
-date: 2013-09-26 13:40
+date: 2013-09-26
 comments: true
 categories: python code url-parsing
 ---

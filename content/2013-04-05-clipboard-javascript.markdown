@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "JavaScript, clipboard access and hidden flash widgets"
-date: 2013-04-05 17:05
+date: 2013-04-05
 comments: true
 categories: code javascript browser flash
 ---

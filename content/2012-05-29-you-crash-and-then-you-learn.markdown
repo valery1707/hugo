@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "You Crash and then You Learn"
-date: 2012-05-29 17:32
+date: 2012-05-29
 comments: true
 categories:
 ---

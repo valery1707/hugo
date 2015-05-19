@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "A simple JMeter test with login"
-date: 2014-02-17 23:06
+date: 2014-02-17
 comments: true
 categories: code java jmeter performance-test
 ---

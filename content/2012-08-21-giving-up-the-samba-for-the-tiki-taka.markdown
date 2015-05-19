@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Giving up the Samba for the Tiki-taka"
-date: 2012-08-21 19:20
+date: 2012-08-21
 comments: true
 categories: football malappuram life
 keywords:

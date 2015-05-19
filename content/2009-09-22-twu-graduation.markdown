@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: TWU Graduation
-date: 2009-09-22 13:19
+date: 2009-09-22
 comments: true
 categories: life thoughtworks
 ---

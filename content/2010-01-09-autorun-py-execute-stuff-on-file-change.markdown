@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: Autorun.py - Execute stuff on file change
-date: 2010-01-09 13:19
+date: 2010-01-09
 comments: true
 categories: code python
 ---

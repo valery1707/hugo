@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Importing the Yelp dataset into MongoDB"
-date: 2014-08-02 01:31
+date: 2014-08-02
 comments: true
 categories: mongo code ruby yelp data
 ---

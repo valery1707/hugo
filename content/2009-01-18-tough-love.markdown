@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Tough Love"
-date: 2009-01-18 12:47
+date: 2009-01-18
 comments: true
 categories: life reflections
 ---

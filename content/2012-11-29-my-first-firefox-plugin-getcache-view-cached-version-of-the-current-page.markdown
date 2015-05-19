@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "My first Firefox plugin: GetCache - View cached version of the current page"
-date: 2012-11-29 17:31
+date: 2012-11-29
 comments: true
 categories: code javascript firefox plugin
 ---

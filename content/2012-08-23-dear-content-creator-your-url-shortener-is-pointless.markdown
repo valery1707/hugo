@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Dear Content Creator, Your URL Shortener Is Pointless"
-date: 2012-08-23 19:43
+date: 2012-08-23
 comments: true
 categories: social-network twitter
 keywords:

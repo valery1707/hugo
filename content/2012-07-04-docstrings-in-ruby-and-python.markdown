@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Heredocs in Ruby and Python"
-date: 2012-07-04 18:06
+date: 2012-07-04
 comments: true
 categories: code ruby python heredoc
 ---

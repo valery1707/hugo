@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Fusing the old media and the new"
-date: 2013-08-10 21:29
+date: 2013-08-10
 comments: true
 categories: news media internet
 ---

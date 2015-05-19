@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Athletic Bilbao - Warriors in a world of Mercenaries"
-date: 2008-11-08 11:53
+date: 2008-11-08
 comments: true
 categories: football athletic
 ---

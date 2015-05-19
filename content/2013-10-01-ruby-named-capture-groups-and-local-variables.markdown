@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Ruby, Named Capture Groups and Local Variables"
-date: 2013-10-01 00:45
+date: 2013-10-01
 comments: true
 categories: ruby code regexp quirk
 ---

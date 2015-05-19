@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "GetCache - A Chrome plugin to view cached version of the current page"
-date: 2012-11-28 22:38
+date: 2012-11-28
 comments: true
 categories: code chrome plugin javascript
 ---

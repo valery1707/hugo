@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Named Capture Groups in Regular Expressions"
-date: 2013-09-29 09:09
+date: 2013-09-29
 comments: true
 categories: ruby code regexp python javascript
 ---

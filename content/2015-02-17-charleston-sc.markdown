@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "charleston-sc"
-date: 2015-02-17 18:05
+date: 2015-02-17
 comments: true
 categories: 
 ---

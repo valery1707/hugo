@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Internet in Yemen : A Tale of Woe"
-date: 2013-08-08 16:20
+date: 2013-08-08
 comments: true
 categories: politics internet technology
 ---

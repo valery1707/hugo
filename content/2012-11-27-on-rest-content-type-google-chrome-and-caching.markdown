@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "On REST, Content-Type, Google Chrome and Caching"
-date: 2012-11-27 15:31
+date: 2012-11-27
 comments: true
 categories: code REST HTTP chrome caching content-type
 ---

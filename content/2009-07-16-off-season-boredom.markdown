@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Off Season"
-date: 2009-07-16 13:19
+date: 2009-07-16
 comments: true
 categories: life reflection football
 ---

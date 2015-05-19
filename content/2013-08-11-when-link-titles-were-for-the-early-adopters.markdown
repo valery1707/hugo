@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "When Link titles were for the early adopters"
-date: 2013-08-11 12:22
+date: 2013-08-11
 comments: true
 categories: internet web html accessibility
 ---

@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "The SNDP - NSS political experiment of 1980s"
-date: 2014-02-09 03:09
+date: 2014-02-09
 comments: true
 categories: kerala politics sndp
 ---

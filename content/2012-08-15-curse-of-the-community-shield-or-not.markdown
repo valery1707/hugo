@@ -3,7 +3,7 @@ image:
   feature: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Curse of the Community Shield?"
-date: 2012-08-15 01:06
+date: 2012-08-15
 comments: true
 categories: football data visualisation d3.js
 keywords:
