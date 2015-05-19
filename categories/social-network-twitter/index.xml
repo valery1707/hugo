@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Social Network Twitter on Sadique Ali</title>
+    <link>http://sdqali.in/categories/social-network-twitter/</link>
+    <description>Recent content in Social Network Twitter on Sadique Ali</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 23 Aug 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://sdqali.in/categories/social-network-twitter/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Dear Content Creator, Your URL Shortener Is Pointless</title>
+      <link>http://sdqali.in/blog/2012/08/23/dear-content-creator-your-url-shortener-is-pointless/</link>
+      <pubDate>Thu, 23 Aug 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://sdqali.in/blog/2012/08/23/dear-content-creator-your-url-shortener-is-pointless/</guid>
+      <description>&lt;p&gt;People love URL shorteners. They are everywhere. You can use one of
+&lt;a href=&#34;http://goo.gl&#34;&gt;the giants&lt;/a&gt;, or use one of the &lt;a href=&#34;http://bit.ly&#34;&gt;URL Shortening As A Service&lt;/a&gt; options available
+or you can run one on your own.&lt;/p&gt;
+
+&lt;p&gt;But none of that matters. Apart from adding to the redirect hell
+prevalent on the web today and giving you a minor branding push, custom
+URL shorteners does not add anything.&lt;/p&gt;
+
+&lt;p&gt;People started using these shortening services because of two
+reasons. The first reason was the necessity to share
+ugly URLs like
+&lt;em&gt;&lt;a href=&#34;http://example.com/reports.php?start=2001&amp;amp;end=2010&amp;amp;item=Foo%20bar&#34;&gt;http://example.com/reports.php?start=2001&amp;amp;end=2010&amp;amp;item=Foo%20bar&lt;/a&gt;&lt;/em&gt; and
+they wanted to make it easier on the eyes of people. The second reason
+was the limit on the number of characters allowed in a post by micro blogging services
+like Twitter and Identi.ca.&lt;/p&gt;
+
+&lt;p&gt;Once they became popular, people started using it everywhere, even in places like Facebook posts where there were
+no limit on the number of characters in a post or comment. People also
+started shortening URLs that were not particularly ugly.&lt;/p&gt;
+
+&lt;p&gt;And then, the social networks
+&lt;a href=&#34;http://sdqali.in/blog/2012/07/17/social-networks-and-url-shorteners/&#34;&gt;got on the game&lt;/a&gt;
+and from that point, every single URL shared on those social networks had to go
+through one more extra redirect. Some &lt;a href=&#34;http://royal.pingdom.com/2010/09/22/is-the-web-heading-toward-redirect-hell/&#34;&gt;had predicted&lt;/a&gt; this redirect
+hell long ago.&lt;/p&gt;
+
+&lt;p&gt;While the social networks were setting up their own
+&lt;a href=&#34;https://dev.twitter.com/blog/introducing-twitter-web-analytics&#34;&gt;analytics service&lt;/a&gt;
+around the URLs their users shared on them, content creators started
+using their own custom URL shorteners. The BBC uses &lt;em&gt;bbc.in&lt;/em&gt;, the
+Guardian uses &lt;em&gt;gu.com&lt;/em&gt; and Business Insider uses &lt;em&gt;read.bi&lt;/em&gt;. And it is
+not just big players in the content space that uses URL
+shorteners, this is prevalent among blogs too. For example,
+&lt;a href=&#34;http://www.arabist.net/&#34;&gt;The Arabist&lt;/a&gt; uses &lt;em&gt;arb.st&lt;/em&gt;, which is in turn
+hosted by &lt;em&gt;bit.ly&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;But once Twitter, Facebook and Google+ came to the table and decided to
+take their pound of meat from the redirect hell, all this custom URL
+shortening became pointless. These social networks do not expose any data about the
+shared URL. In Twitter&amp;rsquo;s case for example, all you as a website know is
+that some traffic came to a particular page from a URL that looks like
+&lt;em&gt;t.co/Foobar&lt;/em&gt;. If you want to make more sense of the who, when and how
+aspects of your content being shared on Twitter, you have to ask
+Twitter.&lt;/p&gt;
+
+&lt;p&gt;Even the fact that those shortened URLs are &lt;em&gt;short&lt;/em&gt; are does not serve
+much purpose because Twitter automatically
+wrap a &lt;em&gt;t.co&lt;/em&gt; URL around anything you post to it and show the a link
+with the original URL as the text.&lt;/p&gt;
+
+&lt;p&gt;So content creators, please stop running your own URL shortening
+services and contributing to the redirect hell. The web will be a better
+place for it.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

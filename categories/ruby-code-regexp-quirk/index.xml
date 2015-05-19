@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ruby Code Regexp Quirk on Sadique Ali</title>
+    <link>http://sdqali.in/categories/ruby-code-regexp-quirk/</link>
+    <description>Recent content in Ruby Code Regexp Quirk on Sadique Ali</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 01 Oct 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://sdqali.in/categories/ruby-code-regexp-quirk/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ruby, Named Capture Groups and Local Variables</title>
+      <link>http://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/</link>
+      <pubDate>Tue, 01 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/</guid>
+      <description>
+
+&lt;p&gt;Ruby&amp;rsquo;s regular expressions support &lt;a href=&#34;http://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/&#34;&gt;named capture groups&lt;/a&gt;, since 1.9. However, there is a weird behaviour while using named capture groups with the &lt;code&gt;Regexp#=~&lt;/code&gt; method. When named capture groups are used with &lt;code&gt;=~&lt;/code&gt;, the captured values are placed in local variables with the same name as the capture group. The following example demonstrates this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;#!/usr/bin/env ruby
+
+month = &amp;quot;January&amp;quot;
+test_string = &amp;quot;Today&#39;s date is: 9/28/2013.&amp;quot;
+/(?&amp;lt;month&amp;gt;\d{1,2})\/(?&amp;lt;day&amp;gt;\d{1,2})\/(?&amp;lt;year&amp;gt;\d{4})/ =~ test_string
+puts month.inspect
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This when executed will print &lt;code&gt;9&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The official documentation &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:e98d9157a9ede2fb8b5545f06d48b7a8:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:e98d9157a9ede2fb8b5545f06d48b7a8:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; says:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;When named capture groups are used with a literal regexp on the left-hand side of an expression and the =~ operator, the captured text is also assigned to local variables with corresponding names.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This local variable assignment does not happen if the regular expression is on the right-hand side of the expression or the regular expression contains a variable interpolation.&lt;/p&gt;
+
+&lt;h3 id=&#34;regexp-on-right-hand-side:e98d9157a9ede2fb8b5545f06d48b7a8&#34;&gt;Regexp on right-hand side&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;#!/usr/bin/env ruby
+
+month = &amp;quot;January&amp;quot;
+test_string = &amp;quot;Today&#39;s date is: 9/28/2013.&amp;quot;
+test_string =~ /(?&amp;lt;month&amp;gt;\d{1,2})\/(?&amp;lt;day&amp;gt;\d{1,2})\/(?&amp;lt;year&amp;gt;\d{4})/
+puts month.inspect
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will print &lt;code&gt;January&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;regexp-with-interpolation:e98d9157a9ede2fb8b5545f06d48b7a8&#34;&gt;Regexp with interpolation&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;#!/usr/bin/env ruby
+
+month = &amp;quot;January&amp;quot;
+DAY = &amp;quot;day&amp;quot;
+test_string = &amp;quot;Today&#39;s date is: 9/28/2013.&amp;quot;
+/(?&amp;lt;month&amp;gt;\d{1,2})\/(?&amp;lt;#{DAY}&amp;gt;\d{1,2})\/(?&amp;lt;year&amp;gt;\d{4})/ =~ test_string
+puts month.inspect
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will print &lt;code&gt;January&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;This behaviour is present only for the &lt;code&gt;Regexp#=~&lt;/code&gt; method and not for &lt;code&gt;Regexp#match&lt;/code&gt;. So it is safer to use the latter without worrying about unintended side effects.&lt;/p&gt;
+
+&lt;p&gt;PS: Hat tip to &lt;a href=&#34;http://www.nilenso.com/people.html#gja&#34;&gt;Tejas&lt;/a&gt; for telling me about this quirk.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:e98d9157a9ede2fb8b5545f06d48b7a8:1&#34;&gt;Ruby docs for &lt;a href=&#34;http://www.ruby-doc.org/core-1.9.3/Regexp.html#label-Capturing&#34;&gt;Class: Regexp (Ruby 1.9.3)&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:e98d9157a9ede2fb8b5545f06d48b7a8:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> How Browsers Detect If You Are Offline &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>Sadique Ali</h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>How Browsers Detect If You Are Offline</h1>
+  <span class="post-date">Thu, Nov 22, 2012</span>
+      <p>When I saw the newly released
+<a href="http://oskarkrawczyk.github.com/heyoffline.js/">Heyoffline.js</a> library,
+I was curious to see how it figured out if the user was online or
+not. This led me to the <code>window.navigator.onLine</code> <a href="https://developer.mozilla.org/en-US/docs/DOM/window.navigator.onLine">API</a> and how
+different browsers implement it. Chrome, Safari and Inernet Explorer 10
+make sure that the API detects if the user is connected to a network,
+while Firefox changes this flag if and only if the user chooses the
+<code>Work Offline</code> option. A detailed discussion of this difference in
+implementation is available
+<a href="http://schalk-neethling.com/2011/05/navigator-online-and-the-differing-implementations-of-a-standard/">here</a>.</p>
+
+<p>While this is an interesting example of how despite the efforts put into
+standardising specifications they get interpreted differently, I was
+more interested in seeing how different browsers detect if the user is
+offline or not.</p>
+
+<p>I did some digging around and this is what I found:</p>
+
+<ul>
+<li>I expected Internet Explorer to use the <a href="http://blog.superuser.com/2011/05/16/windows-7-network-awareness/">Network Connectivity Status
+Indicator</a>
+service. It looks like that is not the case. Setting the registry
+entry
+<code>HKEY_LOCAL_MACHINESYSTEM\CurrentControlSet\Services\NlaSvc\Parameters\Internet
+-&gt; EnableActiveProbing</code> to <code>0</code> did not seem to have any effect on
+Explorer&rsquo;s ability to find if the user is online or not.</li>
+<li>Google Chrome on Windows uses the <a href="&quot;http://msdn.microsoft.com/en-us/library/windows/desktop/ms741641(v=vs.85">Winsock API</a>.aspx&rdquo;) to detect if a network
+is available. The relevant source code is
+<a href="http://src.chromium.org/svn/trunk/src/net/base/network_change_notifier_win.cc">here</a>. Look
+for the method <code>GetCurrentConnectionType()</code></li>
+<li>Google Chrome on Linux uses a wrapper around NetworkManager&rsquo;s D-Bus
+API. The code is
+<a href="http://src.chromium.org/svn/trunk/src/net/base/network_change_notifier_linux.cc">here</a>.</li>
+<li>Google Chrome on Mac tries to reach <code>0.0.0.0</code>. This can be seen
+<a href="http://src.chromium.org/svn/trunk/src/net/base/network_change_notifier_mac.cc">here</a>. Look for the method <code>SetInitialConnectionType()</code>.</li>
+</ul>
+
+</div>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Named Capture Groups in Regular Expressions &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>Sadique Ali</h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Named Capture Groups in Regular Expressions</h1>
+  <span class="post-date">Sun, Sep 29, 2013</span>
+      
+
+<p>I will admit that I find regular expressions somewhat hard to parse. While the thinking process needed to write a regular expression is iterative and hence results in the correct expression suitable for the situation, once it is written it lacks readability. I have faced that pain of trying to grok a complex regular expression written years ago. So I was pleasantly surprised when I saw <a href="https://news.ycombinator.com/item?id=6463144">this example</a> from Hacker News user <em>WestCoastJustin</em>. I found it very easy to understand because of the names he had assigned to each capture group in the expression.</p>
+
+<h2 id="ruby:438989d6473c434642cd18cc094f10cf">Ruby</h2>
+
+<p>Ruby has supported named capture groups since version 1.9. Each match group is named by using <code>?&lt;name&gt;</code> inside the match group and these matches are made available has a hash and each match can be accessed by using the match group name as the key.</p>
+
+<p><em>WestCoastJustin</em>&rsquo;s example will look like this in Ruby:</p>
+
+<pre><code class="language-ruby">#!/usr/bin/env ruby
+
+test_string = &quot;Today's date is: 9/28/2013.&quot;
+
+match = test_string.match /(?&lt;month&gt;\d{1,2})\/(?&lt;day&gt;\d{1,2})\/(?&lt;year&gt;\d{4})/
+puts match.inspect
+puts match[:month]
+puts match[:day]
+puts match[:year]
+</code></pre>
+
+<p>This is much easier to understand because looking at it, it makes it clear that the intent of matching the first group of 1 or 2 digits is to look for the <strong>month</strong> in the date. Similarly, the intent of the <em>day</em> and <em>year</em> matches are easier to understand.</p>
+
+<p>This will result in:</p>
+
+<pre><code class="language-bash">&gt; ruby /tmp/named_matches.rb
+#&lt;MatchData &quot;9/28/2013&quot; month:&quot;9&quot; day:&quot;28&quot; year:&quot;2013&quot;&gt;
+9
+28
+2013
+</code></pre>
+
+<p>##Python
+Python&rsquo;s <code>re</code> module supports named match groups using the <code>?P&lt;name&gt;</code> pattern. After a pattern search, the results are placed in a <code>dict</code>.</p>
+
+<pre><code class="language-python">#!/usr/bin/env ruby
+
+import re
+
+test_string = &quot;Today's date is: 9/28/2013.&quot;
+pattern = re.compile(r&quot;(?P&lt;month&gt;\d{1,2})\/(?P&lt;day&gt;\d{1,2})\/(?P&lt;year&gt;\d{4})&quot;)
+match_dict = pattern.search(test_string).groupdict()
+print(match_dict)
+</code></pre>
+
+<p>JavaScript does not support named capture groups. There are a lot of <a href="http://trentrichardson.com/2011/08/02/javascript-regexp-match-named-captures/">hacks</a> aimed at providing this functionality. The XRegExp library <a href="http://xregexp.com/syntax/#namedCapture">supports</a> named capture groups.</p>
+
+</div>
+</div>
+
+  </body>
+</html>

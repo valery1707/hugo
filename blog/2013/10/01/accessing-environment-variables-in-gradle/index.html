@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Accessing Environment Variables in Gradle &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>Sadique Ali</h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Accessing Environment Variables in Gradle</h1>
+  <span class="post-date">Tue, Oct 1, 2013</span>
+      <p>I have been writing a fun Android App. <a href="https://play.google.com/store/apps/details?id=in.sdqali.sharewithtitle">Share With Title</a> is a small application that allows you to share web pages you are reading to other applications without having to jump through the messy copy-paste hoop. (You should try it. If you share stuff from the web like I do, it will save you a lot of time and frustration). I have been coding on <a href="https://developer.android.com/sdk/installing/studio.html">Android Studio</a>, Google&rsquo;s IntelliJ based IDE for Android development. It uses Gradle for build scripts. Gradle is a Groovy based DSL <sup class="footnote-ref" id="fnref:9c75ee168501c0681315e8dd530bf5a5:1"><a rel="footnote" href="#fn:9c75ee168501c0681315e8dd530bf5a5:1">1</a></sup> for declaratively specifying build tasks. From what I have seen so far, it looks like an improvement over Ant.</p>
+
+<p>While attempting to build a signed version of my app, I found a <a href="http://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle">Gradle recipe</a> for signing Android applications. However, it used hard coded parameters including passwords. This lead me to figuring out how to use environment variables in Gradle scripts.</p>
+
+<p>Since Gradle scripts are Groovy files, Groovy&rsquo;s <code>System.getEnv</code> method will do the trick. The recipe modified to use this and thereby eliminate hard coded parameters will look like this:</p>
+
+<pre><code>signingConfigs {
+	release {
+		storeFile file(System.getenv(&quot;KEYSTORE&quot;))
+		storePassword System.getenv(&quot;KEYSTORE_PASSWORD&quot;)
+		keyAlias System.getenv(&quot;KEY_ALIAS&quot;)
+		keyPassword System.getenv(&quot;KEY_PASSWORD&quot;)
+	}
+}
+
+buildTypes {
+	release {
+		signingConfig signingConfigs.release
+	}
+}
+</code></pre>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:9c75ee168501c0681315e8dd530bf5a5:1">A Domain Specific Languages (DSL) is a languages targeted to a particular kind of problem. Martin Fowler has a very good description of them <a href="http://martinfowler.com/bliki/DomainSpecificLanguage.html">here</a>. Build scripts like Make, Ant and Rake are all DSLs.
+ <a class="footnote-return" href="#fnref:9c75ee168501c0681315e8dd530bf5a5:1"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+</div>
+</div>
+
+  </body>
+</html>
