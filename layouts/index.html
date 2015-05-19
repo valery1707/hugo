@@ -6,19 +6,22 @@
     <div class="content container">
 <div class="posts">
 
-      {{ range .Data.Pages }}
-  <div class="post">
-    <h1 class="post-title">
-      <a href="{{ .Permalink }}">
-        {{ .Title }}
-      </a>
-    </h1>
+      {{ range first 10 .Data.Pages }}
+      <div class="post">
+	<h1 class="post-title">
+	  <a href="{{ .Permalink }}">
+            {{ .Title }}
+	  </a>
+	</h1>
 
-    <span class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
+	<span class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
 
-    {{ .Content }}
-  </div>
-  {{ end }}
+	{{ .Summary }}
+	<footer>
+          <a href='{{ .Permalink }}'><nobr>Read more →</nobr></a>
+	</footer>
+      </div>
+      {{ end }}
 </div>
 </div>
 
