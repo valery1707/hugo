@@ -6,7 +6,7 @@ publishdir: "public"
 indexes:
     category: "categories"
 permalinks:
-    post: /blog/:year/:month/:day/:title/
+    blog: /blog/:year/:month/:day/:title/
 metadataformat: "yaml"
 params:
   description: "I write about the Code I write and the Technologies I use. And other things that interest me."
