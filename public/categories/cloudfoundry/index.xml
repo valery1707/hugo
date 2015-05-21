@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Cloudfoundry on Sadique Ali</title>
-    <link>http://sdqali.in/categories/cloudfoundry/</link>
+    <link>http://localhost:1313/categories/cloudfoundry/</link>
     <description>Recent content in Cloudfoundry on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 20 May 2015 19:42:56 -0700</lastBuildDate>
-    <atom:link href="http://sdqali.in/categories/cloudfoundry/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/cloudfoundry/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Configuring Cloud Foundry Java Memory Parameters</title>
-      <link>http://sdqali.in/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/</link>
+      <link>http://localhost:1313/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/</link>
       <pubDate>Wed, 20 May 2015 19:42:56 -0700</pubDate>
       
-      <guid>http://sdqali.in/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/</guid>
+      <guid>http://localhost:1313/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/</guid>
       <description>&lt;p&gt;This week I have been trying out Cloud Foundry. Today while trying to set up monitoring through AppDynamics, the sample application that I was using started crashing because of a Java memory error. This blog post discusses how to prevent this from happening by configuring Java memory parameters used by the application.&lt;/p&gt;
 
 &lt;p&gt;This is what was in the Cloud Foundry logs.&lt;/p&gt;

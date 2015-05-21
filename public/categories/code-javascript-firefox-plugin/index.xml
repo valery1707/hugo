@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Code Javascript Firefox Plugin on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-javascript-firefox-plugin/</link>
+    <link>http://localhost:1313/categories/code-javascript-firefox-plugin/</link>
     <description>Recent content in Code Javascript Firefox Plugin on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 29 Nov 2012 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://sdqali.in/categories/code-javascript-firefox-plugin/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/code-javascript-firefox-plugin/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>My first Firefox plugin: GetCache - View cached version of the current page</title>
-      <link>http://sdqali.in/blog/2012/11/29/my-first-firefox-plugin-getcache---view-cached-version-of-the-current-page/</link>
+      <link>http://localhost:1313/blog/2012/11/29/my-first-firefox-plugin-getcache---view-cached-version-of-the-current-page/</link>
       <pubDate>Thu, 29 Nov 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2012/11/29/my-first-firefox-plugin-getcache---view-cached-version-of-the-current-page/</guid>
+      <guid>http://localhost:1313/blog/2012/11/29/my-first-firefox-plugin-getcache---view-cached-version-of-the-current-page/</guid>
       <description>
 
 &lt;p&gt;I released my &lt;a href=&#34;https://addons.mozilla.org/en-US/firefox/addon/getcache-ff/&#34;&gt;first Firefox plugin&lt;/a&gt; today. It
 is awaiting review, but if you are adventurous, you can install it right
 now. Go on, try it.&lt;/p&gt;
 
-&lt;p&gt;After I had written the &lt;a href=&#34;http://sdqali.in/blog/2012/11/28/getcache-a-chrome-plugin-to-view-cached-version-of-the-current-page/&#34;&gt;Chrome version&lt;/a&gt; yesterday, &lt;a href=&#34;https://twitter.com/ManishChaks&#34;&gt;Manish&lt;/a&gt; suggested
+&lt;p&gt;After I had written the &lt;a href=&#34;http://localhost:1313/blog/2012/11/28/getcache-a-chrome-plugin-to-view-cached-version-of-the-current-page/&#34;&gt;Chrome version&lt;/a&gt; yesterday, &lt;a href=&#34;https://twitter.com/ManishChaks&#34;&gt;Manish&lt;/a&gt; suggested
 that I should write one for Firefox. There already exist Firfox plugins
 that does exactly what GetCache does, but I decided to go ahead and write it
 for fun. And of course, the fact that I could publish it without having

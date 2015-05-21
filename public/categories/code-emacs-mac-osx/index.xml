@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Code Emacs Mac Osx on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-emacs-mac-osx/</link>
+    <link>http://localhost:1313/categories/code-emacs-mac-osx/</link>
     <description>Recent content in Code Emacs Mac Osx on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Tue, 22 Jan 2013 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://sdqali.in/categories/code-emacs-mac-osx/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/code-emacs-mac-osx/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Reducing Emacs startup time while committing</title>
-      <link>http://sdqali.in/blog/2013/01/22/reducing-emacs-startup-time-while-committing/</link>
+      <link>http://localhost:1313/blog/2013/01/22/reducing-emacs-startup-time-while-committing/</link>
       <pubDate>Tue, 22 Jan 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2013/01/22/reducing-emacs-startup-time-while-committing/</guid>
+      <guid>http://localhost:1313/blog/2013/01/22/reducing-emacs-startup-time-while-committing/</guid>
       <description>
 
 &lt;p&gt;I use Emacs as my primary text editor and I use it to edit

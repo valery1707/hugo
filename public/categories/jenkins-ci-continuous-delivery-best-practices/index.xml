@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jenkins Ci Continuous Delivery Best Practices on Sadique Ali</title>
-    <link>http://sdqali.in/categories/jenkins-ci-continuous-delivery-best-practices/</link>
+    <link>http://localhost:1313/categories/jenkins-ci-continuous-delivery-best-practices/</link>
     <description>Recent content in Jenkins Ci Continuous Delivery Best Practices on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Fri, 03 Feb 2012 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://sdqali.in/categories/jenkins-ci-continuous-delivery-best-practices/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/jenkins-ci-continuous-delivery-best-practices/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Bullet proof Jenkins setup</title>
-      <link>http://sdqali.in/blog/2012/02/03/bullet-proof-jenkins-setup/</link>
+      <link>http://localhost:1313/blog/2012/02/03/bullet-proof-jenkins-setup/</link>
       <pubDate>Fri, 03 Feb 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2012/02/03/bullet-proof-jenkins-setup/</guid>
+      <guid>http://localhost:1313/blog/2012/02/03/bullet-proof-jenkins-setup/</guid>
       <description>&lt;div class=&#39;post&#39;&gt;
 &lt;div&gt;&lt;div dir=&#34;ltr&#34; style=&#34;text-align: left;&#34; trbidi=&#34;on&#34;&gt;&lt;div&gt;In this
       post, I will describe how a neat setup and some discipline will

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Code Python on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-python/</link>
+    <link>http://localhost:1313/categories/code-python/</link>
     <description>Recent content in Code Python on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Mon, 07 Oct 2013 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://sdqali.in/categories/code-python/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/code-python/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Python Hack - Dynamically override an object&#39;s attribute</title>
-      <link>http://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</link>
+      <link>http://localhost:1313/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</link>
       <pubDate>Mon, 07 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</guid>
+      <guid>http://localhost:1313/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</guid>
       <description>
 
 &lt;p&gt;While working with Locust &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:66b6e5fb09b6083bed97b4d7a2981cc2:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:66b6e5fb09b6083bed97b4d7a2981cc2:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; recently, we ran into a situation where we had to dynamically override an attribute in a class in the Locust library so as to control what value it got assigned. After a lot of scratching our heads and reading the Python documentation, we came across the &lt;code&gt;property&lt;/code&gt; function. We were able to use this to hack together a solution that ensures that every time an attribute is read, it returns the result of executing a method.&lt;/p&gt;
@@ -75,10 +75,10 @@ After override
     
     <item>
       <title>Python&#39;s bool type</title>
-      <link>http://sdqali.in/blog/2013/08/15/pythons-bool-type/</link>
+      <link>http://localhost:1313/blog/2013/08/15/pythons-bool-type/</link>
       <pubDate>Thu, 15 Aug 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2013/08/15/pythons-bool-type/</guid>
+      <guid>http://localhost:1313/blog/2013/08/15/pythons-bool-type/</guid>
       <description>&lt;p&gt;Python does not have a true boolean type. The &lt;code&gt;True&lt;/code&gt; and &lt;code&gt;False&lt;/code&gt; built-in values in Python are wrappers around the integers &lt;code&gt;1&lt;/code&gt; and &lt;code&gt;0&lt;/code&gt;. This results in some interesting results involving True and False.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;&amp;gt;&amp;gt;&amp;gt; True == 1
@@ -130,10 +130,10 @@ else:
     
     <item>
       <title>Understanding Python&#39;s &#34;with&#34; statement</title>
-      <link>http://sdqali.in/blog/2012/07/09/understanding-pythons-with-statement/</link>
+      <link>http://localhost:1313/blog/2012/07/09/understanding-pythons-with-statement/</link>
       <pubDate>Mon, 09 Jul 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2012/07/09/understanding-pythons-with-statement/</guid>
+      <guid>http://localhost:1313/blog/2012/07/09/understanding-pythons-with-statement/</guid>
       <description>
 
 &lt;h2 id=&#34;what-is-it:ac4d2c4b2f71b3b47d24799d64503bb3&#34;&gt;What is it?&lt;/h2&gt;
@@ -257,10 +257,10 @@ ZeroDivisionError: integer division or modulo by zero
     
     <item>
       <title>Autorun.py - Execute stuff on file change</title>
-      <link>http://sdqali.in/blog/2010/01/09/autorun.py---execute-stuff-on-file-change/</link>
+      <link>http://localhost:1313/blog/2010/01/09/autorun.py---execute-stuff-on-file-change/</link>
       <pubDate>Sat, 09 Jan 2010 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2010/01/09/autorun.py---execute-stuff-on-file-change/</guid>
+      <guid>http://localhost:1313/blog/2010/01/09/autorun.py---execute-stuff-on-file-change/</guid>
       <description>&lt;p&gt;I really liked ZenTest&amp;rsquo;s Autospec in action. Recently, when I was trying to write some Python stuff, I thought it would be nice if I would have a tool that would just run the unit tests, so that I don&amp;rsquo;t have to switch between console windows. Better still, I could run it from inside my Emacs.&lt;/p&gt;
 
 &lt;p&gt;Clearly, monitoring files for changes, shouldn&amp;rsquo;t be big deal. I decided to write the tool myself in Python. the prime intension was to help myself learn Python. Although that didn&amp;rsquo;t quite workout, I managed to come up with a quick and dirty hack to do it. It uses &lt;code&gt;pyinotify&lt;/code&gt;, which is a Python module for monitoring filesystem changes. Since &lt;code&gt;pyinotify&lt;/code&gt; depends on the Linux kernel, this would work only on Linux boxes.&lt;/p&gt;

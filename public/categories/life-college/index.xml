@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Life College on Sadique Ali</title>
-    <link>http://sdqali.in/categories/life-college/</link>
+    <link>http://localhost:1313/categories/life-college/</link>
     <description>Recent content in Life College on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Sun, 14 Jun 2009 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://sdqali.in/categories/life-college/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/life-college/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Leaving College</title>
-      <link>http://sdqali.in/blog/2009/06/14/leaving-college/</link>
+      <link>http://localhost:1313/blog/2009/06/14/leaving-college/</link>
       <pubDate>Sun, 14 Jun 2009 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2009/06/14/leaving-college/</guid>
+      <guid>http://localhost:1313/blog/2009/06/14/leaving-college/</guid>
       <description>&lt;p&gt;My B.Tech course is over. Well, almost- all that is left is for me to collect a set of official autographs (Signatures showing absence of any liabilities to the college). I will be leaving Trivandrum on Tuesday.&lt;/p&gt;
 
 &lt;p&gt;Am I sad that it is all over? Yes, I am. The four years spent at CET was the best time of my life. I will miss every single person that I got to meet at CET in those four years. :(&lt;/p&gt;

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Code Ruby on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-ruby/</link>
+    <link>http://localhost:1313/categories/code-ruby/</link>
     <description>Recent content in Code Ruby on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 24 Mar 2011 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://sdqali.in/categories/code-ruby/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/code-ruby/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Empathy Log Parser</title>
-      <link>http://sdqali.in/blog/2011/03/24/empathy-log-parser/</link>
+      <link>http://localhost:1313/blog/2011/03/24/empathy-log-parser/</link>
       <pubDate>Thu, 24 Mar 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2011/03/24/empathy-log-parser/</guid>
+      <guid>http://localhost:1313/blog/2011/03/24/empathy-log-parser/</guid>
       <description>&lt;p&gt;I use Empathy as my preferred IM application. Today, I wanted to have a look at an IM conversation I had with someone. I pulled out the Empathy log corresponding to that conversation, and boom - it is in XML.&lt;/p&gt;
 
 &lt;p&gt;Just another excuse to write code. So I came up with the following. It was easy to write and it does not do much - It uses the Hpricot gem to parse the XML and prints the name of the people involved in the chat and their messages in a human readable form. What? You are one of those souls who actually enjoy reading XML? Well, I am not one of those.&lt;/p&gt;
@@ -52,10 +52,10 @@ puts EmpathyLP::LogParser.new(path).messages
     
     <item>
       <title>Binary Signature Art</title>
-      <link>http://sdqali.in/blog/2011/03/23/binary-signature-art/</link>
+      <link>http://localhost:1313/blog/2011/03/23/binary-signature-art/</link>
       <pubDate>Wed, 23 Mar 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2011/03/23/binary-signature-art/</guid>
+      <guid>http://localhost:1313/blog/2011/03/23/binary-signature-art/</guid>
       <description>&lt;p&gt;I was reading this very interesting &lt;a href=&#34;http://forums.xkcd.com/viewtopic.php?f=7&amp;amp;t=11765&#34;&gt;thread&lt;/a&gt; on the xkcd forum when I noticed a post from a user with the following signature in binary:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;01001101 01100001 01100100 01100101 00100000 01011001 01101111 01110101 00100000 01001100 01101111 01101111 01101011 00100001&amp;quot;

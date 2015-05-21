@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Code Clojure Algorithms on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-clojure-algorithms/</link>
+    <link>http://localhost:1313/categories/code-clojure-algorithms/</link>
     <description>Recent content in Code Clojure Algorithms on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 20 Mar 2014 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://sdqali.in/categories/code-clojure-algorithms/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/code-clojure-algorithms/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Clojure Dojo - Levenshtein edit distance</title>
-      <link>http://sdqali.in/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/</link>
+      <link>http://localhost:1313/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/</link>
       <pubDate>Thu, 20 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/</guid>
+      <guid>http://localhost:1313/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/</guid>
       <description>
 
 &lt;p&gt;I have been playing around with Clojure and after familiarising myself with the core, I decided to start writing little programs that forces me to choose the right idioms. I am starting off with Levenshtein edit distance of two strings.&lt;/p&gt;

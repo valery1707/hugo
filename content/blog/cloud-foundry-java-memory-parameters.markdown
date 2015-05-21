@@ -7,7 +7,6 @@ Tags:
 - Development
 - golang
 date: 2015-05-20T19:42:56-07:00
-menu: main
 title: Configuring Cloud Foundry Java Memory Parameters
 ---
 This week I have been trying out Cloud Foundry. Today while trying to set up monitoring through AppDynamics, the sample application that I was using started crashing because of a Java memory error. This blog post discusses how to prevent this from happening by configuring Java memory parameters used by the application.

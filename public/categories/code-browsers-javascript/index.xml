@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Code Browsers Javascript on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-browsers-javascript/</link>
+    <link>http://localhost:1313/categories/code-browsers-javascript/</link>
     <description>Recent content in Code Browsers Javascript on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 22 Nov 2012 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://sdqali.in/categories/code-browsers-javascript/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/code-browsers-javascript/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>How Browsers Detect If You Are Offline</title>
-      <link>http://sdqali.in/blog/2012/11/22/how-browsers-detect-if-you-are-offline/</link>
+      <link>http://localhost:1313/blog/2012/11/22/how-browsers-detect-if-you-are-offline/</link>
       <pubDate>Thu, 22 Nov 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2012/11/22/how-browsers-detect-if-you-are-offline/</guid>
+      <guid>http://localhost:1313/blog/2012/11/22/how-browsers-detect-if-you-are-offline/</guid>
       <description>&lt;p&gt;When I saw the newly released
 &lt;a href=&#34;http://oskarkrawczyk.github.com/heyoffline.js/&#34;&gt;Heyoffline.js&lt;/a&gt; library,
 I was curious to see how it figured out if the user was online or

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Gis Maps Javascript Geojson on Sadique Ali</title>
-    <link>http://sdqali.in/categories/gis-maps-javascript-geojson/</link>
+    <link>http://localhost:1313/categories/gis-maps-javascript-geojson/</link>
     <description>Recent content in Gis Maps Javascript Geojson on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Sun, 03 Aug 2014 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://sdqali.in/categories/gis-maps-javascript-geojson/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/gis-maps-javascript-geojson/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>A list of GIS tools</title>
-      <link>http://sdqali.in/blog/2014/08/03/a-list-of-gis-tools/</link>
+      <link>http://localhost:1313/blog/2014/08/03/a-list-of-gis-tools/</link>
       <pubDate>Sun, 03 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2014/08/03/a-list-of-gis-tools/</guid>
+      <guid>http://localhost:1313/blog/2014/08/03/a-list-of-gis-tools/</guid>
       <description>
 
 &lt;p&gt;I have been playing around with maps a lot these days and have ended up using various tools in the process. This blog post is a way to make a note of these tools for later use.&lt;/p&gt;

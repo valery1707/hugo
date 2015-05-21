@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Facebook Social Network on Sadique Ali</title>
-    <link>http://sdqali.in/categories/facebook-social-network/</link>
+    <link>http://localhost:1313/categories/facebook-social-network/</link>
     <description>Recent content in Facebook Social Network on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Sat, 11 Aug 2012 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://sdqali.in/categories/facebook-social-network/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/facebook-social-network/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Why I am not on Facebook</title>
-      <link>http://sdqali.in/blog/2012/08/11/why-i-am-not-on-facebook/</link>
+      <link>http://localhost:1313/blog/2012/08/11/why-i-am-not-on-facebook/</link>
       <pubDate>Sat, 11 Aug 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2012/08/11/why-i-am-not-on-facebook/</guid>
+      <guid>http://localhost:1313/blog/2012/08/11/why-i-am-not-on-facebook/</guid>
       <description>
 
 &lt;p&gt;Yesterday a colleague of mine asked me if I was on Facebook. He

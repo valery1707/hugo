@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Life Reflections on Sadique Ali</title>
-    <link>http://sdqali.in/categories/life-reflections/</link>
+    <link>http://localhost:1313/categories/life-reflections/</link>
     <description>Recent content in Life Reflections on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Sun, 18 Jan 2009 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://sdqali.in/categories/life-reflections/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/life-reflections/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Tough Love</title>
-      <link>http://sdqali.in/blog/2009/01/18/tough-love/</link>
+      <link>http://localhost:1313/blog/2009/01/18/tough-love/</link>
       <pubDate>Sun, 18 Jan 2009 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2009/01/18/tough-love/</guid>
+      <guid>http://localhost:1313/blog/2009/01/18/tough-love/</guid>
       <description>&lt;p&gt;I am about to finish my college within five months. As almost everyone at this juncture of life would have done, I am already beginning to look back at it. And nothing resurfaces from my memory like that of how it all began.&lt;/p&gt;
 
 &lt;p&gt;I still remember those days after I had finished school, when I had not decided what I wanted to do. Of course, I wanted to study, but higher education did not look a feasible prospect. There were talks in the family about how costly college education was. And worse still, the discussions were being led by my father&amp;rsquo;s elder brother who was my Godfather, and easily the person whose words the family dared not to questions.&lt;/p&gt;
