@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Java Arrays in JRuby &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+        <li><a href="/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/"> Configuring Cloud Foundry Java Memory Parameters </a></li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Java Arrays in JRuby</h1>
+  <span class="post-date">Tue, Mar 16, 2010</span>
+      <p>Recently my team encountered a frustrating thing while working with a Java library in JRuby. It took us long to figure out what was going wrong. This is an attempt to write down what was happening.</p>
+
+<p>You are in Ruby world, a world of weak typing, no type casting and pure bliss in coding. You forget that some languages care about the type of elements in an Array. And you end up spending a lot of time figuring out why you are staring at a stupid looking exception.</p>
+
+<p>I will be using a dummy example for describing the problem.</p>
+
+<p>The following code snippet tries to compare two arrays in JRuby using Java Arrays&rsquo; equals method. In JRuby world, one would expect this to work. Actually, one should not, but Ruby really gets into you.</p>
+
+<pre><code class="language-ruby">require 'java'
+import 'java.util.Arrays'
+
+puts &quot;Arrays equal&quot; if Arrays.equals([1, 2, 3], [1, 2, 3])
+</code></pre>
+
+<p>Well, it does not. You get an error:</p>
+
+<pre><code class="language-bash">no equals with arguments matching [class org.jruby.RubyArray, class org.jruby.RubyArray] on object Java::JavaUtil::Arrays (NameError)
+</code></pre>
+
+<p>This error message is informative. In our case, our unit tests threw an error that was very difficult to make any sense of. The reason why this fails is obvious.</p>
+
+<p>Java does care about the Type of things that form an Array. So you need to cast it to the correct type.</p>
+
+<p>Here is the code that actually works:</p>
+
+<pre><code class="language-ruby">require 'java'
+import 'java.util.Arrays'
+
+puts &quot;Arrays equal&quot; if Arrays.equals([1,2,3].to_java(java.lang.Integer),
+                                     [1,2,3].to_java(java.lang.Integer))
+</code></pre>
+
+<p>The <code>to_java</code> method casts the elements of the Ruby array into Java array with elements of type specified.</p>
+
+</div>
+</div>
+
+  </body>
+</html>

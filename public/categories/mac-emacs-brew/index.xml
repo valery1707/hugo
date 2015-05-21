@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mac Emacs Brew on Sadique Ali</title>
+    <link>http://sdqali.in/categories/mac-emacs-brew/</link>
+    <description>Recent content in Mac Emacs Brew on Sadique Ali</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 04 May 2012 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://sdqali.in/categories/mac-emacs-brew/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Fixing Flyspell for Emacs in Mac OS X</title>
+      <link>http://sdqali.in/blog/2012/05/04/fixing-flyspell-for-emacs-in-mac-os-x/</link>
+      <pubDate>Fri, 04 May 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://sdqali.in/blog/2012/05/04/fixing-flyspell-for-emacs-in-mac-os-x/</guid>
+      <description>
+
+&lt;p&gt;I use the &lt;a href=&#34;http://www.emacswiki.org/emacs/FlySpell&#34;&gt;flyspell-mode&lt;/a&gt; as a spell checking mechanism in emacs. Recently, I moved to Mac OS X, and I began to get this error whenever I started emacs:
+{% codeblock lang:bash %}
+Error enabling Flyspell mode:
+(Searching for program No such file or directory aspell)
+{% endcodeblock %}&lt;/p&gt;
+
+&lt;p&gt;I had installed aspell with Homebrew. The issue seemed to be that Emacs was unable to find the aspell binary. Homebrew installs binaries in &lt;strong&gt;/usr/local/bin&lt;/strong&gt; and it was in my $PATH. It turns out Emacs uses it&amp;rsquo;s own exec path to look for binaries to execute in sub-processes. So the fix is to add the &lt;strong&gt;/usr/local/bin&lt;/strong&gt; path to the exec-path. This is the change needed to the &lt;strong&gt;~/.emacs&lt;/strong&gt; file:
+{% codeblock lang:clojure %}
+ &amp;lsquo;(exec-path (quote (&amp;ldquo;/usr/bin&amp;rdquo; &amp;ldquo;/bin&amp;rdquo; &amp;ldquo;/usr/sbin&amp;rdquo; &amp;ldquo;/sbin&amp;rdquo; &amp;ldquo;/usr/local/bin&amp;rdquo;))))
+{% endcodeblock %}&lt;/p&gt;
+
+&lt;p&gt;Notice the &lt;strong&gt;/usr/local/bin&lt;/strong&gt; in there.&lt;/p&gt;
+
+&lt;h2 id=&#34;update:edc0a2a8bcd338c2e4cd3b014777c98f&#34;&gt;Update&lt;/h2&gt;
+
+&lt;p&gt;This does not seem to work. A better way to do this is to add the
+following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-clojure&#34;&gt;(setenv &amp;quot;PATH&amp;quot; (concat (getenv &amp;quot;PATH&amp;quot;) &amp;quot;:/usr/local/bin&amp;quot;))
+(setq exec-path (append exec-path &#39;(&amp;quot;/usr/local/bin&amp;quot;)))
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Know Your Tools - Don&#39;t Shoot Yourself in the Foot &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+        <li><a href="/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/"> Configuring Cloud Foundry Java Memory Parameters </a></li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Know Your Tools - Don&#39;t Shoot Yourself in the Foot</h1>
+  <span class="post-date">Wed, Jun 6, 2012</span>
+      
+
+<p>Imagine this - Your build is taking forever. You put in a lot of effort and restructure it. Things improve a lot, but it is far from where you would like it to be. You try hard to identify things that could improve the build time, but fail. You blame the platforms you use, you blame Ruby and you even blame the relative position of the Moon to Venus. Slowly you learn to accept the slow build as a part of your life. Months later a new developer joins the team and proves that there is a bug in the build scripts that causes certain tasks to be run twice.</p>
+
+<p>This happened to us recently, and the subsequent debugging/postmortem revealed that there were things about our tools that we simply did not know.</p>
+
+<h2 id="a-bit-of-context:0b52393bd02c49630590bed6cdf265c8">A bit of context</h2>
+
+<p>Ours is a Java code base, but we use Rake for our build scripts. We have been using Ruby 1.8.7 and Rake 0.8.7. We never got around to upgrading the Ruby versions due to a number of reasons including one of our gems breaking on 1.9.3 and more importantly our laziness. Well, laziness will cause you damage in the end and that is what happened to us.</p>
+
+<h2 id="what-is-the-issue:0b52393bd02c49630590bed6cdf265c8">What is the issue ?</h2>
+
+<h3 id="that-step-is-not-running-multiple-times-is-it:0b52393bd02c49630590bed6cdf265c8">&ldquo;That step is not running multiple times, is it?&rdquo;</h3>
+
+<p>While debugging our build, our new developer discovered that certain tasks that take up 10 minutes to complete were being executed twice. We soon started trying to figure out where in the chain of Rake task calls did we end up repeating a task. There were none. After some time, we would learn that we did not know enough about Rake and Ruby 1.8.7</p>
+
+<h3 id="rake-s-redefining-behavior:0b52393bd02c49630590bed6cdf265c8">Rake&rsquo;s redefining behavior</h3>
+
+<p>Rake treats redefining a Task as akin to appending actions to the same Task. To see this in action, add the following to a Rakefile:
+{% codeblock lang:ruby %}
+task :foo do
+  puts &ldquo;foo &rdquo; * 10
+end</p>
+
+<p>task :foo do
+  puts &ldquo;bar &rdquo; * 10
+end
+{% endcodeblock %}</p>
+
+<p>If you run the <code>foo</code> task, you would get:
+{% codeblock lang:console %}
+$rake foo
+foo foo foo foo foo foo foo foo foo foo
+bar bar bar bar bar bar bar bar bar bar
+{% endcodeblock %}</p>
+
+<p>This is far removed from behaviors of Ruby and <a href="http://www.gnu.org/software/make/" title="Make">Make</a>, the tools that inspired Rake. For clarity&rsquo;s sake, this is how Ruby treats redefinitions:
+{% codeblock lang:ruby %}
+#!/usr/bin/env ruby
+#example.rb</p>
+
+<p>def example
+  puts &ldquo;example &rdquo; * 10
+end</p>
+
+<p>def example
+  puts &ldquo;foobar &rdquo; * 10
+end</p>
+
+<p>example
+{% endcodeblock %}</p>
+
+<p>When run:
+{% codeblock lang:console %}
+$ruby example.rb
+foobar foobar foobar foobar foobar foobar foobar foobar foobar foobar
+{% endcodeblock %}</p>
+
+<p>Lets take a look at Make&rsquo;s behavior. This is how Make treats redefinitions:
+{% codeblock lang:make %}</p>
+
+<h1 id="example-makefile:0b52393bd02c49630590bed6cdf265c8">Example Makefile</h1>
+
+<p>foo:
+    @echo Foo target
+foo:
+    @echo Redefined foo target
+{% endcodeblock %}</p>
+
+<p>When run:
+{% codeblock lang:console %}
+$make foo
+Makefile:6: warning: overriding commands for target <code>foo'
+Makefile:4: warning: ignoring old commands for target</code>foo&rsquo;
+Redefined foo target
+{% endcodeblock %}</p>
+
+<p>While this behavior of Rake may seem weird, there are some advantages to it like the ability to add custom behavior to third party Rake tasks. I asked <a href="https://twitter.com/#!/jimweirich">Jim Weirich</a>, the creator of Rake and he was <a href="http://www.quora.com/Ruby-programming-language/Why-did-Rake-choose-to-treat-a-re-definition-as-a-multiple-definition-instead-of-an-overwrite">of the opinion</a> that it was a useful choice. <em>We were <strong>not</strong> aware of this particular behavior of Rake.</em></p>
+
+<p>Under normal situations, this behavior should not cause us trouble, as it is unlikely that we would redefine our own Rake tasks. But this combined with the next issue led to some of our build tasks running twice.</p>
+
+<h3 id="ruby-1-8-7-s-multiple-require-issue:0b52393bd02c49630590bed6cdf265c8">Ruby 1.8.7&rsquo;s multiple require issue</h3>
+
+<p>It turns out that in Ruby 1.8.7, whenever a file is <code>require</code>d multiple times, Ruby decides whether to reload it based on the path of the file provided. So if you have the same file being required twice, but using different paths, the file will be loaded twice. If there are Rake tasks defined in that file, the effect of actions in the Rake task will be multiplied.</p>
+
+<p>Again, this can be best demonstrated with an example. Consider the following scenario. There is a paent directory with <code>Rakefile</code>, <code>zoo.rb</code> and a directory <code>subdir</code> with the file <code>bar.rb</code> inside it.</p>
+
+<p><code>zoo.rb</code> defines a Rake task <code>print_zoo</code>:
+{% codeblock lang:ruby%}</p>
+
+<h1 id="zoo-rb:0b52393bd02c49630590bed6cdf265c8">zoo.rb</h1>
+
+<p>desc &ldquo;prints zoo&rdquo;
+task :print_zoo do
+  puts &ldquo;zoo &rdquo; * 10
+end
+{% endcodeblock %}</p>
+
+<p><code>bar.rb</code> in the directory <code>subdir</code> does nothing but require <code>zoo</code> in the parent directory.
+{% codeblock lang:ruby %}
+#subdir/bar.rb</p>
+
+<p>require File.dirname(<strong>FILE</strong>) + &ldquo;/../zoo&rdquo;
+{% endcodeblock %}</p>
+
+<p>The Rakefile requires both <code>zoo.rb</code> and <code>bar.rb</code> and defines a task to show the behavior.
+{% codeblock lang:ruby%}
+require File.dirname(<strong>FILE</strong>) + &ldquo;/zoo&rdquo;
+require File.dirname(<strong>FILE</strong>) + &ldquo;/subdir/bar&rdquo;</p>
+
+<p>desc &ldquo;show weirdness&rdquo;
+task :test =&gt; :print_zoo
+{% endcodeblock %}</p>
+
+<p>Now if we run the <code>test</code> task:
+{% codeblock lang:console %}
+$rake test
+zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo
+zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo
+{% endcodeblock %}</p>
+
+<p>Lets take a step back and think about that. If we load Ruby files multiple times using <code>require</code> we can easily end up repeating a build step that would take 30 minutes to complete.</p>
+
+<p>I must note that this issue does not happen on Ruby 1.9.3, where files are being loaded only once. All the code I showed here is available <a href="https://github.com/sdqali/rake_sandbox">here</a>, if you want to take a closer look.</p>
+
+<h2 id="learning:0b52393bd02c49630590bed6cdf265c8">Learning</h2>
+
+<p>This is not meant to be a criticism of Rake or Ruby. Although Rake&rsquo;s behavior in this scenario looks weird, there are good reasons why Jim chose that behavior. And we should have moved to Ruby 1.9.3 anyway.  Certainly the learning is that we need to have a better understanding of the tools we use daily.</p>
+
+</div>
+</div>
+
+  </body>
+</html>

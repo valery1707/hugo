@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Shared history in Bash &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+        <li><a href="/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/"> Configuring Cloud Foundry Java Memory Parameters </a></li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Shared history in Bash</h1>
+  <span class="post-date">Sun, Sep 15, 2013</span>
+      <p>One of the features that I miss most in Bash is the shared history between terminals that Zsh supports. I was hunting down a solution for this and came across this Stack Overflow answer <sup class="footnote-ref" id="fnref:2b4ddf3398db24795bd65c393ff1e13d:1"><a rel="footnote" href="#fn:2b4ddf3398db24795bd65c393ff1e13d:1">1</a></sup> by user <em>lesmana</em>. This code snippet does the trick:</p>
+
+<pre><code class="language-bash">HISTSIZE=9000
+HISTFILESIZE=$HISTSIZE
+HISTCONTROL=ignorespace:ignoredups
+
+history() {
+  _bash_history_sync
+  builtin history &quot;$@&quot;
+}
+
+_bash_history_sync() {
+  builtin history -a         #1
+  HISTFILESIZE=$HISTSIZE     #2
+  builtin history -c         #3
+  builtin history -r         #4
+}
+
+PROMPT_COMMAND=&quot;_bash_history_sync;$PROMPT_COMMAND&quot;
+</code></pre>
+
+<p>This is very hacky—This setting overrides the shell prompt to sync history every time the prompt is loaded. But like all great hacks, it works.</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:2b4ddf3398db24795bd65c393ff1e13d:1"><a href="http://stackoverflow.com/questions/103944/real-time-history-export-amongst-bash-terminal-windows/3055135#3055135">Preserve bash history in multiple terminal windows</a>
+ <a class="footnote-return" href="#fnref:2b4ddf3398db24795bd65c393ff1e13d:1"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+</div>
+</div>
+
+  </body>
+</html>

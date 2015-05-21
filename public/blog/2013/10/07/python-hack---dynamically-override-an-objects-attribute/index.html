@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Python Hack - Dynamically override an object&#39;s attribute &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+        <li><a href="/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/"> Configuring Cloud Foundry Java Memory Parameters </a></li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Python Hack - Dynamically override an object&#39;s attribute</h1>
+  <span class="post-date">Mon, Oct 7, 2013</span>
+      
+
+<p>While working with Locust <sup class="footnote-ref" id="fnref:66b6e5fb09b6083bed97b4d7a2981cc2:1"><a rel="footnote" href="#fn:66b6e5fb09b6083bed97b4d7a2981cc2:1">1</a></sup> recently, we ran into a situation where we had to dynamically override an attribute in a class in the Locust library so as to control what value it got assigned. After a lot of scratching our heads and reading the Python documentation, we came across the <code>property</code> function. We were able to use this to hack together a solution that ensures that every time an attribute is read, it returns the result of executing a method.</p>
+
+<p>The following example demonstrates a stripped down version of this hack.</p>
+
+<pre><code>import random
+
+class Foo(object):
+    bar = random.random()
+
+foo = Foo()
+
+# Prints the value assigned when the Foo object is initialised.
+print(&quot;Before override&quot;)
+print(foo.bar)
+print(foo.bar)
+
+# Override
+Foo.bar = property(lambda self: random.random())
+
+print(&quot;After override&quot;)
+print(foo.bar)
+print(foo.bar)
+</code></pre>
+
+<p>This snippet when executed will output the following:</p>
+
+<pre><code>Before override
+0.0373028550804
+0.0373028550804
+After override
+0.603160033663
+0.501455108419
+</code></pre>
+
+<p>It can be seen that before introducing the override, the value of the <code>bar</code> attribute is set when the class is initialised and as expected, it does not change how many ever times the attribute is read. However, after the override, the attribute is assigned a new value every time it is read.</p>
+
+<h2 id="how-does-this-work:66b6e5fb09b6083bed97b4d7a2981cc2">How does this work?</h2>
+
+<p>The <code>property()</code> <sup class="footnote-ref" id="fnref:66b6e5fb09b6083bed97b4d7a2981cc2:2"><a rel="footnote" href="#fn:66b6e5fb09b6083bed97b4d7a2981cc2:2">2</a></sup> function returns an attribute for any class. It allows the creation of Ruby&rsquo;s <code>attr_accessor</code> <sup class="footnote-ref" id="fnref:66b6e5fb09b6083bed97b4d7a2981cc2:3"><a rel="footnote" href="#fn:66b6e5fb09b6083bed97b4d7a2981cc2:3">3</a></sup> style attributes on classes so that one can write <code>instance.attrib</code> to read an attribute value and <code>instance.attrib=</code> to set an attribute value. What line <code>14</code> in the snippet does is to re-define the <code>bar</code> attribute to be a property whose <code>getter</code> is a <code>lambda</code>. Every time the <code>bar</code> attribute is read, the <code>lambda</code> gets executed.</p>
+
+<p>A more comprehensive example of this can be found in my <a href="https://github.com/sdqali/python_dojo/blob/master/dynamic_override/dynamic_override.py">Python dojo repository</a> on GitHub.</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:66b6e5fb09b6083bed97b4d7a2981cc2:1"><a href="http://locust.io/">Locust</a> - a modern load testing framework.
+ <a class="footnote-return" href="#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:1"><sup>[return]</sup></a></li>
+<li id="fn:66b6e5fb09b6083bed97b4d7a2981cc2:2">Python&rsquo;s built-in functions - <a href="http://docs.python.org/2/library/functions.html#property">property</a>.
+ <a class="footnote-return" href="#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:2"><sup>[return]</sup></a></li>
+<li id="fn:66b6e5fb09b6083bed97b4d7a2981cc2:3">Ruby&rsquo;s <a href="http://www.ruby-doc.org/core-1.9.3/Module.html#method-i-attr_accessor"><code>attr_accessor</code> method</a>.
+ <a class="footnote-return" href="#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:3"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+</div>
+</div>
+
+  </body>
+</html>

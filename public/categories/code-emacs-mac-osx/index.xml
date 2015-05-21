@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Code Emacs Mac Osx on Sadique Ali</title>
+    <link>http://sdqali.in/categories/code-emacs-mac-osx/</link>
+    <description>Recent content in Code Emacs Mac Osx on Sadique Ali</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 22 Jan 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://sdqali.in/categories/code-emacs-mac-osx/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Reducing Emacs startup time while committing</title>
+      <link>http://sdqali.in/blog/2013/01/22/reducing-emacs-startup-time-while-committing/</link>
+      <pubDate>Tue, 22 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://sdqali.in/blog/2013/01/22/reducing-emacs-startup-time-while-committing/</guid>
+      <description>
+
+&lt;p&gt;I use Emacs as my primary text editor and I use it to edit
+commit messages for Git. I almost never use the &lt;code&gt;-m&lt;/code&gt;
+option with &lt;code&gt;git commit&lt;/code&gt;. Since I have a fairly customised Emacs
+configuration based around Sam Aaron&amp;rsquo;s
+&lt;a href=&#34;https://github.com/overtone/emacs-live&#34;&gt;Emacs Live&lt;/a&gt;, this means that
+for every commit, there is a visible delay for Emacs to start up for the
+commit message. I was looking for ways to reduce this and figured out that
+running Emacs in &lt;code&gt;daemon&lt;/code&gt; mode and using &lt;code&gt;emacsclient&lt;/code&gt; as the
+&lt;code&gt;GIT_EDITOR&lt;/code&gt; would solve this.&lt;/p&gt;
+
+&lt;h1 id=&#34;running-an-emacs-daemon-at-start-up-on-mac-os-x:e2f4fbaa26157ce13f127902af0dd17e&#34;&gt;Running an Emacs daemon at start up on Mac OS X&lt;/h1&gt;
+
+&lt;p&gt;The recommended way of running an application at start up on Mac OS X is
+to use &lt;a href=&#34;http://en.wikipedia.org/wiki/Launchd&#34;&gt;launchd&lt;/a&gt;. Launchd
+configurations are written as XML files created in
+&lt;code&gt;~/Library/LaunchAgents&lt;/code&gt; or &lt;code&gt;/Library/LaunchAgents&lt;/code&gt; depending on whether
+the app needs to be run for the current user or for all users.
+Here is the plist file for Emacs at &lt;code&gt;~/Library/LaunchAgents/gnu.emacs.daemon.plist&lt;/code&gt;, taken from
+&lt;a href=&#34;http://www.emacswiki.org/emacs/EmacsAsDaemon&#34;&gt;EmacsWiki&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE plist PUBLIC &amp;quot;-//Apple//DTD PLIST 1.0//EN&amp;quot;
+&amp;quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&amp;quot;&amp;gt;
+&amp;lt;plist version=&amp;quot;1.0&amp;quot;&amp;gt;
+  &amp;lt;dict&amp;gt;
+    &amp;lt;key&amp;gt;Label&amp;lt;/key&amp;gt;
+    &amp;lt;string&amp;gt;gnu.emacs.daemon&amp;lt;/string&amp;gt;
+    &amp;lt;key&amp;gt;ProgramArguments&amp;lt;/key&amp;gt;
+    &amp;lt;array&amp;gt;
+      &amp;lt;string&amp;gt;/Applications/Emacs.app/Contents/MacOS/Emacs&amp;lt;/string&amp;gt;
+      &amp;lt;string&amp;gt;--daemon&amp;lt;/string&amp;gt;
+    &amp;lt;/array&amp;gt;
+    &amp;lt;key&amp;gt;RunAtLoad&amp;lt;/key&amp;gt;
+    &amp;lt;true/&amp;gt;
+    &amp;lt;key&amp;gt;ServiceDescription&amp;lt;/key&amp;gt;
+    &amp;lt;string&amp;gt;Gnu Emacs Daemon&amp;lt;/string&amp;gt;
+    &amp;lt;key&amp;gt;UserName&amp;lt;/key&amp;gt;
+    &amp;lt;string&amp;gt;YOUR USER NAME&amp;lt;/string&amp;gt;
+  &amp;lt;/dict&amp;gt;
+&amp;lt;/plist&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is loaded by running&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo launchctl load -w ~/Library/LaunchAgents/gnu.emacs.daemon.plist
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;using-emacs-client-as-the-editor:e2f4fbaa26157ce13f127902af0dd17e&#34;&gt;Using Emacs client as the editor&lt;/h1&gt;
+
+&lt;p&gt;This is done by adding&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;export EDITOR=&amp;quot;/Applications/Emacs.app/Contents/MacOS/bin/emacsclient&amp;quot;
+export GIT_EDITOR=&amp;quot;/Applications/Emacs.app/Contents/MacOS/bin/emacsclient&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;to &lt;code&gt;.zshrc&lt;/code&gt; or &lt;code&gt;.bashrc&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;This setup significantly reduces the Emacs startup time while committing
+changes.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

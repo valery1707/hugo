@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Configure Git&#39;s comment character &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+        <li><a href="/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/"> Configuring Cloud Foundry Java Memory Parameters </a></li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Configure Git&#39;s comment character</h1>
+  <span class="post-date">Sun, Apr 14, 2013</span>
+      <p>TL;DR -
+Use the <code>core.commentchar</code> configuration to change the character Git uses to mark comment lines in commit messages.</p>
+
+<p>My team has a convention of putting the number of the current Issue/Ticket/Story that we are working on at the beginning of every commit message. This is great because it lets us make sense of the history of our code by helping us answer</p>
+
+<ul>
+<li>What were the changes made to the code base to build a feature or fix an issue?</li>
+<li>Given a changeset, why was it put in place?</li>
+</ul>
+
+<p>We use the format <code>#123 Foo bar</code> for the message where <code>123</code> is the issue number because it lets <a href="http://www.thoughtworks-studios.com/mingle">Mingle</a>, our project management tool track the commits made against each card.</p>
+
+<p>Things work fine, except for me. I almost never use <code>git ci -m</code>. I like Git to open up an editor (almost always Emacs), and type my comment message out. But if I type the commit message according to the convention, because the line starts with a <code>#</code>, Git would treat it as a comment and the commit will be aborted.</p>
+
+<pre><code class="language-text">#123 Foobar
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch source
+#
+# Changes to be committed:
+#   (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)
+...
+</code></pre>
+
+<p>I have been getting around this issue by pre-pending a space before the message. So I was really happy to see that Git <code>1.8.2</code> ships with a new configuration <code>core.commentchar</code>. This let&rsquo;s you configure the characters that marks a comment in the commit message. From the <a href="http://git-scm.com/docs/git-config">doc</a>:
+&gt; core.commentchar
+&gt;
+&gt;    Commands such as commit and tag that lets you edit messages consider a line that begins with this character commented, and removes them after the editor returns (default #).</p>
+
+<p>So with this set to <code>$</code>, I can just type in my commit message.</p>
+
+<pre><code class="language-text">#123 Foobar
+$ Please enter the commit message for your changes. Lines starting
+$ with '$' will be ignored, and an empty message aborts the commit.
+$ On branch source
+$
+$ Changes to be committed:
+$   (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)
+...
+</code></pre>
+
+<p>This configuration is available only in versions <code>1.8.2</code> and later.</p>
+
+</div>
+</div>
+
+  </body>
+</html>

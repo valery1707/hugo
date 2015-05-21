@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Reducing Emacs startup time while committing &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+        <li><a href="/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/"> Configuring Cloud Foundry Java Memory Parameters </a></li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Reducing Emacs startup time while committing</h1>
+  <span class="post-date">Tue, Jan 22, 2013</span>
+      
+
+<p>I use Emacs as my primary text editor and I use it to edit
+commit messages for Git. I almost never use the <code>-m</code>
+option with <code>git commit</code>. Since I have a fairly customised Emacs
+configuration based around Sam Aaron&rsquo;s
+<a href="https://github.com/overtone/emacs-live">Emacs Live</a>, this means that
+for every commit, there is a visible delay for Emacs to start up for the
+commit message. I was looking for ways to reduce this and figured out that
+running Emacs in <code>daemon</code> mode and using <code>emacsclient</code> as the
+<code>GIT_EDITOR</code> would solve this.</p>
+
+<h1 id="running-an-emacs-daemon-at-start-up-on-mac-os-x:e2f4fbaa26157ce13f127902af0dd17e">Running an Emacs daemon at start up on Mac OS X</h1>
+
+<p>The recommended way of running an application at start up on Mac OS X is
+to use <a href="http://en.wikipedia.org/wiki/Launchd">launchd</a>. Launchd
+configurations are written as XML files created in
+<code>~/Library/LaunchAgents</code> or <code>/Library/LaunchAgents</code> depending on whether
+the app needs to be run for the current user or for all users.
+Here is the plist file for Emacs at <code>~/Library/LaunchAgents/gnu.emacs.daemon.plist</code>, taken from
+<a href="http://www.emacswiki.org/emacs/EmacsAsDaemon">EmacsWiki</a>:</p>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot;
+&quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;
+  &lt;dict&gt;
+    &lt;key&gt;Label&lt;/key&gt;
+    &lt;string&gt;gnu.emacs.daemon&lt;/string&gt;
+    &lt;key&gt;ProgramArguments&lt;/key&gt;
+    &lt;array&gt;
+      &lt;string&gt;/Applications/Emacs.app/Contents/MacOS/Emacs&lt;/string&gt;
+      &lt;string&gt;--daemon&lt;/string&gt;
+    &lt;/array&gt;
+    &lt;key&gt;RunAtLoad&lt;/key&gt;
+    &lt;true/&gt;
+    &lt;key&gt;ServiceDescription&lt;/key&gt;
+    &lt;string&gt;Gnu Emacs Daemon&lt;/string&gt;
+    &lt;key&gt;UserName&lt;/key&gt;
+    &lt;string&gt;YOUR USER NAME&lt;/string&gt;
+  &lt;/dict&gt;
+&lt;/plist&gt;
+</code></pre>
+
+<p>This is loaded by running</p>
+
+<pre><code class="language-bash">sudo launchctl load -w ~/Library/LaunchAgents/gnu.emacs.daemon.plist
+</code></pre>
+
+<h1 id="using-emacs-client-as-the-editor:e2f4fbaa26157ce13f127902af0dd17e">Using Emacs client as the editor</h1>
+
+<p>This is done by adding</p>
+
+<pre><code class="language-bash">export EDITOR=&quot;/Applications/Emacs.app/Contents/MacOS/bin/emacsclient&quot;
+export GIT_EDITOR=&quot;/Applications/Emacs.app/Contents/MacOS/bin/emacsclient&quot;
+</code></pre>
+
+<p>to <code>.zshrc</code> or <code>.bashrc</code>.</p>
+
+<p>This setup significantly reduces the Emacs startup time while committing
+changes.</p>
+
+</div>
+</div>
+
+  </body>
+</html>

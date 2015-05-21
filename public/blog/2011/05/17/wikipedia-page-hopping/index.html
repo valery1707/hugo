@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Wikipedia Page Hopping &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+        <li><a href="/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/"> Configuring Cloud Foundry Java Memory Parameters </a></li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Wikipedia Page Hopping</h1>
+  <span class="post-date">Tue, May 17, 2011</span>
+      <p>I have realized that like most users of Wikipedia, I do a lot of Wikipedia page-hopping [1]. Wikipedia is sort of addictive that way. You start reading about a piece of Flamenco music and after twenty minutes find yourself staring at the page about <a href="http://en.wikipedia.org/wiki/ETA">ETA</a>, a Basque nationalist organization. So I decided to figure out how I exactly do I get lost in the huge list of interconnected articles. I use Chromium, and it stores its history in a SQLite3 database file. I wrote a small Ruby script that parses the history, splits them to chunks of articles accessed per day, and filter only Wikipedia links from this.</p>
+
+<p>This is basically what I had to do:</p>
+
+<ul>
+<li><p>Query the db for the last visit time and URLs.</p></li>
+
+<li><p>Chromium (and Google Chrome) stores timestamps of page visits in a not so obvious format. They basically store time stamps as the <a href="http://www.mail-archive.com/chromium-discuss@googlegroups.com/msg03891.html">number of micro seconds expired since Jan 01, 1601</a></p></li>
+
+<li><p>Splitting the URLs into chunks accessed per day involved calculating the number of micro-seconds in a day and splitting the URLs based on this. Ruby&rsquo;s Array#group_by is really handy here.</p></li>
+
+<li><p>Analysis of the URLs involves filtering only the URLs that contain &ldquo;wikipedia&rdquo;</p></li>
+
+<li><p>There is a caveat here, as redirects to Wikipedia from both Google and Facebook contain the string &ldquo;wikipedia&rdquo; in their URLs. These need to be filtered out.</p></li>
+</ul>
+
+<p>The analysis of my Wikipedia history showed me some interesting things. For example, when I was reading <a href="http://en.wikipedia.org/wiki/Michael_J._Arlen">Michael J. Arlen&rsquo;s</a> Passage to Ararat, I spent a lot of time on Wikipedia, hopping between pages about Armenian history and culture. This is what the list of Wikipedia pages on that day look like:</p>
+
+<pre><code>http://en.wikipedia.org/wiki/TRS-80
+http://en.wikipedia.org/wiki/Aunt_Sally
+http://en.wikipedia.org/wiki/Pai
+http://en.wikipedia.org/wiki/Pai_(surname)
+http://en.wikipedia.org/wiki/Gowd_Saraswat_Brahmins
+http://en.wikipedia.org/wiki/Girish_Karnad
+http://en.wikipedia.org/wiki/Konkani_people
+http://en.wikipedia.org/wiki/Roots_(book)
+http://en.wikipedia.org/wiki/Mountains_of_Ararat
+http://en.wikipedia.org/wiki/Armenian_Highland
+http://en.wikipedia.org/wiki/Searches_for_Noah%27s_Ark
+http://en.wikipedia.org/wiki/Tiberian_Hebrew
+http://en.wikipedia.org/wiki/Mount_Judi
+http://en.wikipedia.org/wiki/Islamic_view_of_Noah
+http://en.wikipedia.org/wiki/Greater_Armenia_(political_concept)
+http://en.wikipedia.org/wiki/Coat_of_Arms_of_Armenia
+http://en.wikipedia.org/wiki/Turkish_War_of_Independence
+http://en.wikipedia.org/wiki/Kuva-yi_Milliye
+http://en.wikipedia.org/wiki/Turkish-Armenian_War
+http://en.wikipedia.org/wiki/Anatolia
+http://en.wikipedia.org/wiki/Bursa
+http://en.wikipedia.org/wiki/Armenia
+http://en.wikipedia.org/wiki/Hayk
+http://en.wikipedia.org/wiki/Ecbatana
+http://en.wikipedia.org/wiki/Goat_meat
+http://en.wikipedia.org/wiki/Kid
+http://en.wikipedia.org/w/index.php?title=Special%3ASearch&amp;amp;search=xenophon
+http://en.wikipedia.org/wiki/Xenophon
+http://en.wikipedia.org/wiki/International_Mother_Language_Day
+http://en.wikipedia.org/wiki/Debian
+http://en.wikipedia.org/wiki/Language_Movement_Day
+</code></pre>
+
+<p>When I was reading about Data warehousing, this is how the hopping happened:</p>
+
+<pre><code>http://en.wikipedia.org/wiki/ROLAP
+http://en.wikipedia.org/wiki/Dimension_(data_warehouse)
+http://en.wikipedia.org/wiki/Extract,_transform,_load
+http://en.wikipedia.org/wiki/Mondrian_OLAP_server
+http://en.wikipedia.org/wiki/OLAP
+http://en.wikipedia.org/wiki/Comparison_of_OLAP_Servers
+http://en.wikipedia.org/wiki/Pentaho
+http://en.wikipedia.org/wiki/Multidimensional_Expressions
+http://en.wikipedia.org/wiki/Decision_science
+http://en.wikipedia.org/wiki/Star_schema
+http://en.wikipedia.org/wiki/Snowflake_schema
+http://en.wikipedia.org/wiki/Sarkar
+http://en.wikipedia.org/wiki/Fact_table
+http://en.wikipedia.org/wiki/OLTP
+http://en.wikipedia.org/wiki/Ralph_Kimball
+http://en.wikipedia.org/wiki/Bill_Inmon
+http://en.wikipedia.org/wiki/Decision_support
+http://en.wikipedia.org/wiki/Heart_of_Midlothian_F.C.
+http://en.wikipedia.org/wiki/The_Heart_of_Midlothian
+</code></pre>
+
+<p>I am still trying to make more sense of the links that I clicked away and the articles I read when I was page hopping.</p>
+
+<p>The Ruby script that parses Chromium history and figures out the Wikipedia links is below:</p>
+
+<pre><code class="language-ruby">#!/usr/bin/env ruby
+# Ruby script to parse Chromium (or Google Chrome) history to identify Wikipedia pages read per day.
+# usage: ./wikipedia_history.rb &lt;location of Chromium history db&gt;
+# The Chromium history db can be usually found under ~/.config/chromium/Default
+
+require 'rubygems'
+require 'sqlite3'
+
+US_IN_A_DAY = 24 * 60 * 60 * 1000000
+SITE = &quot;wikipedia&quot;
+
+module ChromiumHP
+  class DbConnection
+    def initialize db_name
+      @db_name = db_name
+    end
+
+    def urls_history
+      db = SQLite3::Database.new @db_name
+      urls = db.execute(&quot;SELECT last_visit_time, url from urls ORDER BY last_visit_time;&quot;).map do |t, u|
+        {:last_visit_time =&gt; t, :url =&gt; u}
+      end
+      db.close
+      urls
+    end
+  end
+
+  class Parser
+    def initialize db_name
+      @db_name = db_name
+    end
+
+    def chunks days
+      @history ||= get_history
+      parts = @history.group_by do |h|
+         h[:last_visit_time] / (days * US_IN_A_DAY)
+      end
+      parts.map { |k, group| group }
+    end
+
+    private
+    def get_history
+      DbConnection.new(@db_name).urls_history
+    end
+  end
+
+  class Analyzer
+    def self.graph chunks
+      chunks.map do |c|
+        c.find_all do |entry|
+          url = entry[:url]
+          url.include?(SITE) &amp;&amp;
+            !url.include?(&quot;facebook&quot;) &amp;&amp;
+            !url.include?(&quot;google&quot;)
+        end
+      end.find_all do |c|
+        !c.empty?
+      end.sort_by do |c|
+        c.length
+      end.map do |c|
+        c.map do |entry|
+          entry[:url]
+        end
+      end
+    end
+  end
+end
+
+
+history_loc = ARGV.first
+abort &quot;Error: Pass the chromium history location as parameter&quot; if history_loc.nil?
+
+daily_chunks = ChromiumHP::Parser.new(history_loc + &quot;/History&quot;).chunks(1)
+ChromiumHP::Analyzer.graph(daily_chunks).each do |entries|
+  puts entries
+  puts &quot;&quot;
+end
+</code></pre>
+
+</div>
+</div>
+
+  </body>
+</html>
