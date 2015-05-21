@@ -10,7 +10,11 @@ date: 2015-05-20T19:42:56-07:00
 menu: main
 title: Configuring Cloud Foundry Java Memory Parameters
 ---
-This week I have been trying out Cloud Foundry. Today while trying to set up monitoring through AppDynamics, the sample application that I was using started crashing because of a Java memory error. This is what was in the Cloud Foundry logs.
+This week I have been trying out Cloud Foundry. Today while trying to set up monitoring through AppDynamics, the sample application that I was using started crashing because of a Java memory error. This blog post discusses how to prevent this from happening by configuring Java memory parameters used by the application.
+
+<!--more-->
+
+This is what was in the Cloud Foundry logs.
 
 ```bash
 May 20 18:14:51 CloudFoundry 6767b9fd-1874-43cb-a4f8-7470a17c90ae/[App/2]:  /bin/bash: line 31:    32 Killed                  ( SERVER_PORT=$PORT $PWD/.java-buildpack/open_jdk_jre/bin/java -cp $PWD/.:$PWD/.java-buildpack/spring_auto_reconfiguration/spring_auto_reconfiguration-1.4.0_RELEASE.jar -Djava.io.tmpdir=$TMPDIR -XX:OnOutOfMemoryError=$PWD/.java-buildpack/open_jdk_jre/bin/killjava.sh -Xmx499200K -Xms499200K -XX:MaxPermSize=65M -XX:PermSize=65M -Xss1M -javaagent:$PWD/.java-buildpack/app_dynamics_agent/javaagent.jar -Dappdynamics.agent.applicationName='******' -Dappdynamics.agent.tierName='******' -Dappdynamics.agent.nodeName=$(expr "$VCAP_APPLICATION" : '.*instance_id[": ]*"\([a-z0-9]\+\)".*') -Dappdynamics.agent.accountAccessKey=****** -Dappdynamics.agent.accountName=******* -Dappdynamics.controller.hostName=******.saas.appdynamics.com -Dappdynamics.controller.port=443 -Dappdynamics.controller.ssl.enabled=true org.springframework.boot.loader.JarLauncher )
