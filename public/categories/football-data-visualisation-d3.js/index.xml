@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Football Data Visualisation D3.Js on Sadique Ali</title>
-    <link>http://localhost:1313/categories/football-data-visualisation-d3/index.js/</link>
+    <link>http://sdqali.in/categories/football-data-visualisation-d3/index.js/</link>
     <description>Recent content in Football Data Visualisation D3.Js on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 15 Aug 2012 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/football-data-visualisation-d3.js/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://sdqali.in/categories/football-data-visualisation-d3.js/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Curse of the Community Shield?</title>
-      <link>http://localhost:1313/blog/2012/08/15/curse-of-the-community-shield/</link>
+      <link>http://sdqali.in/blog/2012/08/15/curse-of-the-community-shield/</link>
       <pubDate>Wed, 15 Aug 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2012/08/15/curse-of-the-community-shield/</guid>
+      <guid>http://sdqali.in/blog/2012/08/15/curse-of-the-community-shield/</guid>
       <description>
 
 &lt;p&gt;Click on the image to see the visualisation:
-&lt;a href=&#34;http://localhost:1313/visualizations/community_shield/index.html&#34;&gt;&lt;img src=&#34;http://localhost:1313/images/community_shield.png&#34; alt=&#34;Community Shield visualisation&#34; title=&#34;Community Shield Visualisation&#34; /&gt;
+&lt;a href=&#34;http://sdqali.in/visualizations/community_shield/index.html&#34;&gt;&lt;img src=&#34;http://sdqali.in/images/community_shield.png&#34; alt=&#34;Community Shield visualisation&#34; title=&#34;Community Shield Visualisation&#34; /&gt;
 &lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;context:1fc2153399389a81a26ea3072b55a83c&#34;&gt;Context&lt;/h2&gt;
@@ -55,7 +55,7 @@ Super Cup and the team&amp;rsquo;s performance in the subsequent season?&lt;/p&g
 teams that won the Community Shield since 1908 and their position in the
 table for the ensuing season.&lt;/p&gt;
 
-&lt;p&gt;The visualisation is &lt;a href=&#34;http://localhost:1313/visualizations/community_shield/index.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The visualisation is &lt;a href=&#34;http://sdqali.in/visualizations/community_shield/index.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&#34;winners:1fc2153399389a81a26ea3072b55a83c&#34;&gt;Winners&lt;/h2&gt;
 

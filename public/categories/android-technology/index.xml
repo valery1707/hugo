@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Android Technology on Sadique Ali</title>
-    <link>http://localhost:1313/categories/android-technology/</link>
+    <link>http://sdqali.in/categories/android-technology/</link>
     <description>Recent content in Android Technology on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Tue, 30 Jul 2013 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/android-technology/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://sdqali.in/categories/android-technology/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>My thoughts on Android fragmentation -  It is not a bad thing</title>
-      <link>http://localhost:1313/blog/2013/07/30/my-thoughts-on-android-fragmentation----it-is-not-a-bad-thing/</link>
+      <link>http://sdqali.in/blog/2013/07/30/my-thoughts-on-android-fragmentation----it-is-not-a-bad-thing/</link>
       <pubDate>Tue, 30 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2013/07/30/my-thoughts-on-android-fragmentation----it-is-not-a-bad-thing/</guid>
+      <guid>http://sdqali.in/blog/2013/07/30/my-thoughts-on-android-fragmentation----it-is-not-a-bad-thing/</guid>
       <description>
 
 &lt;p&gt;OpenSignal released the July 2013 edition &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:c12c42d94c51006e50715e1eea4e8840:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:c12c42d94c51006e50715e1eea4e8840:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; of their State of Android report. Among many things like the dominance of Samsung, HTC&amp;rsquo;s faltering performance and Motorola&amp;rsquo;s struggle, it points out that the Android device landscape is more fragmented than ever. Out of &lt;em&gt;682000&lt;/em&gt; devices surveyed for the report, &lt;em&gt;11868&lt;/em&gt; distinct devices were seen. This has met with cries of anguish from Developers and the usual suspects &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:c12c42d94c51006e50715e1eea4e8840:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:c12c42d94c51006e50715e1eea4e8840:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;

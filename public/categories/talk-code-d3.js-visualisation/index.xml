@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Talk Code D3.Js Visualisation on Sadique Ali</title>
-    <link>http://localhost:1313/categories/talk-code-d3/index.js-visualisation/</link>
+    <link>http://sdqali.in/categories/talk-code-d3/index.js-visualisation/</link>
     <description>Recent content in Talk Code D3.Js Visualisation on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 01 Aug 2012 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/talk-code-d3.js-visualisation/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://sdqali.in/categories/talk-code-d3.js-visualisation/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>D3.js Workshop</title>
-      <link>http://localhost:1313/blog/2012/08/01/d3.js-workshop/</link>
+      <link>http://sdqali.in/blog/2012/08/01/d3.js-workshop/</link>
       <pubDate>Wed, 01 Aug 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2012/08/01/d3.js-workshop/</guid>
+      <guid>http://sdqali.in/blog/2012/08/01/d3.js-workshop/</guid>
       <description>&lt;p&gt;I did a &lt;a href=&#34;http://d3js.org&#34;&gt;d3.js&lt;/a&gt; workshop at ThoughtWorks Bangalore yesterday (31st
 July, 2012). I split the workshop in to two parts. The first was a basic
 introduction to d3.js - SVG, Scaling, Axes etc. The second part
@@ -42,7 +42,7 @@ and collected. I am really happy to see that slowly but surely, I am
 getting better at this.&lt;/p&gt;
 
 &lt;p&gt;I did the slides in &lt;a href=&#34;http://lab.hakim.se/reveal-js/&#34;&gt;reveal.js&lt;/a&gt; and the
-slides are &lt;a href=&#34;http://localhost:1313/visualizations/d3-workshop/index.html&#34;&gt;here&lt;/a&gt;. The examples I used are &lt;a href=&#34;https://github.com/sdqali/d3-dojo&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+slides are &lt;a href=&#34;http://sdqali.in/visualizations/d3-workshop/index.html&#34;&gt;here&lt;/a&gt;. The examples I used are &lt;a href=&#34;https://github.com/sdqali/d3-dojo&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

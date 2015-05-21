@@ -2,27 +2,27 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Football Visualisation Data D3.Js Jqueryui Code on Sadique Ali</title>
-    <link>http://localhost:1313/categories/football-visualisation-data-d3/index.js-jqueryui-code/</link>
+    <link>http://sdqali.in/categories/football-visualisation-data-d3/index.js-jqueryui-code/</link>
     <description>Recent content in Football Visualisation Data D3.Js Jqueryui Code on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Sat, 21 Jul 2012 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/football-visualisation-data-d3.js-jqueryui-code/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://sdqali.in/categories/football-visualisation-data-d3.js-jqueryui-code/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Visualisation - How European clubs dominate their leagues</title>
-      <link>http://localhost:1313/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/</link>
+      <link>http://sdqali.in/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/</link>
       <pubDate>Sat, 21 Jul 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/</guid>
+      <guid>http://sdqali.in/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/</guid>
       <description>
 
-&lt;p&gt;&lt;em&gt;A bigger version of this is available &lt;a href=&#34;http://localhost:1313/visualizations/league_champions/index.html&#34;&gt;here&lt;/a&gt;&lt;/em&gt;
-&lt;script type=&#34;text/javascript&#34; src=&#34;http://localhost:1313/visualizations/league_champions/d3.v2.min.js&#34;&gt;&lt;/script&gt;
-&lt;script type=&#34;text/javascript&#34; src=&#34;http://localhost:1313/visualizations/league_champions/champions.js&#34;&gt;&lt;/script&gt;
-&lt;link type=&#34;text/css&#34; href=&#34;http://localhost:1313/visualizations/league_champions/jqueryui/css/ui-lightness/jquery-ui-1.8.21.custom.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script type=&#34;text/javascript&#34; src=&#34;http://localhost:1313/visualizations/league_champions/jqueryui/js/jquery-1.7.2.min.js&#34;&gt;&lt;/script&gt;
-&lt;script type=&#34;text/javascript&#34; src=&#34;http://localhost:1313/visualizations/league_champions/jqueryui/js/jquery-ui-1.8.21.custom.min.js&#34;&gt;&lt;/script&gt;
-&lt;link rel=&#34;stylesheet&#34; href=&#34;http://localhost:1313/visualizations/league_champions/champions.css&#34; type=&#34;text/css&#34;
+&lt;p&gt;&lt;em&gt;A bigger version of this is available &lt;a href=&#34;http://sdqali.in/visualizations/league_champions/index.html&#34;&gt;here&lt;/a&gt;&lt;/em&gt;
+&lt;script type=&#34;text/javascript&#34; src=&#34;http://sdqali.in/visualizations/league_champions/d3.v2.min.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;text/javascript&#34; src=&#34;http://sdqali.in/visualizations/league_champions/champions.js&#34;&gt;&lt;/script&gt;
+&lt;link type=&#34;text/css&#34; href=&#34;http://sdqali.in/visualizations/league_champions/jqueryui/css/ui-lightness/jquery-ui-1.8.21.custom.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script type=&#34;text/javascript&#34; src=&#34;http://sdqali.in/visualizations/league_champions/jqueryui/js/jquery-1.7.2.min.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;text/javascript&#34; src=&#34;http://sdqali.in/visualizations/league_champions/jqueryui/js/jquery-ui-1.8.21.custom.min.js&#34;&gt;&lt;/script&gt;
+&lt;link rel=&#34;stylesheet&#34; href=&#34;http://sdqali.in/visualizations/league_champions/champions.css&#34; type=&#34;text/css&#34;
 media=&#34;screen&#34; title=&#34;no title&#34; charset=&#34;utf-8&#34;/&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;div id=&#34;league&#34;&gt;Select League:

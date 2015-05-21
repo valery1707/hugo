@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Talk Test Automation Twist Cucumber on Sadique Ali</title>
-    <link>http://localhost:1313/categories/talk-test-automation-twist-cucumber/</link>
+    <link>http://sdqali.in/categories/talk-test-automation-twist-cucumber/</link>
     <description>Recent content in Talk Test Automation Twist Cucumber on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Sun, 24 Jun 2012 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/talk-test-automation-twist-cucumber/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://sdqali.in/categories/talk-test-automation-twist-cucumber/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>VodQA NCR: Maintaining Large Test Suites</title>
-      <link>http://localhost:1313/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/</link>
+      <link>http://sdqali.in/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/</link>
       <pubDate>Sun, 24 Jun 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/</guid>
+      <guid>http://sdqali.in/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://twitter.com/craftybones&#34;&gt;Srijayanth Sridhar&lt;/a&gt; and I did a talk yesterday at &lt;a href=&#34;http://www.thoughtworks.com/events/the-testing-spirit&#34;&gt;vodQA NCR&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;The talk was about what makes maintenance of large test suites a pain and the

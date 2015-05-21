@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Blogs on Sadique Ali</title>
-    <link>http://localhost:1313/blog/</link>
+    <link>http://sdqali.in/blog/</link>
     <description>Recent content in Blogs on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 20 May 2015 19:42:56 -0700</lastBuildDate>
-    <atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://sdqali.in/blog/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Configuring Cloud Foundry Java Memory Parameters</title>
-      <link>http://localhost:1313/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/</link>
+      <link>http://sdqali.in/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/</link>
       <pubDate>Wed, 20 May 2015 19:42:56 -0700</pubDate>
       
-      <guid>http://localhost:1313/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/</guid>
+      <guid>http://sdqali.in/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/</guid>
       <description>&lt;p&gt;This week I have been trying out Cloud Foundry. Today while trying to set up monitoring through AppDynamics, the sample application that I was using started crashing because of a Java memory error. This blog post discusses how to prevent this from happening by configuring Java memory parameters used by the application.&lt;/p&gt;
 
 &lt;p&gt;This is what was in the Cloud Foundry logs.&lt;/p&gt;
@@ -57,10 +57,10 @@ applications:
     
     <item>
       <title>Disputed territories and merging shapes and features</title>
-      <link>http://localhost:1313/blog/2014/08/08/disputed-territories-and-merging-shapes-and-features/</link>
+      <link>http://sdqali.in/blog/2014/08/08/disputed-territories-and-merging-shapes-and-features/</link>
       <pubDate>Fri, 08 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2014/08/08/disputed-territories-and-merging-shapes-and-features/</guid>
+      <guid>http://sdqali.in/blog/2014/08/08/disputed-territories-and-merging-shapes-and-features/</guid>
       <description>&lt;p&gt;Making a map that shows a disputed territory can be a tricky business. Nation states vigorously contest maps that appear to portray a boundary that challenges what a border looks like. From the Falkland Islands to Kuril Islands; from Western Sahara to Arunachal Pradesh, disputed territories result in omissions, additions and inaccuracies in maps.&lt;/p&gt;
 
 &lt;p&gt;I grew up looking at maps in books printed by the Oxford Press, that came with a disclaimer in blue rubber stamped across them that stated how the map was wrong. This was due to the fact that the maps showed only the parts of Kashmir being administered by India, thereby omitting areas under Chinese and Pakistani control. The Criminal Law Amendment Act, 1961 in India makes it punishable with imprisonment up to 6 months to publish a map that excludes all or parts of Kashmir&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:331feb6386b5b7cd03d2133ef33a86dd:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:331feb6386b5b7cd03d2133ef33a86dd:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
@@ -150,10 +150,10 @@ india = JSON.parse(fs.readFileSync(&amp;quot;./india.geo.json&amp;quot;).toStrin
     
     <item>
       <title>A list of GIS tools</title>
-      <link>http://localhost:1313/blog/2014/08/03/a-list-of-gis-tools/</link>
+      <link>http://sdqali.in/blog/2014/08/03/a-list-of-gis-tools/</link>
       <pubDate>Sun, 03 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2014/08/03/a-list-of-gis-tools/</guid>
+      <guid>http://sdqali.in/blog/2014/08/03/a-list-of-gis-tools/</guid>
       <description>
 
 &lt;p&gt;I have been playing around with maps a lot these days and have ended up using various tools in the process. This blog post is a way to make a note of these tools for later use.&lt;/p&gt;
@@ -186,10 +186,10 @@ india = JSON.parse(fs.readFileSync(&amp;quot;./india.geo.json&amp;quot;).toStrin
     
     <item>
       <title>Importing the Yelp dataset into MongoDB</title>
-      <link>http://localhost:1313/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/</link>
+      <link>http://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/</link>
       <pubDate>Sat, 02 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/</guid>
+      <guid>http://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/</guid>
       <description>&lt;p&gt;Today Yelp announced their dataset challenge &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:c6878b2b502d5257f269a3d2e809c771:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:c6878b2b502d5257f269a3d2e809c771:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. The dataset they released includes data from 5 cities (Phoenix, Las Vegas, Madison, Waterloo and Edinburgh) and consists of&lt;/p&gt;
 
 &lt;ul&gt;
@@ -267,10 +267,10 @@ IO.write &amp;quot;businesses.mongo.json&amp;quot;, businesses.to_json
     
     <item>
       <title>Clojure Dojo - Levenshtein edit distance</title>
-      <link>http://localhost:1313/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/</link>
+      <link>http://sdqali.in/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/</link>
       <pubDate>Thu, 20 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/</guid>
+      <guid>http://sdqali.in/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/</guid>
       <description>
 
 &lt;p&gt;I have been playing around with Clojure and after familiarising myself with the core, I decided to start writing little programs that forces me to choose the right idioms. I am starting off with Levenshtein edit distance of two strings.&lt;/p&gt;
@@ -334,10 +334,10 @@ IO.write &amp;quot;businesses.mongo.json&amp;quot;, businesses.to_json
     
     <item>
       <title>A simple JMeter test with login</title>
-      <link>http://localhost:1313/blog/2014/02/17/a-simple-jmeter-test-with-login/</link>
+      <link>http://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/</link>
       <pubDate>Mon, 17 Feb 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2014/02/17/a-simple-jmeter-test-with-login/</guid>
+      <guid>http://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/</guid>
       <description>
 
 &lt;p&gt;I had to set up a JMeter test last week - the test included logging in to a site, and then hitting a bunch of URLs, all of them being GET requests. I found it hard to find a simple documentation that described how to do this - the ones I found were either incomplete or were trying to teach me a large number of things at the same time. So when I figured it out, I decided to write this down, for anyone else finding themselves in the same place as me.&lt;/p&gt;
@@ -347,19 +347,19 @@ IO.write &amp;quot;businesses.mongo.json&amp;quot;, businesses.to_json
 &lt;h3 id=&#34;add-a-thread-group:432050f6a9a1f05bac0d71354129b823&#34;&gt;Add a Thread Group&lt;/h3&gt;
 
 &lt;p&gt;A Thread Group defines a pool of users that will execute a particular test case against the server. JMeter makes the number of users, and the ramp-rate configurable. For the purpose of this example, Number of Threads is 2 and the ramp up time period is 1 second. This thread group is also configured to run forever.
-&lt;img src=&#34;http://localhost:1313/images/jmeter/thread_group.png&#34; alt=&#34;Thread Group&#34; /&gt;
+&lt;img src=&#34;http://sdqali.in/images/jmeter/thread_group.png&#34; alt=&#34;Thread Group&#34; /&gt;
 &lt;/p&gt;
 
 &lt;h3 id=&#34;http-request-defaults:432050f6a9a1f05bac0d71354129b823&#34;&gt;HTTP Request Defaults&lt;/h3&gt;
 
 &lt;p&gt;The net step is to add an HTTP Request Defaults configuration element to the Thread Group. This configuration element sets up the domain or I.P. address of the server, the port and the protocol (HTTP / HTTPS). In this example, Server Name is &lt;code&gt;127.0.0.1&lt;/code&gt; and Port is &lt;code&gt;3000&lt;/code&gt;.
-&lt;img src=&#34;http://localhost:1313/images/jmeter/request_defaults.png&#34; alt=&#34;HTTP Request Defaults&#34; /&gt;
+&lt;img src=&#34;http://sdqali.in/images/jmeter/request_defaults.png&#34; alt=&#34;HTTP Request Defaults&#34; /&gt;
 &lt;/p&gt;
 
 &lt;h3 id=&#34;http-cookie-manager:432050f6a9a1f05bac0d71354129b823&#34;&gt;HTTP Cookie Manager&lt;/h3&gt;
 
 &lt;p&gt;A cookie manager stores and sends cookies, as a web browser would do if an actual user was hitting the server. For the purposes of this example, the default configurations are enough.
-&lt;img src=&#34;http://localhost:1313/images/jmeter/cookie_manager.png&#34; alt=&#34;Cookie Manager&#34; /&gt;
+&lt;img src=&#34;http://sdqali.in/images/jmeter/cookie_manager.png&#34; alt=&#34;Cookie Manager&#34; /&gt;
 &lt;/p&gt;
 
 &lt;h3 id=&#34;implement-normal-page-actions:432050f6a9a1f05bac0d71354129b823&#34;&gt;Implement normal page actions&lt;/h3&gt;
@@ -370,10 +370,10 @@ IO.write &amp;quot;businesses.mongo.json&amp;quot;, businesses.to_json
     
     <item>
       <title>The SNDP - NSS political experiment of 1980s</title>
-      <link>http://localhost:1313/blog/2014/02/09/the-sndp---nss-political-experiment-of-1980s/</link>
+      <link>http://sdqali.in/blog/2014/02/09/the-sndp---nss-political-experiment-of-1980s/</link>
       <pubDate>Sun, 09 Feb 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2014/02/09/the-sndp---nss-political-experiment-of-1980s/</guid>
+      <guid>http://sdqali.in/blog/2014/02/09/the-sndp---nss-political-experiment-of-1980s/</guid>
       <description>&lt;p&gt;Last week, at the annual congregation the Sree Narayana Dharma Paripalana (S.N.D.P.) Yogam, it&amp;rsquo;s leaders - Vellaapalli Nadesan and his son Thushaar  announced that S.N.D.P. is about to form their own political party that will unite Hindus of Kerala under one umbrella. &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:89739ec58dfe85f6340b4ae3a94dd0f3:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:89739ec58dfe85f6340b4ae3a94dd0f3:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; S.N.D.P. and it&amp;rsquo;s leaders are no strangers to threatening to announce their intent to form a political party. &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:89739ec58dfe85f6340b4ae3a94dd0f3:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:89739ec58dfe85f6340b4ae3a94dd0f3:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; They did the same in 2012, generating much talk in Kerala&amp;rsquo;s political landscape. The latest announcement is likely to suffer the same fate as these earlier announcements. To understand why S.N.D.P. is highly unlikely to form a party of their own, one needs to look at the time when they indeed had their own political party - to the late 1970s and the 1980 election to the Kerala legislature.&lt;/p&gt;
 
 &lt;p&gt;The Socialist Republican Party (S.R.P.) formed in 1976 with the blessings of the Yogam and the almost farcical level of communal politics that resulted in, helped in huge amounts by the Nair Service Society (N.S.S.) forming the National Democratic Party (N.D.P.) offers a great lesson in the often communal nature of class politics in Kerala and how the constant on the other side of the aisle - the Left - reacts to it.&lt;/p&gt;
@@ -410,20 +410,20 @@ IO.write &amp;quot;businesses.mongo.json&amp;quot;, businesses.to_json
     
     <item>
       <title>What is life?</title>
-      <link>http://localhost:1313/blog/2013/12/10/what-is-life/</link>
+      <link>http://sdqali.in/blog/2013/12/10/what-is-life/</link>
       <pubDate>Tue, 10 Dec 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2013/12/10/what-is-life/</guid>
+      <guid>http://sdqali.in/blog/2013/12/10/what-is-life/</guid>
       <description>&lt;p&gt;Life is the heap of broken pieces of crayons adjacent to that heap of broken pieces of your heart, laying by the heap of bills eclipsing the heap of paychecks and all that was lost while you were busy working hard to create those piles.&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>A rainy distraction</title>
-      <link>http://localhost:1313/blog/2013/11/21/a-rainy-distraction/</link>
+      <link>http://sdqali.in/blog/2013/11/21/a-rainy-distraction/</link>
       <pubDate>Thu, 21 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2013/11/21/a-rainy-distraction/</guid>
+      <guid>http://sdqali.in/blog/2013/11/21/a-rainy-distraction/</guid>
       <description>&lt;p&gt;Far away, the Sutro TV tower was hardly visible in the haze of rain.&lt;/p&gt;
 
 &lt;p&gt;&amp;ldquo;So, this is what you were talking about in the morning? I thought it was the other calculation. You are right!&amp;rdquo;. You suddenly feel happy and detect the smugness creeping to your face. I was right, I told you so, you want to say. But you don&amp;rsquo;t. &amp;ldquo;Not today! The smugness will have to die.&amp;rdquo;&lt;/p&gt;
@@ -450,10 +450,10 @@ IO.write &amp;quot;businesses.mongo.json&amp;quot;, businesses.to_json
     
     <item>
       <title>The fear of being wrong on the Internet</title>
-      <link>http://localhost:1313/blog/2013/10/15/the-fear-of-being-wrong-on-the-internet/</link>
+      <link>http://sdqali.in/blog/2013/10/15/the-fear-of-being-wrong-on-the-internet/</link>
       <pubDate>Tue, 15 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2013/10/15/the-fear-of-being-wrong-on-the-internet/</guid>
+      <guid>http://sdqali.in/blog/2013/10/15/the-fear-of-being-wrong-on-the-internet/</guid>
       <description>&lt;p&gt;All of us have opinions-some strong, some weak; some we care deeply about, some we couldn&amp;rsquo;t care less. We often express those opinions to others and sometimes people agree, sometimes they don&amp;rsquo;t. Debating with others about our opinions helps us crystallise or completely discard them.&lt;/p&gt;
 
 &lt;p&gt;I am fairly opinionated about a lot of things and have debates about them with friends and co-workers. Yet when it comes to opinions on the Internet, I shy away. Every single day, I come across issues and incidents about which I have opinions and every time I stare at what somebody else wrote, consider replying and ultimately close the tab after a minute. This happens on almost all the Internet communities I frequent - Twitter, Guardian&amp;rsquo;s Comment is Free, Guardian&amp;rsquo;s Football blogs and Hacker News.&lt;/p&gt;
@@ -474,13 +474,13 @@ IO.write &amp;quot;businesses.mongo.json&amp;quot;, businesses.to_json
     
     <item>
       <title>Implementing Rate Limiting in Rails - Part 2</title>
-      <link>http://localhost:1313/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/</link>
+      <link>http://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/</link>
       <pubDate>Sun, 13 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/</guid>
+      <guid>http://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/</guid>
       <description>
 
-&lt;p&gt;&lt;em&gt;The first part of this series can be found &lt;a href=&#34;http://localhost:1313/blog/2013/10/12/implementing-rate-limiting-in-rails-part-1/&#34;&gt;here&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;The first part of this series can be found &lt;a href=&#34;http://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails-part-1/&#34;&gt;here&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
 
 &lt;p&gt;The first part of this series looked at how to implement basic rate limiting in a Rails application. However, as pointed out in the improvements section, the implementation was not complete - it did not provide clients enough information about the rate limiting that is in place and how long they should wait before making further requests once they hit the limit.&lt;/p&gt;
 
@@ -655,13 +655,13 @@ X-Rate-Limit-Reset: 1381717124
     
     <item>
       <title>Implementing Rate Limiting in Rails - Part 1</title>
-      <link>http://localhost:1313/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/</link>
+      <link>http://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/</link>
       <pubDate>Sat, 12 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/</guid>
+      <guid>http://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/</guid>
       <description>
 
-&lt;p&gt;&lt;em&gt;The second part of this series can be found &lt;a href=&#34;http://localhost:1313/blog/2013/10/13/implementing-rate-limiting-in-rails-part-2/&#34;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;The second part of this series can be found &lt;a href=&#34;http://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails-part-2/&#34;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;Rate limiting or throttling is the practice of limiting how frequently legitimate users of a web service can access the service. Rate limiting is often put in place to prevent the hogging of resources by a sub set of the users of the system. Rate limiting works by responding with error messages when a client exceeds their allocated share of requests within a predefined time window. In addition to the error message, the response should also include information as to when rate limit will be reset so that the client can continue accessing the system after the reset.&lt;/p&gt;
 
@@ -824,10 +824,10 @@ bash$ less log/development.log | grep &amp;quot;429 Too Many Requests&amp;quot; 
     
     <item>
       <title>Python Hack - Dynamically override an object&#39;s attribute</title>
-      <link>http://localhost:1313/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</link>
+      <link>http://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</link>
       <pubDate>Mon, 07 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</guid>
+      <guid>http://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</guid>
       <description>
 
 &lt;p&gt;While working with Locust &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:66b6e5fb09b6083bed97b4d7a2981cc2:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:66b6e5fb09b6083bed97b4d7a2981cc2:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; recently, we ran into a situation where we had to dynamically override an attribute in a class in the Locust library so as to control what value it got assigned. After a lot of scratching our heads and reading the Python documentation, we came across the &lt;code&gt;property&lt;/code&gt; function. We were able to use this to hack together a solution that ensures that every time an attribute is read, it returns the result of executing a method.&lt;/p&gt;
@@ -889,10 +889,10 @@ After override
     
     <item>
       <title>Fitting an Image in to a Canvas object</title>
-      <link>http://localhost:1313/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</link>
+      <link>http://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</link>
       <pubDate>Thu, 03 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</guid>
+      <guid>http://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</guid>
       <description>
 
 &lt;p&gt;I have been playing around with Canvas objects and images for a side project I am doing. One of the first things I had to figure out for this project was how to fit an image of arbitrary height and width on to a Canvas object of arbitrary, but known dimensions while preserving the aspect ratios of the image. This blog post is an explanation of the solution I came up with for this.&lt;/p&gt;
@@ -911,7 +911,7 @@ imageObj.onload = function() {
 
 &lt;p&gt;But fitting images with aspect ratios different from the Canvas can be a little tricky. The fundamental problem here is that when aspect ratio is different, there is only one pair of edges-either vertical or horizontal-that can be fitted on to the canvas. The image will have to be placed in the center along the other axis. The following diagram illustrates this.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/images/canvas_fitting.png&#34; alt=&#34;Canvas fitting&#34; /&gt;
+&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/canvas_fitting.png&#34; alt=&#34;Canvas fitting&#34; /&gt;
 &lt;/p&gt;
 
 &lt;p&gt;Since fitting depends on the aspect ratio, the code should take it into consideration. The following code compares the ratios and chooses to fit the image horizontally or vertically.&lt;/p&gt;
@@ -959,16 +959,16 @@ imageObj.onload = function() {
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;A demo of this code in action can be found &lt;a href=&#34;http://localhost:1313/demos/canvas_fitting.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;A demo of this code in action can be found &lt;a href=&#34;http://sdqali.in/demos/canvas_fitting.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Accessing Environment Variables in Gradle</title>
-      <link>http://localhost:1313/blog/2013/10/01/accessing-environment-variables-in-gradle/</link>
+      <link>http://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/</link>
       <pubDate>Tue, 01 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2013/10/01/accessing-environment-variables-in-gradle/</guid>
+      <guid>http://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/</guid>
       <description>&lt;p&gt;I have been writing a fun Android App. &lt;a href=&#34;https://play.google.com/store/apps/details?id=in.sdqali.sharewithtitle&#34;&gt;Share With Title&lt;/a&gt; is a small application that allows you to share web pages you are reading to other applications without having to jump through the messy copy-paste hoop. (You should try it. If you share stuff from the web like I do, it will save you a lot of time and frustration). I have been coding on &lt;a href=&#34;https://developer.android.com/sdk/installing/studio.html&#34;&gt;Android Studio&lt;/a&gt;, Google&amp;rsquo;s IntelliJ based IDE for Android development. It uses Gradle for build scripts. Gradle is a Groovy based DSL &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:9c75ee168501c0681315e8dd530bf5a5:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:9c75ee168501c0681315e8dd530bf5a5:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; for declaratively specifying build tasks. From what I have seen so far, it looks like an improvement over Ant.&lt;/p&gt;
 
 &lt;p&gt;While attempting to build a signed version of my app, I found a &lt;a href=&#34;http://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle&#34;&gt;Gradle recipe&lt;/a&gt; for signing Android applications. However, it used hard coded parameters including passwords. This lead me to figuring out how to use environment variables in Gradle scripts.&lt;/p&gt;

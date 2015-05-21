@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Javascript Canvas Image Code on Sadique Ali</title>
-    <link>http://localhost:1313/categories/javascript-canvas-image-code/</link>
+    <link>http://sdqali.in/categories/javascript-canvas-image-code/</link>
     <description>Recent content in Javascript Canvas Image Code on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 03 Oct 2013 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/javascript-canvas-image-code/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://sdqali.in/categories/javascript-canvas-image-code/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Fitting an Image in to a Canvas object</title>
-      <link>http://localhost:1313/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</link>
+      <link>http://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</link>
       <pubDate>Thu, 03 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</guid>
+      <guid>http://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</guid>
       <description>
 
 &lt;p&gt;I have been playing around with Canvas objects and images for a side project I am doing. One of the first things I had to figure out for this project was how to fit an image of arbitrary height and width on to a Canvas object of arbitrary, but known dimensions while preserving the aspect ratios of the image. This blog post is an explanation of the solution I came up with for this.&lt;/p&gt;
@@ -32,7 +32,7 @@ imageObj.onload = function() {
 
 &lt;p&gt;But fitting images with aspect ratios different from the Canvas can be a little tricky. The fundamental problem here is that when aspect ratio is different, there is only one pair of edges-either vertical or horizontal-that can be fitted on to the canvas. The image will have to be placed in the center along the other axis. The following diagram illustrates this.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/images/canvas_fitting.png&#34; alt=&#34;Canvas fitting&#34; /&gt;
+&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/canvas_fitting.png&#34; alt=&#34;Canvas fitting&#34; /&gt;
 &lt;/p&gt;
 
 &lt;p&gt;Since fitting depends on the aspect ratio, the code should take it into consideration. The following code compares the ratios and chooses to fit the image horizontally or vertically.&lt;/p&gt;
@@ -80,7 +80,7 @@ imageObj.onload = function() {
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;A demo of this code in action can be found &lt;a href=&#34;http://localhost:1313/demos/canvas_fitting.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;A demo of this code in action can be found &lt;a href=&#34;http://sdqali.in/demos/canvas_fitting.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     

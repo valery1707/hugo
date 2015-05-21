@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ruby Code Regexp Quirk on Sadique Ali</title>
-    <link>http://localhost:1313/categories/ruby-code-regexp-quirk/</link>
+    <link>http://sdqali.in/categories/ruby-code-regexp-quirk/</link>
     <description>Recent content in Ruby Code Regexp Quirk on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Tue, 01 Oct 2013 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/ruby-code-regexp-quirk/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://sdqali.in/categories/ruby-code-regexp-quirk/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Ruby, Named Capture Groups and Local Variables</title>
-      <link>http://localhost:1313/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/</link>
+      <link>http://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/</link>
       <pubDate>Tue, 01 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/</guid>
+      <guid>http://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/</guid>
       <description>
 
-&lt;p&gt;Ruby&amp;rsquo;s regular expressions support &lt;a href=&#34;http://localhost:1313/blog/2013/09/29/named-capture-groups-in-regular-expressions/&#34;&gt;named capture groups&lt;/a&gt;, since 1.9. However, there is a weird behaviour while using named capture groups with the &lt;code&gt;Regexp#=~&lt;/code&gt; method. When named capture groups are used with &lt;code&gt;=~&lt;/code&gt;, the captured values are placed in local variables with the same name as the capture group. The following example demonstrates this:&lt;/p&gt;
+&lt;p&gt;Ruby&amp;rsquo;s regular expressions support &lt;a href=&#34;http://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/&#34;&gt;named capture groups&lt;/a&gt;, since 1.9. However, there is a weird behaviour while using named capture groups with the &lt;code&gt;Regexp#=~&lt;/code&gt; method. When named capture groups are used with &lt;code&gt;=~&lt;/code&gt;, the captured values are placed in local variables with the same name as the capture group. The following example demonstrates this:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;#!/usr/bin/env ruby
 

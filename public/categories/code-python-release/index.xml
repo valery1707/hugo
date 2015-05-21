@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Code Python Release on Sadique Ali</title>
-    <link>http://localhost:1313/categories/code-python-release/</link>
+    <link>http://sdqali.in/categories/code-python-release/</link>
     <description>Recent content in Code Python Release on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Mon, 25 Jun 2012 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/code-python-release/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://sdqali.in/categories/code-python-release/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Micro Journal - simple Git-backed journal in Python</title>
-      <link>http://localhost:1313/blog/2012/06/25/micro-journal---simple-git-backed-journal-in-python/</link>
+      <link>http://sdqali.in/blog/2012/06/25/micro-journal---simple-git-backed-journal-in-python/</link>
       <pubDate>Mon, 25 Jun 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2012/06/25/micro-journal---simple-git-backed-journal-in-python/</guid>
+      <guid>http://sdqali.in/blog/2012/06/25/micro-journal---simple-git-backed-journal-in-python/</guid>
       <description>&lt;p&gt;Today, I pushed out &lt;a href=&#34;https://github.com/sdqali/microjournal&#34;&gt;Microjournal&lt;/a&gt;, a simple and lightweight journal. I wrote Microjournal to reduce the pain of typing a number of commands to create and maintain my daily journal which I type out in Emacs and use Git to store. It is a single file Python script.&lt;/p&gt;
 
 &lt;p&gt;Microjournal does not do much on it&amp;rsquo;s own. It creates a Git repository for you, and then you can write down entries whenever you feel like. It opens the entry for the day in your $EDITOR. It adds the current date and time to the entry so that you don&amp;rsquo;t have to manually enter it.&lt;/p&gt;

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Programming Work on Sadique Ali</title>
-    <link>http://localhost:1313/categories/programming-work/</link>
+    <link>http://sdqali.in/categories/programming-work/</link>
     <description>Recent content in Programming Work on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 11 Apr 2013 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/programming-work/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://sdqali.in/categories/programming-work/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>My experience working remotely</title>
-      <link>http://localhost:1313/blog/2013/04/11/my-experience-working-remotely/</link>
+      <link>http://sdqali.in/blog/2013/04/11/my-experience-working-remotely/</link>
       <pubDate>Thu, 11 Apr 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2013/04/11/my-experience-working-remotely/</guid>
+      <guid>http://sdqali.in/blog/2013/04/11/my-experience-working-remotely/</guid>
       <description>
 
 &lt;p&gt;There has been a lot of debate in the tech community about working remotely and the willingness of employers to allow this option to their employees. At the very beginning of my career as a programmer, I had the opportunity to work on a distributed team. While the team was distributed, I was still working from an office and for almost half of the duration of my work on the team I had team members sitting beside me in the same office. Because of this, my scenario may not be representative of the population of programmers who work remotely. However, there are a number of things I learned from the experience that I would like to share.&lt;/p&gt;

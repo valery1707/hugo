@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Data Visualisation Javascript D3.Js Cricket India Pakistan on Sadique Ali</title>
-    <link>http://localhost:1313/categories/data-visualisation-javascript-d3/index.js-cricket-india-pakistan/</link>
+    <link>http://sdqali.in/categories/data-visualisation-javascript-d3/index.js-cricket-india-pakistan/</link>
     <description>Recent content in Data Visualisation Javascript D3.Js Cricket India Pakistan on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Fri, 11 May 2012 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/data-visualisation-javascript-d3.js-cricket-india-pakistan/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://sdqali.in/categories/data-visualisation-javascript-d3.js-cricket-india-pakistan/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Indian and Pakistani cricketers - who make better debuts?</title>
-      <link>http://localhost:1313/blog/2012/05/11/indian-and-pakistani-cricketers---who-make-better-debuts/</link>
+      <link>http://sdqali.in/blog/2012/05/11/indian-and-pakistani-cricketers---who-make-better-debuts/</link>
       <pubDate>Fri, 11 May 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2012/05/11/indian-and-pakistani-cricketers---who-make-better-debuts/</guid>
+      <guid>http://sdqali.in/blog/2012/05/11/indian-and-pakistani-cricketers---who-make-better-debuts/</guid>
       <description>
 
 &lt;p&gt;Recently a friend and I had an argument about who makes better debuts among Indian and Pakistani cricket players. Now, I am not into cricket. But I do watch the odd matches here and there and am generally aware of what is going on in the game. My stand was that Pakistani players make better debuts compared to Indian players, while my friend was adamant that Indian players make better debuts. My friend is more of a cricket guy than I ever was and he asked me what is the basis of my stand. It was just a gut feel for me and I had to leave it as there was no way for me to prove that my gut feel was correct. But I did want to try, though.&lt;/p&gt;
@@ -24,9 +24,9 @@
 
 &lt;h2 id=&#34;batsmen:0cf9cbc52d61add88a491bd4850cc77e&#34;&gt;Batsmen&lt;/h2&gt;
 
-&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;http://localhost:1313/visualizations/debuts/d3.v2.js&#34;&gt;&lt;/script&gt;
-&lt;script type=&#34;text/javascript&#34; src=&#34;http://localhost:1313/visualizations/debuts/utils.js&#34;&gt;&lt;/script&gt;
-&lt;link type=&#34;text/css&#34; rel=&#34;stylesheet&#34; href=&#34;http://localhost:1313/visualizations/debuts/stylesheet.css&#34;&gt;&lt;/link&gt;&lt;/p&gt;
+&lt;p&gt;&lt;script type=&#34;text/javascript&#34; src=&#34;http://sdqali.in/visualizations/debuts/d3.v2.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;text/javascript&#34; src=&#34;http://sdqali.in/visualizations/debuts/utils.js&#34;&gt;&lt;/script&gt;
+&lt;link type=&#34;text/css&#34; rel=&#34;stylesheet&#34; href=&#34;http://sdqali.in/visualizations/debuts/stylesheet.css&#34;&gt;&lt;/link&gt;&lt;/p&gt;
 
 &lt;div class=&#34;visBatsmen&#34;&gt;
 &lt;/div&gt;

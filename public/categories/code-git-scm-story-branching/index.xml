@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Code Git Scm Story Branching on Sadique Ali</title>
-    <link>http://localhost:1313/categories/code-git-scm-story-branching/</link>
+    <link>http://sdqali.in/categories/code-git-scm-story-branching/</link>
     <description>Recent content in Code Git Scm Story Branching on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Sun, 29 Apr 2012 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/code-git-scm-story-branching/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://sdqali.in/categories/code-git-scm-story-branching/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Finding un-merged commits with git cherry</title>
-      <link>http://localhost:1313/blog/2012/04/29/finding-un-merged-commits-with-git-cherry/</link>
+      <link>http://sdqali.in/blog/2012/04/29/finding-un-merged-commits-with-git-cherry/</link>
       <pubDate>Sun, 29 Apr 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/2012/04/29/finding-un-merged-commits-with-git-cherry/</guid>
+      <guid>http://sdqali.in/blog/2012/04/29/finding-un-merged-commits-with-git-cherry/</guid>
       <description>&lt;div class=&#39;post&#39;&gt;
 &lt;div dir=&#34;ltr&#34; style=&#34;text-align: left;&#34; trbidi=&#34;on&#34;&gt;&lt;br /&gt;In a project
   that I was a part of in the recent past, we used Story
