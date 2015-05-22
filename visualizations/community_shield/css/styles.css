@@ -1,0 +1,33 @@
+.axis text {
+    font: 10px sans-serif;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+path {
+    stroke: black;
+    stroke-width: 1;
+    fill: none;
+}
+
+.winners {
+    background-color: steelblue;
+}
+
+.team {
+    fill: seashell;
+}
+
+#legend {
+    margin: 40px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+#credits {
+    margin-bottom: 40px;
+}

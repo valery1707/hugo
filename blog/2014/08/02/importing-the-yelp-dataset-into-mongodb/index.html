@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Importing the Yelp dataset into MongoDB &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Importing the Yelp dataset into MongoDB</h1>
+  <span class="post-date">Sat, Aug 2, 2014</span>
+      <p>Today Yelp announced their dataset challenge <sup class="footnote-ref" id="fnref:c6878b2b502d5257f269a3d2e809c771:1"><a rel="footnote" href="#fn:c6878b2b502d5257f269a3d2e809c771:1">1</a></sup>. The dataset they released includes data from 5 cities (Phoenix, Las Vegas, Madison, Waterloo and Edinburgh) and consists of</p>
+
+<ul>
+<li>42,153 businesses</li>
+<li>320,002 business attributes</li>
+<li>31,617 check-in sets</li>
+<li>252,898 users</li>
+<li>955,999 edge social graph</li>
+<li>403,210 tips</li>
+<li>1,125,458 reviews</li>
+</ul>
+
+<p>The data is available for public consumption, although Yelp owns any derivative dataset you create from the original <sup class="footnote-ref" id="fnref:c6878b2b502d5257f269a3d2e809c771:2"><a rel="footnote" href="#fn:c6878b2b502d5257f269a3d2e809c771:2">2</a></sup>.</p>
+
+<p>The data is available as files with each line representing a JSON object. Since I am using MongoDB these days to analyze geospatial data, I wanted to convert this into an easy format that I could import into Mongo. Mongo puts a strict constraint on how a location needs to be specified - It expects a location field in a document to be an array in the format <code>[longitude, latitude]</code>.</p>
+
+<p>With this in mind, the first step is to convert and transform the objects into objects that Mongo can make sense of. The following Ruby script does the job:</p>
+
+<pre><code class="language-ruby">#!/usr/bin/env ruby
+
+require &quot;json&quot;
+
+businesses = IO.readlines(&quot;yelp.business.json&quot;).map do |line|
+  b = JSON.parse(line)
+  b[&quot;location&quot;] = {
+    &quot;type&quot; =&gt; &quot;Point&quot;,
+    &quot;coordinates&quot; =&gt; [b[&quot;longitude&quot;], b[&quot;latitude&quot;]]
+  }
+  b
+end
+IO.write &quot;businesses.mongo.json&quot;, businesses.to_json
+</code></pre>
+
+<p>The next step is to import this data into Mongo using the <code>mongoimport</code> tool.</p>
+
+<pre><code class="language-bash">mongoimport --collection businesses --file businesses.mongo.json --jsonArray
+</code></pre>
+
+<p>We need the <code>--jsonArray</code> parameter because our data is an array.</p>
+
+<p>Since there are 42153 businesses, it will take some time. On my Macbook Pro, it took around 2 minutes, 10 seconds. Once the import is done, make sure that we have a Geospatial index on the <code>location</code> field.</p>
+
+<pre><code class="language-javascript">db.businesses.ensureIndex({location: &quot;2dsphere&quot;})
+</code></pre>
+
+<p>Once the indexing is done, we can use Mongo&rsquo;s Geospatial queries to find interesting things. As an example, here we look up all the restaurants within 1 kilometer distance from downtown Phoenix.</p>
+
+<pre><code class="language-javascript">db.businesses.find({
+  location: {
+    $near: {
+      $geometry: {
+	type: &quot;Point&quot;,
+	coordinates: [-112.0667, 33.4500]
+      },
+      $maxDistance: 1000
+    }
+  }
+})
+</code></pre>
+
+<p>Happy hacking.</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:c6878b2b502d5257f269a3d2e809c771:1"><a href="http://www.yelp.com/dataset_challenge">Yelp Dataset Challenge, 2014</a>.
+ <a class="footnote-return" href="#fnref:c6878b2b502d5257f269a3d2e809c771:1"><sup>[return]</sup></a></li>
+<li id="fn:c6878b2b502d5257f269a3d2e809c771:2">DATASET CHALLENGE ACADEMIC DATASET TERMS OF USE <a href="https://www.yelp.com/html/pdf/Dataset_Challenge_Academic_Dataset_Agreement.pdf">Section 5, Ownership</a>.
+ <a class="footnote-return" href="#fnref:c6878b2b502d5257f269a3d2e809c771:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+</div>
+</div>
+
+  </body>
+</html>

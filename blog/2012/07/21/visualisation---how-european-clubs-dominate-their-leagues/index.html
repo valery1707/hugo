@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Visualisation - How European clubs dominate their leagues &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Visualisation - How European clubs dominate their leagues</h1>
+  <span class="post-date">Sat, Jul 21, 2012</span>
+      
+
+<p><em>A bigger version of this is available <a href="/visualizations/league_champions/index.html">here</a></em>
+<script type="text/javascript" src="/visualizations/league_champions/d3.v2.min.js"></script>
+<script type="text/javascript" src="/visualizations/league_champions/champions.js"></script>
+<link type="text/css" href="/visualizations/league_champions/jqueryui/css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
+<script type="text/javascript" src="/visualizations/league_champions/jqueryui/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/visualizations/league_champions/jqueryui/js/jquery-ui-1.8.21.custom.min.js"></script>
+<link rel="stylesheet" href="/visualizations/league_champions/champions.css" type="text/css"
+media="screen" title="no title" charset="utf-8"/></p>
+
+<p><div id="league">Select League:
+  <select id="leagueselect">
+    <option value="england">England</option>
+    <option value="france">France</option>
+    <option value="germany">Germany</option>
+    <option value="italy">Italy</option>
+    <option value="netherlands">Netherlands</option>
+    <option value="spain">Spain</option>
+  </select>
+</div>
+<div id="slider">
+  <div class="slidercontrols">
+    <p>
+      <label for="era">Era:</label>
+      <input type="text" id="era" style="border:0; color:#000000;" readonly="redonly"/>
+      Drag the sliders to see data for a particular era.
+    </p></p>
+
+<pre><code>&lt;div id=&quot;slider-range&quot;&gt;&lt;/div&gt;
+</code></pre>
+
+<p></div>
+  <br/>
+  <div id="champions">
+  </div>
+  <script type="text/javascript">
+    drawEvrything(600, 400);
+  </script>
+</div>
+<br />
+<br /></p>
+
+<p>This is a visualization showing how various European football clubs have
+dominated their respective national leagues over various time
+periods. The visualization shows data for England, France, Germany,
+Italy, Netherlands and Spain.</p>
+
+<p>The visualization is self-explanatory. You can choose a league to view
+from the dropdown and then choose the sliders to select an era for which you want to look
+at the data. For fine adjustment, after clicking on either slider, you
+can use your keyboard to select a time period.</p>
+
+<h2 id="interesting-trends:3fbbe562acf8159aac22daec331285f5">Interesting Trends</h2>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Athletic_Bilbao">Athletic Bilabo</a> was very dominant in Spain during the first 20 years
+of the La Liga from 1930 to 1950. However, throughout the rest of the
+time period, FC Barcelona and Real Madrid CF have absolutely dominated
+La Liga.</li>
+<li><a href="http://en.wikipedia.org/wiki/Torino_F.C.">Torino</a> dominated Italian
+football in the 1940&rsquo;s, winning 5 league titles.</li>
+<li>Except for the period between 2002 and 2008, French Ligue 1 had a lot
+of variety in terms of League champions.</li>
+<li><a href="https://en.wikipedia.org/wiki/Borussia_M%C3%B6nchengladbach">Borussia Mönchengladbach</a>
+had a golden period in the 1970&rsquo;s, winning 5 titles. They have never
+won the Bundesliga in any other decade. While it would appear that
+Bayern Munich totally dominates German football, they won exactly 1
+title in the 40 years between 1927 and 1967.</li>
+<li>Regardless of the era, Ajax has dominated Dutch football.</li>
+<li>For the 30 year period between 1962 and 1992, the English league
+invariable went to Merseyside. Liverpool won 13 and Everton won 4.</li>
+</ul>
+
+<h2 id="motivation:3fbbe562acf8159aac22daec331285f5">Motivation</h2>
+
+<p>I happened to read this
+<a href="http://frenchfootballweekly.com/2012/07/13/paris-saint-germain-forget-the-fans-its-all-about-winning/">brilliant piece</a>
+from French Football Weekly on how Paris Saint-Germain&rsquo;s and their
+Qatari owners&rsquo; desire to buy their way in to success may not be in the
+best interest of the French game. Among other things, the author points
+out that the last five years have shown that anybody can mount a title
+challenge and this kind of diversity in contenders for the title is
+unique in Europe. That was an Aha! moment. While the list of French
+champions for the last five years reads &ldquo;Lyon, Bordeaux, Marseille,
+Lille, Montpellier&rdquo;, few would have forgotten how Lyon won 7 consecutive
+titles from the 2001-2002 season to 2007-2008 season.</p>
+
+<p>This kept me thinking about during certain time periods, certain teams
+tend to dominate their leagues to a great extend. Other illustrious
+examples similar to Lyon include Manchester United in the 1990s,
+Liverpool in the 1970s and 80s, Torino in the 1940s and Borussia
+Mönchengladbach in 1970s. I decided to create the above visualization to
+make sense of this trend.</p>
+
+<h2 id="exaplanation:3fbbe562acf8159aac22daec331285f5">Exaplanation</h2>
+
+<p>This is a <a href="http://en.wikipedia.org/wiki/Treemapping">Treemap</a>. A treemap
+recursively divides area to in to rectangles, and the area of any node
+is proportional to it&rsquo;s value. This is a treemap of depth <code>2</code>, where the
+relationship is essentially <code>Club -&gt; Championship Years</code>. You can see a
+more comprehensive example of a Treemap visualization with more depth <a href="http://mbostock.github.com/d3/ex/treemap.html">here</a>.</p>
+
+<h2 id="code:3fbbe562acf8159aac22daec331285f5">Code</h2>
+
+<p>All the data was obtained from Wikipedia. I used
+<a href="http://d3js.org">d3.js</a> to create the visualizations, and
+<a href="http://jqueryui.com/demos/slider/">jQueryUI</a> for the sliders.</p>
+
+<p>I have put the code and the data used for creating this visualization
+<a href="https://github.com/sdqali/league_champions">here</a> on Github. Feel free
+to take the data and code and make more awesome visualizations.</p>
+
+</div>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Javascript Canvas Image Code on Sadique Ali</title>
+    <link>http://sdqali.in/categories/javascript-canvas-image-code/</link>
+    <description>Recent content in Javascript Canvas Image Code on Sadique Ali</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 03 Oct 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://sdqali.in/categories/javascript-canvas-image-code/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Fitting an Image in to a Canvas object</title>
+      <link>http://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</link>
+      <pubDate>Thu, 03 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</guid>
+      <description>
+
+&lt;p&gt;I have been playing around with Canvas objects and images for a side project I am doing. One of the first things I had to figure out for this project was how to fit an image of arbitrary height and width on to a Canvas object of arbitrary, but known dimensions while preserving the aspect ratios of the image. This blog post is an explanation of the solution I came up with for this.&lt;/p&gt;
+
+&lt;h3 id=&#34;the-problem:c1bd9e28bca075d1cce32fa541019ef4&#34;&gt;The problem&lt;/h3&gt;
+
+&lt;p&gt;The application has a Canvas object on which it needs to draw arbitrary images. The Canvas&amp;rsquo;s dimensions are set to &lt;strong&gt;450px&lt;/strong&gt; by &lt;strong&gt;300px&lt;/strong&gt;. The image that needs to be drawn will have unknown aspect ratio. The ideal case will be when the image&amp;rsquo;s aspect ratio is &lt;strong&gt;3:2&lt;/strong&gt;, just like the canvas. In this case, there is no need for any adjustments to be made and the image can be drawn like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var canvas = document.getElementById(&#39;canvas&#39;);
+var context = canvas.getContext(&#39;2d&#39;);
+var imageObj = new Image();
+imageObj.onload = function() {
+	context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But fitting images with aspect ratios different from the Canvas can be a little tricky. The fundamental problem here is that when aspect ratio is different, there is only one pair of edges-either vertical or horizontal-that can be fitted on to the canvas. The image will have to be placed in the center along the other axis. The following diagram illustrates this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/canvas_fitting.png&#34; alt=&#34;Canvas fitting&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Since fitting depends on the aspect ratio, the code should take it into consideration. The following code compares the ratios and chooses to fit the image horizontally or vertically.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var canvas = document.getElementById(&#39;canvas&#39;);
+var context = canvas.getContext(&#39;2d&#39;);
+var imageObj = new Image();
+
+var fitImageOn = function(canvas, imageObj) {
+	var imageAspectRatio = imageObj.width / imageObj.height;
+	var canvasAspectRatio = canvas.width / canvas.height;
+	var renderableHeight, renderableWidth, xStart, yStart;
+
+	// If image&#39;s aspect ratio is less than canvas&#39;s we fit on height
+	// and place the image centrally along width
+	if(imageAspectRatio &amp;lt; canvasAspectRatio) {
+		renderableHeight = canvas.height;
+		renderableWidth = imageObj.width * (renderableHeight / imageObj.height);
+		xStart = (canvas.width - renderableWidth) / 2;
+		yStart = 0;
+	}
+
+	// If image&#39;s aspect ratio is greater than canvas&#39;s we fit on width
+	// and place the image centrally along height
+	else if(imageAspectRatio &amp;gt; canvasAspectRatio) {
+		renderableWidth = canvas.width
+		renderableHeight = imageObj.height * (renderableWidth / imageObj.width);
+		xStart = 0;
+		yStart = (canvas.height - renderableHeight) / 2;
+	}
+
+	// Happy path - keep aspect ratio
+	else {
+		renderableHeight = canvas.height;
+		renderableWidth = canvas.width;
+		xStart = 0;
+		yStart = 0;
+	}
+	context.drawImage(imageObj, xStart, yStart, renderableWidth, renderableHeight);
+};
+
+imageObj.onload = function() {
+	fitImageOn(canvas, imageObj)
+};
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;A demo of this code in action can be found &lt;a href=&#34;http://sdqali.in/demos/canvas_fitting.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

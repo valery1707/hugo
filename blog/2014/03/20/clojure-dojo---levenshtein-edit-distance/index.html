@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Clojure Dojo - Levenshtein edit distance &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in//css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in//css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Clojure Dojo - Levenshtein edit distance</h1>
+  <span class="post-date">Thu, Mar 20, 2014</span>
+      
+
+<p>I have been playing around with Clojure and after familiarising myself with the core, I decided to start writing little programs that forces me to choose the right idioms. I am starting off with Levenshtein edit distance of two strings.</p>
+
+<h3 id="levenshtein-edit-distance:d5d4c3a7257ad508bc68cd569fb16682">Levenshtein edit distance</h3>
+
+<p>Levenshtein edit distance between two string is a way of quantifying how similar or dissimilar they are, lower distance implying higher similarity. The algorithm to calculate Levenshtein distance is fairly simple - the algorithm cares about three operations that can be performed at a particular position in a string to move it towards the other - insertion, deletion and substitution.</p>
+
+<p>This can be recursively solved for two strings <code>A0:AS</code> and <code>B0:BS</code> by comparing <code>AS</code>, <code>B0:BS</code>; <code>A0:AS</code>, <code>BS</code> and <code>AS</code>, <code>BS</code>.</p>
+
+<h3 id="code:d5d4c3a7257ad508bc68cd569fb16682">Code</h3>
+
+<pre><code class="language-clojure">(ns clojure_dojo.core)
+
+(defn edit-distance
+  &quot;Return the Levenshtein edit distance between two strings&quot;
+  [first second]
+  (cond
+   (empty? first) (count second)
+   (empty? second) (count first)
+   :else (min (+ 1 (edit-distance (drop 1 first) second))
+              (+ 1 (edit-distance first (drop 1 second)))
+              (+ (cond
+                  (= (take 1 first) (take 1 second)) 0
+                  :else 1)
+                 (edit-distance (drop 1 first) (drop 1 second))))))
+</code></pre>
+
+<h3 id="test:d5d4c3a7257ad508bc68cd569fb16682">Test</h3>
+
+<pre><code class="language-clojure">(ns clojure_dojo.t-core
+  (:use midje.sweet)
+  (:use [clojure_dojo.core]))
+
+(facts &quot;about `edit-distance`&quot;
+       (fact &quot;it returns length of other string if one string is empty&quot;
+             (edit-distance &quot;foo&quot; &quot;&quot;) =&gt; 3
+             (edit-distance &quot;&quot; &quot;foo&quot;) =&gt; 3)
+       (fact &quot;detects deletions&quot;
+             (edit-distance &quot;foo&quot; &quot;oo&quot;) =&gt; 1)
+       (fact &quot;detects substitutions&quot;
+             (edit-distance &quot;ab&quot;, &quot;cd&quot;) =&gt; 2)
+       (fact &quot;detects additions needed&quot;
+             (edit-distance &quot;oo&quot;, &quot;foo&quot;) =&gt; 1
+             (edit-distance &quot;kit&quot;, &quot;sitting&quot;) =&gt; 5
+             (edit-distance &quot;intention&quot;, &quot;execution&quot;) =&gt; 5
+             (edit-distance &quot;sittin&quot;, &quot;sitting&quot;) =&gt; 1))
+</code></pre>
+
+<h3 id="the-problem-with-this-approach:d5d4c3a7257ad508bc68cd569fb16682">The problem with this approach</h3>
+
+<p>This solution looks fine - it passes the tests. However, if we carefully observe the recursion tree, we notice that there are sub-problems that are solved multiple times and this makes this algorithm&rsquo;s order of complexity Θ(3^min(m, n)). This can be observed from the call tree of this recursion.</p>
+
+<h3 id="improvement:d5d4c3a7257ad508bc68cd569fb16682">Improvement</h3>
+
+<p>Recursive algorithms of this nature can be improved in two ways - memoization during recursion or applying <a href="https://en.wikipedia.org/wiki/Dynamic_programming">Dynamic Programming</a> in a bottom up manner. The next blog post in this series will deal with how these two approaches can be done in Clojure.</p>
+
+<p>The code for the above solution is on <a href="https://github.com/sdqali/clojure-dojo">GitHub</a>.</p>
+
+</div>
+</div>
+
+  </body>
+</html>
