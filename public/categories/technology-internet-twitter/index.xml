@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Technology Internet Twitter on Sadique Ali</title>
+    <link>http://sdqali.in/categories/technology-internet-twitter/</link>
+    <description>Recent content in Technology Internet Twitter on Sadique Ali</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 11 Aug 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://sdqali.in/categories/technology-internet-twitter/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>When URL shortening results in longer URLs</title>
+      <link>http://sdqali.in/blog/2013/08/11/when-url-shortening-results-in-longer-urls/</link>
+      <pubDate>Sun, 11 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://sdqali.in/blog/2013/08/11/when-url-shortening-results-in-longer-urls/</guid>
+      <description>&lt;p&gt;I have previously &lt;a href=&#34;http://sdqali.in/blog/2012/07/17/social-networks-and-url-shorteners/&#34;&gt;written&lt;/a&gt; about &lt;a href=&#34;http://sdqali.in/blog/2012/08/23/dear-content-creator-your-url-shortener-is-pointless/&#34;&gt;how social networks&lt;/a&gt; use URL shortening as a way of obscuring and swallowing information about sharing of content on their platform. In Twitter&amp;rsquo;s case, this means that all URLs are automatically &amp;lsquo;shortened&amp;rsquo; with their &lt;em&gt;t.co&lt;/em&gt; domain. All their official clients take this shortening into account when you create a Tweet so as to avoid a round trip across the network to figure out if the tweet is short enough. But what happens if you are posting a URL that does not require any shortening? Something interesting happens.&lt;/p&gt;
+
+&lt;p&gt;Remember how tweets are of 140 characters each? Similarly, all URLs piped through &lt;em&gt;t.co&lt;/em&gt; are of 22 characters. That means when you post a tweet that has a URL in it, 22 characters get used for the URL. This catch-all shortening results in scenarios like the following:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/aggressive_url_shortening.gif&#34; alt=&#34;Twitter client shortening qz.com&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Typing the 6 characters in &lt;em&gt;qz.com&lt;/em&gt; resulted in number of characters left to go from &lt;code&gt;107&lt;/code&gt; to &lt;code&gt;85&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;There you have it. A URL of 6 characters gets &amp;lsquo;shortened&amp;rsquo; to 22 characters. This once again shows how Twitter, like other social networking sites want to control the data about how URLs get shared.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Code Graphdb Neo4j Cypher on Sadique Ali</title>
+    <link>http://sdqali.in/categories/code-graphdb-neo4j-cypher/</link>
+    <description>Recent content in Code Graphdb Neo4j Cypher on Sadique Ali</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 02 Aug 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://sdqali.in/categories/code-graphdb-neo4j-cypher/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Graph databases 1 - Modeling</title>
+      <link>http://sdqali.in/blog/2013/08/02/graph-databases-1---modeling/</link>
+      <pubDate>Fri, 02 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://sdqali.in/blog/2013/08/02/graph-databases-1---modeling/</guid>
+      <description>
+
+&lt;p&gt;I am making my way through the book &lt;em&gt;Graph Databases&lt;/em&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:01e4e56a373905e32c6720fb6ea7fba6:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:01e4e56a373905e32c6720fb6ea7fba6:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; which is an introductory book to the subject from Neo Technology &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:01e4e56a373905e32c6720fb6ea7fba6:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:01e4e56a373905e32c6720fb6ea7fba6:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;, creators of Neo4j &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:01e4e56a373905e32c6720fb6ea7fba6:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:01e4e56a373905e32c6720fb6ea7fba6:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;. At work, we are using Neo4j for a cool new thing we are building, and I see it as a great chance to learn some thing new and interesting. In the past, I have gone through a spiral &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:01e4e56a373905e32c6720fb6ea7fba6:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:01e4e56a373905e32c6720fb6ea7fba6:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt; when it comes to learning stuff and the constant feedback I get is to pick something that one gets to work with everyday and dig deep into it, in order to avoid the frustration and the inevitable spiral.&lt;/p&gt;
+
+&lt;p&gt;This is obviously a completely new subject to me and I am enjoying it so far. I am going to write a series of blog posts about my effort to learn Graph Databases and my observations and learnings.&lt;/p&gt;
+
+&lt;p&gt;I am presently reading chapter 3, which deals with &lt;em&gt;Data Modeling with Graphs&lt;/em&gt;. The key idea here is that the graph representation mirrors entities and relationships.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Entities are represented by &lt;em&gt;nodes&lt;/em&gt; and their characteristics are represented as &lt;em&gt;properties&lt;/em&gt; of the node. Eg. : Cristiano Ronaldo is a &lt;em&gt;node&lt;/em&gt;, while his height is a &lt;em&gt;property&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Relationships are modeled by &lt;em&gt;relationships&lt;/em&gt;. Eg. : &lt;em&gt;OF_NATIONAL_TEAM&lt;/em&gt; is a &lt;em&gt;relationship&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Relationships always connect two &lt;em&gt;nodes&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Relationships sometimes have properties. Eg. : &lt;em&gt;debut&lt;/em&gt; is a property of the &lt;em&gt;OF_NATIONAL_TEAM&lt;/em&gt; relationship.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;example-european-football-players:01e4e56a373905e32c6720fb6ea7fba6&#34;&gt;Example - European football players&lt;/h1&gt;
+
+&lt;p&gt;If we were to model football players to have played for European clubs, a section of the graph will look like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/graph_zidane.png&#34; alt=&#34;Graph: Zidane and teams&#34; /&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&#34;building-the-graph-with-cypher:01e4e56a373905e32c6720fb6ea7fba6&#34;&gt;Building the graph with Cypher&lt;/h1&gt;
+
+&lt;p&gt;Cypher &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:01e4e56a373905e32c6720fb6ea7fba6:5&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:01e4e56a373905e32c6720fb6ea7fba6:5&#34;&gt;5&lt;/a&gt;&lt;/sup&gt; is Neo4j&amp;rsquo;s query language. It is essentially structured ASCII art that tries to be as close to how relationships are mapped on a graph. The above graph can be created in Neo4j using the following Cypher snippet:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;CREATE (zidane {name: &amp;quot;Zinadine Zidane&amp;quot;, position: &amp;quot;Midfielder&amp;quot; }),
+(cannes {name: &amp;quot;A.S. Cannes&amp;quot;, founded: 1902}),
+(bordeaux {name: &amp;quot;F.C.G. de Bordeaux&amp;quot;, founded: 1881}),
+(juventus {name: &amp;quot;Juventus F.C.&amp;quot;, founded: 1897}),
+(realmadrid {name: &amp;quot;Real Madrid C.F.&amp;quot;, founded: 1902}),
+(spain {name: &amp;quot;Spain&amp;quot;}),
+(france {name: &amp;quot;France&amp;quot;}),
+(italy {name: &amp;quot;Italy&amp;quot;}),
+(zidane)-[:OF_NATIONAL_TEAM{debut: &amp;quot;19940817&amp;quot;}]-&amp;gt;(france),
+(zidane)-[:PLAYED_FOR_CLUB]-&amp;gt;(cannes),
+(zidane)-[:PLAYED_FOR_CLUB]-&amp;gt;(bordeaux),
+(zidane)-[:PLAYED_FOR_CLUB]-&amp;gt;(juventus),
+(zidane)-[:PLAYED_FOR_CLUB]-&amp;gt;(realmadrid),
+(cannes)-[:OF_FA]-&amp;gt;(france),
+(bordeaux)-[:OF_FA]-&amp;gt;(france),
+(juventus)-[:OF_FA]-&amp;gt;(italy),
+(realmadrid)-[:OF_FA]-&amp;gt;(spain);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That is pretty straight forward and easy to grok. We define 8 nodes representing Zidane, the 4 clubs he played for and the 3 countries these clubs play in. Then we define the Relationships between them. Cypher uses the -&amp;gt; to represent a relationship between nodes.&lt;/p&gt;
+
+&lt;h1 id=&#34;querying-the-graph:01e4e56a373905e32c6720fb6ea7fba6&#34;&gt;Querying the graph&lt;/h1&gt;
+
+&lt;p&gt;Querying the graph we created for interesting things is where the fun really is.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;To figure out what clubs Zidane played for, we will write the following Cypher snippet:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;MATCH (zidane)-[:PLAYED_FOR_CLUB]-&amp;gt;(club)
+RETURN club;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When executed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;neo4j-sh (?)$ MATCH (zidane)-[:PLAYED_FOR_CLUB]-&amp;gt;(club)
+&amp;gt;             RETURN club;
++--------------------------------------------------+
+| club                                             |
++--------------------------------------------------+
+| Node[53]{founded:1902,name:&amp;quot;A.S. Cannes&amp;quot;}        |
+| Node[54]{founded:1881,name:&amp;quot;F.C.G. de Bordeaux&amp;quot;} |
+| Node[55]{founded:1897,name:&amp;quot;Juventus F.C.&amp;quot;}      |
+| Node[56]{founded:1902,name:&amp;quot;Real Madrid C.F.&amp;quot;}   |
++--------------------------------------------------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What if the question is &lt;em&gt;When were all the clubs Zidane played for founded?&lt;/em&gt; We will answer it with the following query:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;MATCH (zidane)-[:PLAYED_FOR_CLUB]-&amp;gt;(club)
+RETURN club.founded;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Let&amp;rsquo;s try to answer &lt;em&gt;When did Zidane make his international debut?&lt;/em&gt;. Let&amp;rsquo;s try the following query:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;MATCH (zidane)-[player:OF_NATIONAL_TEAM]-&amp;gt;(team)
+RETURN player.debut;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This when executed will result in:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-console&#34;&gt;+--------------+
+| player.debut |
++--------------+
+| &amp;quot;19940817&amp;quot;   |
++--------------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here, &lt;em&gt;[player:OF_NATIONAL_TEAM]&lt;/em&gt; specifies a relationship of type &lt;em&gt;OF_NATIONAL_TEAM&lt;/em&gt; and labels it as &lt;em&gt;player&lt;/em&gt; so that we can later extract out the &lt;em&gt;debut&lt;/em&gt; property from &lt;em&gt;player&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;It can be seen from this example that, sometimes we are not really interested in extracting out certain information, although we want that information to be part of the query. Here, we don&amp;rsquo;t really care what national team Zidane played for, we are just intested in an attribute of the relationship. Cypher allows you to represent this intend to ignore.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;MATCH (zidane)-[player:OF_NATIONAL_TEAM]-&amp;gt;()
+RETURN player.debut;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above query will produce the same result as the previous query. The &lt;em&gt;()&lt;/em&gt; specifies that there is some node there, but we are not interested in what it represents.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The ability to ignore can be leveraged to answer our next question. &lt;em&gt;What all countries have Zidane played league football in?&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;MATCH (zidane)-[:PLAYED_FOR_CLUB]-&amp;gt;()-[:OF_FA]-&amp;gt;(fa)
+RETURN DISTINCT fa.name;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The result:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;+----------+
+| fa.name  |
++----------+
+| &amp;quot;France&amp;quot; |
+| &amp;quot;Italy&amp;quot;  |
+| &amp;quot;Spain&amp;quot;  |
++----------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We use &lt;em&gt;DISTINCT&lt;/em&gt; to get uniques because Zidane played for Cannes and Bordeaux, both of the French Ligue 1.&lt;/p&gt;
+
+&lt;h1 id=&#34;summary:01e4e56a373905e32c6720fb6ea7fba6&#34;&gt;Summary&lt;/h1&gt;
+
+&lt;p&gt;I am still making my way through the book. So far it has looked promising and I have been able to grasp things. I am looking forward to learning more complex querying and will write about it in the subsequent blog posts.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:01e4e56a373905e32c6720fb6ea7fba6:1&#34;&gt;&lt;a href=&#34;http://graphdatabases.com/&#34;&gt;Graph Databases by Ian Robinson, Jim Webber, and Emil Eifrem (O’Reilly). Copyright 2013 Neo Technology, Inc., 978-1-449-35626-2.&lt;/a&gt;
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:01e4e56a373905e32c6720fb6ea7fba6:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:01e4e56a373905e32c6720fb6ea7fba6:2&#34;&gt;&lt;a href=&#34;http://www.neotechnology.com/&#34;&gt;Neo Technology&lt;/a&gt;
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:01e4e56a373905e32c6720fb6ea7fba6:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:01e4e56a373905e32c6720fb6ea7fba6:3&#34;&gt;&lt;a href=&#34;http://www.neo4j.org/&#34;&gt;Neo4j&lt;/a&gt;
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:01e4e56a373905e32c6720fb6ea7fba6:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:01e4e56a373905e32c6720fb6ea7fba6:4&#34;&gt;&lt;a href=&#34;http://blog.sdqali.in/blog/2012/05/30/the-spiral-of-learning/&#34;&gt;The Spiral of Learning&lt;/a&gt;
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:01e4e56a373905e32c6720fb6ea7fba6:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:01e4e56a373905e32c6720fb6ea7fba6:5&#34;&gt;&lt;a href=&#34;http://docs.neo4j.org/chunked/stable/cypher-introduction.html&#34;&gt;What is Cypher?&lt;/a&gt;
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:01e4e56a373905e32c6720fb6ea7fba6:5&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
