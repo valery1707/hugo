@@ -61,6 +61,6 @@ Server error, status code: 400, error code: 300001, message: The security group 
 
 ```
 
-If JSON allowed comments, commenting would result in a slightly more readable declaration file, although it won't stored in the Cloud Controller database and hence won't be available upon querying with `cf security-group <security-group-name>`. This is a moot point anyway, as JSON [explicitly](https://plus.google.com/+DouglasCrockfordEsq/posts/RK8qyGVaGSr) doesn't allow comments. There are workarounds that involve minifying the JSON input before parsing the configurations, but I don't think that is the right direction to head to.
+If JSON allowed comments, commenting would result in a slightly more readable declaration file, although it won't be stored in the Cloud Controller database and hence won't be available upon querying with `cf security-group <security-group-name>`. This is a moot point anyway, as JSON [explicitly](https://plus.google.com/+DouglasCrockfordEsq/posts/RK8qyGVaGSr) doesn't allow comments. There are workarounds that involve minifying the JSON input before parsing the configurations, but I don't think that is the right direction to head to.
 
 I have filed a [ticket](https://github.com/cloudfoundry/cloud_controller_ng/issues/382) against Cloud Controller to address this issue. It [doesn't look like a difficult](https://github.com/cloudfoundry/cloud_controller_ng/blob/cacb5563264208e920f4b7fecc7060f89b929fbb/lib/cloud_controller/rule_validator.rb#L6) feature to implement. Hopefully this is available in Cloud Controller soon.
