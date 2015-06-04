@@ -1,0 +1,11 @@
+ul.tags {
+    list-style: none;
+    overflow: hidden;
+    position: relative;
+    padding-left: 0;
+    font-size: 85%;
+}
+
+li.tag {
+    float: left; margin: 0 10px 0 0;
+}
