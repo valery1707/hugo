@@ -29,7 +29,7 @@ LICENSE		RELEASE-NOTES	bin		lib		temp		work
 NOTICE		RUNNING.txt	conf		logs		webapps
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;This distribution, by default runs a applications in a single JVM. How does it do this?&lt;/p&gt;
+&lt;p&gt;This distribution, by default runs applications in a single JVM. How does it do this?&lt;/p&gt;
 
 &lt;p&gt;Tomcat control scripts - &lt;code&gt;startup.sh&lt;/code&gt;, &lt;code&gt;shutdown.sh&lt;/code&gt;, &lt;code&gt;catalina.sh&lt;/code&gt; uses the environment variables &lt;code&gt;CATALINA_HOME&lt;/code&gt; and &lt;code&gt;CATALINA_BASE&lt;/code&gt; to locate binaries and configuration files.&lt;/p&gt;
 
