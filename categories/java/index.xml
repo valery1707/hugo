@@ -16,7 +16,7 @@
       <guid>http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/</guid>
       <description>
 
-&lt;p&gt;This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the &lt;code&gt;CATALINA_HOME&lt;/code&gt; and &lt;code&gt;CATALINA_BASE&lt;/code&gt; environment variables used by Tomcat. I have verified this method against Tomcat version &lt;code&gt;8.0.x&lt;/code&gt;; other versions should work the same way.&lt;/p&gt;
+&lt;p&gt;This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the &lt;code&gt;CATALINA_HOME&lt;/code&gt; and &lt;code&gt;CATALINA_BASE&lt;/code&gt; environment variables used by Tomcat. I have verified this method against Tomcat versions &lt;code&gt;8.0.x&lt;/code&gt;; other versions should work the same way.&lt;/p&gt;
 
 &lt;h2 id=&#34;a-typical-tomcat-installation:a2ed05b8bb95da785f1e814e64b0e342&#34;&gt;A typical Tomcat installation&lt;/h2&gt;
 
@@ -114,7 +114,7 @@ Date: Tue, 09 Jun 2015 07:41:02 GMT
 
 &lt;h2 id=&#34;tying-it-all-together:a2ed05b8bb95da785f1e814e64b0e342&#34;&gt;Tying it all together&lt;/h2&gt;
 
-&lt;p&gt;At this point, it is useful create management scripts that abstract away the environment variables and allows for starting up and shutting down applications individually. The &lt;code&gt;start.sh&lt;/code&gt; script will be as follows.&lt;/p&gt;
+&lt;p&gt;At this point, it is useful to create management scripts that abstract away the environment variables and allows for starting up and shutting down applications individually. The &lt;code&gt;start.sh&lt;/code&gt; script will be as follows.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/usr/bin/env sh
 
