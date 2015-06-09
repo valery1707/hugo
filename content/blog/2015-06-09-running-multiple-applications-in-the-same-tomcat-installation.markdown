@@ -12,6 +12,8 @@ title: Running multiple applications in the same Tomcat installation
 ---
 This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the `CATALINA_HOME` and `CATALINA_BASE` environment variables used by Tomcat. I have verified this method against Tomcat version `8.0.x`; other versions should work the same way.
 
+<!--more-->
+
 ## A typical Tomcat installation
 
 If we explode the Tomcat 8.0.23 [tarball](http://mirrors.sonic.net/apache/tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23.tar.gz), we get the following directory structure:
