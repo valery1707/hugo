@@ -10,7 +10,7 @@ Tags:
 date: 2015-06-09T01:11:05-04:00
 title: Running multiple applications in the same Tomcat installation
 ---
-This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the `CATALINA_HOME` and `CATALINA_BASE` environment variables used by Tomcat. I have verified this method against Tomcat version `8.0.x`; other versions should work the same way.
+This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the `CATALINA_HOME` and `CATALINA_BASE` environment variables used by Tomcat. I have verified this method against Tomcat versions `8.0.x`; other versions should work the same way.
 
 <!--more-->
 
@@ -106,7 +106,7 @@ Date: Tue, 09 Jun 2015 07:41:02 GMT
 
 ## Tying it all together
 
-At this point, it is useful create management scripts that abstract away the environment variables and allows for starting up and shutting down applications individually. The `start.sh` script will be as follows.
+At this point, it is useful to create management scripts that abstract away the environment variables and allows for starting up and shutting down applications individually. The `start.sh` script will be as follows.
 
 ```bash
 #!/usr/bin/env sh
