@@ -5,8 +5,201 @@
     <link>http://sdqali.in/blog/</link>
     <description>Recent content in Blogs on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 21 May 2015 22:58:41 -0700</lastBuildDate>
+    <lastBuildDate>Tue, 09 Jun 2015 01:11:05 -0400</lastBuildDate>
     <atom:link href="http://sdqali.in/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Running multiple applications in the same Tomcat installation</title>
+      <link>http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/</link>
+      <pubDate>Tue, 09 Jun 2015 01:11:05 -0400</pubDate>
+      
+      <guid>http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/</guid>
+      <description>
+
+&lt;p&gt;This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the &lt;code&gt;CATALINA_HOME&lt;/code&gt; and &lt;code&gt;CATALINA_BASE&lt;/code&gt; environment variables used by Tomcat. I have verified this method against Tomcat version &lt;code&gt;8.0.x&lt;/code&gt;; other versions should work the same way.&lt;/p&gt;
+
+&lt;h2 id=&#34;a-typical-tomcat-installation:a2ed05b8bb95da785f1e814e64b0e342&#34;&gt;A typical Tomcat installation&lt;/h2&gt;
+
+&lt;p&gt;If we explode the Tomcat 8.0.23 &lt;a href=&#34;http://mirrors.sonic.net/apache/tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23.tar.gz&#34;&gt;tarball&lt;/a&gt;, we get the following directory structure:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ tar apache-tomcat-8.0.23.tar.gz
+
+$ ls apache-tomcat-8.0.23/
+LICENSE		RELEASE-NOTES	bin		lib		temp		work
+NOTICE		RUNNING.txt	conf		logs		webapps
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This distribution, by default runs a applications in a single JVM. How does it do this?&lt;/p&gt;
+
+&lt;p&gt;Tomcat control scripts - &lt;code&gt;startup.sh&lt;/code&gt;, &lt;code&gt;shutdown.sh&lt;/code&gt;, &lt;code&gt;catalina.sh&lt;/code&gt; uses the environment variables &lt;code&gt;CATALINA_HOME&lt;/code&gt; and &lt;code&gt;CATALINA_BASE&lt;/code&gt; to locate binaries and configuration files.&lt;/p&gt;
+
+&lt;p&gt;From the documentaion inside &lt;code&gt;catalina.sh&lt;/code&gt; under &lt;code&gt;apache-tomcat-8.0.23/bin/&lt;/code&gt; we can see that:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#   CATALINA_HOME   May point at your Catalina &amp;quot;build&amp;quot; directory.
+#
+#   CATALINA_BASE   (Optional) Base directory for resolving dynamic portions
+#                   of a Catalina installation.  If not present, resolves to
+#                   the same directory that CATALINA_HOME points to.
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This allows us to separate the &lt;code&gt;CATALINA_HOME&lt;/code&gt; and &lt;code&gt;CATALINA_BASE&lt;/code&gt; directories. The Tomcat binaries and scripts need to be inside &lt;code&gt;CATALINA_HOME&lt;/code&gt; and our first application can deploy itself to &lt;code&gt;CATALINA_BASE&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;separating-catalina-home-and-catalina-base:a2ed05b8bb95da785f1e814e64b0e342&#34;&gt;Separating CATALINA_HOME and CATALINA_BASE&lt;/h2&gt;
+
+&lt;p&gt;The &lt;code&gt;app1&lt;/code&gt; directory will have the following directories:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ls -a app1/
+.	..	bin	conf	logs	temp	webapps	work
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;bin&lt;/code&gt; directory will have the &lt;code&gt;setenv.sh&lt;/code&gt; script used to set additional environment variables for the application.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;tomcat&lt;/code&gt; directory will have the following directories:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;
+$ ls tomcat/
+LICENSE		NOTICE		RELEASE-NOTES	RUNNING.txt	bin		lib
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;bin&lt;/code&gt; directory will have the Tomcat management scripts like &lt;code&gt;startup.sh&lt;/code&gt;, &lt;code&gt;shutdown.sh&lt;/code&gt;, &lt;code&gt;catalina.sh&lt;/code&gt; etc.&lt;/p&gt;
+
+&lt;p&gt;Now we can start &lt;code&gt;app1&lt;/code&gt; by pointing &lt;code&gt;CATALINA_BASE&lt;/code&gt; to &lt;code&gt;app1&lt;/code&gt; and &lt;code&gt;CATALINA_HOME&lt;/code&gt; to &lt;code&gt;tomcat&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;
+$ export CATALINA_HOME=/Users/sdqali/src/sandbox/tomcat
+
+$ export CATALINA_BASE=/Users/sdqali/src/sandbox/app1
+
+$ $CATALINA_HOME/bin/startup.sh
+
+$ $CATALINA_HOME/bin/startup.sh
+Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app1
+Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
+Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app1/temp
+Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home
+Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users/sdqali/src/sandbox/tomcat/bin/tomcat-juli.jar
+Tomcat started.
+
+$ curl -s -D - -o /dev/null http://127.0.0.1:8080
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Content-Type: text/html;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Tue, 09 Jun 2015 07:37:43 GMT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let&amp;rsquo;s try and deploy a second application &lt;code&gt;app2&lt;/code&gt; running on port &lt;code&gt;9090&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;
+$ export CATALINA_HOME=/Users/sdqali/src/sandbox/tomcat
+
+$ export CATALINA_BASE=/Users/sdqali/src/sandbox/app2
+
+$ $CATALINA_HOME/bin/startup.sh
+Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app2
+Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
+Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app2/temp
+Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home
+Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users/sdqali/src/sandbox/tomcat/bin/tomcat-juli.jar
+Tomcat started.
+
+$ curl -s -D - -o /dev/null http://127.0.0.1:9090
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Content-Type: text/html;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Tue, 09 Jun 2015 07:41:02 GMT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;tying-it-all-together:a2ed05b8bb95da785f1e814e64b0e342&#34;&gt;Tying it all together&lt;/h2&gt;
+
+&lt;p&gt;At this point, it is useful create management scripts that abstract away the environment variables and allows for starting up and shutting down applications individually. The &lt;code&gt;start.sh&lt;/code&gt; script will be as follows.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/usr/bin/env sh
+
+# start.sh
+# Script to start a Tomcat application
+
+show_usage() {
+    echo &amp;quot;Usage: ./start.sh &amp;lt;app-name&amp;gt;&amp;quot;;
+    exit 1;
+}
+
+declare app_name=$1;
+[[ -z $app_name ]] &amp;amp;&amp;amp; show_usage;
+
+
+declare INSTALL_BASE=/Users/sdqali/src/sandbox
+
+export CATALINA_HOME=$INSTALL_BASE/tomcat
+export CATALINA_BASE=$INSTALL_BASE/$app_name
+
+$CATALINA_HOME/bin/startup.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Similarly, the &lt;code&gt;stop.sh&lt;/code&gt; script will be:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/usr/bin/env sh
+
+# stop.sh
+# Script to stop a Tomcat application
+
+show_usage() {
+    echo &amp;quot;Usage: ./stop.sh &amp;lt;app-name&amp;gt;&amp;quot;;
+    exit 1;
+}
+
+declare app_name=$1;
+[[ -z $app_name ]] &amp;amp;&amp;amp; show_usage;
+
+
+declare INSTALL_BASE=/Users/sdqali/src/sandbox
+
+export CATALINA_HOME=$INSTALL_BASE/tomcat
+export CATALINA_BASE=$INSTALL_BASE/$app_name
+
+$CATALINA_HOME/bin/shutdown.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can manage individual applications using these scripts:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ./management/start.sh app2
+Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app2
+Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
+Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app2/temp
+Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home
+Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users/sdqali/src/sandbox/tomcat/bin/tomcat-juli.jar
+Tomcat started.
+
+$ nc -z  127.0.0.1 9090
+Connection to 127.0.0.1 port 9090 [tcp/websm] succeeded!
+
+$ curl -s -D - -o /dev/null http://127.0.0.1:9090
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Content-Type: text/html;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Tue, 09 Jun 2015 08:16:05 GMT
+
+
+$ ./management/stop.sh app2
+Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app2
+Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
+Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app2/temp
+Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home
+Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users/sdqali/src/sandbox/tomcat/bin/tomcat-juli.jar
+
+$ nc -z  127.0.0.1 9090
+
+$ curl -v http://127.0.0.1:9090
+* Rebuilt URL to: http://127.0.0.1:9090/
+* Hostname was NOT found in DNS cache
+*   Trying 127.0.0.1...
+* connect to 127.0.0.1 port 9090 failed: Connection refused
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>Making sense of Cloud Foundry security group declarations</title>
@@ -962,82 +1155,6 @@ After override
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Fitting an Image in to a Canvas object</title>
-      <link>http://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</link>
-      <pubDate>Thu, 03 Oct 2013 00:00:00 +0000</pubDate>
-      
-      <guid>http://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</guid>
-      <description>
-
-&lt;p&gt;I have been playing around with Canvas objects and images for a side project I am doing. One of the first things I had to figure out for this project was how to fit an image of arbitrary height and width on to a Canvas object of arbitrary, but known dimensions while preserving the aspect ratios of the image. This blog post is an explanation of the solution I came up with for this.&lt;/p&gt;
-
-&lt;h3 id=&#34;the-problem:c1bd9e28bca075d1cce32fa541019ef4&#34;&gt;The problem&lt;/h3&gt;
-
-&lt;p&gt;The application has a Canvas object on which it needs to draw arbitrary images. The Canvas&amp;rsquo;s dimensions are set to &lt;strong&gt;450px&lt;/strong&gt; by &lt;strong&gt;300px&lt;/strong&gt;. The image that needs to be drawn will have unknown aspect ratio. The ideal case will be when the image&amp;rsquo;s aspect ratio is &lt;strong&gt;3:2&lt;/strong&gt;, just like the canvas. In this case, there is no need for any adjustments to be made and the image can be drawn like this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var canvas = document.getElementById(&#39;canvas&#39;);
-var context = canvas.getContext(&#39;2d&#39;);
-var imageObj = new Image();
-imageObj.onload = function() {
-	context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;But fitting images with aspect ratios different from the Canvas can be a little tricky. The fundamental problem here is that when aspect ratio is different, there is only one pair of edges-either vertical or horizontal-that can be fitted on to the canvas. The image will have to be placed in the center along the other axis. The following diagram illustrates this.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/canvas_fitting.png&#34; alt=&#34;Canvas fitting&#34; /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;Since fitting depends on the aspect ratio, the code should take it into consideration. The following code compares the ratios and chooses to fit the image horizontally or vertically.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var canvas = document.getElementById(&#39;canvas&#39;);
-var context = canvas.getContext(&#39;2d&#39;);
-var imageObj = new Image();
-
-var fitImageOn = function(canvas, imageObj) {
-	var imageAspectRatio = imageObj.width / imageObj.height;
-	var canvasAspectRatio = canvas.width / canvas.height;
-	var renderableHeight, renderableWidth, xStart, yStart;
-
-	// If image&#39;s aspect ratio is less than canvas&#39;s we fit on height
-	// and place the image centrally along width
-	if(imageAspectRatio &amp;lt; canvasAspectRatio) {
-		renderableHeight = canvas.height;
-		renderableWidth = imageObj.width * (renderableHeight / imageObj.height);
-		xStart = (canvas.width - renderableWidth) / 2;
-		yStart = 0;
-	}
-
-	// If image&#39;s aspect ratio is greater than canvas&#39;s we fit on width
-	// and place the image centrally along height
-	else if(imageAspectRatio &amp;gt; canvasAspectRatio) {
-		renderableWidth = canvas.width
-		renderableHeight = imageObj.height * (renderableWidth / imageObj.width);
-		xStart = 0;
-		yStart = (canvas.height - renderableHeight) / 2;
-	}
-
-	// Happy path - keep aspect ratio
-	else {
-		renderableHeight = canvas.height;
-		renderableWidth = canvas.width;
-		xStart = 0;
-		yStart = 0;
-	}
-	context.drawImage(imageObj, xStart, yStart, renderableWidth, renderableHeight);
-};
-
-imageObj.onload = function() {
-	fitImageOn(canvas, imageObj)
-};
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;A demo of this code in action can be found &lt;a href=&#34;http://sdqali.in/demos/canvas_fitting.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
