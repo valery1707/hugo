@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Running multiple applications in the same Tomcat installation &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in/css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in/css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+</head>
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Running multiple applications in the same Tomcat installation</h1>
+  <span class="post-date">Tue, Jun 9, 2015</span>
+      
+
+<p>This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the <code>CATALINA_HOME</code> and <code>CATALINA_BASE</code> environment variables used by Tomcat. I have verified this method against Tomcat version <code>8.0.x</code>; other versions should work the same way.</p>
+
+<h2 id="a-typical-tomcat-installation:a2ed05b8bb95da785f1e814e64b0e342">A typical Tomcat installation</h2>
+
+<p>If we explode the Tomcat 8.0.23 <a href="http://mirrors.sonic.net/apache/tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23.tar.gz">tarball</a>, we get the following directory structure:</p>
+
+<pre><code class="language-bash">$ tar apache-tomcat-8.0.23.tar.gz
+
+$ ls apache-tomcat-8.0.23/
+LICENSE		RELEASE-NOTES	bin		lib		temp		work
+NOTICE		RUNNING.txt	conf		logs		webapps
+</code></pre>
+
+<p>This distribution, by default runs a applications in a single JVM. How does it do this?</p>
+
+<p>Tomcat control scripts - <code>startup.sh</code>, <code>shutdown.sh</code>, <code>catalina.sh</code> uses the environment variables <code>CATALINA_HOME</code> and <code>CATALINA_BASE</code> to locate binaries and configuration files.</p>
+
+<p>From the documentaion inside <code>catalina.sh</code> under <code>apache-tomcat-8.0.23/bin/</code> we can see that:</p>
+
+<pre><code class="language-bash">#   CATALINA_HOME   May point at your Catalina &quot;build&quot; directory.
+#
+#   CATALINA_BASE   (Optional) Base directory for resolving dynamic portions
+#                   of a Catalina installation.  If not present, resolves to
+#                   the same directory that CATALINA_HOME points to.
+
+</code></pre>
+
+<p>This allows us to separate the <code>CATALINA_HOME</code> and <code>CATALINA_BASE</code> directories. The Tomcat binaries and scripts need to be inside <code>CATALINA_HOME</code> and our first application can deploy itself to <code>CATALINA_BASE</code>.</p>
+
+<h2 id="separating-catalina-home-and-catalina-base:a2ed05b8bb95da785f1e814e64b0e342">Separating CATALINA_HOME and CATALINA_BASE</h2>
+
+<p>The <code>app1</code> directory will have the following directories:</p>
+
+<pre><code class="language-bash">$ ls -a app1/
+.	..	bin	conf	logs	temp	webapps	work
+</code></pre>
+
+<p>The <code>bin</code> directory will have the <code>setenv.sh</code> script used to set additional environment variables for the application.</p>
+
+<p>The <code>tomcat</code> directory will have the following directories:</p>
+
+<pre><code class="language-bash">
+$ ls tomcat/
+LICENSE		NOTICE		RELEASE-NOTES	RUNNING.txt	bin		lib
+</code></pre>
+
+<p>The <code>bin</code> directory will have the Tomcat management scripts like <code>startup.sh</code>, <code>shutdown.sh</code>, <code>catalina.sh</code> etc.</p>
+
+<p>Now we can start <code>app1</code> by pointing <code>CATALINA_BASE</code> to <code>app1</code> and <code>CATALINA_HOME</code> to <code>tomcat</code>.</p>
+
+<pre><code class="language-bash">
+$ export CATALINA_HOME=/Users/sdqali/src/sandbox/tomcat
+
+$ export CATALINA_BASE=/Users/sdqali/src/sandbox/app1
+
+$ $CATALINA_HOME/bin/startup.sh
+
+$ $CATALINA_HOME/bin/startup.sh
+Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app1
+Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
+Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app1/temp
+Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home
+Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users/sdqali/src/sandbox/tomcat/bin/tomcat-juli.jar
+Tomcat started.
+
+$ curl -s -D - -o /dev/null http://127.0.0.1:8080
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Content-Type: text/html;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Tue, 09 Jun 2015 07:37:43 GMT
+</code></pre>
+
+<p>Let&rsquo;s try and deploy a second application <code>app2</code> running on port <code>9090</code>.</p>
+
+<pre><code class="language-bash">
+$ export CATALINA_HOME=/Users/sdqali/src/sandbox/tomcat
+
+$ export CATALINA_BASE=/Users/sdqali/src/sandbox/app2
+
+$ $CATALINA_HOME/bin/startup.sh
+Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app2
+Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
+Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app2/temp
+Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home
+Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users/sdqali/src/sandbox/tomcat/bin/tomcat-juli.jar
+Tomcat started.
+
+$ curl -s -D - -o /dev/null http://127.0.0.1:9090
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Content-Type: text/html;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Tue, 09 Jun 2015 07:41:02 GMT
+</code></pre>
+
+<h2 id="tying-it-all-together:a2ed05b8bb95da785f1e814e64b0e342">Tying it all together</h2>
+
+<p>At this point, it is useful create management scripts that abstract away the environment variables and allows for starting up and shutting down applications individually. The <code>start.sh</code> script will be as follows.</p>
+
+<pre><code class="language-bash">#!/usr/bin/env sh
+
+# start.sh
+# Script to start a Tomcat application
+
+show_usage() {
+    echo &quot;Usage: ./start.sh &lt;app-name&gt;&quot;;
+    exit 1;
+}
+
+declare app_name=$1;
+[[ -z $app_name ]] &amp;&amp; show_usage;
+
+
+declare INSTALL_BASE=/Users/sdqali/src/sandbox
+
+export CATALINA_HOME=$INSTALL_BASE/tomcat
+export CATALINA_BASE=$INSTALL_BASE/$app_name
+
+$CATALINA_HOME/bin/startup.sh
+</code></pre>
+
+<p>Similarly, the <code>stop.sh</code> script will be:</p>
+
+<pre><code class="language-bash">#!/usr/bin/env sh
+
+# stop.sh
+# Script to stop a Tomcat application
+
+show_usage() {
+    echo &quot;Usage: ./stop.sh &lt;app-name&gt;&quot;;
+    exit 1;
+}
+
+declare app_name=$1;
+[[ -z $app_name ]] &amp;&amp; show_usage;
+
+
+declare INSTALL_BASE=/Users/sdqali/src/sandbox
+
+export CATALINA_HOME=$INSTALL_BASE/tomcat
+export CATALINA_BASE=$INSTALL_BASE/$app_name
+
+$CATALINA_HOME/bin/shutdown.sh
+</code></pre>
+
+<p>We can manage individual applications using these scripts:</p>
+
+<pre><code class="language-bash">$ ./management/start.sh app2
+Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app2
+Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
+Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app2/temp
+Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home
+Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users/sdqali/src/sandbox/tomcat/bin/tomcat-juli.jar
+Tomcat started.
+
+$ nc -z  127.0.0.1 9090
+Connection to 127.0.0.1 port 9090 [tcp/websm] succeeded!
+
+$ curl -s -D - -o /dev/null http://127.0.0.1:9090
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Content-Type: text/html;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Tue, 09 Jun 2015 08:16:05 GMT
+
+
+$ ./management/stop.sh app2
+Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app2
+Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
+Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app2/temp
+Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home
+Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users/sdqali/src/sandbox/tomcat/bin/tomcat-juli.jar
+
+$ nc -z  127.0.0.1 9090
+
+$ curl -v http://127.0.0.1:9090
+* Rebuilt URL to: http://127.0.0.1:9090/
+* Hostname was NOT found in DNS cache
+*   Trying 127.0.0.1...
+* connect to 127.0.0.1 port 9090 failed: Connection refused
+</code></pre>
+
+</div>
+</div>
+
+  </body>
+</html>
