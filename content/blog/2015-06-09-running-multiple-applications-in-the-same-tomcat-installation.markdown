@@ -23,7 +23,7 @@ $ ls apache-tomcat-8.0.23/
 LICENSE		RELEASE-NOTES	bin		lib		temp		work
 NOTICE		RUNNING.txt	conf		logs		webapps
 ```
-This distribution, by default runs a applications in a single JVM. How does it do this?
+This distribution, by default runs applications in a single JVM. How does it do this?
 
 Tomcat control scripts - `startup.sh`, `shutdown.sh`, `catalina.sh` uses the environment variables `CATALINA_HOME` and `CATALINA_BASE` to locate binaries and configuration files.
 
