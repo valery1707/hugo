@@ -16,46 +16,7 @@
       <guid>http://sdqali.in/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/</guid>
       <description>
 
-&lt;p&gt;&lt;em&gt;A bigger version of this is available &lt;a href=&#34;http://sdqali.in/visualizations/league_champions/index.html&#34;&gt;here&lt;/a&gt;&lt;/em&gt;
-&lt;script type=&#34;text/javascript&#34; src=&#34;http://sdqali.in/visualizations/league_champions/d3.v2.min.js&#34;&gt;&lt;/script&gt;
-&lt;script type=&#34;text/javascript&#34; src=&#34;http://sdqali.in/visualizations/league_champions/champions.js&#34;&gt;&lt;/script&gt;
-&lt;link type=&#34;text/css&#34; href=&#34;http://sdqali.in/visualizations/league_champions/jqueryui/css/ui-lightness/jquery-ui-1.8.21.custom.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script type=&#34;text/javascript&#34; src=&#34;http://sdqali.in/visualizations/league_champions/jqueryui/js/jquery-1.7.2.min.js&#34;&gt;&lt;/script&gt;
-&lt;script type=&#34;text/javascript&#34; src=&#34;http://sdqali.in/visualizations/league_champions/jqueryui/js/jquery-ui-1.8.21.custom.min.js&#34;&gt;&lt;/script&gt;
-&lt;link rel=&#34;stylesheet&#34; href=&#34;http://sdqali.in/visualizations/league_champions/champions.css&#34; type=&#34;text/css&#34;
-media=&#34;screen&#34; title=&#34;no title&#34; charset=&#34;utf-8&#34;/&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;div id=&#34;league&#34;&gt;Select League:
-  &lt;select id=&#34;leagueselect&#34;&gt;
-    &lt;option value=&#34;england&#34;&gt;England&lt;/option&gt;
-    &lt;option value=&#34;france&#34;&gt;France&lt;/option&gt;
-    &lt;option value=&#34;germany&#34;&gt;Germany&lt;/option&gt;
-    &lt;option value=&#34;italy&#34;&gt;Italy&lt;/option&gt;
-    &lt;option value=&#34;netherlands&#34;&gt;Netherlands&lt;/option&gt;
-    &lt;option value=&#34;spain&#34;&gt;Spain&lt;/option&gt;
-  &lt;/select&gt;
-&lt;/div&gt;
-&lt;div id=&#34;slider&#34;&gt;
-  &lt;div class=&#34;slidercontrols&#34;&gt;
-    &lt;p&gt;
-      &lt;label for=&#34;era&#34;&gt;Era:&lt;/label&gt;
-      &lt;input type=&#34;text&#34; id=&#34;era&#34; style=&#34;border:0; color:#000000;&#34; readonly=&#34;redonly&#34;/&gt;
-      Drag the sliders to see data for a particular era.
-    &lt;/p&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;div id=&amp;quot;slider-range&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;/div&gt;
-  &lt;br/&gt;
-  &lt;div id=&#34;champions&#34;&gt;
-  &lt;/div&gt;
-  &lt;script type=&#34;text/javascript&#34;&gt;
-    drawEvrything(600, 400);
-  &lt;/script&gt;
-&lt;/div&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Click &lt;a href=&#34;http://sdqali.in/visualizations/league_champions/index.html&#34;&gt;here&lt;/a&gt; to see the visualisation.&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;This is a visualization showing how various European football clubs have
 dominated their respective national leagues over various time
