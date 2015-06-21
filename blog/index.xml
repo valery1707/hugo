@@ -5,8 +5,54 @@
     <link>http://sdqali.in/blog/</link>
     <description>Recent content in Blogs on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 09 Jun 2015 01:11:05 -0400</lastBuildDate>
+    <lastBuildDate>Sat, 20 Jun 2015 23:35:27 -0400</lastBuildDate>
     <atom:link href="http://sdqali.in/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Iftar 2015 - Day 3</title>
+      <link>http://sdqali.in/blog/2015/06/20/iftar-2015---day-3/</link>
+      <pubDate>Sat, 20 Jun 2015 23:35:27 -0400</pubDate>
+      
+      <guid>http://sdqali.in/blog/2015/06/20/iftar-2015---day-3/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/iftar2015/day3.jpg&#34; alt=&#34;Day 2 of Iftar 2015&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Clockwise from bottom-left:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Beef shank stew with rice&lt;/li&gt;
+&lt;li&gt;Kheema kebab&lt;/li&gt;
+&lt;li&gt;Water&lt;/li&gt;
+&lt;li&gt;Tomatoes with fresh buffalo mozzarella; Cherry tomatoes&lt;/li&gt;
+&lt;li&gt;Coconut milk drink&lt;/li&gt;
+&lt;li&gt;Berries, cantaloupe, water melon, pine apple, coconut chunks&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Iftar 2015 - Day 2</title>
+      <link>http://sdqali.in/blog/2015/06/19/iftar-2015---day-2/</link>
+      <pubDate>Fri, 19 Jun 2015 23:35:27 -0400</pubDate>
+      
+      <guid>http://sdqali.in/blog/2015/06/19/iftar-2015---day-2/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/iftar2015/day2.jpg&#34; alt=&#34;Day 2 of Iftar 2015&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Ramadan started yesterday for me, right on time as I have an opportunity to cook again, having moved to an apartment from the hotel where I have been staying for the large part of last year. I could not document yesterday&amp;rsquo;s Iftar as it was rushed and at a restaurant on my way back from the airport after my flight to San Francisco had been canceled. So this series starts with Day 2.&lt;/p&gt;
+
+&lt;p&gt;Clockwise from bottom:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Chapli Kebab&lt;/li&gt;
+&lt;li&gt;Store-bought Coconut Milk drink&lt;/li&gt;
+&lt;li&gt;Water melon and pine apple&lt;/li&gt;
+&lt;li&gt;Berries and cantaloupe&lt;/li&gt;
+&lt;li&gt;Water&lt;/li&gt;
+&lt;li&gt;Lemonade&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Running multiple applications in the same Tomcat installation</title>
@@ -922,240 +968,6 @@ X-Rate-Limit-Reset: 1381717124
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5795a64758d23be8c42855c9ecf34170:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li id=&#34;fn:5795a64758d23be8c42855c9ecf34170:4&#34;&gt;Wikipedia - Unix time - &lt;a href=&#34;https://en.wikipedia.org/wiki/Unix_time#Encoding_time_as_a_number&#34;&gt;Encoding time as a number&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5795a64758d23be8c42855c9ecf34170:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Implementing Rate Limiting in Rails - Part 1</title>
-      <link>http://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/</link>
-      <pubDate>Sat, 12 Oct 2013 00:00:00 +0000</pubDate>
-      
-      <guid>http://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/</guid>
-      <description>
-
-&lt;p&gt;&lt;em&gt;The second part of this series can be found &lt;a href=&#34;http://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails-part-2/&#34;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Rate limiting or throttling is the practice of limiting how frequently legitimate users of a web service can access the service. Rate limiting is often put in place to prevent the hogging of resources by a sub set of the users of the system. Rate limiting works by responding with error messages when a client exceeds their allocated share of requests within a predefined time window. In addition to the error message, the response should also include information as to when rate limit will be reset so that the client can continue accessing the system after the reset.&lt;/p&gt;
-
-&lt;p&gt;What we need is a way to record the number of requests each client is making and reset this number to zero after a predefined time period and decide for each request whether the client making the request has exceeded the limits.&lt;/p&gt;
-
-&lt;h3 id=&#34;the-test-application:05fdaa963770121a9f6ab535e38c3f13&#34;&gt;The test application&lt;/h3&gt;
-
-&lt;p&gt;We will create a simple Rails application with a single API endpoint at &lt;code&gt;foo.json&lt;/code&gt;. The code needed for this is as follows:&lt;/p&gt;
-
-&lt;p&gt;Routes:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# config/routes.rb
-
-RailsThrottle::Application.routes.draw do
-  get &#39;foo.json&#39; =&amp;gt; &#39;foo#index&#39;
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The controller:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# app/controllers/foo_controller.rb
-
-class FooController &amp;lt; ApplicationController
-  def index
-    render json: {foo: :bar}
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;storing-the-rate-data:05fdaa963770121a9f6ab535e38c3f13&#34;&gt;Storing the rate data&lt;/h3&gt;
-
-&lt;p&gt;We need a place to store each client&amp;rsquo;s IP address and the number of requests it made. We need to increment this count for each request and reset the count to zero after a time period. Considering these needs, &lt;a href=&#34;http://redis.io/&#34;&gt;Redis&lt;/a&gt; is a great fit for this data store. Redis stores key value pairs and allows expiry time to be specified for each entry. Redis also comes with an &lt;code&gt;INCR&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:05fdaa963770121a9f6ab535e38c3f13:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:05fdaa963770121a9f6ab535e38c3f13:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; command that ensures that increment operations are atomic. This will be useful to us if we were to run multiple instances of our app behind a load balancer.&lt;/p&gt;
-
-&lt;p&gt;To setup the application to use Redis, we will need to install the &lt;code&gt;redis&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:05fdaa963770121a9f6ab535e38c3f13:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:05fdaa963770121a9f6ab535e38c3f13:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; gem. Once we have the gem, we will add a new &lt;code&gt;initializer&lt;/code&gt; named &lt;code&gt;throttle.rb&lt;/code&gt; which configures our Redis client.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# config/initializers/throttle.rb
-
-require &amp;quot;redis&amp;quot;
-
-redis_conf  = YAML.load(File.join(Rails.root, &amp;quot;config&amp;quot;, &amp;quot;redis.yml&amp;quot;))
-REDIS = Redis.new(:host =&amp;gt; redis_conf[&amp;quot;host&amp;quot;], :port =&amp;gt; redis_conf[&amp;quot;port&amp;quot;])
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This will load the Redis server&amp;rsquo;s host and port from the configuration file located at &lt;code&gt;config/redis.yml&lt;/code&gt;. This file will look like this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# config/redis.yml
-
-host: localhost
-port: 6379
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;using-a-before-filter-for-rate-limiting:05fdaa963770121a9f6ab535e38c3f13&#34;&gt;Using a &lt;code&gt;before_filter&lt;/code&gt; for rate limiting.&lt;/h3&gt;
-
-&lt;p&gt;The first step is to log the number of requests each client is making. This can easily be achieved with a &lt;code&gt;before_filter&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:05fdaa963770121a9f6ab535e38c3f13:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:05fdaa963770121a9f6ab535e38c3f13:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;. Let&amp;rsquo;s add the filter into the &lt;code&gt;ApplicationController&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# app/controllers/application_controller.rb
-
-class ApplicationController &amp;lt; ActionController::Base
-  ...
-
-  before_filter :throttle
-
-  def throttle
-    client_ip = request.env[&amp;quot;REMOTE_ADDR&amp;quot;]
-    key = &amp;quot;count:#{client_ip}&amp;quot;
-    count = REDIS.get(key)
-
-    unless count
-      REDIS.set(key, 0)
-    end
-    REDIS.incr(key)
-    true
-  end
-
-  ...
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Since this &lt;code&gt;before_filter&lt;/code&gt; belongs to the &lt;code&gt;ApplicationController&lt;/code&gt;, it will be applied to all requests, unless a specific controller chooses to skip it. So before every request is processed, the filter grabs the client&amp;rsquo;s IP and checks whether there is a count in Redis for this IP. If there is no count key, it creates one. Finally it increments the count.&lt;/p&gt;
-
-&lt;p&gt;At this point, the filter just records the requests made, but does not limit requests. Let&amp;rsquo;s go ahead and implement limiting. We need to specify the time window for rate limiting and how many requests should be allowed in that time window. We will allow a client a maximum of &lt;code&gt;60&lt;/code&gt; requests in &lt;code&gt;15&lt;/code&gt; minutes. The following constants need to be defined in &lt;code&gt;throttle.rb&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;THROTTLE_TIME_WINDOW = 15 * 60
-THROTTLE_MAX_REQUESTS = 60
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The filter needs to be changed to respond with error messages when the rate limit is exceeded.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;# app/controllers/application_controller.rb
-
-class ApplicationController &amp;lt; ActionController::Base
-  ...
-
-  before_filter :throttle
-
-  def throttle
-    client_ip = request.env[&amp;quot;REMOTE_ADDR&amp;quot;]
-    key = &amp;quot;count:#{client_ip}&amp;quot;
-    count = REDIS.get(key)
-
-    unless count
-      REDIS.set(key, 0)
-      REDIS.expire(key, THROTTLE_TIME_WINDOW)
-      return true
-    end
-
-    if count.to_i &amp;gt;= THROTTLE_MAX_REQUESTS
-      render :status =&amp;gt; 429, :json =&amp;gt; {:message =&amp;gt; &amp;quot;You have fired too many requests. Please wait for some time.&amp;quot;}
-      return
-    end
-    REDIS.incr(key)
-    true
-  end
-
-  ...
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;When the limit is reached, subsequent requests will be responded with an error message and the HTTP status code &lt;code&gt;429&lt;/code&gt;. The 429 &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:05fdaa963770121a9f6ab535e38c3f13:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:05fdaa963770121a9f6ab535e38c3f13:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt; status code indicates that the user has sent too many requests in a given amount of time.&lt;/p&gt;
-
-&lt;p&gt;Let&amp;rsquo;s go ahead and test this.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;bash$ for i in {1..100}
-do
-curl -i http://localhost:3000/foo.json &amp;gt;&amp;gt; /dev/null
-done
-
-bash$ less log/development.log | grep &amp;quot;200 OK&amp;quot; | wc -l
-      60
-
-bash$ less log/development.log | grep &amp;quot;429 Too Many Requests&amp;quot; | wc -l
-      40
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;As you can see after &lt;code&gt;60&lt;/code&gt; requests, all requests get the &lt;code&gt;429&lt;/code&gt; response.&lt;/p&gt;
-
-&lt;h3 id=&#34;improvements:05fdaa963770121a9f6ab535e38c3f13&#34;&gt;Improvements&lt;/h3&gt;
-
-&lt;p&gt;While what we have implemented limits the requests, it does not give the client enough information as to how long it has to wait before making requests again. It would also be helpful if the server tells the client on each request how many total requests it is allowed to make in a window and how many more requests it can perform before limiting kicks in. We will look at this in the next blog post.&lt;/p&gt;
-
-&lt;p&gt;A sample application with this rate limiting in place is on &lt;a href=&#34;https://github.com/sdqali/rails_throttle/tree/filter&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:05fdaa963770121a9f6ab535e38c3f13:1&#34;&gt;&lt;a href=&#34;http://redis.io/commands/incr&#34;&gt;Redis documentation&lt;/a&gt; for INCR command.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:05fdaa963770121a9f6ab535e38c3f13:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:05fdaa963770121a9f6ab535e38c3f13:2&#34;&gt;&lt;a href=&#34;https://rubygems.org/gems/redis&#34;&gt;redis&lt;/a&gt; - A Ruby client that tries to match Redis&amp;rsquo; API one-to-one, while still providing an idiomatic interface. It features thread-safety, client-side sharding, pipelining, and an obsession for performance.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:05fdaa963770121a9f6ab535e38c3f13:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:05fdaa963770121a9f6ab535e38c3f13:3&#34;&gt;Rails&amp;rsquo; &lt;a href=&#34;http://apidock.com/rails/AbstractController/Callbacks/ClassMethods/before_filter&#34;&gt;before filter&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:05fdaa963770121a9f6ab535e38c3f13:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:05fdaa963770121a9f6ab535e38c3f13:4&#34;&gt;IETF: Additional HTTP Status Codes - &lt;a href=&#34;https://tools.ietf.org/html/rfc6585#section-4&#34;&gt;429 Too Many Requests&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:05fdaa963770121a9f6ab535e38c3f13:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Python Hack - Dynamically override an object&#39;s attribute</title>
-      <link>http://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</link>
-      <pubDate>Mon, 07 Oct 2013 00:00:00 +0000</pubDate>
-      
-      <guid>http://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</guid>
-      <description>
-
-&lt;p&gt;While working with Locust &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:66b6e5fb09b6083bed97b4d7a2981cc2:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:66b6e5fb09b6083bed97b4d7a2981cc2:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; recently, we ran into a situation where we had to dynamically override an attribute in a class in the Locust library so as to control what value it got assigned. After a lot of scratching our heads and reading the Python documentation, we came across the &lt;code&gt;property&lt;/code&gt; function. We were able to use this to hack together a solution that ensures that every time an attribute is read, it returns the result of executing a method.&lt;/p&gt;
-
-&lt;p&gt;The following example demonstrates a stripped down version of this hack.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;import random
-
-class Foo(object):
-    bar = random.random()
-
-foo = Foo()
-
-# Prints the value assigned when the Foo object is initialised.
-print(&amp;quot;Before override&amp;quot;)
-print(foo.bar)
-print(foo.bar)
-
-# Override
-Foo.bar = property(lambda self: random.random())
-
-print(&amp;quot;After override&amp;quot;)
-print(foo.bar)
-print(foo.bar)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This snippet when executed will output the following:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Before override
-0.0373028550804
-0.0373028550804
-After override
-0.603160033663
-0.501455108419
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;It can be seen that before introducing the override, the value of the &lt;code&gt;bar&lt;/code&gt; attribute is set when the class is initialised and as expected, it does not change how many ever times the attribute is read. However, after the override, the attribute is assigned a new value every time it is read.&lt;/p&gt;
-
-&lt;h2 id=&#34;how-does-this-work:66b6e5fb09b6083bed97b4d7a2981cc2&#34;&gt;How does this work?&lt;/h2&gt;
-
-&lt;p&gt;The &lt;code&gt;property()&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:66b6e5fb09b6083bed97b4d7a2981cc2:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:66b6e5fb09b6083bed97b4d7a2981cc2:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; function returns an attribute for any class. It allows the creation of Ruby&amp;rsquo;s &lt;code&gt;attr_accessor&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:66b6e5fb09b6083bed97b4d7a2981cc2:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:66b6e5fb09b6083bed97b4d7a2981cc2:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; style attributes on classes so that one can write &lt;code&gt;instance.attrib&lt;/code&gt; to read an attribute value and &lt;code&gt;instance.attrib=&lt;/code&gt; to set an attribute value. What line &lt;code&gt;14&lt;/code&gt; in the snippet does is to re-define the &lt;code&gt;bar&lt;/code&gt; attribute to be a property whose &lt;code&gt;getter&lt;/code&gt; is a &lt;code&gt;lambda&lt;/code&gt;. Every time the &lt;code&gt;bar&lt;/code&gt; attribute is read, the &lt;code&gt;lambda&lt;/code&gt; gets executed.&lt;/p&gt;
-
-&lt;p&gt;A more comprehensive example of this can be found in my &lt;a href=&#34;https://github.com/sdqali/python_dojo/blob/master/dynamic_override/dynamic_override.py&#34;&gt;Python dojo repository&lt;/a&gt; on GitHub.&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:66b6e5fb09b6083bed97b4d7a2981cc2:1&#34;&gt;&lt;a href=&#34;http://locust.io/&#34;&gt;Locust&lt;/a&gt; - a modern load testing framework.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:66b6e5fb09b6083bed97b4d7a2981cc2:2&#34;&gt;Python&amp;rsquo;s built-in functions - &lt;a href=&#34;http://docs.python.org/2/library/functions.html#property&#34;&gt;property&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:66b6e5fb09b6083bed97b4d7a2981cc2:3&#34;&gt;Ruby&amp;rsquo;s &lt;a href=&#34;http://www.ruby-doc.org/core-1.9.3/Module.html#method-i-attr_accessor&#34;&gt;&lt;code&gt;attr_accessor&lt;/code&gt; method&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>
