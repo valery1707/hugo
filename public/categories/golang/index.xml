@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on Sadique Ali</title>
+    <link>http://127.0.0.1:1313/categories/golang/</link>
+    <description>Recent content in Golang on Sadique Ali</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 21 Jun 2015 11:35:27 -0400</lastBuildDate>
+    <atom:link href="http://127.0.0.1:1313/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>2015 06 21 iftar logs   day 2</title>
+      <link>http://127.0.0.1:1313/blog/2015/06/21/2015-06-21-iftar-logs---day-2/</link>
+      <pubDate>Sun, 21 Jun 2015 11:35:27 -0400</pubDate>
+      
+      <guid>http://127.0.0.1:1313/blog/2015/06/21/2015-06-21-iftar-logs---day-2/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
