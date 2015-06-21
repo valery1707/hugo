@@ -6,47 +6,11 @@ title: "Visualisation - How European clubs dominate their leagues"
 date: 2012-07-21
 comments: true
 categories: football visualisation data d3.js jqueryui code
+aliases: [
+	"/blog/2012/07/21/visualization-how-european-clubs-dominate-their-leagues"
+]
 ---
-*A bigger version of this is available [here](/visualizations/league_champions/index.html)*
-<script type="text/javascript" src="/visualizations/league_champions/d3.v2.min.js"></script>
-<script type="text/javascript" src="/visualizations/league_champions/champions.js"></script>
-<link type="text/css" href="/visualizations/league_champions/jqueryui/css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
-<script type="text/javascript" src="/visualizations/league_champions/jqueryui/js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="/visualizations/league_champions/jqueryui/js/jquery-ui-1.8.21.custom.min.js"></script>
-<link rel="stylesheet" href="/visualizations/league_champions/champions.css" type="text/css"
-media="screen" title="no title" charset="utf-8"/>
-
-<div id="league">Select League:
-  <select id="leagueselect">
-    <option value="england">England</option>
-    <option value="france">France</option>
-    <option value="germany">Germany</option>
-    <option value="italy">Italy</option>
-    <option value="netherlands">Netherlands</option>
-    <option value="spain">Spain</option>
-  </select>
-</div>
-<div id="slider">
-  <div class="slidercontrols">
-    <p>
-      <label for="era">Era:</label>
-      <input type="text" id="era" style="border:0; color:#000000;" readonly="redonly"/>
-      Drag the sliders to see data for a particular era.
-    </p>
-
-    <div id="slider-range"></div>
-  </div>
-  <br/>
-  <div id="champions">
-  </div>
-  <script type="text/javascript">
-    drawEvrything(600, 400);
-  </script>
-</div>
-<br />
-<br />
-
-<!--more-->
+*Click [here](/visualizations/league_champions/index.html) to see the visualisation.*
 
 This is a visualization showing how various European football clubs have
 dominated their respective national leagues over various time
