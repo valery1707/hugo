@@ -22,12 +22,6 @@
   
   <link href="http://sdqali.in/categories/talk-visualisation-d3.js-javascript-data-deck.js/index.xml" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
 
-  
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:site" content="@sdqali" />
-  <meta name="twitter:title" content="Talk Visualisation D3.Js Javascript Data Deck.Js" />
-  
-  <meta name="twitter:image" content="https://pbs.twimg.com/profile_images/653750707531546624/G2o20V7P.jpg" />
 </head>
 
 <body class="theme-base-0b">

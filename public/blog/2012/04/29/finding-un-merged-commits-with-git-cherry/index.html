@@ -22,13 +22,33 @@
   
   <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
 
-  
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:site" content="@sdqali" />
-  <meta name="twitter:title" content="Finding un-merged commits with git cherry" />
-  
-  <meta name="twitter:image" content="https://pbs.twimg.com/profile_images/653750707531546624/G2o20V7P.jpg" />
 </head>
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@sdqali" />
+<meta name="twitter:title" content="Finding un-merged commits with git cherry" />
+<meta name="twitter:description" content="
+In a project
+  that I was a part of in the recent past, we used Story
+  Branching. While it afforded us flexibility in pulling and pushing
+  stories in and out of releases, it has given us some scares in the
+  past. Somebody makes commits against a story, but the commit does not
+  get merged to the correct release branch where it is supposed to go or
+  gets merged to another release. The solution was to hunt down the
+  commits that are missing or have creeped in.This is where
+  the git cherry command is
+  useful. Git cherry finds commits not merged from a branch to
+  another. From the man
+  page:&nbsp;&ldquo;Every commit that doesn&rsquo;t
+    exist in the &lt;upstream&gt; branch has its id (sha1) reported,
+    prefixed by a symbol. The ones that have equivalent change already
+    in the &lt;upstream&gt; branch&nbsp;are prefixed with a minus (-)
+    sign, and those that only exist in the &lt;head&gt; branch are
+    prefixed with a plus (&#43;) symbol&rdquo;
+" />
+<meta name="twitter:image" content="https://pbs.twimg.com/profile_images/653750707531546624/G2o20V7P.jpg" />
+
 
 <body class="theme-base-0b">
 
