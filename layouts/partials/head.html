@@ -22,12 +22,4 @@
   <!-- RSS -->
   <link href="{{ .RSSlink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
 
-  <!--Twitter Summary Card -->
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:site" content="@sdqali" />
-  <meta name="twitter:title" content="{{ .Title }}" />
-  {{ if isset .Params "summary" }}
-    <meta name="twitter:description" content="{{ .Summary }}" />
-  {{ end }}
-  <meta name="twitter:image" content="https://pbs.twimg.com/profile_images/653750707531546624/G2o20V7P.jpg" />
 </head>
