@@ -1,11 +1,11 @@
 {{ partial "head.html" . }}
 <!--Twitter Summary Card -->
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:site" content="@sdqali" />
-<meta name="twitter:title" content="{{ .Title }}" />
-<meta name="twitter:description" content="{{ .Summary }}" />
-<meta name="twitter:image" content="http://sdqali.in/images/twitter.jpg" />
-
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@sdqali">
+<meta name="twitter:creator" content="@sdqali">
+<meta name="twitter:title" content="Parade of Fans for Houston’s Funeral">
+<meta name="twitter:description" content="{{ .Summary }}">
+<meta name="twitter:image" content="{{ .Site.BaseURL }}/{{ .Image }}">
 
 <body class="theme-base-0b">
 
