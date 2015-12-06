@@ -5,8 +5,80 @@
     <link>http://sdqali.in/blog/</link>
     <description>Recent content in Blogs on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 04 Dec 2015 22:50:24 -0800</lastBuildDate>
+    <lastBuildDate>Sun, 06 Dec 2015 13:28:26 -0800</lastBuildDate>
     <atom:link href="http://sdqali.in/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Implementing custom annotations for Spring MVC</title>
+      <link>http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/</link>
+      <pubDate>Sun, 06 Dec 2015 13:28:26 -0800</pubDate>
+      
+      <guid>http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/</guid>
+      <description>&lt;p&gt;I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of &lt;code&gt;@RequestMapping&lt;/code&gt; and &lt;code&gt;@ResponseStatus&lt;/code&gt; to set the expected request and response &lt;code&gt;Content-Type&lt;/code&gt;, the request Method, response status etc. This blog post describes how to compose Spring annotations that produce the same effect as multiple Spring annotations acting together.&lt;/p&gt;
+
+&lt;p&gt;Among the new things introduced in Spring 4 was the idea of meta-annotations. &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:b72714563591dcee83238042a831f26c:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:b72714563591dcee83238042a831f26c:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; Meta annotations are annotations that can act up on other annotations by modifying and overriding attributes of the target annotations.&lt;/p&gt;
+
+&lt;p&gt;This allows us to build composed annotations &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:b72714563591dcee83238042a831f26c:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:b72714563591dcee83238042a831f26c:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; that combine the behavior of multiple annotations. The &lt;code&gt;@AliasFor&lt;/code&gt; annotation allows us to override attribute names, thereby adding great flexibility while composing.&lt;/p&gt;
+
+&lt;p&gt;This is a common pattern in code bases that use Spring MVC.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;    @RequestMapping(path = &amp;quot;/register&amp;quot;,
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.CREATED)
+    public Map register(@RequestBody @Valid EmailRequest emailRequest) {
+        return registrationService.register(emailRequest);
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The two annotations as applied on this method represent the fact that this is an end point that a client can &lt;code&gt;POST&lt;/code&gt; JSON to and produces JSON and a &lt;code&gt;201 Created&lt;/code&gt; HTTP status when it succeeds. If we had 20 end points that did the similar operations, it would be really useful to have a &lt;code&gt;@PostJson&lt;/code&gt; annotation that did the same thing.&lt;/p&gt;
+
+&lt;p&gt;The following is one way of writing such an annotation.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Target(METHOD)
+@Retention(RUNTIME)
+@Documented
+@RequestMapping(method = RequestMethod.POST,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+)
+@ResponseStatus(HttpStatus.CREATED)
+public @interface PostJson {
+    @AliasFor(annotation = RequestMapping.class, attribute = &amp;quot;path&amp;quot;)
+    String[] path() default {};
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This annotation takes a single parameter &lt;code&gt;path&lt;/code&gt; that represents that URL path to which it will respond to. This can now be applied on the register end point.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;    @PostJson(path = &amp;quot;/register&amp;quot;)
+    public Map register(@RequestBody @Valid EmailRequest emailRequest) {
+        return registrationService.register(emailRequest);
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If we wanted to allow the consumers of &lt;code&gt;@PostJson&lt;/code&gt; to override other parameters of &lt;code&gt;@RequestMapping&lt;/code&gt; or &lt;code&gt;@ResponseStatus&lt;/code&gt;, it can be achieved by adding more aliases. For example, the following will allow users to specify a reason phrase.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;    @AliasFor(annotation = ResponseStatus.class, attribute = &amp;quot;reason&amp;quot;)
+    String[] reason() default {};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This pattern can easily be extended to introduce annotations like &lt;code&gt;@GetJson&lt;/code&gt;, &lt;code&gt;@PutJson&lt;/code&gt;, &lt;code&gt;@PostXml&lt;/code&gt; and so on and so forth.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:b72714563591dcee83238042a831f26c:1&#34;&gt;Meta annotations. &lt;a href=&#34;http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html#beans-meta-annotations&#34;&gt;Spring documentation&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:b72714563591dcee83238042a831f26c:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:b72714563591dcee83238042a831f26c:2&#34;&gt;Composed annotations. &lt;a href=&#34;https://github.com/spring-projects/spring-framework/wiki/Spring-Annotation-Programming-Model#composed-annotations&#34;&gt;Spring documentation&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:b72714563591dcee83238042a831f26c:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Validating RequestParams and PathVariables in Spring MVC</title>
@@ -964,187 +1036,6 @@ IO.write &amp;quot;businesses.mongo.json&amp;quot;, businesses.to_json
 &lt;p&gt;While a teenager the average YouTube comment thread will lead with &amp;ldquo;You are a faggot!&amp;rdquo; in reply to an opinion he disagrees with, places and people who consider themselves learned and sophisticated lead with comments of the &amp;ldquo;Oh, at least you can spell!&amp;rdquo; genre. Neither helps in expressing disagreement with the opinion, all the while being dangerously effective at expressing one&amp;rsquo;s displeasure for the person with the opinion.&lt;/p&gt;
 
 &lt;p&gt;Having said this, I still frequent these forums because I still learn a lot of things from people there. I am mostly a silent lurker and I think I will continue to be, in the near future.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Implementing Rate Limiting in Rails - Part 2</title>
-      <link>http://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/</link>
-      <pubDate>Sun, 13 Oct 2013 00:00:00 +0000</pubDate>
-      
-      <guid>http://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/</guid>
-      <description>
-
-&lt;p&gt;&lt;em&gt;The first part of this series can be found &lt;a href=&#34;http://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails-part-1/&#34;&gt;here&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;The first part of this series looked at how to implement basic rate limiting in a Rails application. However, as pointed out in the improvements section, the implementation was not complete - it did not provide clients enough information about the rate limiting that is in place and how long they should wait before making further requests once they hit the limit.&lt;/p&gt;
-
-&lt;p&gt;In order to tell the client about the rate limit parameters, the mechanism needs to be able to set headers on the response. While a &lt;code&gt;before_filter&lt;/code&gt; is useful to limit the requests, it can not change the response from a valid request. One could use an &lt;code&gt;after_filter&lt;/code&gt; to achieve this, but a Rack middleware &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5795a64758d23be8c42855c9ecf34170:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5795a64758d23be8c42855c9ecf34170:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; is a more suitable solution given that middlewares can act up on a request as well as the response generated by the application for that request.&lt;/p&gt;
-
-&lt;p&gt;We will need to comment out the &lt;code&gt;before_filter&lt;/code&gt; that was introduced in Part 1. Then we will define a blank middleware and wire it up. The convention is to define middlwares in &lt;code&gt;app/middleware&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;
-# app/middleware/rate_limit.rb
-
-class RateLimit
-  def initialize(app)
-    @app = app
-  end
-
-  def call(env)
-    @app.env
-  end
-end
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This middleware is wired up as follows:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;
-# config/application.rb
-
-class Application &amp;lt; Rails::Application
-  ...
-  config.middleware.use &amp;quot;RateLimit&amp;quot;
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;basic-rate-limiting:5795a64758d23be8c42855c9ecf34170&#34;&gt;Basic Rate Limiting&lt;/h3&gt;
-
-&lt;p&gt;Let&amp;rsquo;s re-implement what we implemented in Part 1 using the middleware.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;  def call(env)
-    client_ip = env[&amp;quot;REMOTE_ADDR&amp;quot;]
-    key = &amp;quot;count:#{client_ip}&amp;quot;
-    count = REDIS.get(key)
-    unless count
-      REDIS.set(key, 0)
-      REDIS.expire(key, THROTTLE_TIME_WINDOW)
-    end
-
-    if count.to_i &amp;gt;= THROTTLE_MAX_REQUESTS
-      [
-       429,
-       {},
-       [message]
-      ]
-    else
-      REDIS.incr(key)
-      @app.call(env)
-    end
-  end
-
-  private
-  def message
-    {
-      :message =&amp;gt; &amp;quot;You have fired too many requests. Please wait for some time.&amp;quot;
-    }.to_json
-  end
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;rate-limit-status:5795a64758d23be8c42855c9ecf34170&#34;&gt;Rate limit status&lt;/h3&gt;
-
-&lt;p&gt;There are various header conventions for providing a client it&amp;rsquo;s rate limit status. For this example, we will use the convention that GitHub &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5795a64758d23be8c42855c9ecf34170:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5795a64758d23be8c42855c9ecf34170:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; and Twitter &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5795a64758d23be8c42855c9ecf34170:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5795a64758d23be8c42855c9ecf34170:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; use. The following headers represent the rate limit status:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;X-RateLimit-Limit&lt;/code&gt; - The maximum number of requests that the client is permitted to make in the time window.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;X-RateLimit-Remaining&lt;/code&gt; - The number of requests remaining in the current rate limit window.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;X-RateLimit-Reset&lt;/code&gt; - The time at which the current rate limit window resets in UTC epoch seconds &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:5795a64758d23be8c42855c9ecf34170:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:5795a64758d23be8c42855c9ecf34170:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The middleware will set these headers for all requests with the following change:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;  def call(env)
-    client_ip = env[&amp;quot;REMOTE_ADDR&amp;quot;]
-    key = &amp;quot;count:#{client_ip}&amp;quot;
-    count = REDIS.get(key)
-    unless count
-      REDIS.set(key, 0)
-      REDIS.expire(key, THROTTLE_TIME_WINDOW)
-    end
-
-    if count.to_i &amp;gt;= THROTTLE_MAX_REQUESTS
-      [
-       429,
-       rate_limit_headers(count, key),
-       [message]
-      ]
-    else
-      REDIS.incr(key)
-      status, headers, body = @app.call(env)
-      [
-       status,
-       headers.merge(rate_limit_headers(count.to_i + 1, key)),
-       body
-      ]
-    end
-  end
-
-  private
-  def message
-    {
-      :message =&amp;gt; &amp;quot;You have fired too many requests. Please wait for some time.&amp;quot;
-    }.to_json
-  end
-
-  def rate_limit_headers(count, key)
-    ttl = REDIS.ttl(key)
-    time = Time.now.to_i
-    time_till_reset = (time + ttl.to_i).to_s
-    {
-      &amp;quot;X-Rate-Limit-Limit&amp;quot; =&amp;gt;  &amp;quot;60&amp;quot;,
-      &amp;quot;X-Rate-Limit-Remaining&amp;quot; =&amp;gt; (60 - count.to_i).to_s,
-      &amp;quot;X-Rate-Limit-Reset&amp;quot; =&amp;gt; time_till_reset
-    }
-  end
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This computes the time remaining till the limit is reset and the number of requests remaining and sets the appropriate headers.&lt;/p&gt;
-
-&lt;p&gt;Let&amp;rsquo;s test this.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;bash$ for i in {1..100}
-do
-curl -i http://localhost:3000/foo.json &amp;gt;&amp;gt; /tmp/headers.log
-done
-
-bash$ less /tmp/headers.log | grep X-Rate-Limit
-X-Rate-Limit-Limit: 60
-X-Rate-Limit-Remaining: 59
-X-Rate-Limit-Reset: 1381717125
-X-Rate-Limit-Limit: 60
-X-Rate-Limit-Remaining: 58
-X-Rate-Limit-Reset: 1381717125
-...
-X-Rate-Limit-Limit: 60
-X-Rate-Limit-Remaining: 1
-X-Rate-Limit-Reset: 1381717124
-X-Rate-Limit-Limit: 60
-X-Rate-Limit-Remaining: 0
-X-Rate-Limit-Reset: 1381717124
-X-Rate-Limit-Limit: 60
-X-Rate-Limit-Remaining: 0
-X-Rate-Limit-Reset: 1381717124
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The code for this implementation is on my &lt;a href=&#34;https://github.com/sdqali/rails_throttle&#34;&gt;GitHub profile&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:5795a64758d23be8c42855c9ecf34170:1&#34;&gt;RailsCast &lt;a href=&#34;http://railscasts.com/episodes/151-rack-middleware&#34;&gt;#151 - Rack Middleware&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5795a64758d23be8c42855c9ecf34170:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:5795a64758d23be8c42855c9ecf34170:2&#34;&gt;GitHub API V3 - &lt;a href=&#34;http://developer.github.com/v3/#rate-limiting&#34;&gt;Rate limiting&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5795a64758d23be8c42855c9ecf34170:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:5795a64758d23be8c42855c9ecf34170:3&#34;&gt;Twitter - &lt;a href=&#34;https://dev.twitter.com/docs/rate-limiting/1.1&#34;&gt;REST API Rate Limiting in v1.1&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5795a64758d23be8c42855c9ecf34170:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:5795a64758d23be8c42855c9ecf34170:4&#34;&gt;Wikipedia - Unix time - &lt;a href=&#34;https://en.wikipedia.org/wiki/Unix_time#Encoding_time_as_a_number&#34;&gt;Encoding time as a number&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:5795a64758d23be8c42855c9ecf34170:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
 </description>
     </item>
     
