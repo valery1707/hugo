@@ -8,7 +8,6 @@ Tags:
 - Java
 - Spring
 date: 2015-12-06T13:28:26-08:00
-menu: main
 title: Implementing custom annotations for Spring MVC
 image: "images/spring-by-pivotal.png"
 ---
