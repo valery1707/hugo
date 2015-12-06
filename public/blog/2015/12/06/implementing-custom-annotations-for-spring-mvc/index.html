@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Implementing custom annotations for Spring MVC &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in/css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in/css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+
+</head>
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@sdqali">
+<meta name="twitter:creator" content="@sdqali">
+<meta name="twitter:title" content="Implementing custom annotations for Spring MVC">
+<meta name="twitter:description" content="I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of @RequestMapping and @ResponseStatus to set the expected request and response Content-Type, the request Method, response status etc. This blog post describes how to compose Spring annotations that produce the same effect as multiple Spring annotations acting together.
+">
+<meta name="twitter:image" content="http://sdqali.in/">
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+        <li><a href="/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/"> Implementing custom annotations for Spring MVC </a></li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Implementing custom annotations for Spring MVC</h1>
+  <span class="post-date">Sun, Dec 6, 2015</span>
+      <p>I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of <code>@RequestMapping</code> and <code>@ResponseStatus</code> to set the expected request and response <code>Content-Type</code>, the request Method, response status etc. This blog post describes how to compose Spring annotations that produce the same effect as multiple Spring annotations acting together.</p>
+
+<p>Among the new things introduced in Spring 4 was the idea of meta-annotations. <sup class="footnote-ref" id="fnref:b72714563591dcee83238042a831f26c:1"><a rel="footnote" href="#fn:b72714563591dcee83238042a831f26c:1">1</a></sup> Meta annotations are annotations that can act up on other annotations by modifying and overriding attributes of the target annotations.</p>
+
+<p>This allows us to build composed annotations <sup class="footnote-ref" id="fnref:b72714563591dcee83238042a831f26c:2"><a rel="footnote" href="#fn:b72714563591dcee83238042a831f26c:2">2</a></sup> that combine the behavior of multiple annotations. The <code>@AliasFor</code> annotation allows us to override attribute names, thereby adding great flexibility while composing.</p>
+
+<p>This is a common pattern in code bases that use Spring MVC.</p>
+
+<pre><code class="language-java">    @RequestMapping(path = &quot;/register&quot;,
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.CREATED)
+    public Map register(@RequestBody @Valid EmailRequest emailRequest) {
+        return registrationService.register(emailRequest);
+    }
+</code></pre>
+
+<p>The two annotations as applied on this method represent the fact that this is an end point that a client can <code>POST</code> JSON to and produces JSON and a <code>201 Created</code> HTTP status when it succeeds. If we had 20 end points that did the similar operations, it would be really useful to have a <code>@PostJson</code> annotation that did the same thing.</p>
+
+<p>The following is one way of writing such an annotation.</p>
+
+<pre><code class="language-java">@Target(METHOD)
+@Retention(RUNTIME)
+@Documented
+@RequestMapping(method = RequestMethod.POST,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+)
+@ResponseStatus(HttpStatus.CREATED)
+public @interface PostJson {
+    @AliasFor(annotation = RequestMapping.class, attribute = &quot;path&quot;)
+    String[] path() default {};
+}
+</code></pre>
+
+<p>This annotation takes a single parameter <code>path</code> that represents that URL path to which it will respond to. This can now be applied on the register end point.</p>
+
+<pre><code class="language-java">    @PostJson(path = &quot;/register&quot;)
+    public Map register(@RequestBody @Valid EmailRequest emailRequest) {
+        return registrationService.register(emailRequest);
+    }
+</code></pre>
+
+<p>If we wanted to allow the consumers of <code>@PostJson</code> to override other parameters of <code>@RequestMapping</code> or <code>@ResponseStatus</code>, it can be achieved by adding more aliases. For example, the following will allow users to specify a reason phrase.</p>
+
+<pre><code class="language-java">    @AliasFor(annotation = ResponseStatus.class, attribute = &quot;reason&quot;)
+    String[] reason() default {};
+</code></pre>
+
+<p>This pattern can easily be extended to introduce annotations like <code>@GetJson</code>, <code>@PutJson</code>, <code>@PostXml</code> and so on and so forth.</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:b72714563591dcee83238042a831f26c:1">Meta annotations. <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html#beans-meta-annotations">Spring documentation</a>.
+ <a class="footnote-return" href="#fnref:b72714563591dcee83238042a831f26c:1"><sup>[return]</sup></a></li>
+<li id="fn:b72714563591dcee83238042a831f26c:2">Composed annotations. <a href="https://github.com/spring-projects/spring-framework/wiki/Spring-Annotation-Programming-Model#composed-annotations">Spring documentation</a>.
+ <a class="footnote-return" href="#fnref:b72714563591dcee83238042a831f26c:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+</div>
+</div>
+
+  </body>
+</html>
