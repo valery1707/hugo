@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> How thinking of Documentation as Legislation helped me become a better programmer &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in/css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in/css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in/css/hyde.css">
+  <link rel="stylesheet" href="http://sdqali.in/css/default.min.css">
+  <link rel="stylesheet" href="http://sdqali.in/css/custom.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+</head>
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@sdqali">
+<meta name="twitter:creator" content="@sdqali">
+<meta name="twitter:title" content="How thinking of Documentation as Legislation helped me become a better programmer">
+<meta name="twitter:description" content="When I first started programming, it was predominantly creating applications that utilized the C&#43;&#43; graphics library. I was 14 and my friends and I tried to make the most of the time we got to spend at the computer lab of the boarding school we attended. We created applications that drew pretty, often animated pictures on the screen and not much else. This taught us basics, but our learning lacked any kind of structure.">
+<meta name="twitter:image" content="http://sdqali.in/">
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>How thinking of Documentation as Legislation helped me become a better programmer</h1>
+  <span class="post-date">Mon, Dec 7, 2015</span>
+      <p>When I first started programming, it was predominantly creating applications that utilized the C++ graphics library. I was 14 and my friends and I tried to make the most of the time we got to spend at the computer lab of the boarding school we attended. We created applications that drew pretty, often animated pictures on the screen and not much else. This taught us basics, but our learning lacked any kind of structure. We read and figured out just enough to do what we wanted to do. There was no guidance.</p>
+
+<p>When I went to college and ended up pursuing a degree in Electronics and Instrumentation, most of the programming I did was against a few micro-controller architectures and the odd C programming class. I learned a lot, but I did not delve in to the inner details of things. By the time I started working, I was a good programmer, but deep inside I always had the fear that I was faking it and that I was not good enough. When I had to solve things in new languages and technologies I often tried to find solutions that I could learn from and adapt as opposed to diving deep in to the details and inner workings of things. I was afraid that I wouldn&rsquo;t be able to handle it.</p>
+
+<p>At around the time I went to college, I had become really drawn to the legislative process and how legislation evolved. Interests in certain topics like the constant legal tussle that the Republic of India engaged with it&rsquo;s States on the topic of the National Language <sup class="footnote-ref" id="fnref:a5afb5dc33b2fc67590eea4a9e3c0e13:1"><a rel="footnote" href="#fn:a5afb5dc33b2fc67590eea4a9e3c0e13:1">1</a></sup> compelled me to read the related legislation and court rulings. I slowly discovered that even though I was neither a student of Political Science nor a lawyer, I could understand legislation and court orders well enough because they were so specific—specific to the point of being boring.</p>
+
+<p>This prompted me to look at documentation in another light. From being unnecessarily complex in my view, they became specific and often the place to see answers for contentious topics that brought conflicting interpretations from different people. Around this time, I had started reading the R.F.C.s <sup class="footnote-ref" id="fnref:a5afb5dc33b2fc67590eea4a9e3c0e13:2"><a rel="footnote" href="#fn:a5afb5dc33b2fc67590eea4a9e3c0e13:2">2</a></sup> of the I.E.T.F. <sup class="footnote-ref" id="fnref:a5afb5dc33b2fc67590eea4a9e3c0e13:3"><a rel="footnote" href="#fn:a5afb5dc33b2fc67590eea4a9e3c0e13:3">3</a></sup> and it convinced me that well written documentation has the same qualities as well written legislation—specificity, context and lending themselves to being represented as change-sets.</p>
+
+<p>This has had tremendously positive effect on my programming—instead of being afraid of diving deep and understanding for myself how a particular programming language feature or library or protocol specification, I see it something that I can understand really well if I spend enough time.</p>
+
+<p>I have since come across projects that look at this similarity from the other side. There are multiple projects that tries to represent and record constitutions and legislation as version controlled repositories. The <a href="https://blog.abevoelker.com/gitlaw-github-for-laws-and-legal-documents-a-tourniquet-for-american-liberty/">GitLaw</a> idea has taken off with multiple version-controlled repositories of legislation—examples include <a href="https://github.com/xlfe/gitlaw-au">Australia</a>, <a href="https://github.com/Br3nda/legislation">New Zealand</a> and <a href="https://github.com/bundestag/gesetze">Germany</a>.</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:a5afb5dc33b2fc67590eea4a9e3c0e13:1">The topic of the National Language was a hot–button issue in the political landscape of the nascent independent Republic of India. The <a href="https://en.wikisource.org/wiki/Official_Languages_Act,_1963">Official Languages Act of 1963</a> is an example of legislation associated with battle.
+ <a class="footnote-return" href="#fnref:a5afb5dc33b2fc67590eea4a9e3c0e13:1"><sup>[return]</sup></a></li>
+<li id="fn:a5afb5dc33b2fc67590eea4a9e3c0e13:2">Request for Comments are publications of the I.E.T.F. Read more on <a href="https://en.wikipedia.org/wiki/Request_for_Comments">Wikipedia</a>.
+ <a class="footnote-return" href="#fnref:a5afb5dc33b2fc67590eea4a9e3c0e13:2"><sup>[return]</sup></a></li>
+<li id="fn:a5afb5dc33b2fc67590eea4a9e3c0e13:3">Internet Engineering Task Force develops and promotes Internet standards. Read more on <a href="https://en.wikipedia.org/wiki/Internet_Engineering_Task_Force">Wikipedia</a>.
+ <a class="footnote-return" href="#fnref:a5afb5dc33b2fc67590eea4a9e3c0e13:3"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+</div>
+</div>
+
+  </body>
+</html>
