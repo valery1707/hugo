@@ -6,6 +6,7 @@ Tags:
 - Development
 date: 2015-12-07T20:43:02-05:00
 title: How thinking of Documentation as Legislation helped me become a better programmer
+image: "images/document.png"
 ---
 When I first started programming, it was predominantly creating applications that utilized the C++ graphics library. I was 14 and my friends and I tried to make the most of the time we got to spend at the computer lab of the boarding school we attended. We created applications that drew pretty, often animated pictures on the screen and not much else. This taught us basics, but our learning lacked any kind of structure. We read and figured out just enough to do what we wanted to do. There was no guidance.
 
