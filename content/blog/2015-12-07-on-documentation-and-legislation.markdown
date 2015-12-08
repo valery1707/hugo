@@ -20,6 +20,6 @@ This has had tremendously positive effect on my programming—instead of being a
 
 I have since come across projects that look at this similarity from the other side. There are multiple projects that tries to represent and record constitutions and legislation as version controlled repositories. The [GitLaw](https://blog.abevoelker.com/gitlaw-github-for-laws-and-legal-documents-a-tourniquet-for-american-liberty/) idea has taken off with multiple version-controlled repositories of legislation—examples include [Australia](https://github.com/xlfe/gitlaw-au), [New Zealand](https://github.com/Br3nda/legislation) and [Germany](https://github.com/bundestag/gesetze).
 
-[^1]: The topic of the National Language was a hot–button issue in the political landscape of the nascent independent Republic of India. The [Official Languages Act of 1963](https://en.wikisource.org/wiki/Official_Languages_Act,_1963) is an example of legislation associated with battle.
+[^1]: The topic of the National Language was a hot–button issue in the political landscape of the nascent independent Republic of India. The [Official Languages Act of 1963](https://en.wikisource.org/wiki/Official_Languages_Act,_1963) is an example of legislation associated with this struggle.
 [^2]: Request for Comments are publications of the I.E.T.F. Read more on [Wikipedia](https://en.wikipedia.org/wiki/Request_for_Comments).
 [^3]: Internet Engineering Task Force develops and promotes Internet standards. Read more on [Wikipedia](https://en.wikipedia.org/wiki/Internet_Engineering_Task_Force).
