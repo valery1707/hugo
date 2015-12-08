@@ -5,8 +5,41 @@
     <link>http://sdqali.in/blog/</link>
     <description>Recent content in Blogs on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 06 Dec 2015 13:28:26 -0800</lastBuildDate>
+    <lastBuildDate>Mon, 07 Dec 2015 20:43:02 -0500</lastBuildDate>
     <atom:link href="http://sdqali.in/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>How thinking of Documentation as Legislation helped me become a better programmer</title>
+      <link>http://sdqali.in/blog/2015/12/07/how-thinking-of-documentation-as-legislation-helped-me-become-a-better-programmer/</link>
+      <pubDate>Mon, 07 Dec 2015 20:43:02 -0500</pubDate>
+      
+      <guid>http://sdqali.in/blog/2015/12/07/how-thinking-of-documentation-as-legislation-helped-me-become-a-better-programmer/</guid>
+      <description>&lt;p&gt;When I first started programming, it was predominantly creating applications that utilized the C++ graphics library. I was 14 and my friends and I tried to make the most of the time we got to spend at the computer lab of the boarding school we attended. We created applications that drew pretty, often animated pictures on the screen and not much else. This taught us basics, but our learning lacked any kind of structure. We read and figured out just enough to do what we wanted to do. There was no guidance.&lt;/p&gt;
+
+&lt;p&gt;When I went to college and ended up pursuing a degree in Electronics and Instrumentation, most of the programming I did was against a few micro-controller architectures and the odd C programming class. I learned a lot, but I did not delve in to the inner details of things. By the time I started working, I was a good programmer, but deep inside I always had the fear that I was faking it and that I was not good enough. When I had to solve things in new languages and technologies I often tried to find solutions that I could learn from and adapt as opposed to diving deep in to the details and inner workings of things. I was afraid that I wouldn&amp;rsquo;t be able to handle it.&lt;/p&gt;
+
+&lt;p&gt;At around the time I went to college, I had become really drawn to the legislative process and how legislation evolved. Interests in certain topics like the constant legal tussle that the Republic of India engaged with it&amp;rsquo;s States on the topic of the National Language &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a5afb5dc33b2fc67590eea4a9e3c0e13:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a5afb5dc33b2fc67590eea4a9e3c0e13:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; compelled me to read the related legislation and court rulings. I slowly discovered that even though I was neither a student of Political Science nor a lawyer, I could understand legislation and court orders well enough because they were so specific—specific to the point of being boring.&lt;/p&gt;
+
+&lt;p&gt;This prompted me to look at documentation in another light. From being unnecessarily complex in my view, they became specific and often the place to see answers for contentious topics that brought conflicting interpretations from different people. Around this time, I had started reading the R.F.C.s &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a5afb5dc33b2fc67590eea4a9e3c0e13:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a5afb5dc33b2fc67590eea4a9e3c0e13:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; of the I.E.T.F. &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:a5afb5dc33b2fc67590eea4a9e3c0e13:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:a5afb5dc33b2fc67590eea4a9e3c0e13:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; and it convinced me that well written documentation has the same qualities as well written legislation—specificity, context and lending themselves to being represented as change-sets.&lt;/p&gt;
+
+&lt;p&gt;This has had tremendously positive effect on my programming—instead of being afraid of diving deep and understanding for myself how a particular programming language feature or library or protocol specification, I see it something that I can understand really well if I spend enough time.&lt;/p&gt;
+
+&lt;p&gt;I have since come across projects that look at this similarity from the other side. There are multiple projects that tries to represent and record constitutions and legislation as version controlled repositories. The &lt;a href=&#34;https://blog.abevoelker.com/gitlaw-github-for-laws-and-legal-documents-a-tourniquet-for-american-liberty/&#34;&gt;GitLaw&lt;/a&gt; idea has taken off with multiple version-controlled repositories of legislation—examples include &lt;a href=&#34;https://github.com/xlfe/gitlaw-au&#34;&gt;Australia&lt;/a&gt;, &lt;a href=&#34;https://github.com/Br3nda/legislation&#34;&gt;New Zealand&lt;/a&gt; and &lt;a href=&#34;https://github.com/bundestag/gesetze&#34;&gt;Germany&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:a5afb5dc33b2fc67590eea4a9e3c0e13:1&#34;&gt;The topic of the National Language was a hot–button issue in the political landscape of the nascent independent Republic of India. The &lt;a href=&#34;https://en.wikisource.org/wiki/Official_Languages_Act,_1963&#34;&gt;Official Languages Act of 1963&lt;/a&gt; is an example of legislation associated with battle.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a5afb5dc33b2fc67590eea4a9e3c0e13:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:a5afb5dc33b2fc67590eea4a9e3c0e13:2&#34;&gt;Request for Comments are publications of the I.E.T.F. Read more on &lt;a href=&#34;https://en.wikipedia.org/wiki/Request_for_Comments&#34;&gt;Wikipedia&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a5afb5dc33b2fc67590eea4a9e3c0e13:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:a5afb5dc33b2fc67590eea4a9e3c0e13:3&#34;&gt;Internet Engineering Task Force develops and promotes Internet standards. Read more on &lt;a href=&#34;https://en.wikipedia.org/wiki/Internet_Engineering_Task_Force&#34;&gt;Wikipedia&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:a5afb5dc33b2fc67590eea4a9e3c0e13:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Implementing custom annotations for Spring MVC</title>
@@ -1012,30 +1045,6 @@ IO.write &amp;quot;businesses.mongo.json&amp;quot;, businesses.to_json
 &lt;p&gt;&amp;ldquo;I think we are stuck. What do you think we should do?&amp;rdquo;. You painfully realise that the present wants you back. Damn!&lt;/p&gt;
 
 &lt;p&gt;&amp;ldquo;Hey, let&amp;rsquo;s step back and look at it again. We will sort it out!&amp;rdquo;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>The fear of being wrong on the Internet</title>
-      <link>http://sdqali.in/blog/2013/10/15/the-fear-of-being-wrong-on-the-internet/</link>
-      <pubDate>Tue, 15 Oct 2013 00:00:00 +0000</pubDate>
-      
-      <guid>http://sdqali.in/blog/2013/10/15/the-fear-of-being-wrong-on-the-internet/</guid>
-      <description>&lt;p&gt;All of us have opinions-some strong, some weak; some we care deeply about, some we couldn&amp;rsquo;t care less. We often express those opinions to others and sometimes people agree, sometimes they don&amp;rsquo;t. Debating with others about our opinions helps us crystallise or completely discard them.&lt;/p&gt;
-
-&lt;p&gt;I am fairly opinionated about a lot of things and have debates about them with friends and co-workers. Yet when it comes to opinions on the Internet, I shy away. Every single day, I come across issues and incidents about which I have opinions and every time I stare at what somebody else wrote, consider replying and ultimately close the tab after a minute. This happens on almost all the Internet communities I frequent - Twitter, Guardian&amp;rsquo;s Comment is Free, Guardian&amp;rsquo;s Football blogs and Hacker News.&lt;/p&gt;
-
-&lt;p&gt;I have lately been thinking why this is happening to me and I realise that the root of this is my fear of being wrong on the Internet. Now, I am wrong a lot of the time. I have been wrong in the past and like most of humanity, I will be on occasions in the future. I am not afraid of it. In real life arguments outside the Internet, when you are wrong, people will point out what part of an argument you are wrong about and why.&lt;/p&gt;
-
-&lt;p&gt;During pretty much all the debates I have in real life, we disagree. From issues as wide as programming languages, to tech conferences to the nature of federalism in India, we mostly disagree. At lunch tables, bars, Friday nights in restaurants, we disagree. We disagree to the point where we will be visibly upset. And yet, in the end, we shake hands, hug each other, finish our drinks or dinners and go our way. And invariably both sides would have learned from each other in the duration of the debate.&lt;/p&gt;
-
-&lt;p&gt;On the Internet, things are different. It is extremely hard to express certain things in writing, especially on a forum where the pace of the debate is intense and there is a churn of people and acceptance levels. The fact that written conversation lacks any tone does not help one bit. People have to assume each other&amp;rsquo;s motivations and perspective and it leads to snide and caustic replies followed by more snide and caustic replies. And when there is enough quorum for a lynch mob, the person who has the minority opinion gets textually beaten up. And in the end, everyone goes their own way, without patching up and not having learned anything from each other.&lt;/p&gt;
-
-&lt;p&gt;Now there are homogeneous communities where this does not happen often. People mostly get along and try to tackle the debate and not the man. But when that one person with an opinions countering the majority&amp;rsquo;s turns up, the debate takes a back seat and the regulars go in studs up and tackles the person instead of his debate which is oftentimes requires less energy to prove wrong than abusing the person expressing the opinion.&lt;/p&gt;
-
-&lt;p&gt;While a teenager the average YouTube comment thread will lead with &amp;ldquo;You are a faggot!&amp;rdquo; in reply to an opinion he disagrees with, places and people who consider themselves learned and sophisticated lead with comments of the &amp;ldquo;Oh, at least you can spell!&amp;rdquo; genre. Neither helps in expressing disagreement with the opinion, all the while being dangerously effective at expressing one&amp;rsquo;s displeasure for the person with the opinion.&lt;/p&gt;
-
-&lt;p&gt;Having said this, I still frequent these forums because I still learn a lot of things from people there. I am mostly a silent lurker and I think I will continue to be, in the near future.&lt;/p&gt;
 </description>
     </item>
     
