@@ -7,7 +7,6 @@ Tags:
 - Development
 - Java
 date: 2015-12-11T15:57:30-05:00
-menu: main
 title: Integration testing Spring command line applications
 image: "images/spring-by-pivotal.png"
 ---
