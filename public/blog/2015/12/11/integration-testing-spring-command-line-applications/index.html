@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Integration testing Spring command line applications &middot; Sadique Ali </title>
+
+  
+  <link rel="stylesheet" href="http://sdqali.in/css/poole.css">
+  <link rel="stylesheet" href="http://sdqali.in/css/syntax.css">
+  <link rel="stylesheet" href="http://sdqali.in/css/hyde.css">
+  <link rel="stylesheet" href="http://sdqali.in/css/default.min.css">
+  <link rel="stylesheet" href="http://sdqali.in/css/custom.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+</head>
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@sdqali">
+<meta name="twitter:creator" content="@sdqali">
+<meta name="twitter:title" content="Integration testing Spring command line applications">
+<meta name="twitter:description" content="In the last blog post, I wrote about the challenges of writing an integration test for a Spring command line application. One of the solutions for this issue discussed in the blog post was to use the @IntegrationTest annotations to inject Java system properties and use that to run the application instead of the normal command line arguments. This blog post describes how to perform this.
+">
+<meta name="twitter:image" content="http://sdqali.in/images/spring-by-pivotal.png">
+
+<body class="theme-base-0b">
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+	<a href="/">Sadique Ali</a>
+      </h1>
+      <p class="lead">
+       A blog about the Code I write and the Technologies I use. And other things that interest me. 
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="/">Home</a> </li>
+      <li><a href="/blog/">Blog</a> </li>
+      <li><a href="/about">About</a> </li>
+      <li><a href="https://github.com/sdqali">GitHub</a> </li>
+      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      
+        <li><a href="/blog/2015/12/11/integration-testing-spring-command-line-applications/"> Integration testing Spring command line applications </a></li>
+      
+    </ul>
+
+    <p>&copy; 2015. All rights reserved. </p>
+  </div>
+</div>
+
+
+    <div class="content container">
+<div class="post">
+  <h1>Integration testing Spring command line applications</h1>
+  <span class="post-date">Fri, Dec 11, 2015</span>
+      <p>In the <a href="/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/">last blog post</a>, I wrote about the challenges of writing an integration test for a Spring command line application. One of the solutions for this issue discussed in the blog post was to use the <code>@IntegrationTest</code> annotations to inject Java system properties and use that to run the application instead of the normal command line arguments. This blog post describes how to perform this.</p>
+
+<p>The first step is to rewrite our test to use the <code>@IntegrationTest</code> annotations. This will result in a test that looks as follows:</p>
+
+<pre><code class="language-java">@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = {Application.class})
+@IntegrationTest(value = &quot;input:expectedOutput&quot;)
+public class ApplicationIntegrationTest {
+    @Autowired
+    private Application application;
+
+    @Rule
+    public OutputCapture outputCapture = new OutputCapture();
+
+    @Test
+    public void shouldGenerateResultFiles() throws Exception {
+        application.run();
+        assertTrue(outputCapture.toString().contains(&quot;expectedOutput&quot;));
+    }
+}
+</code></pre>
+
+<p>At this point, it is worth taking a look at what the <code>@IntegrationTest</code> annotation causes Spring to do. This is a meta-annotation <sup class="footnote-ref" id="fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:1"><a rel="footnote" href="#fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:1">1</a></sup> that specifies a number of test listeners including <code>IntegrationTestPropertiesListener</code>.</p>
+
+<pre><code class="language-java">@Documented
+@Inherited
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@TestExecutionListeners(listeners = { IntegrationTestPropertiesListener.class,
+        DirtiesContextBeforeModesTestExecutionListener.class,
+        DependencyInjectionTestExecutionListener.class,
+        DirtiesContextTestExecutionListener.class,
+        TransactionalTestExecutionListener.class, SqlScriptsTestExecutionListener.class })
+public @interface IntegrationTest {
+    String[] value() default {};
+}
+</code></pre>
+
+<p><code>IntegrationTestPropertiesListener</code> is an implementation of <code>TestExecutionListener</code> which is a mechanism used by Spring to react to test execution events like <code>beforeTestClass</code>, <code>prepareTestInstance</code>, <code>beforeTestMethod</code>, <code>beforeTestMethod</code> and <code>afterTestClass</code>.</p>
+
+<p>For the purposes of what we are trying to achieve, the listener we are really interested in is the <code>beforeTestClass</code> of <code>IntegrationTestPropertiesListener</code>.</p>
+
+<pre><code class="language-java">    @Override
+    public void prepareTestInstance(TestContext testContext) throws Exception {
+        Class&lt;?&gt; testClass = testContext.getTestClass();
+        AnnotationAttributes annotationAttributes = AnnotatedElementUtils
+                .getMergedAnnotationAttributes(testClass,
+                        IntegrationTest.class.getName());
+        if (annotationAttributes != null) {
+            addPropertySourceProperties(testContext,
+                    annotationAttributes.getStringArray(&quot;value&quot;));
+        }
+    }
+</code></pre>
+
+<p>As we can see, the value of the <code>value</code> attribute <sup class="footnote-ref" id="fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2"><a rel="footnote" href="#fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2">2</a></sup> of our <code>@IntegrationTest</code> gets injected to the configuration of the test context.</p>
+
+<p>Now that we have understood and used the <code>@IntegrationTest</code> annotation to push in configuration, it is time to make our application consume this configuration.</p>
+
+<pre><code class="language-java">@Configuration
+@EnableAutoConfiguration
+@ComponentScan
+public class Application implements CommandLineRunner {
+    @Autowired
+    DataService dataService;
+
+    @Value(&quot;${input}&quot;)
+    String input;
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+    @Override
+    public void run(String... args) {
+        dataService.perform(input);
+    }
+}
+</code></pre>
+
+<p>An added benefit of this approach is that this forces us to use named parameter arguments when running the application as opposed to the position based command line arguments. This of course does not solve the problem of testing if you absolutely have to use position based arguments for your application. It would be nice Spring provided a mechanism to inject the command line arguments in a test before <code>SpringApplicationContextLoader</code> <sup class="footnote-ref" id="fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:3"><a rel="footnote" href="#fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:3">3</a></sup> took over. But I suspect that this is not a common enough use case of Spring that users have asked the Spring team to implement it.</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:1">Meta annotations are Spring annotations that can modify and act up on other annotations. For an example of customizing behavior using meta annotations, see <a href="/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/">this blog post</a>.
+ <a class="footnote-return" href="#fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:1"><sup>[return]</sup></a></li>
+<li id="fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2">The tendency of programmers to name the default attribute of an annotation <code>value</code> is one of my least favorite aspects of Java annotations. In most cases, there is another name that conveys the intent of the attribute better. I plan to write my thoughts about this in a blog post soon.
+ <a class="footnote-return" href="#fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2"><sup>[return]</sup></a></li>
+<li id="fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:3">See the previous blog post to see how <code>SpringApplicationContextLoader</code> executes the application without arguments.
+ <a class="footnote-return" href="#fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:3"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+</div>
+</div>
+
+  </body>
+</html>
