@@ -9,6 +9,7 @@ Tags:
 - Spring
 date: 2015-12-10T21:45:59-05:00
 title: Integration testing challenges for non-web Spring applications
+image: "images/spring-by-pivotal.png"
 ---
 We are building a command line data loader application at work that uses Spring. One of the things that I took us more time that it should have to figure out was how to write an integration test that invokes the command line application with the right command line arguments. This blog post describes this scenario and a potential solution to this problem.
 <!--more-->
