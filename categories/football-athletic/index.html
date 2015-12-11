@@ -51,6 +51,8 @@
       <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
       <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
       
+        <li><a href="/blog/2015/12/11/integration-testing-spring-command-line-applications/"> Integration testing Spring command line applications </a></li>
+      
     </ul>
 
     <p>&copy; 2015. All rights reserved. </p>
