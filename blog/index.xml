@@ -69,7 +69,7 @@ public @interface IntegrationTest {
     }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;As we can see, the value of the &lt;code&gt;value&lt;/code&gt; attribute &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; of our &lt;code&gt;@IntegrationTest&lt;/code&gt; gets injected to the configuration of the test context.&lt;/p&gt;
+&lt;p&gt;As we can see, the value of the &lt;code&gt;value&lt;/code&gt; element &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; of our &lt;code&gt;@IntegrationTest&lt;/code&gt; gets injected to the configuration of the test context.&lt;/p&gt;
 
 &lt;p&gt;Now that we have understood and used the &lt;code&gt;@IntegrationTest&lt;/code&gt; annotation to push in configuration, it is time to make our application consume this configuration.&lt;/p&gt;
 
@@ -102,7 +102,7 @@ public class Application implements CommandLineRunner {
 &lt;ol&gt;
 &lt;li id=&#34;fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:1&#34;&gt;Meta annotations are Spring annotations that can modify and act up on other annotations. For an example of customizing behavior using meta annotations, see &lt;a href=&#34;http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/&#34;&gt;this blog post&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2&#34;&gt;The tendency of programmers to name the default attribute of an annotation &lt;code&gt;value&lt;/code&gt; is one of my least favorite aspects of Java annotations. In most cases, there is another name that conveys the intent of the attribute better. I plan to write my thoughts about this in a blog post soon.
+&lt;li id=&#34;fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2&#34;&gt;The tendency of programmers to name the default element of an annotation &lt;code&gt;value&lt;/code&gt; is one of my least favorite aspects of Java annotations. In most cases, there is another name that conveys the intent of the element better. I plan to write my thoughts about this in a blog post soon.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li id=&#34;fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:3&#34;&gt;See the previous blog post to see how &lt;code&gt;SpringApplicationContextLoader&lt;/code&gt; executes the application without arguments.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
