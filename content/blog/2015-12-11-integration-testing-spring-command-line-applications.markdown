@@ -68,7 +68,7 @@ For the purposes of what we are trying to achieve, the listener we are really in
     }
 ```
 
-As we can see, the value of the `value` attribute [^2] of our `@IntegrationTest` gets injected to the configuration of the test context.
+As we can see, the value of the `value` element [^2] of our `@IntegrationTest` gets injected to the configuration of the test context.
 
 Now that we have understood and used the `@IntegrationTest` annotation to push in configuration, it is time to make our application consume this configuration.
 
@@ -98,5 +98,5 @@ public class Application implements CommandLineRunner {
 An added benefit of this approach is that this forces us to use named parameter arguments when running the application as opposed to the position based command line arguments. This of course does not solve the problem of testing if you absolutely have to use position based arguments for your application. It would be nice Spring provided a mechanism to inject the command line arguments in a test before `SpringApplicationContextLoader` [^3] took over. But I suspect that this is not a common enough use case of Spring that users have asked the Spring team to implement it.
 
 [^1]: Meta annotations are Spring annotations that can modify and act up on other annotations. For an example of customizing behavior using meta annotations, see [this blog post](/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/).
-[^2]: The tendency of programmers to name the default attribute of an annotation `value` is one of my least favorite aspects of Java annotations. In most cases, there is another name that conveys the intent of the attribute better. I plan to write my thoughts about this in a blog post soon.
+[^2]: The tendency of programmers to name the default element of an annotation `value` is one of my least favorite aspects of Java annotations. In most cases, there is another name that conveys the intent of the element better. I plan to write my thoughts about this in a blog post soon.
 [^3]: See the previous blog post to see how `SpringApplicationContextLoader` executes the application without arguments.
