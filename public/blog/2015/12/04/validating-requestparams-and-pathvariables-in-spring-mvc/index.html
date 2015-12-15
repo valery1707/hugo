@@ -55,9 +55,9 @@
 ">
 <meta name="twitter:image" content="http://sdqali.in/images/spring-by-pivotal.png">
 
-<meta property="og:title" content="Validating RequestParams and PathVariables in Spring MVC" />
+g<meta property="og:title" content="Validating RequestParams and PathVariables in Spring MVC" />
 <meta property="og:description" content="Spring MVC provides a convenient way to validate inputs to API end points through the use of JSR-303 annotations. While this mechanism works great for end points that consume a RequestBody (as is the case with most POST and PUT requests), it is not easy to achieve the same effect for end points that consume primitives in the form of path variables or request parameters (as is the case with most GET requests).
-" />
+" itemprop="description"/>
 <meta property="og:url" content="http://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/" />
 <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
 
@@ -91,9 +91,14 @@
 </div>
 
 
-    <div class="content container">
+<div class="content container" itemscope itemtype="http://schema.org/BlogPosting">
+<meta itemscope itemprop="mainEntityOfPage"  itemType="https://schema.org/WebPage" itemid="http://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/"/>
+
 <div class="post">
-  <h1>Validating RequestParams and PathVariables in Spring MVC</h1>
+  <h1 itemprop="headline">Validating RequestParams and PathVariables in Spring MVC</h1>
+  <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+    By <span itemprop="name">Sadique Ali</span>
+  </div>
   <span class="post-date">Fri, Dec 4, 2015</span>
       <p>Spring MVC provides a convenient way to validate inputs to API end points through the use of <code>JSR-303</code> annotations. While this mechanism works great for end points that consume a <code>RequestBody</code> (as is the case with most <code>POST</code> and <code>PUT</code> requests), it is not easy to achieve the same effect for end points that consume primitives in the form of path variables or request parameters (as is the case with most <code>GET</code> requests).</p>
 

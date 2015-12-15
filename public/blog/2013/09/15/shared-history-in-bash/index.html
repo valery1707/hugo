@@ -54,8 +54,8 @@
 <meta name="twitter:description" content="One of the features that I miss most in Bash is the shared history between terminals that Zsh supports. I was hunting down a solution for this and came across this Stack Overflow answer 1 by user lesmana. This code snippet does the trick: HISTSIZE=9000 HISTFILESIZE=$HISTSIZE HISTCONTROL=ignorespace:ignoredups history() { _bash_history_sync builtin history &quot;$@&quot; } _bash_history_sync() { builtin history -a #1 HISTFILESIZE=$HISTSIZE #2 builtin history -c #3 builtin history -r #4 } PROMPT_COMMAND=&quot;_bash_history_sync;$PROMPT_COMMAND&quot; This is very hacky—This setting overrides the shell prompt to sync history every time the prompt is loaded.">
 <meta name="twitter:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]">
 
-<meta property="og:title" content="Shared history in Bash" />
-<meta property="og:description" content="One of the features that I miss most in Bash is the shared history between terminals that Zsh supports. I was hunting down a solution for this and came across this Stack Overflow answer 1 by user lesmana. This code snippet does the trick: HISTSIZE=9000 HISTFILESIZE=$HISTSIZE HISTCONTROL=ignorespace:ignoredups history() { _bash_history_sync builtin history &quot;$@&quot; } _bash_history_sync() { builtin history -a #1 HISTFILESIZE=$HISTSIZE #2 builtin history -c #3 builtin history -r #4 } PROMPT_COMMAND=&quot;_bash_history_sync;$PROMPT_COMMAND&quot; This is very hacky—This setting overrides the shell prompt to sync history every time the prompt is loaded." />
+g<meta property="og:title" content="Shared history in Bash" />
+<meta property="og:description" content="One of the features that I miss most in Bash is the shared history between terminals that Zsh supports. I was hunting down a solution for this and came across this Stack Overflow answer 1 by user lesmana. This code snippet does the trick: HISTSIZE=9000 HISTFILESIZE=$HISTSIZE HISTCONTROL=ignorespace:ignoredups history() { _bash_history_sync builtin history &quot;$@&quot; } _bash_history_sync() { builtin history -a #1 HISTFILESIZE=$HISTSIZE #2 builtin history -c #3 builtin history -r #4 } PROMPT_COMMAND=&quot;_bash_history_sync;$PROMPT_COMMAND&quot; This is very hacky—This setting overrides the shell prompt to sync history every time the prompt is loaded." itemprop="description"/>
 <meta property="og:url" content="http://sdqali.in/blog/2013/09/15/shared-history-in-bash/" />
 <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
 
@@ -89,9 +89,14 @@
 </div>
 
 
-    <div class="content container">
+<div class="content container" itemscope itemtype="http://schema.org/BlogPosting">
+<meta itemscope itemprop="mainEntityOfPage"  itemType="https://schema.org/WebPage" itemid="http://sdqali.in/blog/2013/09/15/shared-history-in-bash/"/>
+
 <div class="post">
-  <h1>Shared history in Bash</h1>
+  <h1 itemprop="headline">Shared history in Bash</h1>
+  <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+    By <span itemprop="name">Sadique Ali</span>
+  </div>
   <span class="post-date">Sun, Sep 15, 2013</span>
       <p>One of the features that I miss most in Bash is the shared history between terminals that Zsh supports. I was hunting down a solution for this and came across this Stack Overflow answer <sup class="footnote-ref" id="fnref:2b4ddf3398db24795bd65c393ff1e13d:1"><a rel="footnote" href="#fn:2b4ddf3398db24795bd65c393ff1e13d:1">1</a></sup> by user <em>lesmana</em>. This code snippet does the trick:</p>
 

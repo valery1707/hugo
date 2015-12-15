@@ -69,7 +69,7 @@ like Twitter and Identi.ca.
 ">
 <meta name="twitter:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]">
 
-<meta property="og:title" content="Dear Content Creator, Your URL Shortener Is Pointless" />
+g<meta property="og:title" content="Dear Content Creator, Your URL Shortener Is Pointless" />
 <meta property="og:description" content="People love URL shorteners. They are everywhere. You can use one of
 the giants, or use one of the URL Shortening As A Service options available
 or you can run one on your own.
@@ -85,7 +85,7 @@ http://example.com/reports.php?start=2001&amp;end=2010&amp;item=Foo%20bar and
 they wanted to make it easier on the eyes of people. The second reason
 was the limit on the number of characters allowed in a post by micro blogging services
 like Twitter and Identi.ca.
-" />
+" itemprop="description"/>
 <meta property="og:url" content="http://sdqali.in/blog/2012/08/23/dear-content-creator-your-url-shortener-is-pointless/" />
 <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
 
@@ -119,9 +119,14 @@ like Twitter and Identi.ca.
 </div>
 
 
-    <div class="content container">
+<div class="content container" itemscope itemtype="http://schema.org/BlogPosting">
+<meta itemscope itemprop="mainEntityOfPage"  itemType="https://schema.org/WebPage" itemid="http://sdqali.in/blog/2012/08/23/dear-content-creator-your-url-shortener-is-pointless/"/>
+
 <div class="post">
-  <h1>Dear Content Creator, Your URL Shortener Is Pointless</h1>
+  <h1 itemprop="headline">Dear Content Creator, Your URL Shortener Is Pointless</h1>
+  <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+    By <span itemprop="name">Sadique Ali</span>
+  </div>
   <span class="post-date">Thu, Aug 23, 2012</span>
       <p>People love URL shorteners. They are everywhere. You can use one of
 <a href="http://goo.gl">the giants</a>, or use one of the <a href="http://bit.ly">URL Shortening As A Service</a> options available

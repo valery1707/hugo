@@ -54,8 +54,8 @@
 <meta name="twitter:description" content="I use Emacs as my editor to compose Git commit messages. I almost never commit from the terminal with git commit -m. This approach has two advantages: I get a chance to verify what is being committed and get to compose the message using a proper editor complete with spell checking provided by flyspell mode. One thing I wish I had access to while composing commit messages is the git log.">
 <meta name="twitter:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]">
 
-<meta property="og:title" content="Emacs hack: Viewing Git logs while composing commit messages" />
-<meta property="og:description" content="I use Emacs as my editor to compose Git commit messages. I almost never commit from the terminal with git commit -m. This approach has two advantages: I get a chance to verify what is being committed and get to compose the message using a proper editor complete with spell checking provided by flyspell mode. One thing I wish I had access to while composing commit messages is the git log." />
+g<meta property="og:title" content="Emacs hack: Viewing Git logs while composing commit messages" />
+<meta property="og:description" content="I use Emacs as my editor to compose Git commit messages. I almost never commit from the terminal with git commit -m. This approach has two advantages: I get a chance to verify what is being committed and get to compose the message using a proper editor complete with spell checking provided by flyspell mode. One thing I wish I had access to while composing commit messages is the git log." itemprop="description"/>
 <meta property="og:url" content="http://sdqali.in/blog/2013/04/29/emacs-hack-viewing-git-logs-while-composing-commit-messages/" />
 <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
 
@@ -89,9 +89,14 @@
 </div>
 
 
-    <div class="content container">
+<div class="content container" itemscope itemtype="http://schema.org/BlogPosting">
+<meta itemscope itemprop="mainEntityOfPage"  itemType="https://schema.org/WebPage" itemid="http://sdqali.in/blog/2013/04/29/emacs-hack-viewing-git-logs-while-composing-commit-messages/"/>
+
 <div class="post">
-  <h1>Emacs hack: Viewing Git logs while composing commit messages</h1>
+  <h1 itemprop="headline">Emacs hack: Viewing Git logs while composing commit messages</h1>
+  <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+    By <span itemprop="name">Sadique Ali</span>
+  </div>
   <span class="post-date">Mon, Apr 29, 2013</span>
       <p>I use Emacs as my editor to compose Git commit messages. I almost never commit from the terminal with <code>git commit -m</code>. This approach has two advantages: I get a chance to verify what is being committed and get to compose the message using a proper editor complete with spell checking provided by <em>flyspell mode</em>. One thing I wish I had access to while composing commit messages is the git log. This is useful to refer to work items and encourages one to use a consistent style in the messages. This was easier in the terminal as one could do something like <code>git log -n 3</code> and then commit with the <code>-m</code> flag.</p>
 
