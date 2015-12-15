@@ -11,14 +11,14 @@
 <meta property="og:description" content="{{ .Summary }}" itemprop="description"/>
 <meta property="og:url" content="{{ .Permalink }}" />
 <meta property="og:image" content="{{ .Site.BaseURL }}/{{ .Params.image }}" />
-<meta itemprop="datePublished" content="{{ .Lastmod }}"/>
-<meta itemprop="dateModified" content="{{ .Lastmod }}"/>
 <body class="theme-base-0b">
 
 {{ partial "sidebar.html" . }}
 
 <div class="content container" itemscope itemtype="http://schema.org/BlogPosting">
 <meta itemscope itemprop="mainEntityOfPage"  itemType="https://schema.org/WebPage" itemid="{{ .Permalink }}"/>
+<meta itemprop="datePublished" content="{{ .Lastmod }}"/>
+<meta itemprop="dateModified" content="{{ .Lastmod }}"/>
 
 <div class="post">
   <h1 itemprop="headline">{{ .Title }}</h1>
