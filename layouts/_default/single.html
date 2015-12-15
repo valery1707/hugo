@@ -7,8 +7,8 @@
 <meta name="twitter:description" content="{{ .Summary }}">
 <meta name="twitter:image" content="{{ .Site.BaseURL }}/{{ .Params.image }}">
 
-<meta property="og:title" content="{{ .Title }}" />
-<meta property="og:description" content="{{ .Summary }}" />
+g<meta property="og:title" content="{{ .Title }}" />
+<meta property="og:description" content="{{ .Summary }}" itemprop="description"/>
 <meta property="og:url" content="{{ .Permalink }}" />
 <meta property="og:image" content="{{ .Site.BaseURL }}/{{ .Params.image }}" />
 
@@ -16,9 +16,14 @@
 
 {{ partial "sidebar.html" . }}
 
-    <div class="content container">
+<div class="content container" itemscope itemtype="http://schema.org/BlogPosting">
+<meta itemscope itemprop="mainEntityOfPage"  itemType="https://schema.org/WebPage" itemid="{{ .Permalink }}"/>
+
 <div class="post">
-  <h1>{{ .Title }}</h1>
+  <h1 itemprop="headline">{{ .Title }}</h1>
+  <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+    By <span itemprop="name">Sadique Ali</span>
+  </div>
   <span class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
       {{ .Content }}
 </div>
