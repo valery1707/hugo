@@ -7,7 +7,6 @@ Tags:
 - Development
 - golang
 date: 2015-12-14T21:47:06-05:00
-menu: main
 title: Thoughts on Open Graph tags
 image: "images/ogp.png"
 ---
