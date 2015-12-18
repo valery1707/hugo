@@ -5,8 +5,137 @@
     <link>http://sdqali.in/blog/</link>
     <description>Recent content in Blogs on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 14 Dec 2015 21:47:06 -0500</lastBuildDate>
+    <lastBuildDate>Wed, 16 Dec 2015 01:07:01 -0500</lastBuildDate>
     <atom:link href="http://sdqali.in/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Authentication for Apache Camel HTTP components</title>
+      <link>http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/</link>
+      <pubDate>Wed, 16 Dec 2015 01:07:01 -0500</pubDate>
+      
+      <guid>http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/</guid>
+      <description>
+
+&lt;p&gt;My team at work has been lately working on a data transformer that pushes information from an external system in to platform. For historical reasons the information is passed to us in the form of flat files. We have been working on a data transformer that reads information from the file and posts it into an HTTP end point.
+Apache Camel &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:be2633b2f8769813832c8d38507c50a1:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:be2633b2f8769813832c8d38507c50a1:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; makes a natural choice as the base for implementing such a data transformer. The presence of ready to use components that can read files and post information to HTTP end points and the availability of a nice D.S.L. &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:be2633b2f8769813832c8d38507c50a1:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:be2633b2f8769813832c8d38507c50a1:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; makes implementation easy and straightforward. One of the things we had to spend time figuring out was how to ensure that we authenticate correctly against our target HTTP end point. This blog post takes a look at various methods we explored.&lt;/p&gt;
+
+&lt;p&gt;Camel&amp;rsquo;s HTTP component allows http resources to be added as Camel end points. These end points can be consuming information from routes or producing information which are then passed on to routes. For example, the following route takes information from the &lt;code&gt;direct:start&lt;/code&gt; end point, tokenizes it into lines and sends each line into an HTTP url.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class FileToApiRoute extends RouteBuilder {
+
+    public static final String UTF_8 = &amp;quot;UTF-8&amp;quot;;
+    public static final String CONTENT_TYPE = &amp;quot;Content-Type&amp;quot;;
+    public static final String APPLICATION_JSON = &amp;quot;application/json&amp;quot;;
+    public static final String TARGET = &amp;quot;http://localhost:8080/ingest&amp;quot;;
+
+    @Override
+    public void configure() throws Exception {
+        from(&amp;quot;direct:start&amp;quot;)
+                .marshal()
+                .string(UTF_8)
+                .split(body().tokenize())
+                .streaming()
+                .setHeader(CONTENT_TYPE, simple(APPLICATION_JSON))
+                .to(TARGET);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once this route has been registered, it can be used to send data by placing information on the &lt;code&gt;direct:start&lt;/code&gt; end point. The following service does it by passing the contents of a file to a &lt;code&gt;ProducerTemplate&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class DataStreamService {
+
+    private final ProducerTemplate producerTemplate;
+
+    @Autowired
+    public DataStreamService(ProducerTemplate producerTemplate) {
+        this.producerTemplate = producerTemplate;
+    }
+
+    public void stream() {
+        producerTemplate.sendBody(&amp;quot;direct:start&amp;quot;,
+                ExchangePattern.InOnly,
+                new File(&amp;quot;src/main/resources/yelp.business.json&amp;quot;));
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Our challenge is to ensure that this continue to work when the HTTP end point in question requires authentication. For the purposes of this blog post, we will be restricting our discussion to Basic Authentication. There are three ways to do this authentication–through Camel authentication query parameters, through the use of the &lt;code&gt;Authorization&lt;/code&gt; header and by overriding the &lt;code&gt;HttpConfiguration&lt;/code&gt; in the current Camel context.&lt;/p&gt;
+
+&lt;h3 id=&#34;camel-authentication-query-parameters:be2633b2f8769813832c8d38507c50a1&#34;&gt;Camel authentication query parameters&lt;/h3&gt;
+
+&lt;p&gt;Camel allows consumers to specify authentication parameters in the http end point. For example, three parameters required for Basic Authentication are &lt;code&gt;authMethod&lt;/code&gt;, &lt;code&gt;authUsername&lt;/code&gt; and &lt;code&gt;authPassword&lt;/code&gt;. The route rewritten with these parameters will be as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;    public static final String TARGET_WITH_AUTH = &amp;quot;http://localhost:8080/ingest&amp;quot; +
+            &amp;quot;?authMethod=Basic&amp;amp;authUsername=test&amp;amp;authPassword=test&amp;quot;;
+
+    @Override
+    public void configure() throws Exception {
+        from(&amp;quot;direct:start&amp;quot;)
+                .marshal()
+                .string(UTF_8)
+                .split(body().tokenize())
+                .streaming()
+                .setHeader(CONTENT_TYPE, simple(APPLICATION_JSON))
+                .to(TARGET_WITH_AUTH);
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It is odd to be adding authentication parameters to a URL, but here the URL has multiple purposes–this is a URL to which information is going to be sent to, it also represents a logical end point. These three parameters (and other authentication parameters) get stripped from the HTTP URL before Camel makes the HTTP request. &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:be2633b2f8769813832c8d38507c50a1:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:be2633b2f8769813832c8d38507c50a1:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; This still will cause issues in odd cases where the HTTP A.P.I. you are integrating with expects these parameters to be sent.&lt;/p&gt;
+
+&lt;h3 id=&#34;setting-authorization-headers:be2633b2f8769813832c8d38507c50a1&#34;&gt;Setting Authorization headers&lt;/h3&gt;
+
+&lt;p&gt;Camel allows the addition of headers to messages that it processes and if the message ultimately gets routed to a Camel HTTP end point, these headers get converted to HTTP headers. This allows us to use authentication by setting the &lt;code&gt;Authorization&lt;/code&gt; header. This example demonstrates this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;    public void configure() throws Exception {
+        from(&amp;quot;direct:start&amp;quot;)
+                .marshal()
+                .string(UTF_8)
+                .split(body().tokenize())
+                .streaming()
+                .setHeader(CONTENT_TYPE, simple(APPLICATION_JSON))
+                .setHeader(&amp;quot;Authorization&amp;quot;, simple(&amp;quot;Basic dGVzdDp0ZXN0&amp;quot;))
+                .to(TARGET);
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;overriding-httpconfiguration:be2633b2f8769813832c8d38507c50a1&#34;&gt;Overriding HttpConfiguration&lt;/h3&gt;
+
+&lt;p&gt;Camel provides a mechanism to override it‘s Context‘s configuration before the context gets created. In the following example, we get a reference to the &lt;code&gt;HttpComponent&lt;/code&gt; and set a new &lt;code&gt;HttpConfiguration&lt;/code&gt; with the right authentication. This allows us to separate the authentication configurations from the route definitions. However, if your Camel context is responsible for talking to different HTTP end points with different authentication mechanisms or parameters, this will not solve the issue.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;    @Bean
+    CamelContextConfiguration contextConfiguration() {
+        return camelContext -&amp;gt; {
+            HttpComponent http = (HttpComponent) camelContext.getComponent(&amp;quot;http&amp;quot;);
+            http.setHttpConfiguration(httpConfiguration());
+        };
+    }
+
+    private HttpConfiguration httpConfiguration() {
+        HttpConfiguration httpConfiguration = new HttpConfiguration();
+        httpConfiguration.setAuthMethod(authScheme);
+        httpConfiguration.setAuthUsername(authUsername);
+        httpConfiguration.setAuthPassword(authPassword);
+        return httpConfiguration;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the end, the method you choose will depend on the unique constraints of the systems you are integrating with.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:be2633b2f8769813832c8d38507c50a1:1&#34;&gt;&lt;a href=&#34;https://camel.apache.org/&#34;&gt;Apache Camel&lt;/a&gt; is a Java integration framework.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:be2633b2f8769813832c8d38507c50a1:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:be2633b2f8769813832c8d38507c50a1:2&#34;&gt;Camel&amp;rsquo;s Domain Specific Language in Java allows integration routes to be defined as fluent specifications.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:be2633b2f8769813832c8d38507c50a1:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:be2633b2f8769813832c8d38507c50a1:3&#34;&gt;Stripping of these parameters is done inside &lt;code&gt;org.apache.camel.component.http.HttpComponent&lt;/code&gt;‘s &lt;code&gt;createHttpClientConfigurer&lt;/code&gt; &lt;a href=&#34;https://github.com/apache/camel/blob/f7f0b18f6924fe0b01f32a25ed1e38e29b1bf8e5/components/camel-http/src/main/java/org/apache/camel/component/http/HttpComponent.java#L66&#34;&gt;method&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:be2633b2f8769813832c8d38507c50a1:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Thoughts on Open Graph tags</title>
@@ -1229,42 +1358,6 @@ IO.write &amp;quot;businesses.mongo.json&amp;quot;, businesses.to_json
 &lt;p&gt;Recursive algorithms of this nature can be improved in two ways - memoization during recursion or applying &lt;a href=&#34;https://en.wikipedia.org/wiki/Dynamic_programming&#34;&gt;Dynamic Programming&lt;/a&gt; in a bottom up manner. The next blog post in this series will deal with how these two approaches can be done in Clojure.&lt;/p&gt;
 
 &lt;p&gt;The code for the above solution is on &lt;a href=&#34;https://github.com/sdqali/clojure-dojo&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>A simple JMeter test with login</title>
-      <link>http://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/</link>
-      <pubDate>Mon, 17 Feb 2014 00:00:00 +0000</pubDate>
-      
-      <guid>http://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/</guid>
-      <description>
-
-&lt;p&gt;I had to set up a JMeter test last week - the test included logging in to a site, and then hitting a bunch of URLs, all of them being GET requests. I found it hard to find a simple documentation that described how to do this - the ones I found were either incomplete or were trying to teach me a large number of things at the same time. So when I figured it out, I decided to write this down, for anyone else finding themselves in the same place as me.&lt;/p&gt;
-
-&lt;p&gt;For this example, the application under test is a simple Rails application, with the login form at &lt;code&gt;/login&lt;/code&gt; and a &lt;code&gt;POST&lt;/code&gt; request to &lt;code&gt;/login&lt;/code&gt; does the authentication.&lt;/p&gt;
-
-&lt;h3 id=&#34;add-a-thread-group:432050f6a9a1f05bac0d71354129b823&#34;&gt;Add a Thread Group&lt;/h3&gt;
-
-&lt;p&gt;A Thread Group defines a pool of users that will execute a particular test case against the server. JMeter makes the number of users, and the ramp-rate configurable. For the purpose of this example, Number of Threads is 2 and the ramp up time period is 1 second. This thread group is also configured to run forever.
-&lt;img src=&#34;http://sdqali.in/images/jmeter/thread_group.png&#34; alt=&#34;Thread Group&#34; /&gt;
-&lt;/p&gt;
-
-&lt;h3 id=&#34;http-request-defaults:432050f6a9a1f05bac0d71354129b823&#34;&gt;HTTP Request Defaults&lt;/h3&gt;
-
-&lt;p&gt;The net step is to add an HTTP Request Defaults configuration element to the Thread Group. This configuration element sets up the domain or I.P. address of the server, the port and the protocol (HTTP / HTTPS). In this example, Server Name is &lt;code&gt;127.0.0.1&lt;/code&gt; and Port is &lt;code&gt;3000&lt;/code&gt;.
-&lt;img src=&#34;http://sdqali.in/images/jmeter/request_defaults.png&#34; alt=&#34;HTTP Request Defaults&#34; /&gt;
-&lt;/p&gt;
-
-&lt;h3 id=&#34;http-cookie-manager:432050f6a9a1f05bac0d71354129b823&#34;&gt;HTTP Cookie Manager&lt;/h3&gt;
-
-&lt;p&gt;A cookie manager stores and sends cookies, as a web browser would do if an actual user was hitting the server. For the purposes of this example, the default configurations are enough.
-&lt;img src=&#34;http://sdqali.in/images/jmeter/cookie_manager.png&#34; alt=&#34;Cookie Manager&#34; /&gt;
-&lt;/p&gt;
-
-&lt;h3 id=&#34;implement-normal-page-actions:432050f6a9a1f05bac0d71354129b823&#34;&gt;Implement normal page actions&lt;/h3&gt;
-
-&lt;p&gt;From this point, all that remains is to implement HTTP Requests to the end points that are relevant to this test. In this example, we navigate to the Login page at &lt;code&gt;/login&lt;/code&gt;, fire a &lt;code&gt;POST&lt;/code&gt; request to &lt;code&gt;/login&lt;/code&gt; with the appropriate form input values and proceed to the Admin page.&lt;/p&gt;
 </description>
     </item>
     
