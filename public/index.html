@@ -110,8 +110,6 @@ client.addEvent("pagehit", {
       <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
       <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
       
-        <li><a href="/blog/2015/12/14/thoughts-on-open-graph-tags/"> Thoughts on Open Graph tags </a></li>
-      
     </ul>
 
     <p>&copy; 2015. All rights reserved. </p>
@@ -122,6 +120,23 @@ client.addEvent("pagehit", {
     <div class="content container">
       <div class="posts">
 
+      
+      <div class="post">
+	<h1 class="post-title">
+	  <a href="http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/">
+            Authentication for Apache Camel HTTP components
+	  </a>
+	</h1>
+
+	<span class="post-date">Wed, Dec 16, 2015</span>
+
+	<p>My team at work has been lately working on a data transformer that pushes information from an external system in to platform. For historical reasons the information is passed to us in the form of flat files. We have been working on a data transformer that reads information from the file and posts it into an HTTP end point.
+Apache Camel [^1] makes a natural choice as the base for implementing such a data transformer. The presence of ready to use components that can read files and post information to HTTP end points and the availability of a nice D.S.L. [^2] makes implementation easy and straightforward. One of the things we had to spend time figuring out was how to ensure that we authenticate correctly against our target HTTP end point. This blog post takes a look at various methods we explored.</p>
+
+	<footer>
+          <a href='http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/'><nobr>Read more →</nobr></a>
+	</footer>
+      </div>
       
       <div class="post">
 	<h1 class="post-title">
@@ -263,22 +278,6 @@ client.addEvent("pagehit", {
 
 	<footer>
           <a href='http://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/'><nobr>Read more →</nobr></a>
-	</footer>
-      </div>
-      
-      <div class="post">
-	<h1 class="post-title">
-	  <a href="http://sdqali.in/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/">
-            Configuring Cloud Foundry Java Memory Parameters
-	  </a>
-	</h1>
-
-	<span class="post-date">Wed, May 20, 2015</span>
-
-	<p>This week I have been trying out Cloud Foundry. Today while trying to set up monitoring through AppDynamics, the sample application that I was using started crashing because of a Java memory error. This blog post discusses how to prevent this from happening by configuring Java memory parameters used by the application.</p>
-
-	<footer>
-          <a href='http://sdqali.in/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/'><nobr>Read more →</nobr></a>
 	</footer>
       </div>
       
