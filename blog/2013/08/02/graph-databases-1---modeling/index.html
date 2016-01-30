@@ -103,7 +103,7 @@ client.addEvent("pagehit", {
 " itemprop="description"/>
 <meta property="og:url" content="http://sdqali.in/blog/2013/08/02/graph-databases-1---modeling/" />
 <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
-<body class="theme-base-0b">
+<body class="theme-base-08">
 
 <div class="sidebar">
   <div class="container sidebar-sticky">
@@ -126,7 +126,7 @@ client.addEvent("pagehit", {
       
     </ul>
 
-    <p>&copy; 2015. All rights reserved. </p>
+    <p>&copy; 2016. All rights reserved. </p>
   </div>
 </div>
 
@@ -152,17 +152,16 @@ client.addEvent("pagehit", {
 
 <ul>
 <li>Entities are represented by <em>nodes</em> and their characteristics are represented as <em>properties</em> of the node. Eg. : Cristiano Ronaldo is a <em>node</em>, while his height is a <em>property</em>.</li>
-<li>Relationships are modeled by <em>relationships</em>. Eg. : <em>OF_NATIONAL_TEAM</em> is a <em>relationship</em>.</li>
+<li>Relationships are modeled by <em>relationships</em>. Eg. : _OF_NATIONAL<em>TEAM</em> is a <em>relationship</em>.</li>
 <li>Relationships always connect two <em>nodes</em></li>
-<li>Relationships sometimes have properties. Eg. : <em>debut</em> is a property of the <em>OF_NATIONAL_TEAM</em> relationship.</li>
+<li>Relationships sometimes have properties. Eg. : <em>debut</em> is a property of the _OF_NATIONAL<em>TEAM</em> relationship.</li>
 </ul>
 
 <h1 id="example-european-football-players:01e4e56a373905e32c6720fb6ea7fba6">Example - European football players</h1>
 
 <p>If we were to model football players to have played for European clubs, a section of the graph will look like this:</p>
 
-<p><img src="/images/graph_zidane.png" alt="Graph: Zidane and teams" />
-</p>
+<p><img src="/images/graph_zidane.png" alt="Graph: Zidane and teams" /></p>
 
 <h1 id="building-the-graph-with-cypher:01e4e56a373905e32c6720fb6ea7fba6">Building the graph with Cypher</h1>
 
@@ -238,7 +237,7 @@ RETURN player.debut;
 +--------------+
 </code></pre>
 
-<p>Here, <em>[player:OF_NATIONAL_TEAM]</em> specifies a relationship of type <em>OF_NATIONAL_TEAM</em> and labels it as <em>player</em> so that we can later extract out the <em>debut</em> property from <em>player</em>.</p>
+<p>Here, _[player:OF_NATIONAL<em>TEAM]</em> specifies a relationship of type _OF_NATIONAL<em>TEAM</em> and labels it as <em>player</em> so that we can later extract out the <em>debut</em> property from <em>player</em>.</p>
 
 <p>It can be seen from this example that, sometimes we are not really interested in extracting out certain information, although we want that information to be part of the query. Here, we don&rsquo;t really care what national team Zidane played for, we are just intested in an attribute of the relationship. Cypher allows you to represent this intend to ignore.</p>
 

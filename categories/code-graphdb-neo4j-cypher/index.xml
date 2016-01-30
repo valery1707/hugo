@@ -24,17 +24,16 @@
 
 &lt;ul&gt;
 &lt;li&gt;Entities are represented by &lt;em&gt;nodes&lt;/em&gt; and their characteristics are represented as &lt;em&gt;properties&lt;/em&gt; of the node. Eg. : Cristiano Ronaldo is a &lt;em&gt;node&lt;/em&gt;, while his height is a &lt;em&gt;property&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Relationships are modeled by &lt;em&gt;relationships&lt;/em&gt;. Eg. : &lt;em&gt;OF_NATIONAL_TEAM&lt;/em&gt; is a &lt;em&gt;relationship&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Relationships are modeled by &lt;em&gt;relationships&lt;/em&gt;. Eg. : _OF_NATIONAL&lt;em&gt;TEAM&lt;/em&gt; is a &lt;em&gt;relationship&lt;/em&gt;.&lt;/li&gt;
 &lt;li&gt;Relationships always connect two &lt;em&gt;nodes&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;Relationships sometimes have properties. Eg. : &lt;em&gt;debut&lt;/em&gt; is a property of the &lt;em&gt;OF_NATIONAL_TEAM&lt;/em&gt; relationship.&lt;/li&gt;
+&lt;li&gt;Relationships sometimes have properties. Eg. : &lt;em&gt;debut&lt;/em&gt; is a property of the _OF_NATIONAL&lt;em&gt;TEAM&lt;/em&gt; relationship.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h1 id=&#34;example-european-football-players:01e4e56a373905e32c6720fb6ea7fba6&#34;&gt;Example - European football players&lt;/h1&gt;
 
 &lt;p&gt;If we were to model football players to have played for European clubs, a section of the graph will look like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/graph_zidane.png&#34; alt=&#34;Graph: Zidane and teams&#34; /&gt;
-&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/graph_zidane.png&#34; alt=&#34;Graph: Zidane and teams&#34; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&#34;building-the-graph-with-cypher:01e4e56a373905e32c6720fb6ea7fba6&#34;&gt;Building the graph with Cypher&lt;/h1&gt;
 
@@ -110,7 +109,7 @@ RETURN player.debut;
 +--------------+
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Here, &lt;em&gt;[player:OF_NATIONAL_TEAM]&lt;/em&gt; specifies a relationship of type &lt;em&gt;OF_NATIONAL_TEAM&lt;/em&gt; and labels it as &lt;em&gt;player&lt;/em&gt; so that we can later extract out the &lt;em&gt;debut&lt;/em&gt; property from &lt;em&gt;player&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Here, _[player:OF_NATIONAL&lt;em&gt;TEAM]&lt;/em&gt; specifies a relationship of type _OF_NATIONAL&lt;em&gt;TEAM&lt;/em&gt; and labels it as &lt;em&gt;player&lt;/em&gt; so that we can later extract out the &lt;em&gt;debut&lt;/em&gt; property from &lt;em&gt;player&lt;/em&gt;.&lt;/p&gt;
 
 &lt;p&gt;It can be seen from this example that, sometimes we are not really interested in extracting out certain information, although we want that information to be part of the query. Here, we don&amp;rsquo;t really care what national team Zidane played for, we are just intested in an attribute of the relationship. Cypher allows you to represent this intend to ignore.&lt;/p&gt;
 

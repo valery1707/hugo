@@ -50,8 +50,7 @@
 
 &lt;p&gt;This is how Emacs looks while committing with this hack in place:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/screenshot_git_commit_log.png&#34; alt=&#34;Screenshot&#34; /&gt;
-&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/screenshot_git_commit_log.png&#34; alt=&#34;Screenshot&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;If you want to use this, copy the following snippet to your &lt;code&gt;init.el&lt;/code&gt;.&lt;/p&gt;
 

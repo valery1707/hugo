@@ -101,7 +101,7 @@ client.addEvent("pagehit", {
 <meta property="og:description" content="I have been playing around with Canvas objects and images for a side project I am doing. One of the first things I had to figure out for this project was how to fit an image of arbitrary height and width on to a Canvas object of arbitrary, but known dimensions while preserving the aspect ratios of the image. This blog post is an explanation of the solution I came up with for this." itemprop="description"/>
 <meta property="og:url" content="http://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/" />
 <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
-<body class="theme-base-0b">
+<body class="theme-base-08">
 
 <div class="sidebar">
   <div class="container sidebar-sticky">
@@ -124,7 +124,7 @@ client.addEvent("pagehit", {
       
     </ul>
 
-    <p>&copy; 2015. All rights reserved. </p>
+    <p>&copy; 2016. All rights reserved. </p>
   </div>
 </div>
 
@@ -158,8 +158,7 @@ imageObj.onload = function() {
 
 <p>But fitting images with aspect ratios different from the Canvas can be a little tricky. The fundamental problem here is that when aspect ratio is different, there is only one pair of edges-either vertical or horizontal-that can be fitted on to the canvas. The image will have to be placed in the center along the other axis. The following diagram illustrates this.</p>
 
-<p><img src="/images/canvas_fitting.png" alt="Canvas fitting" />
-</p>
+<p><img src="/images/canvas_fitting.png" alt="Canvas fitting" /></p>
 
 <p>Since fitting depends on the aspect ratio, the code should take it into consideration. The following code compares the ratios and chooses to fit the image horizontally or vertically.</p>
 

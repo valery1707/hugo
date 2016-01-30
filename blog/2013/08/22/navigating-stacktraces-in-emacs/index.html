@@ -103,7 +103,7 @@ client.addEvent("pagehit", {
 " itemprop="description"/>
 <meta property="og:url" content="http://sdqali.in/blog/2013/08/22/navigating-stacktraces-in-emacs/" />
 <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
-<body class="theme-base-0b">
+<body class="theme-base-08">
 
 <div class="sidebar">
   <div class="container sidebar-sticky">
@@ -126,7 +126,7 @@ client.addEvent("pagehit", {
       
     </ul>
 
-    <p>&copy; 2015. All rights reserved. </p>
+    <p>&copy; 2016. All rights reserved. </p>
   </div>
 </div>
 
@@ -146,15 +146,12 @@ client.addEvent("pagehit", {
 
 <ul>
 <li>Open the log in a buffer.</li>
-<li>Replace any leading file paths in the logs with the appropriate path for your local copy of the code. In the following case, I would replace all <code>/opt/thoughtworks/mingle</code> with empty string <sup class="footnote-ref" id="fnref:29e1a25627ff5adc25c49a09c3db5253:3"><a rel="footnote" href="#fn:29e1a25627ff5adc25c49a09c3db5253:3">3</a></sup>.</li>
-</ul>
-
-<pre><code class="language-bash">/opt/thoughtworks/mingle/app/models/foo.rb:46:in 'compare_bar'
+<li>Replace any leading file paths in the logs with the appropriate path for your local copy of the code. In the following case, I would replace all <code>/opt/thoughtworks/mingle</code> with empty string <sup class="footnote-ref" id="fnref:29e1a25627ff5adc25c49a09c3db5253:3"><a rel="footnote" href="#fn:29e1a25627ff5adc25c49a09c3db5253:3">3</a></sup>.
+<code>bash
+/opt/thoughtworks/mingle/app/models/foo.rb:46:in 'compare_bar'
 /opt/thoughtworks/mingle/app/controllers/foos_controller.rb:42:in 'validate_bar'
 ...
-</code></pre>
-
-<ul>
+</code></li>
 <li>Load the Grep mode with <code>M-x grep-mode</code></li>
 </ul>
 
