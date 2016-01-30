@@ -43,41 +43,29 @@
 &lt;p&gt;Once we have the shape File for Kashmir from step &lt;code&gt;8&lt;/code&gt;, we could do the merging by converting both shape Files to their corresponding GeoJSON formats and doing simple JavaScript operations on the objects.&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Start by converting both shape Files to their GeoJSON representation.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;gt; ogr2ogr -f GeoJSON india.geo.json india.shp
+&lt;li&gt;Start by converting both shape Files to their GeoJSON representation.
+&lt;code&gt;bash
+&amp;gt; ogr2ogr -f GeoJSON india.geo.json india.shp
 &amp;gt; ogr2ogr -f GeoJSON kashmir.geo.json kashmir.shp
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Load the two feature collections in to a JavaScript console. I tend to use Chromium&amp;rsquo;s Developer Tools, but in this example I am using  Node.js&amp;rsquo; REPL.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;kashmir = JSON.parse(fs.readFileSync(&amp;quot;./kashmir.geo.json&amp;quot;).toString());
+&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Load the two feature collections in to a JavaScript console. I tend to use Chromium&amp;rsquo;s Developer Tools, but in this example I am using  Node.js&amp;rsquo; REPL.
+&lt;code&gt;javascript
+kashmir = JSON.parse(fs.readFileSync(&amp;quot;./kashmir.geo.json&amp;quot;).toString());
 india = JSON.parse(fs.readFileSync(&amp;quot;./india.geo.json&amp;quot;).toString());
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Identify the Kashmir feature in the India feature collection.&lt;/li&gt;
+&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Identify the Kashmir feature in the India feature collection.
+&lt;code&gt;javascript
+kin = india.features.filter(function(f) {return f.properties.NAME_1.match(&amp;quot;Kashmir&amp;quot;);})[0];
+&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Replace it&amp;rsquo;s coordinates with the unified Kashmir we generated.
+&lt;code&gt;javascript
+kin.geometry.coordinates = kashmir.features[0].geometry.coordinates;
+&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Save it back to a GeoJSON file.
+&lt;code&gt;javascript
+fs.writeFileSync(&amp;quot;full_india.geo.json&amp;quot;, JSON.stringify(india));
+&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;kin = india.features.filter(function(f) {return f.properties.NAME_1.match(&amp;quot;Kashmir&amp;quot;);})[0];
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Replace it&amp;rsquo;s coordinates with the unified Kashmir we generated.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;kin.geometry.coordinates = kashmir.features[0].geometry.coordinates;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Save it back to a GeoJSON file.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;fs.writeFileSync(&amp;quot;full_india.geo.json&amp;quot;, JSON.stringify(india));
-&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now the GeoJSON file can be transformed back in to a shape file.&lt;/p&gt;
 

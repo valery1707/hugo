@@ -89,7 +89,7 @@ client.addEvent("pagehit", {
 
   </head>
 
-<body class="theme-base-0b">
+<body class="theme-base-08">
 
 <div class="sidebar">
   <div class="container sidebar-sticky">
@@ -112,7 +112,7 @@ client.addEvent("pagehit", {
       
     </ul>
 
-    <p>&copy; 2015. All rights reserved. </p>
+    <p>&copy; 2016. All rights reserved. </p>
   </div>
 </div>
 
@@ -120,6 +120,24 @@ client.addEvent("pagehit", {
     <div class="content container">
       <div class="posts">
 
+      
+      <div class="post">
+	<h1 class="post-title">
+	  <a href="http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/">
+            Using custom arguments in Spring MVC controllers
+	  </a>
+	</h1>
+
+	<span class="post-date">Fri, Jan 29, 2016</span>
+
+	<p>Most of the Spring controllers in the real world accept a lot of different types of parameters - Path variables, URL parameters, request headers, request body and sometimes even the entire HTTP Request object. This provides a flexible mechanism to create APIs. Spring is really good at parsing these parameters in to Java types as long as there is an ObjectMapper (like Jackson) configured to take care of the de-serialization.</p>
+
+<p>However, there are situations where you want methods to receive a parameter of a particular type that has to resolved from a set of parameters–for example, an API can expect consumers to send meta data about a request in the form of headers and need a custom type to hold this information. Spring provides a convenient way to provide such custom arguments. This blog post explores this feature and how to implement it and test it.</p>
+
+	<footer>
+          <a href='http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/'><nobr>Read more →</nobr></a>
+	</footer>
+      </div>
       
       <div class="post">
 	<h1 class="post-title">
@@ -262,22 +280,6 @@ Apache Camel [^1] makes a natural choice as the base for implementing such a dat
 
 	<footer>
           <a href='http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/'><nobr>Read more →</nobr></a>
-	</footer>
-      </div>
-      
-      <div class="post">
-	<h1 class="post-title">
-	  <a href="http://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/">
-            Making sense of Cloud Foundry security group declarations
-	  </a>
-	</h1>
-
-	<span class="post-date">Thu, May 21, 2015</span>
-
-	<p>Cloud Foundry allows fine grained declaration of security groups, down to IP address ranges and Ports. While this provides great flexibility, making sense of why each rule in a security group exists and what each does is really difficult because of the limitations of the security group declaration mechanism.</p>
-
-	<footer>
-          <a href='http://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/'><nobr>Read more →</nobr></a>
 	</footer>
       </div>
       

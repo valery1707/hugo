@@ -18,15 +18,12 @@
 
 &lt;ul&gt;
 &lt;li&gt;Open the log in a buffer.&lt;/li&gt;
-&lt;li&gt;Replace any leading file paths in the logs with the appropriate path for your local copy of the code. In the following case, I would replace all &lt;code&gt;/opt/thoughtworks/mingle&lt;/code&gt; with empty string &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:29e1a25627ff5adc25c49a09c3db5253:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:29e1a25627ff5adc25c49a09c3db5253:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;/opt/thoughtworks/mingle/app/models/foo.rb:46:in &#39;compare_bar&#39;
+&lt;li&gt;Replace any leading file paths in the logs with the appropriate path for your local copy of the code. In the following case, I would replace all &lt;code&gt;/opt/thoughtworks/mingle&lt;/code&gt; with empty string &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:29e1a25627ff5adc25c49a09c3db5253:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:29e1a25627ff5adc25c49a09c3db5253:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;.
+&lt;code&gt;bash
+/opt/thoughtworks/mingle/app/models/foo.rb:46:in &#39;compare_bar&#39;
 /opt/thoughtworks/mingle/app/controllers/foos_controller.rb:42:in &#39;validate_bar&#39;
 ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
+&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;Load the Grep mode with &lt;code&gt;M-x grep-mode&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 

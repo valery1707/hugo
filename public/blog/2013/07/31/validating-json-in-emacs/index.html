@@ -103,7 +103,7 @@ client.addEvent("pagehit", {
 " itemprop="description"/>
 <meta property="og:url" content="http://sdqali.in/blog/2013/07/31/validating-json-in-emacs/" />
 <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
-<body class="theme-base-0b">
+<body class="theme-base-08">
 
 <div class="sidebar">
   <div class="container sidebar-sticky">
@@ -126,7 +126,7 @@ client.addEvent("pagehit", {
       
     </ul>
 
-    <p>&copy; 2015. All rights reserved. </p>
+    <p>&copy; 2016. All rights reserved. </p>
   </div>
 </div>
 
@@ -146,22 +146,22 @@ client.addEvent("pagehit", {
 
 <ul>
 <li>Grab jsonlint. It is a command line utility that validates JSON. There seems to be two flavors of jsonlint available. A pure JavaScript implementation <sup class="footnote-ref" id="fnref:b6f5919ed39f22c8068bb14b6b3e4c14:2"><a rel="footnote" href="#fn:b6f5919ed39f22c8068bb14b6b3e4c14:2">2</a></sup> that runs on the Node.js runtime and a native Mac OS X <sup class="footnote-ref" id="fnref:b6f5919ed39f22c8068bb14b6b3e4c14:3"><a rel="footnote" href="#fn:b6f5919ed39f22c8068bb14b6b3e4c14:3">3</a></sup> version. We use the Node.js version.</li>
-<li>Ensure that your Emacs can find the jsonlint binary. This can be done by adding the following snippet in your Emacs configuration:</li>
-</ul>
+
+<li><p>Ensure that your Emacs can find the jsonlint binary. This can be done by adding the following snippet in your Emacs configuration:</p>
 
 <pre><code class="language-cl">(setenv &quot;PATH&quot; (concat (getenv &quot;PATH&quot;) &quot;:/usr/local/share/npm/bin&quot;))
 (setq exec-path (append exec-path '(&quot;/usr/local/share/npm/bin&quot;)))
 </code></pre>
 
-<p>Of course, the path you add will depend on where your installation process put the binary.</p>
+<p>Of course, the path you add will depend on where your installation process put the binary.</p></li>
 
-<ul>
-<li>Install <code>flymake-json</code> <sup class="footnote-ref" id="fnref:b6f5919ed39f22c8068bb14b6b3e4c14:4"><a rel="footnote" href="#fn:b6f5919ed39f22c8068bb14b6b3e4c14:4">4</a></sup>, using your Emacs package manager.</li>
-<li>Bind a key to <code>flymake-json-load</code> which is the command to perform jsonlint on the current file. This can be done with the following snippet:</li>
-</ul>
+<li><p>Install <code>flymake-json</code> <sup class="footnote-ref" id="fnref:b6f5919ed39f22c8068bb14b6b3e4c14:4"><a rel="footnote" href="#fn:b6f5919ed39f22c8068bb14b6b3e4c14:4">4</a></sup>, using your Emacs package manager.</p></li>
+
+<li><p>Bind a key to <code>flymake-json-load</code> which is the command to perform jsonlint on the current file. This can be done with the following snippet:</p>
 
 <pre><code class="language-cl">(global-set-key (kbd &quot;C-c j v&quot;) 'flymake-json-load)
-</code></pre>
+</code></pre></li>
+</ul>
 
 <p>Enjoy!</p>
 <div class="footnotes">

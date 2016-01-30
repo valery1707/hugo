@@ -25,14 +25,11 @@
 &lt;p&gt;&lt;a href=&#34;https://github.com/jf&#34;&gt;Jeffrey Lim&lt;/a&gt;&amp;rsquo;s &lt;code&gt;rbenv-gemset&lt;/code&gt;&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:85e1ecb3737055d5335b82c4e19bf867:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:85e1ecb3737055d5335b82c4e19bf867:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt; plugin forces Rbenv to look in a specific path for gems. A typical workflow of using the plugin will be as follows.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Specify the gemset by adding it&amp;rsquo;s name to a &lt;code&gt;rbenv-gemsets&lt;/code&gt; file in the root directory of the project.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cat rbenv-gemsets
+&lt;li&gt;Specify the gemset by adding it&amp;rsquo;s name to a &lt;code&gt;rbenv-gemsets&lt;/code&gt; file in the root directory of the project.
+&lt;code&gt;bash
+cat rbenv-gemsets
 $ .gems
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
+&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;Install the gems, by using &lt;code&gt;gem install&lt;/code&gt; or with bundler.&lt;/li&gt;
 &lt;li&gt;The gems will be installed in &lt;code&gt;.gems&lt;/code&gt; directory under the project root.&lt;/li&gt;
 &lt;li&gt;Ruby will look for gems in the &lt;code&gt;.gems&lt;/code&gt; directory.&lt;/li&gt;
@@ -43,18 +40,15 @@ $ .gems
 &lt;p&gt;In this approach, we will be using bundler&amp;rsquo;s &lt;code&gt;--path&lt;/code&gt; flag to install the gemset to a local directory and then wrap all calls with &lt;code&gt;bundle exec&lt;/code&gt;. A typical workflow in this case will look like this.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Install gems to a &lt;code&gt;.gems&lt;/code&gt; directory using bundler&lt;/li&gt;
+&lt;li&gt;Install gems to a &lt;code&gt;.gems&lt;/code&gt; directory using bundler
+&lt;code&gt;bash
+bundle install --path .gems
+&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Wrap calls with &lt;code&gt;bundle exec&lt;/code&gt;
+&lt;code&gt;bash
+bundle exec rake --version
+&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;bundle install --path .gems
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Wrap calls with &lt;code&gt;bundle exec&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;bundle exec rake --version
-&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;use-a-devenv-file:85e1ecb3737055d5335b82c4e19bf867&#34;&gt;Use a devenv file&lt;/h2&gt;
 
