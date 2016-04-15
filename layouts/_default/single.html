@@ -1,32 +1,35 @@
-{{ partial "head.html" . }}
-<!--Twitter Summary Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@sdqali">
-<meta name="twitter:creator" content="@sdqali">
-<meta name="twitter:title" content="{{ .Title }}">
-<meta name="twitter:description" content="{{ .Summary }}">
-<meta name="twitter:image" content="{{ .Site.BaseURL }}/{{ .Params.image }}">
+<!DOCTYPE html5>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" prefix="og: http://ogp.me/ns#">
+  {{ partial "head.html" . }}
+  <!--Twitter Summary Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@sdqali">
+  <meta name="twitter:creator" content="@sdqali">
+  <meta name="twitter:title" content="{{ .Title }}">
+  <meta name="twitter:description" content="{{ .Summary }}">
+  <meta name="twitter:image" content="{{ .Site.BaseURL }}/{{ .Params.image }}">
 
-<meta property="og:title" content="{{ .Title }}" />
-<meta property="og:description" content="{{ .Summary }}" itemprop="description"/>
-<meta property="og:url" content="{{ .Permalink }}" />
-<meta property="og:image" content="{{ .Site.BaseURL }}/{{ .Params.image }}" />
-<body class="theme-base-08">
+  <meta property="og:title" content="{{ .Title }}" />
+  <meta property="og:description" content="{{ .Summary }}" itemprop="description"/>
+  <meta property="og:url" content="{{ .Permalink }}" />
+  <meta property="og:image" content="{{ .Site.BaseURL }}/{{ .Params.image }}" />
+  <body>
 
-<div class="content container" itemscope itemtype="http://schema.org/BlogPosting">
-<meta itemscope itemprop="mainEntityOfPage"  itemType="https://schema.org/WebPage" itemid="{{ .Permalink }}"/>
-<meta itemprop="datePublished" content="{{ .Lastmod }}"/>
-<meta itemprop="dateModified" content="{{ .Lastmod }}"/>
+    {{ partial "header.html.snippet" . }}
 
-<div class="post">
-  <h1 itemprop="headline">{{ .Title }}</h1>
-  <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">
-    By <span itemprop="name">Sadique Ali</span>
-  </div>
-  <span class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
-      {{ .Content }}
-</div>
-</div>
+    <section class="main" itemscope itemtype="http://schema.org/BlogPosting">
+      <meta itemscope itemprop="mainEntityOfPage"  itemType="https://schema.org/WebPage" itemid="{{ .Permalink }}"/>
+      <meta itemprop="datePublished" content="{{ .Lastmod }}"/>
+      <meta itemprop="dateModified" content="{{ .Lastmod }}"/>
 
+      <div class="post">
+        <h1 itemprop="headline">{{ .Title }}</h1>
+        <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          By <span itemprop="name">Sadique Ali</span>
+        </div>
+        <span class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
+        {{ .Content }}
+      </div>
+    </section>
   </body>
 </html>

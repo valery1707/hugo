@@ -1,11 +1,16 @@
-{{ partial "head.html" . }}
-<body class="theme-base-08">
-    <div class="content container">
-<div class="post">
-  <h1>{{ .Title }}</h1>
-      {{ .Content }}
-</div>
-</div>
+<!DOCTYPE html5>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" prefix="og: http://ogp.me/ns#">
+  {{ partial "head.html" . }}
+  <body>
+    {{ partial "header.html.snippet" . }}
 
+    <section class="main">
+      <div class="post">
+        <h1>{{ .Title }}</h1>
+        {{ .Content }}
+      </div>
+    </section>
+
+    {{ partial "footer.html.snippet" }}
   </body>
 </html>

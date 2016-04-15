@@ -1,16 +1,20 @@
-{{ partial "head.html" . }}
-<body class="theme-base-08">
-  <div class="content container">
-    <h1 class="posts">
-      Blog Posts
-    </h1>
-    <ul class="posts">
+<!DOCTYPE html5>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" prefix="og: http://ogp.me/ns#">
+  {{ partial "head.html" . }}
+  <body>
+    {{ partial "header.html.snippet" . }}
+
+    <section class="main">
+      <h1 class="posts">
+        Blog Posts
+      </h1>
+      <ul class="posts">
         {{ range .Data.Pages }}
         <li>
           <span><a href="{{ .Permalink }}">{{ .Title }}</a> <time class="pull-right post-list">{{ .Date.Format "Mon, Jan 2, 2006" }}</time></span>
         </li>
         {{ end }}
-    </ul>
-  </div>
-</body>
+      </ul>
+    </section>
+  </body>
 </html>
