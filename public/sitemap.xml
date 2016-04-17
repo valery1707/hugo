@@ -3,8 +3,13 @@
   
   <url>
     <loc>http://sdqali.in/</loc>
-    <lastmod>2016-01-29T17:41:49-08:00</lastmod>
+    <lastmod>2016-04-17T23:36:48-04:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/</loc>
+    <lastmod>2016-04-17T23:36:48-04:00</lastmod>
   </url>
   
   <url>

@@ -5,8 +5,104 @@
     <link>http://sdqali.in/</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 29 Jan 2016 17:41:49 -0800</lastBuildDate>
+    <lastBuildDate>Sun, 17 Apr 2016 23:36:48 -0400</lastBuildDate>
     <atom:link href="http://sdqali.in/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Programmable exit codes for Spring command line applications</title>
+      <link>http://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/</link>
+      <pubDate>Sun, 17 Apr 2016 23:36:48 -0400</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/</guid>
+      <description>&lt;p&gt;Spring&amp;rsquo;s &lt;code&gt;CommandLineRunner&lt;/code&gt; provides a great mechanism to build command line applications. While this convenience is great, applications that use &lt;code&gt;CommandLineRunner&lt;/code&gt; require extra effort in some areas like integration testing. Exit codes are such an area - applications that use command line runners always report their exit code as &lt;code&gt;0&lt;/code&gt; even if there are exceptions thrown. This blog post explains a way to get to programmable exit codes for such applications.&lt;/p&gt;
+
+&lt;p&gt;The following example demonstrates this problem. Here we have a simple implementation of &lt;code&gt;CommandLineRunner&lt;/code&gt; that simply throws a &lt;code&gt;RuntimeException&lt;/code&gt; when started.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Component
+@Profile(&amp;quot;exception&amp;quot;)
+public class WillThrow implements CommandLineRunner {
+    public void run(String... args) throws Exception {
+        throw new RuntimeException(&amp;quot;This should kill the application&amp;quot;);
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When this application runs, we will see that the exit code is &lt;code&gt;0&lt;/code&gt;, as expected.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ java -Dspring.profiles.active=exception -jar build/libs/exit-code-demo-1.0-SNAPSHOT.jar &amp;gt;&amp;gt; /dev/null 2&amp;amp;&amp;gt;1
+$ echo $?
+0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;A simple way to propagate the right exit code is to use &lt;code&gt;java.lang.System#exit&lt;/code&gt; and specify an error code. The following snippet shows this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Component
+@Profile(&amp;quot;exit&amp;quot;)
+public class WillExit implements CommandLineRunner {
+    public void run(String... args) throws Exception {
+        System.exit(3);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When run:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ java -Dspring.profiles.active=exit -jar build/libs/exit-code-demo-1.0-SNAPSHOT.jar &amp;gt;&amp;gt; /dev/null 2&amp;amp;&amp;gt;1
+$ echo $?
+3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This looks straightforward and easy. However, exiting the application from within the &lt;code&gt;CommandLineRunner&lt;/code&gt; makes integration testing of this application difficult. Our tests will simply stop execution at that point without giving us the opportunity to assert anything.&lt;/p&gt;
+
+&lt;p&gt;At work, while looking for a solution to this, we stumbled across Spring&amp;rsquo;s &lt;code&gt;ExitCodeGenerator&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3e18ae9ccb3e0a2002a001a59d30627f:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3e18ae9ccb3e0a2002a001a59d30627f:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. It is an interface whose implementations Spring uses to look up what exit code to use. There are at least two ways to make use of &lt;code&gt;ExitCodeGenerator&lt;/code&gt; - one involves making the application&amp;rsquo;s Exceptions implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt; and the other involves making the &lt;code&gt;Application&lt;/code&gt; class an implementation of &lt;code&gt;ExitCodeGenerator&lt;/code&gt;. We will look at the first approach here.&lt;/p&gt;
+
+&lt;p&gt;Our new command line runner will be as:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@Component
+@Profile(&amp;quot;exception&amp;quot;)
+public class WillThrow implements CommandLineRunner{
+    public void run(String... args) throws Exception {
+        throw new ExceptionWithExitCode(&amp;quot;Hello&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And the exception will resemble:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public class ExceptionWithExitCode extends RuntimeException implements ExitCodeGenerator {
+    public ExceptionWithExitCode(String message) {
+        super(message);
+    }
+
+    public int getExitCode() {
+        return 13;
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When the application runs:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ java -Dspring.profiles.active=exception -jar build/libs/exit-code-demo-1.0-SNAPSHOT.jar &amp;gt;&amp;gt; /dev/null 2&amp;amp;&amp;gt;1
+$ echo $?
+13
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Obviously, this is a rather simple example, but you can see how &lt;code&gt;ExitCodeGenerator&lt;/code&gt; allows us to have programmable exit codes. This allows us to have tests for our applications, while giving us the flexibility to control the exit code.&lt;/p&gt;
+
+&lt;p&gt;We will take a look at the second approach of using &lt;code&gt;ExitCodeGenerator&lt;/code&gt; in another blog post.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:3e18ae9ccb3e0a2002a001a59d30627f:1&#34;&gt;&lt;code&gt;ExitCodeGenerator&lt;/code&gt; is an &amp;ldquo;Interface used to generate an &amp;lsquo;exit code&amp;rsquo; from a running command line SpringApplication.&amp;rdquo;. You can find the JavaDocs &lt;a href=&#34;http://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/ExitCodeGenerator.html&#34;&gt;here&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3e18ae9ccb3e0a2002a001a59d30627f:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Using custom arguments in Spring MVC controllers</title>
@@ -1348,87 +1444,6 @@ fs.writeFileSync(&amp;quot;full_india.geo.json&amp;quot;, JSON.stringify(india))
 &lt;h1 id=&#34;merge-geojson-features:7591cb75a8855983e3f9edf802cbce55&#34;&gt;merge-geojson-features&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://www.npmjs.org/package/&#34;&gt;merge-geojson-features&lt;/a&gt; is a Node.js module to combine Features defined in different files in to a single FeatureCollection. I use it when I am not in the mood to alter GeoJSON objects from a JavaScript console by hand.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Importing the Yelp dataset into MongoDB</title>
-      <link>http://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/</link>
-      <pubDate>Sat, 02 Aug 2014 00:00:00 +0000</pubDate>
-      
-      <guid>http://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/</guid>
-      <description>&lt;p&gt;Today Yelp announced their dataset challenge &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:c6878b2b502d5257f269a3d2e809c771:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:c6878b2b502d5257f269a3d2e809c771:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. The dataset they released includes data from 5 cities (Phoenix, Las Vegas, Madison, Waterloo and Edinburgh) and consists of&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;42,153 businesses&lt;/li&gt;
-&lt;li&gt;320,002 business attributes&lt;/li&gt;
-&lt;li&gt;31,617 check-in sets&lt;/li&gt;
-&lt;li&gt;252,898 users&lt;/li&gt;
-&lt;li&gt;955,999 edge social graph&lt;/li&gt;
-&lt;li&gt;403,210 tips&lt;/li&gt;
-&lt;li&gt;1,125,458 reviews&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The data is available for public consumption, although Yelp owns any derivative dataset you create from the original &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:c6878b2b502d5257f269a3d2e809c771:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:c6878b2b502d5257f269a3d2e809c771:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
-
-&lt;p&gt;The data is available as files with each line representing a JSON object. Since I am using MongoDB these days to analyze geospatial data, I wanted to convert this into an easy format that I could import into Mongo. Mongo puts a strict constraint on how a location needs to be specified - It expects a location field in a document to be an array in the format &lt;code&gt;[longitude, latitude]&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;With this in mind, the first step is to convert and transform the objects into objects that Mongo can make sense of. The following Ruby script does the job:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;#!/usr/bin/env ruby
-
-require &amp;quot;json&amp;quot;
-
-businesses = IO.readlines(&amp;quot;yelp.business.json&amp;quot;).map do |line|
-  b = JSON.parse(line)
-  b[&amp;quot;location&amp;quot;] = {
-    &amp;quot;type&amp;quot; =&amp;gt; &amp;quot;Point&amp;quot;,
-    &amp;quot;coordinates&amp;quot; =&amp;gt; [b[&amp;quot;longitude&amp;quot;], b[&amp;quot;latitude&amp;quot;]]
-  }
-  b
-end
-IO.write &amp;quot;businesses.mongo.json&amp;quot;, businesses.to_json
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The next step is to import this data into Mongo using the &lt;code&gt;mongoimport&lt;/code&gt; tool.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mongoimport --collection businesses --file businesses.mongo.json --jsonArray
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We need the &lt;code&gt;--jsonArray&lt;/code&gt; parameter because our data is an array.&lt;/p&gt;
-
-&lt;p&gt;Since there are 42153 businesses, it will take some time. On my Macbook Pro, it took around 2 minutes, 10 seconds. Once the import is done, make sure that we have a Geospatial index on the &lt;code&gt;location&lt;/code&gt; field.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;db.businesses.ensureIndex({location: &amp;quot;2dsphere&amp;quot;})
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Once the indexing is done, we can use Mongo&amp;rsquo;s Geospatial queries to find interesting things. As an example, here we look up all the restaurants within 1 kilometer distance from downtown Phoenix.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;db.businesses.find({
-  location: {
-    $near: {
-      $geometry: {
-	type: &amp;quot;Point&amp;quot;,
-	coordinates: [-112.0667, 33.4500]
-      },
-      $maxDistance: 1000
-    }
-  }
-})
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Happy hacking.&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:c6878b2b502d5257f269a3d2e809c771:1&#34;&gt;&lt;a href=&#34;http://www.yelp.com/dataset_challenge&#34;&gt;Yelp Dataset Challenge, 2014&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:c6878b2b502d5257f269a3d2e809c771:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:c6878b2b502d5257f269a3d2e809c771:2&#34;&gt;DATASET CHALLENGE ACADEMIC DATASET TERMS OF USE &lt;a href=&#34;https://www.yelp.com/html/pdf/Dataset_Challenge_Academic_Dataset_Agreement.pdf&#34;&gt;Section 5, Ownership&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:c6878b2b502d5257f269a3d2e809c771:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
 </description>
     </item>
     
