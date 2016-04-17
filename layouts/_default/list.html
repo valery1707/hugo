@@ -3,18 +3,39 @@
   {{ partial "head.html" . }}
   <body>
     {{ partial "header.html.snippet" . }}
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="site-heading">
+              <h1>  Archive </h1>
+              <hr class="small">
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-    <section class="main">
-      <h1 class="posts">
-        Blog Posts
-      </h1>
-      <ul class="posts">
-        {{ range .Data.Pages }}
-        <li>
-          <span><a href="{{ .Permalink }}">{{ .Title }}</a> <time class="pull-right post-list">{{ .Date.Format "Mon, Jan 2, 2006" }}</time></span>
-        </li>
-        {{ end }}
-      </ul>
-    </section>
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          {{ range .Data.Pages }}
+          <div class="post-preview">
+            <a href='{{ .Permalink }}'>
+              <h2 class="post-title">
+                {{ .Title }}
+              </h2>
+            </a>
+            <p class="post-meta"> {{ .Date.Format "Mon, Jan 2, 2006" }}</p>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+
+    {{ partial "footer.html.snippet" }}
   </body>
 </html>
