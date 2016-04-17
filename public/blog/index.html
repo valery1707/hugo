@@ -1,545 +1,1067 @@
-<!DOCTYPE html>
+<!DOCTYPE html5>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" prefix="og: http://ogp.me/ns#">
   <head>
-    <link href="http://gmpg.org/xfn/11" rel="profile">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Clean Blog</title>
 
     
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-
-    <title> Blogs &middot; Sadique Ali </title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     
-    <link rel="stylesheet" href="http://sdqali.in/css/poole.css">
-    <link rel="stylesheet" href="http://sdqali.in/css/syntax.css">
-    <link rel="stylesheet" href="http://sdqali.in/css/hyde.css">
-    <link rel="stylesheet" href="http://sdqali.in/css/default.min.css">
-    <link rel="stylesheet" href="http://sdqali.in/css/custom.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+    <link href="/css/clean-blog.min.css" rel="stylesheet">
 
     
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
-    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-    <meta name="theme-color" content="#ffffff">
-
-    <script src="https://d26b395fwzu5fz.cloudfront.net/3.3.0/keen.min.js" type="text/javascript"></script>
-    <script src="http://sdqali.in/js/parseuri.js" type="text/javascript"></script>
-    <script src="http://sdqali.in/js/ua-parser.min.js" type="text/javascript"></script>
-    <script src="http://sdqali.in/js/Math.uuid.js" type="text/javascript"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
     
-    <link href="http://sdqali.in/blog/index.xml" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+    
+    
 
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
-    <script type="text/javascript">
-      hljs.initHighlightingOnLoad();
-    </script>
+</head>
 
-    <script type="text/javascript">
-  var client = new Keen({
-    projectId: "566f9f7a96773d75e098bb34", 
-    writeKey: "5d41bf4e9b86ee088f2ae748d782f6e40501d9f1807e04cd3c2bea52c276f14416f585877c39785704bdd5407aae393cc8ad601646d2112f8293a0269145baebec15f48e073186173b9e6c82cd3767456296c77a46d23b827c82492116d919e8401dfa84c56f13adac91963575522314",   
-    readKey: "57d95890c1893e97bb47ff02d5082242490a5f0585777e5f157ff3c5f01aca1c1e5bdaab91d874668b7154981d14dd5d73e3a54ef3360e93f29ea1b50b36b339e0e0fe063347fa6ce9bf9f1536752fa81bf2e12079a21e2e57312a55260403f09915e11455cb98e69a2dc9094c14184a"      
-  });
-
-var uri = parseUri(window.location.href);
-var referrer = parseUri(document.referrer);
-var uaParser = new UAParser();
-client.addEvent("pagehit", {
-  "url" : {
-    "source" : uri.source,
-    "protocol" : uri.protocol,
-    "domain" : uri.host,
-    "port" : uri.port,
-    "path" : uri.path,
-    "anchor" : uri.anchor
-  },
-  "user_agent" : {
-    "browser" : uaParser.getBrowser(),
-    "engine" : uaParser.getEngine(),
-    "os" : uaParser.getOS()
-  },
-  referrer: {
-    "source" : referrer.source,
-    "protocol" : referrer.protocol,
-    "domain" : referrer.host,
-    "port" : referrer.port,
-    "path" : referrer.path,
-    "anchor" : referrer.anchor
-  },
-  "session_id" : Math.uuid(),
-  "permanent_tracker" : Math.uuid()
-});
-</script>
-
-  </head>
-
-<body class="theme-base-08">
-
-<div class="sidebar">
-  <div class="container sidebar-sticky">
-    <div class="sidebar-about">
-      <h1>
-	<a href="/">Sadique Ali</a>
-      </h1>
-      <p class="lead">
-       A blog about the Code I write and the Technologies I use. And other things that interest me. 
-      </p>
+  <body>
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Sadique Ali</a>
     </div>
 
-    <ul class="sidebar-nav">
-      <li><a href="/">Home</a> </li>
-      <li><a href="/blog/">Blog</a> </li>
-      <li><a href="/about">About</a> </li>
-      <li><a href="https://github.com/sdqali">GitHub</a> </li>
-      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
-      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
-      
-    </ul>
-
-    <p>&copy; 2016. All rights reserved. </p>
+    
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a> </li>
+        <li><a href="/blog/">Blog</a> </li>
+        <li><a href="/about">About</a> </li>
+        <li><a href="https://github.com/sdqali">GitHub</a> </li>
+        <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+        <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      </ul>
+    </div>
+    
   </div>
-</div>
+  
+</nav>
 
+    
+    
+    <header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="site-heading">
+              <h1>  Archive </h1>
+              <hr class="small">
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-  <div class="content container">
-    <h1 class="posts">
-      Blog Posts
-    </h1>
-    <ul class="posts">
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/">Using custom arguments in Spring MVC controllers</a> <time class="pull-right post-list">Fri, Jan 29, 2016</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/">Authentication for Apache Camel HTTP components</a> <time class="pull-right post-list">Wed, Dec 16, 2015</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2015/12/14/thoughts-on-open-graph-tags/">Thoughts on Open Graph tags</a> <time class="pull-right post-list">Mon, Dec 14, 2015</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2015/12/11/integration-testing-spring-command-line-applications/">Integration testing Spring command line applications</a> <time class="pull-right post-list">Fri, Dec 11, 2015</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/">Integration testing challenges for non-web Spring applications</a> <time class="pull-right post-list">Thu, Dec 10, 2015</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2015/12/07/how-thinking-of-documentation-as-legislation-helped-me-become-a-better-programmer/">How thinking of Documentation as Legislation helped me become a better programmer</a> <time class="pull-right post-list">Mon, Dec 7, 2015</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/">Implementing custom annotations for Spring MVC</a> <time class="pull-right post-list">Sun, Dec 6, 2015</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/">Validating RequestParams and PathVariables in Spring MVC</a> <time class="pull-right post-list">Fri, Dec 4, 2015</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2015/11/24/testing-async-responses-using-mockmvc/">Testing async responses using MockMvc</a> <time class="pull-right post-list">Tue, Nov 24, 2015</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/">Running multiple applications in the same Tomcat installation</a> <time class="pull-right post-list">Tue, Jun 9, 2015</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/">Making sense of Cloud Foundry security group declarations</a> <time class="pull-right post-list">Thu, May 21, 2015</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/">Configuring Cloud Foundry Java Memory Parameters</a> <time class="pull-right post-list">Wed, May 20, 2015</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2014/08/08/disputed-territories-and-merging-shapes-and-features/">Disputed territories and merging shapes and features</a> <time class="pull-right post-list">Fri, Aug 8, 2014</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2014/08/03/a-list-of-gis-tools/">A list of GIS tools</a> <time class="pull-right post-list">Sun, Aug 3, 2014</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/">Importing the Yelp dataset into MongoDB</a> <time class="pull-right post-list">Sat, Aug 2, 2014</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/">Clojure Dojo - Levenshtein edit distance</a> <time class="pull-right post-list">Thu, Mar 20, 2014</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/">A simple JMeter test with login</a> <time class="pull-right post-list">Mon, Feb 17, 2014</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2014/02/09/the-sndp---nss-political-experiment-of-1980s/">The SNDP - NSS political experiment of 1980s</a> <time class="pull-right post-list">Sun, Feb 9, 2014</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/12/10/what-is-life/">What is life?</a> <time class="pull-right post-list">Tue, Dec 10, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/11/21/a-rainy-distraction/">A rainy distraction</a> <time class="pull-right post-list">Thu, Nov 21, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/10/15/the-fear-of-being-wrong-on-the-internet/">The fear of being wrong on the Internet</a> <time class="pull-right post-list">Tue, Oct 15, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/">Implementing Rate Limiting in Rails - Part 2</a> <time class="pull-right post-list">Sun, Oct 13, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/">Implementing Rate Limiting in Rails - Part 1</a> <time class="pull-right post-list">Sat, Oct 12, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/">Python Hack - Dynamically override an object&#39;s attribute</a> <time class="pull-right post-list">Mon, Oct 7, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/">Fitting an Image in to a Canvas object</a> <time class="pull-right post-list">Thu, Oct 3, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/">Accessing Environment Variables in Gradle</a> <time class="pull-right post-list">Tue, Oct 1, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/10/01/reading-user-input-in-gradle-scripts/">Reading user input in Gradle scripts</a> <time class="pull-right post-list">Tue, Oct 1, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/">Ruby, Named Capture Groups and Local Variables</a> <time class="pull-right post-list">Tue, Oct 1, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/">Named Capture Groups in Regular Expressions</a> <time class="pull-right post-list">Sun, Sep 29, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/09/26/decomposing-urls-in-python/">Decomposing URLs in Python</a> <time class="pull-right post-list">Thu, Sep 26, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/09/17/on-halal-burgers/">On Halal Burgers</a> <time class="pull-right post-list">Tue, Sep 17, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/09/15/shared-history-in-bash/">Shared history in Bash</a> <time class="pull-right post-list">Sun, Sep 15, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/09/12/managing-gemsets-in-rbenv/">Managing Gemsets in Rbenv</a> <time class="pull-right post-list">Thu, Sep 12, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/09/08/looking-up-compiler-params-used-to-compile-a-ruby-version/">Looking up Compiler params used to compile a Ruby version</a> <time class="pull-right post-list">Sun, Sep 8, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/08/22/navigating-stacktraces-in-emacs/">Navigating Stacktraces in Emacs</a> <time class="pull-right post-list">Thu, Aug 22, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/08/21/a-brief-history-of-times-new-roman/">A brief History of Times New Roman</a> <time class="pull-right post-list">Wed, Aug 21, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/08/17/my-tinfoil-setup/">My Tinfoil setup</a> <time class="pull-right post-list">Sat, Aug 17, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/08/15/pythons-bool-type/">Python&#39;s bool type</a> <time class="pull-right post-list">Thu, Aug 15, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/08/11/when-link-titles-were-for-the-early-adopters/">When Link titles were for the early adopters</a> <time class="pull-right post-list">Sun, Aug 11, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/08/11/when-url-shortening-results-in-longer-urls/">When URL shortening results in longer URLs</a> <time class="pull-right post-list">Sun, Aug 11, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/08/10/fusing-the-old-media-and-the-new/">Fusing the old media and the new</a> <time class="pull-right post-list">Sat, Aug 10, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/08/09/biriyani-and-me/">Biriyani and me</a> <time class="pull-right post-list">Fri, Aug 9, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/08/08/internet-in-yemen--a-tale-of-woe/">Internet in Yemen : A Tale of Woe</a> <time class="pull-right post-list">Thu, Aug 8, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/08/02/graph-databases-1---modeling/">Graph databases 1 - Modeling</a> <time class="pull-right post-list">Fri, Aug 2, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/07/31/validating-json-in-emacs/">Validating JSON in Emacs</a> <time class="pull-right post-list">Wed, Jul 31, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/07/30/my-thoughts-on-android-fragmentation----it-is-not-a-bad-thing/">My thoughts on Android fragmentation -  It is not a bad thing</a> <time class="pull-right post-list">Tue, Jul 30, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/07/24/%E0%B4%AE%E0%B4%B4%E0%B4%AF%E0%B5%81%E0%B4%9F%E0%B5%86-%E0%B4%93%E0%B5%BC%E0%B4%AE%E0%B5%8D%E0%B4%AE%E0%B4%95%E0%B5%BE/">മഴയുടെ ഓർമ്മകൾ</a> <time class="pull-right post-list">Wed, Jul 24, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/05/27/fireworks-in-the-paddy-fields---memories-of-a-summer/">Fireworks in the paddy fields - memories of a summer</a> <time class="pull-right post-list">Mon, May 27, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/04/29/emacs-hack-viewing-git-logs-while-composing-commit-messages/">Emacs hack: Viewing Git logs while composing commit messages</a> <time class="pull-right post-list">Mon, Apr 29, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/04/14/configure-gits-comment-character/">Configure Git&#39;s comment character</a> <time class="pull-right post-list">Sun, Apr 14, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/04/11/my-experience-working-remotely/">My experience working remotely</a> <time class="pull-right post-list">Thu, Apr 11, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/04/08/oh-i-can-build-it-in.../">Oh I can build it in...</a> <time class="pull-right post-list">Mon, Apr 8, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/04/05/javascript-clipboard-access-and-hidden-flash-widgets/">JavaScript, clipboard access and hidden flash widgets</a> <time class="pull-right post-list">Fri, Apr 5, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/01/22/reducing-emacs-startup-time-while-committing/">Reducing Emacs startup time while committing</a> <time class="pull-right post-list">Tue, Jan 22, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/01/21/first-week-in-san-francisco/">First week in San Francisco</a> <time class="pull-right post-list">Mon, Jan 21, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2013/01/02/books-read-in-2012/">Books read in 2012</a> <time class="pull-right post-list">Wed, Jan 2, 2013</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/11/29/my-first-firefox-plugin-getcache---view-cached-version-of-the-current-page/">My first Firefox plugin: GetCache - View cached version of the current page</a> <time class="pull-right post-list">Thu, Nov 29, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/11/28/getcache---a-chrome-plugin-to-view-cached-version-of-the-current-page/">GetCache - A Chrome plugin to view cached version of the current page</a> <time class="pull-right post-list">Wed, Nov 28, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/11/27/on-rest-content-type-google-chrome-and-caching/">On REST, Content-Type, Google Chrome and Caching</a> <time class="pull-right post-list">Tue, Nov 27, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/11/22/how-browsers-detect-if-you-are-offline/">How Browsers Detect If You Are Offline</a> <time class="pull-right post-list">Thu, Nov 22, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/08/23/dear-content-creator-your-url-shortener-is-pointless/">Dear Content Creator, Your URL Shortener Is Pointless</a> <time class="pull-right post-list">Thu, Aug 23, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/08/21/giving-up-the-samba-for-the-tiki-taka/">Giving up the Samba for the Tiki-taka</a> <time class="pull-right post-list">Tue, Aug 21, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/08/15/curse-of-the-community-shield/">Curse of the Community Shield?</a> <time class="pull-right post-list">Wed, Aug 15, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/08/11/why-i-am-not-on-facebook/">Why I am not on Facebook</a> <time class="pull-right post-list">Sat, Aug 11, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/08/01/d3.js-workshop/">D3.js Workshop</a> <time class="pull-right post-list">Wed, Aug 1, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/">Visualisation - How European clubs dominate their leagues</a> <time class="pull-right post-list">Sat, Jul 21, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/07/17/social-networks-and-their-url-shorteners/">Social Networks and their URL Shorteners</a> <time class="pull-right post-list">Tue, Jul 17, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/07/16/xconf-6---data-my-heart/">XConf 6 - Data, My Heart!</a> <time class="pull-right post-list">Mon, Jul 16, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/07/09/understanding-pythons-with-statement/">Understanding Python&#39;s &#34;with&#34; statement</a> <time class="pull-right post-list">Mon, Jul 9, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/07/04/heredocs-in-ruby-and-python/">Heredocs in Ruby and Python</a> <time class="pull-right post-list">Wed, Jul 4, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/06/25/micro-journal---simple-git-backed-journal-in-python/">Micro Journal - simple Git-backed journal in Python</a> <time class="pull-right post-list">Mon, Jun 25, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/">VodQA NCR: Maintaining Large Test Suites</a> <time class="pull-right post-list">Sun, Jun 24, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/06/06/know-your-tools---dont-shoot-yourself-in-the-foot/">Know Your Tools - Don&#39;t Shoot Yourself in the Foot</a> <time class="pull-right post-list">Wed, Jun 6, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/06/05/managing-security-certificates-from-the-console---on-windows-mac-os-x-and-linux/">Managing security certificates from the console - on Windows, Mac OS X and Linux</a> <time class="pull-right post-list">Tue, Jun 5, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/05/30/the-spiral-of-learning/">The Spiral of Learning</a> <time class="pull-right post-list">Wed, May 30, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/05/29/you-crash-and-then-you-learn/">You Crash and then You Learn</a> <time class="pull-right post-list">Tue, May 29, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/05/11/indian-and-pakistani-cricketers---who-make-better-debuts/">Indian and Pakistani cricketers - who make better debuts?</a> <time class="pull-right post-list">Fri, May 11, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/05/04/fixing-flyspell-for-emacs-in-mac-os-x/">Fixing Flyspell for Emacs in Mac OS X</a> <time class="pull-right post-list">Fri, May 4, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/04/29/finding-un-merged-commits-with-git-cherry/">Finding un-merged commits with git cherry</a> <time class="pull-right post-list">Sun, Apr 29, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/02/03/bullet-proof-jenkins-setup/">Bullet proof Jenkins setup</a> <time class="pull-right post-list">Fri, Feb 3, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/01/17/why-your-project-should-have-a-getting-started-guide./">Why your project should have a Getting Started guide.</a> <time class="pull-right post-list">Tue, Jan 17, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2012/01/16/debugging-c">Debugging: C#&#39;s HttpWebRequest, 100-Continue and nginx</a> <time class="pull-right post-list">Mon, Jan 16, 2012</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2011/12/05/banyan-tree-football-and-politics/">Banyan Tree: Football and Politics</a> <time class="pull-right post-list">Mon, Dec 5, 2011</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2011/05/17/wikipedia-page-hopping/">Wikipedia Page Hopping</a> <time class="pull-right post-list">Tue, May 17, 2011</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2011/05/05/friday/">Friday</a> <time class="pull-right post-list">Thu, May 5, 2011</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2011/03/30/poorly-executed-xkcd-spoof/">Poorly executed xkcd spoof</a> <time class="pull-right post-list">Wed, Mar 30, 2011</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2011/03/24/empathy-log-parser/">Empathy Log Parser</a> <time class="pull-right post-list">Thu, Mar 24, 2011</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2011/03/23/binary-signature-art/">Binary Signature Art</a> <time class="pull-right post-list">Wed, Mar 23, 2011</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2010/05/10/saying-good-bye-is-tough/">Saying Good Bye is tough</a> <time class="pull-right post-list">Mon, May 10, 2010</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2010/03/16/java-arrays-in-jruby/">Java Arrays in JRuby</a> <time class="pull-right post-list">Tue, Mar 16, 2010</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2010/02/06/athletic---the-european-campaign-and-a-basque-special/">Athletic - The European campaign and a Basque special</a> <time class="pull-right post-list">Sat, Feb 6, 2010</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2010/02/05/missing-the-game/">Missing the game</a> <time class="pull-right post-list">Fri, Feb 5, 2010</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2010/01/09/autorun.py---execute-stuff-on-file-change/">Autorun.py - Execute stuff on file change</a> <time class="pull-right post-list">Sat, Jan 9, 2010</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2009/09/22/twu-graduation/">TWU Graduation</a> <time class="pull-right post-list">Tue, Sep 22, 2009</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2009/08/21/a-lot-to-learn/">A lot to learn</a> <time class="pull-right post-list">Fri, Aug 21, 2009</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2009/08/16/yet-another-week-in-bangalore/">Yet another week in Bangalore</a> <time class="pull-right post-list">Sun, Aug 16, 2009</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2009/08/08/bangalore-journal/">Bangalore Journal</a> <time class="pull-right post-list">Sat, Aug 8, 2009</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2009/07/16/off-season/">Off Season</a> <time class="pull-right post-list">Thu, Jul 16, 2009</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2009/06/14/leaving-college/">Leaving College</a> <time class="pull-right post-list">Sun, Jun 14, 2009</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2009/04/16/ajmal-qasab-and-his-friends-should-hang-their-heads-in-shame/">Ajmal Qasab and his friends should hang their heads in shame</a> <time class="pull-right post-list">Thu, Apr 16, 2009</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2009/02/26/when-i-used-to-love-cricket/">When I used to love Cricket</a> <time class="pull-right post-list">Thu, Feb 26, 2009</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2009/01/30/of-birthdays-and-anniversaries/">Of Birthdays and Anniversaries</a> <time class="pull-right post-list">Fri, Jan 30, 2009</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2009/01/18/tough-love/">Tough Love</a> <time class="pull-right post-list">Sun, Jan 18, 2009</time></span>
-        </li>
-        
-        <li>
-          <span><a href="http://sdqali.in/blog/2008/11/08/athletic-bilbao---warriors-in-a-world-of-mercenaries/">Athletic Bilbao - Warriors in a world of Mercenaries</a> <time class="pull-right post-list">Sat, Nov 8, 2008</time></span>
-        </li>
-        
-    </ul>
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/'>
+              <h2 class="post-title">
+                Using custom arguments in Spring MVC controllers
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, Jan 29, 2016</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/'>
+              <h2 class="post-title">
+                Authentication for Apache Camel HTTP components
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, Dec 16, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/14/thoughts-on-open-graph-tags/'>
+              <h2 class="post-title">
+                Thoughts on Open Graph tags
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, Dec 14, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/11/integration-testing-spring-command-line-applications/'>
+              <h2 class="post-title">
+                Integration testing Spring command line applications
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, Dec 11, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/'>
+              <h2 class="post-title">
+                Integration testing challenges for non-web Spring applications
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Dec 10, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/07/how-thinking-of-documentation-as-legislation-helped-me-become-a-better-programmer/'>
+              <h2 class="post-title">
+                How thinking of Documentation as Legislation helped me become a better programmer
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, Dec 7, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/'>
+              <h2 class="post-title">
+                Implementing custom annotations for Spring MVC
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Dec 6, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/'>
+              <h2 class="post-title">
+                Validating RequestParams and PathVariables in Spring MVC
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, Dec 4, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/11/24/testing-async-responses-using-mockmvc/'>
+              <h2 class="post-title">
+                Testing async responses using MockMvc
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Nov 24, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/'>
+              <h2 class="post-title">
+                Running multiple applications in the same Tomcat installation
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Jun 9, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/'>
+              <h2 class="post-title">
+                Making sense of Cloud Foundry security group declarations
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, May 21, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/'>
+              <h2 class="post-title">
+                Configuring Cloud Foundry Java Memory Parameters
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, May 20, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2014/08/08/disputed-territories-and-merging-shapes-and-features/'>
+              <h2 class="post-title">
+                Disputed territories and merging shapes and features
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, Aug 8, 2014</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2014/08/03/a-list-of-gis-tools/'>
+              <h2 class="post-title">
+                A list of GIS tools
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Aug 3, 2014</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/'>
+              <h2 class="post-title">
+                Importing the Yelp dataset into MongoDB
+              </h2>
+            </a>
+            <p class="post-meta"> Sat, Aug 2, 2014</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/'>
+              <h2 class="post-title">
+                Clojure Dojo - Levenshtein edit distance
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Mar 20, 2014</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/'>
+              <h2 class="post-title">
+                A simple JMeter test with login
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, Feb 17, 2014</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2014/02/09/the-sndp---nss-political-experiment-of-1980s/'>
+              <h2 class="post-title">
+                The SNDP - NSS political experiment of 1980s
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Feb 9, 2014</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/12/10/what-is-life/'>
+              <h2 class="post-title">
+                What is life?
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Dec 10, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/11/21/a-rainy-distraction/'>
+              <h2 class="post-title">
+                A rainy distraction
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Nov 21, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/10/15/the-fear-of-being-wrong-on-the-internet/'>
+              <h2 class="post-title">
+                The fear of being wrong on the Internet
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Oct 15, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/'>
+              <h2 class="post-title">
+                Implementing Rate Limiting in Rails - Part 2
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Oct 13, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/'>
+              <h2 class="post-title">
+                Implementing Rate Limiting in Rails - Part 1
+              </h2>
+            </a>
+            <p class="post-meta"> Sat, Oct 12, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/'>
+              <h2 class="post-title">
+                Python Hack - Dynamically override an object&#39;s attribute
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, Oct 7, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/'>
+              <h2 class="post-title">
+                Fitting an Image in to a Canvas object
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Oct 3, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/'>
+              <h2 class="post-title">
+                Accessing Environment Variables in Gradle
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Oct 1, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/10/01/reading-user-input-in-gradle-scripts/'>
+              <h2 class="post-title">
+                Reading user input in Gradle scripts
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Oct 1, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/'>
+              <h2 class="post-title">
+                Ruby, Named Capture Groups and Local Variables
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Oct 1, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/'>
+              <h2 class="post-title">
+                Named Capture Groups in Regular Expressions
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Sep 29, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/09/26/decomposing-urls-in-python/'>
+              <h2 class="post-title">
+                Decomposing URLs in Python
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Sep 26, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/09/17/on-halal-burgers/'>
+              <h2 class="post-title">
+                On Halal Burgers
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Sep 17, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/09/15/shared-history-in-bash/'>
+              <h2 class="post-title">
+                Shared history in Bash
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Sep 15, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/09/12/managing-gemsets-in-rbenv/'>
+              <h2 class="post-title">
+                Managing Gemsets in Rbenv
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Sep 12, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/09/08/looking-up-compiler-params-used-to-compile-a-ruby-version/'>
+              <h2 class="post-title">
+                Looking up Compiler params used to compile a Ruby version
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Sep 8, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/08/22/navigating-stacktraces-in-emacs/'>
+              <h2 class="post-title">
+                Navigating Stacktraces in Emacs
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Aug 22, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/08/21/a-brief-history-of-times-new-roman/'>
+              <h2 class="post-title">
+                A brief History of Times New Roman
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, Aug 21, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/08/17/my-tinfoil-setup/'>
+              <h2 class="post-title">
+                My Tinfoil setup
+              </h2>
+            </a>
+            <p class="post-meta"> Sat, Aug 17, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/08/15/pythons-bool-type/'>
+              <h2 class="post-title">
+                Python&#39;s bool type
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Aug 15, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/08/11/when-link-titles-were-for-the-early-adopters/'>
+              <h2 class="post-title">
+                When Link titles were for the early adopters
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Aug 11, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/08/11/when-url-shortening-results-in-longer-urls/'>
+              <h2 class="post-title">
+                When URL shortening results in longer URLs
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Aug 11, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/08/10/fusing-the-old-media-and-the-new/'>
+              <h2 class="post-title">
+                Fusing the old media and the new
+              </h2>
+            </a>
+            <p class="post-meta"> Sat, Aug 10, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/08/09/biriyani-and-me/'>
+              <h2 class="post-title">
+                Biriyani and me
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, Aug 9, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/08/08/internet-in-yemen--a-tale-of-woe/'>
+              <h2 class="post-title">
+                Internet in Yemen : A Tale of Woe
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Aug 8, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/08/02/graph-databases-1---modeling/'>
+              <h2 class="post-title">
+                Graph databases 1 - Modeling
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, Aug 2, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/07/31/validating-json-in-emacs/'>
+              <h2 class="post-title">
+                Validating JSON in Emacs
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, Jul 31, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/07/30/my-thoughts-on-android-fragmentation----it-is-not-a-bad-thing/'>
+              <h2 class="post-title">
+                My thoughts on Android fragmentation -  It is not a bad thing
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Jul 30, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/07/24/%E0%B4%AE%E0%B4%B4%E0%B4%AF%E0%B5%81%E0%B4%9F%E0%B5%86-%E0%B4%93%E0%B5%BC%E0%B4%AE%E0%B5%8D%E0%B4%AE%E0%B4%95%E0%B5%BE/'>
+              <h2 class="post-title">
+                മഴയുടെ ഓർമ്മകൾ
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, Jul 24, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/05/27/fireworks-in-the-paddy-fields---memories-of-a-summer/'>
+              <h2 class="post-title">
+                Fireworks in the paddy fields - memories of a summer
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, May 27, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/04/29/emacs-hack-viewing-git-logs-while-composing-commit-messages/'>
+              <h2 class="post-title">
+                Emacs hack: Viewing Git logs while composing commit messages
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, Apr 29, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/04/14/configure-gits-comment-character/'>
+              <h2 class="post-title">
+                Configure Git&#39;s comment character
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Apr 14, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/04/11/my-experience-working-remotely/'>
+              <h2 class="post-title">
+                My experience working remotely
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Apr 11, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/04/08/oh-i-can-build-it-in.../'>
+              <h2 class="post-title">
+                Oh I can build it in...
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, Apr 8, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/04/05/javascript-clipboard-access-and-hidden-flash-widgets/'>
+              <h2 class="post-title">
+                JavaScript, clipboard access and hidden flash widgets
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, Apr 5, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/01/22/reducing-emacs-startup-time-while-committing/'>
+              <h2 class="post-title">
+                Reducing Emacs startup time while committing
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Jan 22, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/01/21/first-week-in-san-francisco/'>
+              <h2 class="post-title">
+                First week in San Francisco
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, Jan 21, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2013/01/02/books-read-in-2012/'>
+              <h2 class="post-title">
+                Books read in 2012
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, Jan 2, 2013</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/11/29/my-first-firefox-plugin-getcache---view-cached-version-of-the-current-page/'>
+              <h2 class="post-title">
+                My first Firefox plugin: GetCache - View cached version of the current page
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Nov 29, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/11/28/getcache---a-chrome-plugin-to-view-cached-version-of-the-current-page/'>
+              <h2 class="post-title">
+                GetCache - A Chrome plugin to view cached version of the current page
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, Nov 28, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/11/27/on-rest-content-type-google-chrome-and-caching/'>
+              <h2 class="post-title">
+                On REST, Content-Type, Google Chrome and Caching
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Nov 27, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/11/22/how-browsers-detect-if-you-are-offline/'>
+              <h2 class="post-title">
+                How Browsers Detect If You Are Offline
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Nov 22, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/08/23/dear-content-creator-your-url-shortener-is-pointless/'>
+              <h2 class="post-title">
+                Dear Content Creator, Your URL Shortener Is Pointless
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Aug 23, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/08/21/giving-up-the-samba-for-the-tiki-taka/'>
+              <h2 class="post-title">
+                Giving up the Samba for the Tiki-taka
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Aug 21, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/08/15/curse-of-the-community-shield/'>
+              <h2 class="post-title">
+                Curse of the Community Shield?
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, Aug 15, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/08/11/why-i-am-not-on-facebook/'>
+              <h2 class="post-title">
+                Why I am not on Facebook
+              </h2>
+            </a>
+            <p class="post-meta"> Sat, Aug 11, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/08/01/d3.js-workshop/'>
+              <h2 class="post-title">
+                D3.js Workshop
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, Aug 1, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/'>
+              <h2 class="post-title">
+                Visualisation - How European clubs dominate their leagues
+              </h2>
+            </a>
+            <p class="post-meta"> Sat, Jul 21, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/07/17/social-networks-and-their-url-shorteners/'>
+              <h2 class="post-title">
+                Social Networks and their URL Shorteners
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Jul 17, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/07/16/xconf-6---data-my-heart/'>
+              <h2 class="post-title">
+                XConf 6 - Data, My Heart!
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, Jul 16, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/07/09/understanding-pythons-with-statement/'>
+              <h2 class="post-title">
+                Understanding Python&#39;s &#34;with&#34; statement
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, Jul 9, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/07/04/heredocs-in-ruby-and-python/'>
+              <h2 class="post-title">
+                Heredocs in Ruby and Python
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, Jul 4, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/06/25/micro-journal---simple-git-backed-journal-in-python/'>
+              <h2 class="post-title">
+                Micro Journal - simple Git-backed journal in Python
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, Jun 25, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/'>
+              <h2 class="post-title">
+                VodQA NCR: Maintaining Large Test Suites
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Jun 24, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/06/06/know-your-tools---dont-shoot-yourself-in-the-foot/'>
+              <h2 class="post-title">
+                Know Your Tools - Don&#39;t Shoot Yourself in the Foot
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, Jun 6, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/06/05/managing-security-certificates-from-the-console---on-windows-mac-os-x-and-linux/'>
+              <h2 class="post-title">
+                Managing security certificates from the console - on Windows, Mac OS X and Linux
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Jun 5, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/05/30/the-spiral-of-learning/'>
+              <h2 class="post-title">
+                The Spiral of Learning
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, May 30, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/05/29/you-crash-and-then-you-learn/'>
+              <h2 class="post-title">
+                You Crash and then You Learn
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, May 29, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/05/11/indian-and-pakistani-cricketers---who-make-better-debuts/'>
+              <h2 class="post-title">
+                Indian and Pakistani cricketers - who make better debuts?
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, May 11, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/05/04/fixing-flyspell-for-emacs-in-mac-os-x/'>
+              <h2 class="post-title">
+                Fixing Flyspell for Emacs in Mac OS X
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, May 4, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/04/29/finding-un-merged-commits-with-git-cherry/'>
+              <h2 class="post-title">
+                Finding un-merged commits with git cherry
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Apr 29, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/02/03/bullet-proof-jenkins-setup/'>
+              <h2 class="post-title">
+                Bullet proof Jenkins setup
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, Feb 3, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/01/17/why-your-project-should-have-a-getting-started-guide./'>
+              <h2 class="post-title">
+                Why your project should have a Getting Started guide.
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Jan 17, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2012/01/16/debugging-c'>
+              <h2 class="post-title">
+                Debugging: C#&#39;s HttpWebRequest, 100-Continue and nginx
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, Jan 16, 2012</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2011/12/05/banyan-tree-football-and-politics/'>
+              <h2 class="post-title">
+                Banyan Tree: Football and Politics
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, Dec 5, 2011</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2011/05/17/wikipedia-page-hopping/'>
+              <h2 class="post-title">
+                Wikipedia Page Hopping
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, May 17, 2011</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2011/05/05/friday/'>
+              <h2 class="post-title">
+                Friday
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, May 5, 2011</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2011/03/30/poorly-executed-xkcd-spoof/'>
+              <h2 class="post-title">
+                Poorly executed xkcd spoof
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, Mar 30, 2011</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2011/03/24/empathy-log-parser/'>
+              <h2 class="post-title">
+                Empathy Log Parser
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Mar 24, 2011</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2011/03/23/binary-signature-art/'>
+              <h2 class="post-title">
+                Binary Signature Art
+              </h2>
+            </a>
+            <p class="post-meta"> Wed, Mar 23, 2011</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2010/05/10/saying-good-bye-is-tough/'>
+              <h2 class="post-title">
+                Saying Good Bye is tough
+              </h2>
+            </a>
+            <p class="post-meta"> Mon, May 10, 2010</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2010/03/16/java-arrays-in-jruby/'>
+              <h2 class="post-title">
+                Java Arrays in JRuby
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Mar 16, 2010</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2010/02/06/athletic---the-european-campaign-and-a-basque-special/'>
+              <h2 class="post-title">
+                Athletic - The European campaign and a Basque special
+              </h2>
+            </a>
+            <p class="post-meta"> Sat, Feb 6, 2010</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2010/02/05/missing-the-game/'>
+              <h2 class="post-title">
+                Missing the game
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, Feb 5, 2010</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2010/01/09/autorun.py---execute-stuff-on-file-change/'>
+              <h2 class="post-title">
+                Autorun.py - Execute stuff on file change
+              </h2>
+            </a>
+            <p class="post-meta"> Sat, Jan 9, 2010</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2009/09/22/twu-graduation/'>
+              <h2 class="post-title">
+                TWU Graduation
+              </h2>
+            </a>
+            <p class="post-meta"> Tue, Sep 22, 2009</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2009/08/21/a-lot-to-learn/'>
+              <h2 class="post-title">
+                A lot to learn
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, Aug 21, 2009</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2009/08/16/yet-another-week-in-bangalore/'>
+              <h2 class="post-title">
+                Yet another week in Bangalore
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Aug 16, 2009</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2009/08/08/bangalore-journal/'>
+              <h2 class="post-title">
+                Bangalore Journal
+              </h2>
+            </a>
+            <p class="post-meta"> Sat, Aug 8, 2009</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2009/07/16/off-season/'>
+              <h2 class="post-title">
+                Off Season
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Jul 16, 2009</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2009/06/14/leaving-college/'>
+              <h2 class="post-title">
+                Leaving College
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Jun 14, 2009</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2009/04/16/ajmal-qasab-and-his-friends-should-hang-their-heads-in-shame/'>
+              <h2 class="post-title">
+                Ajmal Qasab and his friends should hang their heads in shame
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Apr 16, 2009</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2009/02/26/when-i-used-to-love-cricket/'>
+              <h2 class="post-title">
+                When I used to love Cricket
+              </h2>
+            </a>
+            <p class="post-meta"> Thu, Feb 26, 2009</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2009/01/30/of-birthdays-and-anniversaries/'>
+              <h2 class="post-title">
+                Of Birthdays and Anniversaries
+              </h2>
+            </a>
+            <p class="post-meta"> Fri, Jan 30, 2009</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2009/01/18/tough-love/'>
+              <h2 class="post-title">
+                Tough Love
+              </h2>
+            </a>
+            <p class="post-meta"> Sun, Jan 18, 2009</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2008/11/08/athletic-bilbao---warriors-in-a-world-of-mercenaries/'>
+              <h2 class="post-title">
+                Athletic Bilbao - Warriors in a world of Mercenaries
+              </h2>
+            </a>
+            <p class="post-meta"> Sat, Nov 8, 2008</p>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center">
+          <li>
+            <a href="#">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+        </ul>
+        <p class="copyright text-muted">&copy; . All rights reserved. </p>
+      </div>
+    </div>
   </div>
-</body>
+</footer>
+
+
+<script src="/js/jquery.js"></script>
+
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<script src="/js/clean-blog.min.js"></script>
+
+  </body>
 </html>

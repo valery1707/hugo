@@ -1,150 +1,154 @@
-<!DOCTYPE html>
+<!DOCTYPE html5>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" prefix="og: http://ogp.me/ns#">
   <head>
-    <link href="http://gmpg.org/xfn/11" rel="profile">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Clean Blog</title>
 
     
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-
-    <title> Debugging: C#&#39;s HttpWebRequest, 100-Continue and nginx &middot; Sadique Ali </title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     
-    <link rel="stylesheet" href="http://sdqali.in/css/poole.css">
-    <link rel="stylesheet" href="http://sdqali.in/css/syntax.css">
-    <link rel="stylesheet" href="http://sdqali.in/css/hyde.css">
-    <link rel="stylesheet" href="http://sdqali.in/css/default.min.css">
-    <link rel="stylesheet" href="http://sdqali.in/css/custom.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+    <link href="/css/clean-blog.min.css" rel="stylesheet">
 
     
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
-    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-    <meta name="theme-color" content="#ffffff">
-
-    <script src="https://d26b395fwzu5fz.cloudfront.net/3.3.0/keen.min.js" type="text/javascript"></script>
-    <script src="http://sdqali.in/js/parseuri.js" type="text/javascript"></script>
-    <script src="http://sdqali.in/js/ua-parser.min.js" type="text/javascript"></script>
-    <script src="http://sdqali.in/js/Math.uuid.js" type="text/javascript"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
     
-    <link href="" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+    
+    
 
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
-    <script type="text/javascript">
-      hljs.initHighlightingOnLoad();
-    </script>
+</head>
 
-    <script type="text/javascript">
-  var client = new Keen({
-    projectId: "566f9f7a96773d75e098bb34", 
-    writeKey: "5d41bf4e9b86ee088f2ae748d782f6e40501d9f1807e04cd3c2bea52c276f14416f585877c39785704bdd5407aae393cc8ad601646d2112f8293a0269145baebec15f48e073186173b9e6c82cd3767456296c77a46d23b827c82492116d919e8401dfa84c56f13adac91963575522314",   
-    readKey: "57d95890c1893e97bb47ff02d5082242490a5f0585777e5f157ff3c5f01aca1c1e5bdaab91d874668b7154981d14dd5d73e3a54ef3360e93f29ea1b50b36b339e0e0fe063347fa6ce9bf9f1536752fa81bf2e12079a21e2e57312a55260403f09915e11455cb98e69a2dc9094c14184a"      
-  });
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@sdqali">
+  <meta name="twitter:creator" content="@sdqali">
+  <meta name="twitter:title" content="Debugging: C#&#39;s HttpWebRequest, 100-Continue and nginx">
+  <meta name="twitter:description" content="Recently I spent some time debugging an issue our team was facing around some C# code making a request on one of our servers. The request was throwing a &#34;The server committed a protocol violation. Section=ResponseStatusLine&#34; error. Initial investigation suggested that this could happen if we are making HTTP/1.1 requests to a server configured for HTTP/1.0. Our Rails application runs on Mongrel fronted with nginx 0.6.5. We modified the C# code to use HTTP/1.0 and the error went away.">
+  <meta name="twitter:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]">
 
-var uri = parseUri(window.location.href);
-var referrer = parseUri(document.referrer);
-var uaParser = new UAParser();
-client.addEvent("pagehit", {
-  "url" : {
-    "source" : uri.source,
-    "protocol" : uri.protocol,
-    "domain" : uri.host,
-    "port" : uri.port,
-    "path" : uri.path,
-    "anchor" : uri.anchor
-  },
-  "user_agent" : {
-    "browser" : uaParser.getBrowser(),
-    "engine" : uaParser.getEngine(),
-    "os" : uaParser.getOS()
-  },
-  referrer: {
-    "source" : referrer.source,
-    "protocol" : referrer.protocol,
-    "domain" : referrer.host,
-    "port" : referrer.port,
-    "path" : referrer.path,
-    "anchor" : referrer.anchor
-  },
-  "session_id" : Math.uuid(),
-  "permanent_tracker" : Math.uuid()
-});
-</script>
+  <meta property="og:title" content="Debugging: C#&#39;s HttpWebRequest, 100-Continue and nginx" />
+  <meta property="og:description" content="Recently I spent some time debugging an issue our team was facing around some C# code making a request on one of our servers. The request was throwing a &#34;The server committed a protocol violation. Section=ResponseStatusLine&#34; error. Initial investigation suggested that this could happen if we are making HTTP/1.1 requests to a server configured for HTTP/1.0. Our Rails application runs on Mongrel fronted with nginx 0.6.5. We modified the C# code to use HTTP/1.0 and the error went away." itemprop="description"/>
+  <meta property="og:url" content="http://sdqali.in/blog/2012/01/16/debugging-c" />
+  <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
+  <body>
 
-  </head>
-
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@sdqali">
-<meta name="twitter:creator" content="@sdqali">
-<meta name="twitter:title" content="Debugging: C#&#39;s HttpWebRequest, 100-Continue and nginx">
-<meta name="twitter:description" content="Recently I spent some time debugging an issue our team was facing around some C# code making a request on one of our servers. The request was throwing a &#34;The server committed a protocol violation. Section=ResponseStatusLine&#34; error. Initial investigation suggested that this could happen if we are making HTTP/1.1 requests to a server configured for HTTP/1.0. Our Rails application runs on Mongrel fronted with nginx 0.6.5. We modified the C# code to use HTTP/1.0 and the error went away.">
-<meta name="twitter:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]">
-
-<meta property="og:title" content="Debugging: C#&#39;s HttpWebRequest, 100-Continue and nginx" />
-<meta property="og:description" content="Recently I spent some time debugging an issue our team was facing around some C# code making a request on one of our servers. The request was throwing a &#34;The server committed a protocol violation. Section=ResponseStatusLine&#34; error. Initial investigation suggested that this could happen if we are making HTTP/1.1 requests to a server configured for HTTP/1.0. Our Rails application runs on Mongrel fronted with nginx 0.6.5. We modified the C# code to use HTTP/1.0 and the error went away." itemprop="description"/>
-<meta property="og:url" content="http://sdqali.in/blog/2012/01/16/debugging-c" />
-<meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
-<body class="theme-base-08">
-
-<div class="sidebar">
-  <div class="container sidebar-sticky">
-    <div class="sidebar-about">
-      <h1>
-	<a href="/">Sadique Ali</a>
-      </h1>
-      <p class="lead">
-       A blog about the Code I write and the Technologies I use. And other things that interest me. 
-      </p>
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Sadique Ali</a>
     </div>
 
-    <ul class="sidebar-nav">
-      <li><a href="/">Home</a> </li>
-      <li><a href="/blog/">Blog</a> </li>
-      <li><a href="/about">About</a> </li>
-      <li><a href="https://github.com/sdqali">GitHub</a> </li>
-      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
-      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
-      
-    </ul>
-
-    <p>&copy; 2016. All rights reserved. </p>
+    
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a> </li>
+        <li><a href="/blog/">Blog</a> </li>
+        <li><a href="/about">About</a> </li>
+        <li><a href="https://github.com/sdqali">GitHub</a> </li>
+        <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+        <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      </ul>
+    </div>
+    
   </div>
-</div>
+  
+</nav>
 
 
-<div class="content container" itemscope itemtype="http://schema.org/BlogPosting">
-<meta itemscope itemprop="mainEntityOfPage"  itemType="https://schema.org/WebPage" itemid="http://sdqali.in/blog/2012/01/16/debugging-c"/>
-<meta itemprop="datePublished" content="2012-01-16 00:00:00 &#43;0000 UTC"/>
-<meta itemprop="dateModified" content="2012-01-16 00:00:00 &#43;0000 UTC"/>
 
-<div class="post">
-  <h1 itemprop="headline">Debugging: C#&#39;s HttpWebRequest, 100-Continue and nginx</h1>
-  <div class="author" itemprop="author" itemscope itemtype="https://schema.org/Person">
-    By <span itemprop="name">Sadique Ali</span>
-  </div>
-  <span class="post-date">Mon, Jan 16, 2012</span>
-      <div class='post'>
+
+    
+    
+    <header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="site-heading">
+              <h1> Debugging: C#&#39;s HttpWebRequest, 100-Continue and nginx</h1>
+              <span class="meta">Mon, Jan 16, 2012</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+
+    
+    <article>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class='post'>
 <div dir="ltr" style="text-align: left;" trbidi="on"><div>Recently I spent some time debugging an issue our team was facing around some C# code making a request on one of our servers. The request was throwing a "The server committed a protocol violation. Section=ResponseStatusLine" error.<br /><br /></div><div>Initial investigation suggested that this could happen if we are making HTTP/1.1 requests to a server configured for HTTP/1.0. Our Rails application runs on Mongrel fronted with nginx 0.6.5. We modified the C# code to use HTTP/1.0 and the error went away. The following line does the trick.</div><div><br /></div><div><blockquote class="tr_bq"><span class="Apple-tab-span" style="white-space: pre;"> </span>request.ProtocolVersion = HttpVersion.Version10;</blockquote></div><div><br /></div><div>But wait! This means that somewhere in the chain, a server is configured to use HTTP/1.0. It looked unlikely and further debugging revealed that it was indeed not the case. Further staring at the Rails logs showed that one of the headers that the app expects was not being set, when the request was done using HTTP/1.1 from the code.</div><div><br /></div><div>After some time, we figured <a href="http://stackoverflow.com/questions/2482715/the-server-committed-a-protocol-violation-section-responsestatusline-error">out</a>[1] that the .Net library throws the "server committed ..." error if it is expecting the HTTP 100 (Continue) response in the wrong way. We set the code to not expect the HTTP 100 response from the server using</div><div><br /></div><div><blockquote class="tr_bq">&nbsp; &nbsp; &nbsp; request.ServicePoint.Expect100Continue = false;</blockquote></div><div><br /></div><div>and voila, it worked. The Rails app received all the headers it expected and things worked fine. The code looked like this:<br /><br /></div><div><script src="https://gist.github.com/1623042.js?file=gistfile1.cs"></script></div><div>So what is happening?</div><div><br /></div><div>The HTTP 100 status is supposed to work like this. When a client has to send some data, instead of sending it upfront, it can send some headers along with the "Expect:100-Continue" header. The server responds with a 100 if it is willing to accept the request or send a final status. The spec is <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html#sec8.2.3">here</a>[2].</div><div><br /></div><div>We are using nginx as a proxy. The specification says that the proxy should forward the request if it knows that the next-hop server is HTTP/1.1 compliant. The proxy is supposed to ignore the "Expect:100-Continue" header, if the request came from a client using HTTP/1.0.</div><div><br /></div><div>In our case, the default behavior of the .Net HTTP client library is to set "Expect:100-Continue" header on every request for HTTP/1.1. So the client sends only some headers and waits for the 100 response from nginx. Nginx sees the request, knows that Mongrel supports HTTP/1.1 and just forwards the request. The app sends a 401 because it could not authenticate. The client is expecting a 100 and gets a 401. It thinks the server committed a protocol violation.</div><div><br /></div><div>When we ask the client to use HTTP/1.0, the .Net library does not use the Expect header, sends all the headers and nginx forwards the request to Mongrel. The authentication goes through.</div><div>When we explicitly set the Expect 100 property of the library to false, it sends all the headers at once and the authentication goes through fine.</div><div><br /></div><div>Looks like there is a way to tell .Net not to expect 100 from the server through configuration, by putting this in <app>.exe.conf</app></div><div><br /><br /></div><div><script src="https://gist.github.com/1623007.js?file=gistfile1.xml"></script></div><div>1. http://stackoverflow.com/questions/2482715/the-server-committed-a-protocol-violation-section-responsestatusline-error</div><div>2. http://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html#sec8.2.3</div><div><br /></div></div></div>
 
-</div>
-</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center">
+          <li>
+            <a href="#">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+        </ul>
+        <p class="copyright text-muted">&copy; . All rights reserved. </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/js/jquery.js"></script>
+
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<script src="/js/clean-blog.min.js"></script>
 
   </body>
 </html>

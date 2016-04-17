@@ -1,290 +1,272 @@
-<!DOCTYPE html>
+<!DOCTYPE html5>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" prefix="og: http://ogp.me/ns#">
   <head>
-    <link href="http://gmpg.org/xfn/11" rel="profile">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Clean Blog</title>
 
     
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-
-    <title> Sadique Ali &middot; Sadique Ali </title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     
-    <link rel="stylesheet" href="http://sdqali.in/css/poole.css">
-    <link rel="stylesheet" href="http://sdqali.in/css/syntax.css">
-    <link rel="stylesheet" href="http://sdqali.in/css/hyde.css">
-    <link rel="stylesheet" href="http://sdqali.in/css/default.min.css">
-    <link rel="stylesheet" href="http://sdqali.in/css/custom.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+    <link href="/css/clean-blog.min.css" rel="stylesheet">
 
     
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
-    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-    <meta name="theme-color" content="#ffffff">
-
-    <script src="https://d26b395fwzu5fz.cloudfront.net/3.3.0/keen.min.js" type="text/javascript"></script>
-    <script src="http://sdqali.in/js/parseuri.js" type="text/javascript"></script>
-    <script src="http://sdqali.in/js/ua-parser.min.js" type="text/javascript"></script>
-    <script src="http://sdqali.in/js/Math.uuid.js" type="text/javascript"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
     
-    <link href="http://sdqali.in/index.xml" rel="alternate" type="application/rss+xml" title="Sadique Ali" />
+    
+    
 
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
-    <script type="text/javascript">
-      hljs.initHighlightingOnLoad();
-    </script>
+</head>
 
-    <script type="text/javascript">
-  var client = new Keen({
-    projectId: "566f9f7a96773d75e098bb34", 
-    writeKey: "5d41bf4e9b86ee088f2ae748d782f6e40501d9f1807e04cd3c2bea52c276f14416f585877c39785704bdd5407aae393cc8ad601646d2112f8293a0269145baebec15f48e073186173b9e6c82cd3767456296c77a46d23b827c82492116d919e8401dfa84c56f13adac91963575522314",   
-    readKey: "57d95890c1893e97bb47ff02d5082242490a5f0585777e5f157ff3c5f01aca1c1e5bdaab91d874668b7154981d14dd5d73e3a54ef3360e93f29ea1b50b36b339e0e0fe063347fa6ce9bf9f1536752fa81bf2e12079a21e2e57312a55260403f09915e11455cb98e69a2dc9094c14184a"      
-  });
-
-var uri = parseUri(window.location.href);
-var referrer = parseUri(document.referrer);
-var uaParser = new UAParser();
-client.addEvent("pagehit", {
-  "url" : {
-    "source" : uri.source,
-    "protocol" : uri.protocol,
-    "domain" : uri.host,
-    "port" : uri.port,
-    "path" : uri.path,
-    "anchor" : uri.anchor
-  },
-  "user_agent" : {
-    "browser" : uaParser.getBrowser(),
-    "engine" : uaParser.getEngine(),
-    "os" : uaParser.getOS()
-  },
-  referrer: {
-    "source" : referrer.source,
-    "protocol" : referrer.protocol,
-    "domain" : referrer.host,
-    "port" : referrer.port,
-    "path" : referrer.path,
-    "anchor" : referrer.anchor
-  },
-  "session_id" : Math.uuid(),
-  "permanent_tracker" : Math.uuid()
-});
-</script>
-
-  </head>
-
-<body class="theme-base-08">
-
-<div class="sidebar">
-  <div class="container sidebar-sticky">
-    <div class="sidebar-about">
-      <h1>
-	<a href="/">Sadique Ali</a>
-      </h1>
-      <p class="lead">
-       A blog about the Code I write and the Technologies I use. And other things that interest me. 
-      </p>
+  <body>
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Sadique Ali</a>
     </div>
 
-    <ul class="sidebar-nav">
-      <li><a href="/">Home</a> </li>
-      <li><a href="/blog/">Blog</a> </li>
-      <li><a href="/about">About</a> </li>
-      <li><a href="https://github.com/sdqali">GitHub</a> </li>
-      <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
-      <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
-      
-    </ul>
-
-    <p>&copy; 2016. All rights reserved. </p>
+    
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a> </li>
+        <li><a href="/blog/">Blog</a> </li>
+        <li><a href="/about">About</a> </li>
+        <li><a href="https://github.com/sdqali">GitHub</a> </li>
+        <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+        <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      </ul>
+    </div>
+    
   </div>
-</div>
+  
+</nav>
 
 
-    <div class="content container">
-      <div class="posts">
 
-      
-      <div class="post">
-	<h1 class="post-title">
-	  <a href="http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/">
-            Using custom arguments in Spring MVC controllers
-	  </a>
-	</h1>
+    
+    
+    <header class="intro-header" style="background-image: url('img/home-bg.jpg')">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="site-heading">
+              <h1> Sadique Ali</h1>
+              <hr class="small">
+              <span class="subheading">Thoughts on Code, etc.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-	<span class="post-date">Fri, Jan 29, 2016</span>
-
-	<p>Most of the Spring controllers in the real world accept a lot of different types of parameters - Path variables, URL parameters, request headers, request body and sometimes even the entire HTTP Request object. This provides a flexible mechanism to create APIs. Spring is really good at parsing these parameters in to Java types as long as there is an ObjectMapper (like Jackson) configured to take care of the de-serialization.</p>
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/'>
+              <h2 class="post-title">
+                Using custom arguments in Spring MVC controllers
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              <p>Most of the Spring controllers in the real world accept a lot of different types of parameters - Path variables, URL parameters, request headers, request body and sometimes even the entire HTTP Request object. This provides a flexible mechanism to create APIs. Spring is really good at parsing these parameters in to Java types as long as there is an ObjectMapper (like Jackson) configured to take care of the de-serialization.</p>
 
 <p>However, there are situations where you want methods to receive a parameter of a particular type that has to resolved from a set of parameters–for example, an API can expect consumers to send meta data about a request in the form of headers and need a custom type to hold this information. Spring provides a convenient way to provide such custom arguments. This blog post explores this feature and how to implement it and test it.</p>
 
-	<footer>
-          <a href='http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/'><nobr>Read more →</nobr></a>
-	</footer>
-      </div>
-      
-      <div class="post">
-	<h1 class="post-title">
-	  <a href="http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/">
-            Authentication for Apache Camel HTTP components
-	  </a>
-	</h1>
-
-	<span class="post-date">Wed, Dec 16, 2015</span>
-
-	<p>My team at work has been lately working on a data transformer that pushes information from an external system in to platform. For historical reasons the information is passed to us in the form of flat files. We have been working on a data transformer that reads information from the file and posts it into an HTTP end point.
+            </p>
+            <p class="post-meta">Posted on Fri, Jan 29, 2016</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/'>
+              <h2 class="post-title">
+                Authentication for Apache Camel HTTP components
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              <p>My team at work has been lately working on a data transformer that pushes information from an external system in to platform. For historical reasons the information is passed to us in the form of flat files. We have been working on a data transformer that reads information from the file and posts it into an HTTP end point.
 Apache Camel [^1] makes a natural choice as the base for implementing such a data transformer. The presence of ready to use components that can read files and post information to HTTP end points and the availability of a nice D.S.L. [^2] makes implementation easy and straightforward. One of the things we had to spend time figuring out was how to ensure that we authenticate correctly against our target HTTP end point. This blog post takes a look at various methods we explored.</p>
 
-	<footer>
-          <a href='http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/'><nobr>Read more →</nobr></a>
-	</footer>
+            </p>
+            <p class="post-meta">Posted on Wed, Dec 16, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/14/thoughts-on-open-graph-tags/'>
+              <h2 class="post-title">
+                Thoughts on Open Graph tags
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              <p>The Open Graph protocol was designed by Facebook to help content creators generate a richer preview of links to their content when they get posted in to Facebook. It was originally proposed as a simple mark up that can be adopted in platforms beyond Facebook. The Open Graph Protocol Design Decisions presentation [^1] does a very good job of enumerating the motivation and design decisions made for Open Graph. I have lately been reading and experimenting with these tags and I notice a fair bit of differences when it comes to how these tags are used by different platforms.</p>
+
+            </p>
+            <p class="post-meta">Posted on Mon, Dec 14, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/11/integration-testing-spring-command-line-applications/'>
+              <h2 class="post-title">
+                Integration testing Spring command line applications
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              <p>In the <a href="/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/">last blog post</a>, I wrote about the challenges of writing an integration test for a Spring command line application. One of the solutions for this issue discussed in the blog post was to use the <code>@IntegrationTest</code> annotations to inject Java system properties and use that to run the application instead of the normal command line arguments. This blog post describes how to perform this.</p>
+
+            </p>
+            <p class="post-meta">Posted on Fri, Dec 11, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/'>
+              <h2 class="post-title">
+                Integration testing challenges for non-web Spring applications
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              <p>We are building a command line data loader application at work that uses Spring. One of the things that I took us more time that it should have to figure out was how to write an integration test that invokes the command line application with the right command line arguments. This blog post describes this scenario and a potential solution to this problem.</p>
+
+            </p>
+            <p class="post-meta">Posted on Thu, Dec 10, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/07/how-thinking-of-documentation-as-legislation-helped-me-become-a-better-programmer/'>
+              <h2 class="post-title">
+                How thinking of Documentation as Legislation helped me become a better programmer
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              When I first started programming, it was predominantly creating applications that utilized the C++ graphics library. I was 14 and my friends and I tried to make the most of the time we got to spend at the computer lab of the boarding school we attended. We created applications that drew pretty, often animated pictures on the screen and not much else. This taught us basics, but our learning lacked any kind of structure.
+            </p>
+            <p class="post-meta">Posted on Mon, Dec 7, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/'>
+              <h2 class="post-title">
+                Implementing custom annotations for Spring MVC
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              <p>I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of <code>@RequestMapping</code> and <code>@ResponseStatus</code> to set the expected request and response <code>Content-Type</code>, the request Method, response status etc. This blog post describes how to compose Spring annotations that produce the same effect as multiple Spring annotations acting together.</p>
+
+            </p>
+            <p class="post-meta">Posted on Sun, Dec 6, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/'>
+              <h2 class="post-title">
+                Validating RequestParams and PathVariables in Spring MVC
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              <p>Spring MVC provides a convenient way to validate inputs to API end points through the use of <code>JSR-303</code> annotations. While this mechanism works great for end points that consume a <code>RequestBody</code> (as is the case with most <code>POST</code> and <code>PUT</code> requests), it is not easy to achieve the same effect for end points that consume primitives in the form of path variables or request parameters (as is the case with most <code>GET</code> requests).</p>
+
+            </p>
+            <p class="post-meta">Posted on Fri, Dec 4, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/11/24/testing-async-responses-using-mockmvc/'>
+              <h2 class="post-title">
+                Testing async responses using MockMvc
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              <p>There are times when a Spring MVC end point performs asynchronous operations. Testing these end points using MockMvc can be tricky because of the asynchronous nature in which the result of the operation is eventually returned. This blog post describes how to write tests in such scenarios.</p>
+
+            </p>
+            <p class="post-meta">Posted on Tue, Nov 24, 2015</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/'>
+              <h2 class="post-title">
+                Running multiple applications in the same Tomcat installation
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              <p>This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the <code>CATALINA_HOME</code> and <code>CATALINA_BASE</code> environment variables used by Tomcat. I have verified this method against Tomcat versions <code>8.0.x</code>; other versions should work the same way.</p>
+
+            </p>
+            <p class="post-meta">Posted on Tue, Jun 9, 2015</p>
+          </div>
+          
+          
+          <ul class="pager">
+            <li class="next">
+              <a href="/blog/">Older Posts &rarr;</a>
+            </li>
+          </ul>
+        </div>
       </div>
-      
-      <div class="post">
-	<h1 class="post-title">
-	  <a href="http://sdqali.in/blog/2015/12/14/thoughts-on-open-graph-tags/">
-            Thoughts on Open Graph tags
-	  </a>
-	</h1>
+    </div>
 
-	<span class="post-date">Mon, Dec 14, 2015</span>
-
-	<p>The Open Graph protocol was designed by Facebook to help content creators generate a richer preview of links to their content when they get posted in to Facebook. It was originally proposed as a simple mark up that can be adopted in platforms beyond Facebook. The Open Graph Protocol Design Decisions presentation [^1] does a very good job of enumerating the motivation and design decisions made for Open Graph. I have lately been reading and experimenting with these tags and I notice a fair bit of differences when it comes to how these tags are used by different platforms.</p>
-
-	<footer>
-          <a href='http://sdqali.in/blog/2015/12/14/thoughts-on-open-graph-tags/'><nobr>Read more →</nobr></a>
-	</footer>
+    
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center">
+          <li>
+            <a href="#">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+        </ul>
+        <p class="copyright text-muted">&copy; . All rights reserved. </p>
       </div>
-      
-      <div class="post">
-	<h1 class="post-title">
-	  <a href="http://sdqali.in/blog/2015/12/11/integration-testing-spring-command-line-applications/">
-            Integration testing Spring command line applications
-	  </a>
-	</h1>
+    </div>
+  </div>
+</footer>
 
-	<span class="post-date">Fri, Dec 11, 2015</span>
 
-	<p>In the <a href="/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/">last blog post</a>, I wrote about the challenges of writing an integration test for a Spring command line application. One of the solutions for this issue discussed in the blog post was to use the <code>@IntegrationTest</code> annotations to inject Java system properties and use that to run the application instead of the normal command line arguments. This blog post describes how to perform this.</p>
+<script src="/js/jquery.js"></script>
 
-	<footer>
-          <a href='http://sdqali.in/blog/2015/12/11/integration-testing-spring-command-line-applications/'><nobr>Read more →</nobr></a>
-	</footer>
-      </div>
-      
-      <div class="post">
-	<h1 class="post-title">
-	  <a href="http://sdqali.in/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/">
-            Integration testing challenges for non-web Spring applications
-	  </a>
-	</h1>
 
-	<span class="post-date">Thu, Dec 10, 2015</span>
+<script src="/js/bootstrap.min.js"></script>
 
-	<p>We are building a command line data loader application at work that uses Spring. One of the things that I took us more time that it should have to figure out was how to write an integration test that invokes the command line application with the right command line arguments. This blog post describes this scenario and a potential solution to this problem.</p>
 
-	<footer>
-          <a href='http://sdqali.in/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/'><nobr>Read more →</nobr></a>
-	</footer>
-      </div>
-      
-      <div class="post">
-	<h1 class="post-title">
-	  <a href="http://sdqali.in/blog/2015/12/07/how-thinking-of-documentation-as-legislation-helped-me-become-a-better-programmer/">
-            How thinking of Documentation as Legislation helped me become a better programmer
-	  </a>
-	</h1>
-
-	<span class="post-date">Mon, Dec 7, 2015</span>
-
-	When I first started programming, it was predominantly creating applications that utilized the C++ graphics library. I was 14 and my friends and I tried to make the most of the time we got to spend at the computer lab of the boarding school we attended. We created applications that drew pretty, often animated pictures on the screen and not much else. This taught us basics, but our learning lacked any kind of structure.
-	<footer>
-          <a href='http://sdqali.in/blog/2015/12/07/how-thinking-of-documentation-as-legislation-helped-me-become-a-better-programmer/'><nobr>Read more →</nobr></a>
-	</footer>
-      </div>
-      
-      <div class="post">
-	<h1 class="post-title">
-	  <a href="http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/">
-            Implementing custom annotations for Spring MVC
-	  </a>
-	</h1>
-
-	<span class="post-date">Sun, Dec 6, 2015</span>
-
-	<p>I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of <code>@RequestMapping</code> and <code>@ResponseStatus</code> to set the expected request and response <code>Content-Type</code>, the request Method, response status etc. This blog post describes how to compose Spring annotations that produce the same effect as multiple Spring annotations acting together.</p>
-
-	<footer>
-          <a href='http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/'><nobr>Read more →</nobr></a>
-	</footer>
-      </div>
-      
-      <div class="post">
-	<h1 class="post-title">
-	  <a href="http://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/">
-            Validating RequestParams and PathVariables in Spring MVC
-	  </a>
-	</h1>
-
-	<span class="post-date">Fri, Dec 4, 2015</span>
-
-	<p>Spring MVC provides a convenient way to validate inputs to API end points through the use of <code>JSR-303</code> annotations. While this mechanism works great for end points that consume a <code>RequestBody</code> (as is the case with most <code>POST</code> and <code>PUT</code> requests), it is not easy to achieve the same effect for end points that consume primitives in the form of path variables or request parameters (as is the case with most <code>GET</code> requests).</p>
-
-	<footer>
-          <a href='http://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/'><nobr>Read more →</nobr></a>
-	</footer>
-      </div>
-      
-      <div class="post">
-	<h1 class="post-title">
-	  <a href="http://sdqali.in/blog/2015/11/24/testing-async-responses-using-mockmvc/">
-            Testing async responses using MockMvc
-	  </a>
-	</h1>
-
-	<span class="post-date">Tue, Nov 24, 2015</span>
-
-	<p>There are times when a Spring MVC end point performs asynchronous operations. Testing these end points using MockMvc can be tricky because of the asynchronous nature in which the result of the operation is eventually returned. This blog post describes how to write tests in such scenarios.</p>
-
-	<footer>
-          <a href='http://sdqali.in/blog/2015/11/24/testing-async-responses-using-mockmvc/'><nobr>Read more →</nobr></a>
-	</footer>
-      </div>
-      
-      <div class="post">
-	<h1 class="post-title">
-	  <a href="http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/">
-            Running multiple applications in the same Tomcat installation
-	  </a>
-	</h1>
-
-	<span class="post-date">Tue, Jun 9, 2015</span>
-
-	<p>This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the <code>CATALINA_HOME</code> and <code>CATALINA_BASE</code> environment variables used by Tomcat. I have verified this method against Tomcat versions <code>8.0.x</code>; other versions should work the same way.</p>
-
-	<footer>
-          <a href='http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/'><nobr>Read more →</nobr></a>
-	</footer>
-      </div>
-      
-</div>
-</div>
+<script src="/js/clean-blog.min.js"></script>
 
   </body>
 </html>
