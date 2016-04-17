@@ -115,41 +115,38 @@ configurations are written as XML files created in
 the app needs to be run for the current user or for all users.
 Here is the plist file for Emacs at <code>~/Library/LaunchAgents/gnu.emacs.daemon.plist</code>, taken from
 <a href="http://www.emacswiki.org/emacs/EmacsAsDaemon">EmacsWiki</a>:</p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot;
-&quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
-&lt;plist version=&quot;1.0&quot;&gt;
-  &lt;dict&gt;
-    &lt;key&gt;Label&lt;/key&gt;
-    &lt;string&gt;gnu.emacs.daemon&lt;/string&gt;
-    &lt;key&gt;ProgramArguments&lt;/key&gt;
-    &lt;array&gt;
-      &lt;string&gt;/Applications/Emacs.app/Contents/MacOS/Emacs&lt;/string&gt;
-      &lt;string&gt;--daemon&lt;/string&gt;
-    &lt;/array&gt;
-    &lt;key&gt;RunAtLoad&lt;/key&gt;
-    &lt;true/&gt;
-    &lt;key&gt;ServiceDescription&lt;/key&gt;
-    &lt;string&gt;Gnu Emacs Daemon&lt;/string&gt;
-    &lt;key&gt;UserName&lt;/key&gt;
-    &lt;string&gt;YOUR USER NAME&lt;/string&gt;
-  &lt;/dict&gt;
-&lt;/plist&gt;
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #009999">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span style="color: #009999">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot;</span>
+<span style="color: #009999">&quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span>
+<span style="color: #330099; font-weight: bold">&lt;plist</span> <span style="color: #330099">version=</span><span style="color: #CC3300">&quot;1.0&quot;</span><span style="color: #330099; font-weight: bold">&gt;</span>
+  <span style="color: #330099; font-weight: bold">&lt;dict&gt;</span>
+    <span style="color: #330099; font-weight: bold">&lt;key&gt;</span>Label<span style="color: #330099; font-weight: bold">&lt;/key&gt;</span>
+    <span style="color: #330099; font-weight: bold">&lt;string&gt;</span>gnu.emacs.daemon<span style="color: #330099; font-weight: bold">&lt;/string&gt;</span>
+    <span style="color: #330099; font-weight: bold">&lt;key&gt;</span>ProgramArguments<span style="color: #330099; font-weight: bold">&lt;/key&gt;</span>
+    <span style="color: #330099; font-weight: bold">&lt;array&gt;</span>
+      <span style="color: #330099; font-weight: bold">&lt;string&gt;</span>/Applications/Emacs.app/Contents/MacOS/Emacs<span style="color: #330099; font-weight: bold">&lt;/string&gt;</span>
+      <span style="color: #330099; font-weight: bold">&lt;string&gt;</span>--daemon<span style="color: #330099; font-weight: bold">&lt;/string&gt;</span>
+    <span style="color: #330099; font-weight: bold">&lt;/array&gt;</span>
+    <span style="color: #330099; font-weight: bold">&lt;key&gt;</span>RunAtLoad<span style="color: #330099; font-weight: bold">&lt;/key&gt;</span>
+    <span style="color: #330099; font-weight: bold">&lt;true/&gt;</span>
+    <span style="color: #330099; font-weight: bold">&lt;key&gt;</span>ServiceDescription<span style="color: #330099; font-weight: bold">&lt;/key&gt;</span>
+    <span style="color: #330099; font-weight: bold">&lt;string&gt;</span>Gnu Emacs Daemon<span style="color: #330099; font-weight: bold">&lt;/string&gt;</span>
+    <span style="color: #330099; font-weight: bold">&lt;key&gt;</span>UserName<span style="color: #330099; font-weight: bold">&lt;/key&gt;</span>
+    <span style="color: #330099; font-weight: bold">&lt;string&gt;</span>YOUR USER NAME<span style="color: #330099; font-weight: bold">&lt;/string&gt;</span>
+  <span style="color: #330099; font-weight: bold">&lt;/dict&gt;</span>
+<span style="color: #330099; font-weight: bold">&lt;/plist&gt;</span>
+</pre></div>
 
 <p>This is loaded by running</p>
-
-<pre><code class="language-bash">sudo launchctl load -w ~/Library/LaunchAgents/gnu.emacs.daemon.plist
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>sudo launchctl load -w ~/Library/LaunchAgents/gnu.emacs.daemon.plist
+</pre></div>
 
 <h1 id="using-emacs-client-as-the-editor:e2f4fbaa26157ce13f127902af0dd17e">Using Emacs client as the editor</h1>
 
 <p>This is done by adding</p>
-
-<pre><code class="language-bash">export EDITOR=&quot;/Applications/Emacs.app/Contents/MacOS/bin/emacsclient&quot;
-export GIT_EDITOR=&quot;/Applications/Emacs.app/Contents/MacOS/bin/emacsclient&quot;
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #336666">export</span> <span style="color: #003333">EDITOR</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;/Applications/Emacs.app/Contents/MacOS/bin/emacsclient&quot;</span>
+<span style="color: #336666">export</span> <span style="color: #003333">GIT_EDITOR</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;/Applications/Emacs.app/Contents/MacOS/bin/emacsclient&quot;</span>
+</pre></div>
 
 <p>to <code>.zshrc</code> or <code>.bashrc</code>.</p>
 

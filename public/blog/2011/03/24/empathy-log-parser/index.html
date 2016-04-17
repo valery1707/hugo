@@ -99,32 +99,31 @@
 <p>Just another excuse to write code. So I came up with the following. It was easy to write and it does not do much - It uses the Hpricot gem to parse the XML and prints the name of the people involved in the chat and their messages in a human readable form. What? You are one of those souls who actually enjoy reading XML? Well, I am not one of those.</p>
 
 <p>So here is the code:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic">#!/usr/bin/env ruby</span>
+<span style="color: #0099FF; font-style: italic"># empathy_lp.rb</span>
+<span style="color: #0099FF; font-style: italic"># Usage - ./empathy_lp.rb /tmp/20110323.log</span>
 
-<pre><code class="language-ruby">#!/usr/bin/env ruby
-# empathy_lp.rb
-# Usage - ./empathy_lp.rb /tmp/20110323.log
+<span style="color: #336666">require</span> <span style="color: #CC3300">&#39;rubygems&#39;</span>
+<span style="color: #336666">require</span> <span style="color: #CC3300">&#39;hpricot&#39;</span>
 
-require 'rubygems'
-require 'hpricot'
+<span style="color: #006699; font-weight: bold">module</span> <span style="color: #00CCFF; font-weight: bold">EmpathyLP</span>
+  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">LogParser</span>
+    <span style="color: #006699; font-weight: bold">def</span> <span style="color: #CC00FF">initialize</span> file_path
+      conversation_xml <span style="color: #555555">=</span> <span style="color: #336600">IO</span><span style="color: #555555">.</span>readlines(file_path)<span style="color: #555555">.</span>to_s
+      <span style="color: #003333">@doc</span> <span style="color: #555555">=</span> <span style="color: #336600">Hpricot</span> conversation_xml
+    <span style="color: #006699; font-weight: bold">end</span>
 
-module EmpathyLP
-  class LogParser
-    def initialize file_path
-      conversation_xml = IO.readlines(file_path).to_s
-      @doc = Hpricot conversation_xml
-    end
+    <span style="color: #006699; font-weight: bold">def</span> <span style="color: #CC00FF">messages</span>
+      (<span style="color: #003333">@doc</span><span style="color: #555555">/</span><span style="color: #CC3300">&quot;message&quot;</span>)<span style="color: #555555">.</span>map <span style="color: #006699; font-weight: bold">do</span> <span style="color: #555555">|</span>m<span style="color: #555555">|</span>
+        m<span style="color: #555555">.</span>attributes<span style="color: #555555">[</span><span style="color: #CC3300">&#39;name&#39;</span><span style="color: #555555">]</span> <span style="color: #555555">+</span> <span style="color: #CC3300">&quot;: &quot;</span> <span style="color: #555555">+</span> m<span style="color: #555555">.</span>inner_text
+      <span style="color: #006699; font-weight: bold">end</span>
+    <span style="color: #006699; font-weight: bold">end</span>
+  <span style="color: #006699; font-weight: bold">end</span>
+<span style="color: #006699; font-weight: bold">end</span>
 
-    def messages
-      (@doc/&quot;message&quot;).map do |m|
-        m.attributes['name'] + &quot;: &quot; + m.inner_text
-      end
-    end
-  end
-end
-
-path = ARGV.first
-puts EmpathyLP::LogParser.new(path).messages
-</code></pre>
+path <span style="color: #555555">=</span> <span style="color: #336600">ARGV</span><span style="color: #555555">.</span>first
+<span style="color: #336666">puts</span> <span style="color: #336600">EmpathyLP</span><span style="color: #555555">::</span><span style="color: #336600">LogParser</span><span style="color: #555555">.</span>new(path)<span style="color: #555555">.</span>messages
+</pre></div>
 
 <p>I will modify this slightly to show a timestamp for each message.</p>
 

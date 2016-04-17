@@ -21,55 +21,50 @@
 &lt;ul&gt;
 &lt;li&gt;Git commit messages are stored in the &lt;code&gt;COMMIT_EDITMSG&lt;/code&gt; file under &lt;code&gt;.git/&lt;/code&gt;. So the first thing to do is to ensure that this file always gets loaded with a custom minor mode. This can be done as follows:&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-cl&#34;&gt;(add-to-list &#39;auto-mode-alist &#39;(&amp;quot;\\COMMIT_EDITMSG\\&#39;&amp;quot; . load-magit-log-when-committing-mode))
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;(&lt;span style=&#34;color: #003333&#34;&gt;add-to-list&lt;/span&gt; &lt;span style=&#34;color: #FFCC33&#34;&gt;&amp;#39;auto-mode-alist&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;&amp;#39;&lt;/span&gt;(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;\\COMMIT_EDITMSG\\&amp;#39;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;load-magit-log-when-committing-mode&lt;/span&gt;))
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The minor mode does not need to do anything. The definition would be like this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-cl&#34;&gt;(define-minor-mode load-magit-log-when-committing-mode
-  &amp;quot;dummy&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;(&lt;span style=&#34;color: #003333&#34;&gt;define-minor-mode&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;load-magit-log-when-committing-mode&lt;/span&gt;
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;dummy&amp;quot;&lt;/span&gt;)
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Next step is to add a custom hook that gets run after loading the minor mode. This hook calls the function to load git logs. The code for this is:&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-cl&#34;&gt;(add-hook &#39;load-magit-log-when-committing-mode-hook &#39;show-magit-log-hook)
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;(&lt;span style=&#34;color: #003333&#34;&gt;add-hook&lt;/span&gt; &lt;span style=&#34;color: #FFCC33&#34;&gt;&amp;#39;load-magit-log-when-committing-mode-hook&lt;/span&gt; &lt;span style=&#34;color: #FFCC33&#34;&gt;&amp;#39;show-magit-log-hook&lt;/span&gt;)
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ul&gt;
 &lt;li&gt;The actual function to load git logs. It calls &lt;code&gt;magit-log&lt;/code&gt; to load the logs and then opens the original &lt;code&gt;COMMIT_EDITMSG&lt;/code&gt; in the other frame.&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-cl&#34;&gt;(defun show-magit-log-hook ()
-  (cd &amp;quot;..&amp;quot;)
-  (magit-log)
-  (switch-to-buffer-other-window &amp;quot;COMMIT_EDITMSG&amp;quot;))
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;(&lt;span style=&#34;color: #336666&#34;&gt;defun&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;show-magit-log-hook&lt;/span&gt; ()
+  (&lt;span style=&#34;color: #003333&#34;&gt;cd&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;..&amp;quot;&lt;/span&gt;)
+  (&lt;span style=&#34;color: #003333&#34;&gt;magit-log&lt;/span&gt;)
+  (&lt;span style=&#34;color: #003333&#34;&gt;switch-to-buffer-other-window&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;COMMIT_EDITMSG&amp;quot;&lt;/span&gt;))
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This is how Emacs looks while committing with this hack in place:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/screenshot_git_commit_log.png&#34; alt=&#34;Screenshot&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;If you want to use this, copy the following snippet to your &lt;code&gt;init.el&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;;; load-magit-log-when-committing-mode&lt;/span&gt;
+(&lt;span style=&#34;color: #003333&#34;&gt;define-minor-mode&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;load-magit-log-when-committing-mode&lt;/span&gt;
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;dummy&amp;quot;&lt;/span&gt;)
 
-&lt;pre&gt;&lt;code class=&#34;language-cl&#34;&gt;;; load-magit-log-when-committing-mode
-(define-minor-mode load-magit-log-when-committing-mode
-  &amp;quot;dummy&amp;quot;)
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;;; the hook&lt;/span&gt;
+(&lt;span style=&#34;color: #336666&#34;&gt;defun&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;show-magit-log-hook&lt;/span&gt; ()
+  (&lt;span style=&#34;color: #003333&#34;&gt;cd&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;..&amp;quot;&lt;/span&gt;)
+  (&lt;span style=&#34;color: #003333&#34;&gt;magit-log&lt;/span&gt;)
+  (&lt;span style=&#34;color: #003333&#34;&gt;switch-to-buffer-other-window&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;COMMIT_EDITMSG&amp;quot;&lt;/span&gt;))
 
-;; the hook
-(defun show-magit-log-hook ()
-  (cd &amp;quot;..&amp;quot;)
-  (magit-log)
-  (switch-to-buffer-other-window &amp;quot;COMMIT_EDITMSG&amp;quot;))
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;;; add the hook&lt;/span&gt;
+(&lt;span style=&#34;color: #003333&#34;&gt;add-hook&lt;/span&gt; &lt;span style=&#34;color: #FFCC33&#34;&gt;&amp;#39;load-magit-log-when-committing-mode-hook&lt;/span&gt; &lt;span style=&#34;color: #FFCC33&#34;&gt;&amp;#39;show-magit-log-hook&lt;/span&gt;)
 
-;; add the hook
-(add-hook &#39;load-magit-log-when-committing-mode-hook &#39;show-magit-log-hook)
-
-;; load the mode for commit message
-(add-to-list &#39;auto-mode-alist &#39;(&amp;quot;\\COMMIT_EDITMSG\\&#39;&amp;quot; . load-magit-log-when-committing-mode))
-&lt;/code&gt;&lt;/pre&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;;; load the mode for commit message&lt;/span&gt;
+(&lt;span style=&#34;color: #003333&#34;&gt;add-to-list&lt;/span&gt; &lt;span style=&#34;color: #FFCC33&#34;&gt;&amp;#39;auto-mode-alist&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;&amp;#39;&lt;/span&gt;(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;\\COMMIT_EDITMSG\\&amp;#39;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;load-magit-log-when-committing-mode&lt;/span&gt;))
+&lt;/pre&gt;&lt;/div&gt;
 </description>
     </item>
     

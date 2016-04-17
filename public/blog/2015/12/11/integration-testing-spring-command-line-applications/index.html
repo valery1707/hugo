@@ -99,82 +99,78 @@
             <p>In the <a href="/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/">last blog post</a>, I wrote about the challenges of writing an integration test for a Spring command line application. One of the solutions for this issue discussed in the blog post was to use the <code>@IntegrationTest</code> annotations to inject Java system properties and use that to run the application instead of the normal command line arguments. This blog post describes how to perform this.</p>
 
 <p>The first step is to rewrite our test to use the <code>@IntegrationTest</code> annotations. This will result in a test that looks as follows:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@RunWith</span><span style="color: #555555">(</span>SpringJUnit4ClassRunner<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">)</span>
+<span style="color: #9999FF">@SpringApplicationConfiguration</span><span style="color: #555555">(</span>classes <span style="color: #555555">=</span> <span style="color: #555555">{</span>Application<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">})</span>
+<span style="color: #9999FF">@IntegrationTest</span><span style="color: #555555">(</span>value <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;input:expectedOutput&quot;</span><span style="color: #555555">)</span>
+<span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">ApplicationIntegrationTest</span> <span style="color: #555555">{</span>
+    <span style="color: #9999FF">@Autowired</span>
+    <span style="color: #006699; font-weight: bold">private</span> Application application<span style="color: #555555">;</span>
 
-<pre><code class="language-java">@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {Application.class})
-@IntegrationTest(value = &quot;input:expectedOutput&quot;)
-public class ApplicationIntegrationTest {
-    @Autowired
-    private Application application;
+    <span style="color: #9999FF">@Rule</span>
+    <span style="color: #006699; font-weight: bold">public</span> OutputCapture outputCapture <span style="color: #555555">=</span> <span style="color: #006699; font-weight: bold">new</span> OutputCapture<span style="color: #555555">();</span>
 
-    @Rule
-    public OutputCapture outputCapture = new OutputCapture();
-
-    @Test
-    public void shouldGenerateResultFiles() throws Exception {
-        application.run();
-        assertTrue(outputCapture.toString().contains(&quot;expectedOutput&quot;));
-    }
-}
-</code></pre>
+    <span style="color: #9999FF">@Test</span>
+    <span style="color: #006699; font-weight: bold">public</span> <span style="color: #007788; font-weight: bold">void</span> <span style="color: #CC00FF">shouldGenerateResultFiles</span><span style="color: #555555">()</span> <span style="color: #006699; font-weight: bold">throws</span> Exception <span style="color: #555555">{</span>
+        application<span style="color: #555555">.</span><span style="color: #330099">run</span><span style="color: #555555">();</span>
+        assertTrue<span style="color: #555555">(</span>outputCapture<span style="color: #555555">.</span><span style="color: #330099">toString</span><span style="color: #555555">().</span><span style="color: #330099">contains</span><span style="color: #555555">(</span><span style="color: #CC3300">&quot;expectedOutput&quot;</span><span style="color: #555555">));</span>
+    <span style="color: #555555">}</span>
+<span style="color: #555555">}</span>
+</pre></div>
 
 <p>At this point, it is worth taking a look at what the <code>@IntegrationTest</code> annotation causes Spring to do. This is a meta-annotation <sup class="footnote-ref" id="fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:1"><a rel="footnote" href="#fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:1">1</a></sup> that specifies a number of test listeners including <code>IntegrationTestPropertiesListener</code>.</p>
-
-<pre><code class="language-java">@Documented
-@Inherited
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@TestExecutionListeners(listeners = { IntegrationTestPropertiesListener.class,
-        DirtiesContextBeforeModesTestExecutionListener.class,
-        DependencyInjectionTestExecutionListener.class,
-        DirtiesContextTestExecutionListener.class,
-        TransactionalTestExecutionListener.class, SqlScriptsTestExecutionListener.class })
-public @interface IntegrationTest {
-    String[] value() default {};
-}
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Documented</span>
+<span style="color: #9999FF">@Inherited</span>
+<span style="color: #9999FF">@Retention</span><span style="color: #555555">(</span>RetentionPolicy<span style="color: #555555">.</span><span style="color: #330099">RUNTIME</span><span style="color: #555555">)</span>
+<span style="color: #9999FF">@Target</span><span style="color: #555555">(</span>ElementType<span style="color: #555555">.</span><span style="color: #330099">TYPE</span><span style="color: #555555">)</span>
+<span style="color: #9999FF">@TestExecutionListeners</span><span style="color: #555555">(</span>listeners <span style="color: #555555">=</span> <span style="color: #555555">{</span> IntegrationTestPropertiesListener<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">,</span>
+        DirtiesContextBeforeModesTestExecutionListener<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">,</span>
+        DependencyInjectionTestExecutionListener<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">,</span>
+        DirtiesContextTestExecutionListener<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">,</span>
+        TransactionalTestExecutionListener<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">,</span> SqlScriptsTestExecutionListener<span style="color: #555555">.</span><span style="color: #330099">class</span> <span style="color: #555555">})</span>
+<span style="color: #006699; font-weight: bold">public</span> <span style="color: #9999FF">@interface</span> IntegrationTest <span style="color: #555555">{</span>
+    String<span style="color: #555555">[]</span> <span style="color: #CC00FF">value</span><span style="color: #555555">()</span> <span style="color: #006699; font-weight: bold">default</span> <span style="color: #555555">{};</span>
+<span style="color: #555555">}</span>
+</pre></div>
 
 <p><code>IntegrationTestPropertiesListener</code> is an implementation of <code>TestExecutionListener</code> which is a mechanism used by Spring to react to test execution events like <code>beforeTestClass</code>, <code>prepareTestInstance</code>, <code>beforeTestMethod</code>, <code>beforeTestMethod</code> and <code>afterTestClass</code>.</p>
 
 <p>For the purposes of what we are trying to achieve, the listener we are really interested in is the <code>beforeTestClass</code> of <code>IntegrationTestPropertiesListener</code>.</p>
-
-<pre><code class="language-java">    @Override
-    public void prepareTestInstance(TestContext testContext) throws Exception {
-        Class&lt;?&gt; testClass = testContext.getTestClass();
-        AnnotationAttributes annotationAttributes = AnnotatedElementUtils
-                .getMergedAnnotationAttributes(testClass,
-                        IntegrationTest.class.getName());
-        if (annotationAttributes != null) {
-            addPropertySourceProperties(testContext,
-                    annotationAttributes.getStringArray(&quot;value&quot;));
-        }
-    }
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>    <span style="color: #9999FF">@Override</span>
+    <span style="color: #006699; font-weight: bold">public</span> <span style="color: #007788; font-weight: bold">void</span> <span style="color: #CC00FF">prepareTestInstance</span><span style="color: #555555">(</span>TestContext testContext<span style="color: #555555">)</span> <span style="color: #006699; font-weight: bold">throws</span> Exception <span style="color: #555555">{</span>
+        Class<span style="color: #555555">&lt;?&gt;</span> testClass <span style="color: #555555">=</span> testContext<span style="color: #555555">.</span><span style="color: #330099">getTestClass</span><span style="color: #555555">();</span>
+        AnnotationAttributes annotationAttributes <span style="color: #555555">=</span> AnnotatedElementUtils
+                <span style="color: #555555">.</span><span style="color: #330099">getMergedAnnotationAttributes</span><span style="color: #555555">(</span>testClass<span style="color: #555555">,</span>
+                        IntegrationTest<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">.</span><span style="color: #330099">getName</span><span style="color: #555555">());</span>
+        <span style="color: #006699; font-weight: bold">if</span> <span style="color: #555555">(</span>annotationAttributes <span style="color: #555555">!=</span> <span style="color: #006699; font-weight: bold">null</span><span style="color: #555555">)</span> <span style="color: #555555">{</span>
+            addPropertySourceProperties<span style="color: #555555">(</span>testContext<span style="color: #555555">,</span>
+                    annotationAttributes<span style="color: #555555">.</span><span style="color: #330099">getStringArray</span><span style="color: #555555">(</span><span style="color: #CC3300">&quot;value&quot;</span><span style="color: #555555">));</span>
+        <span style="color: #555555">}</span>
+    <span style="color: #555555">}</span>
+</pre></div>
 
 <p>As we can see, the value of the <code>value</code> element <sup class="footnote-ref" id="fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2"><a rel="footnote" href="#fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:2">2</a></sup> of our <code>@IntegrationTest</code> gets injected to the configuration of the test context.</p>
 
 <p>Now that we have understood and used the <code>@IntegrationTest</code> annotation to push in configuration, it is time to make our application consume this configuration.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Configuration</span>
+<span style="color: #9999FF">@EnableAutoConfiguration</span>
+<span style="color: #9999FF">@ComponentScan</span>
+<span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Application</span> <span style="color: #006699; font-weight: bold">implements</span> CommandLineRunner <span style="color: #555555">{</span>
+    <span style="color: #9999FF">@Autowired</span>
+    DataService dataService<span style="color: #555555">;</span>
 
-<pre><code class="language-java">@Configuration
-@EnableAutoConfiguration
-@ComponentScan
-public class Application implements CommandLineRunner {
-    @Autowired
-    DataService dataService;
+    <span style="color: #9999FF">@Value</span><span style="color: #555555">(</span><span style="color: #CC3300">&quot;${input}&quot;</span><span style="color: #555555">)</span>
+    String input<span style="color: #555555">;</span>
 
-    @Value(&quot;${input}&quot;)
-    String input;
+    <span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">static</span> <span style="color: #007788; font-weight: bold">void</span> <span style="color: #CC00FF">main</span><span style="color: #555555">(</span>String<span style="color: #555555">[]</span> args<span style="color: #555555">)</span> <span style="color: #555555">{</span>
+        SpringApplication<span style="color: #555555">.</span><span style="color: #330099">run</span><span style="color: #555555">(</span>Application<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">,</span> args<span style="color: #555555">);</span>
+    <span style="color: #555555">}</span>
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
-
-    @Override
-    public void run(String... args) {
-        dataService.perform(input);
-    }
-}
-</code></pre>
+    <span style="color: #9999FF">@Override</span>
+    <span style="color: #006699; font-weight: bold">public</span> <span style="color: #007788; font-weight: bold">void</span> <span style="color: #CC00FF">run</span><span style="color: #555555">(</span>String<span style="color: #555555">...</span> args<span style="color: #555555">)</span> <span style="color: #555555">{</span>
+        dataService<span style="color: #555555">.</span><span style="color: #330099">perform</span><span style="color: #555555">(</span>input<span style="color: #555555">);</span>
+    <span style="color: #555555">}</span>
+<span style="color: #555555">}</span>
+</pre></div>
 
 <p>An added benefit of this approach is that this forces us to use named parameter arguments when running the application as opposed to the position based command line arguments. This of course does not solve the problem of testing if you absolutely have to use position based arguments for your application. It would be nice Spring provided a mechanism to inject the command line arguments in a test before <code>SpringApplicationContextLoader</code> <sup class="footnote-ref" id="fnref:7dbd0b0b8fa67b28f9dffc46ddaee5e0:3"><a rel="footnote" href="#fn:7dbd0b0b8fa67b28f9dffc46ddaee5e0:3">3</a></sup> took over. But I suspect that this is not a common enough use case of Spring that users have asked the Spring team to implement it.</p>
 <div class="footnotes">

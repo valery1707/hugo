@@ -31,8 +31,7 @@
 &lt;/ul&gt;
 
 &lt;p&gt;The analysis of my Wikipedia history showed me some interesting things. For example, when I was reading &lt;a href=&#34;http://en.wikipedia.org/wiki/Michael_J._Arlen&#34;&gt;Michael J. Arlen&amp;rsquo;s&lt;/a&gt; Passage to Ararat, I spent a lot of time on Wikipedia, hopping between pages about Armenian history and culture. This is what the list of Wikipedia pages on that day look like:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;http://en.wikipedia.org/wiki/TRS-80
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;http://en.wikipedia.org/wiki/TRS-80
 http://en.wikipedia.org/wiki/Aunt_Sally
 http://en.wikipedia.org/wiki/Pai
 http://en.wikipedia.org/wiki/Pai_(surname)
@@ -58,16 +57,15 @@ http://en.wikipedia.org/wiki/Hayk
 http://en.wikipedia.org/wiki/Ecbatana
 http://en.wikipedia.org/wiki/Goat_meat
 http://en.wikipedia.org/wiki/Kid
-http://en.wikipedia.org/w/index.php?title=Special%3ASearch&amp;amp;amp;search=xenophon
+http://en.wikipedia.org/w/index.php?title=Special%3ASearch&amp;amp;search=xenophon
 http://en.wikipedia.org/wiki/Xenophon
 http://en.wikipedia.org/wiki/International_Mother_Language_Day
 http://en.wikipedia.org/wiki/Debian
 http://en.wikipedia.org/wiki/Language_Movement_Day
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;When I was reading about Data warehousing, this is how the hopping happened:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;http://en.wikipedia.org/wiki/ROLAP
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;http://en.wikipedia.org/wiki/ROLAP
 http://en.wikipedia.org/wiki/Dimension_(data_warehouse)
 http://en.wikipedia.org/wiki/Extract,_transform,_load
 http://en.wikipedia.org/wiki/Mondrian_OLAP_server
@@ -86,90 +84,89 @@ http://en.wikipedia.org/wiki/Bill_Inmon
 http://en.wikipedia.org/wiki/Decision_support
 http://en.wikipedia.org/wiki/Heart_of_Midlothian_F.C.
 http://en.wikipedia.org/wiki/The_Heart_of_Midlothian
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;I am still trying to make more sense of the links that I clicked away and the articles I read when I was page hopping.&lt;/p&gt;
 
 &lt;p&gt;The Ruby script that parses Chromium history and figures out the Wikipedia links is below:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#!/usr/bin/env ruby&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# Ruby script to parse Chromium (or Google Chrome) history to identify Wikipedia pages read per day.&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# usage: ./wikipedia_history.rb &amp;lt;location of Chromium history db&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# The Chromium history db can be usually found under ~/.config/chromium/Default&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;#!/usr/bin/env ruby
-# Ruby script to parse Chromium (or Google Chrome) history to identify Wikipedia pages read per day.
-# usage: ./wikipedia_history.rb &amp;lt;location of Chromium history db&amp;gt;
-# The Chromium history db can be usually found under ~/.config/chromium/Default
+&lt;span style=&#34;color: #336666&#34;&gt;require&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;rubygems&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #336666&#34;&gt;require&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;sqlite3&amp;#39;&lt;/span&gt;
 
-require &#39;rubygems&#39;
-require &#39;sqlite3&#39;
+&lt;span style=&#34;color: #336600&#34;&gt;US_IN_A_DAY&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;24&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;60&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;60&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;1000000&lt;/span&gt;
+&lt;span style=&#34;color: #336600&#34;&gt;SITE&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;wikipedia&amp;quot;&lt;/span&gt;
 
-US_IN_A_DAY = 24 * 60 * 60 * 1000000
-SITE = &amp;quot;wikipedia&amp;quot;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;module&lt;/span&gt; &lt;span style=&#34;color: #00CCFF; font-weight: bold&#34;&gt;ChromiumHP&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;DbConnection&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;initialize&lt;/span&gt; db_name
+      &lt;span style=&#34;color: #003333&#34;&gt;@db_name&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; db_name
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
 
-module ChromiumHP
-  class DbConnection
-    def initialize db_name
-      @db_name = db_name
-    end
-
-    def urls_history
-      db = SQLite3::Database.new @db_name
-      urls = db.execute(&amp;quot;SELECT last_visit_time, url from urls ORDER BY last_visit_time;&amp;quot;).map do |t, u|
-        {:last_visit_time =&amp;gt; t, :url =&amp;gt; u}
-      end
-      db.close
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;urls_history&lt;/span&gt;
+      db &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #336600&#34;&gt;SQLite3&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color: #336600&#34;&gt;Database&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;new &lt;span style=&#34;color: #003333&#34;&gt;@db_name&lt;/span&gt;
+      urls &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; db&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;execute(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;SELECT last_visit_time, url from urls ORDER BY last_visit_time;&amp;quot;&lt;/span&gt;)&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;map &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;do&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;t, u&lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;
+        {&lt;span style=&#34;color: #FFCC33&#34;&gt;:last_visit_time&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&amp;gt;&lt;/span&gt; t, &lt;span style=&#34;color: #FFCC33&#34;&gt;:url&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&amp;gt;&lt;/span&gt; u}
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
+      db&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;close
       urls
-    end
-  end
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
 
-  class Parser
-    def initialize db_name
-      @db_name = db_name
-    end
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Parser&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;initialize&lt;/span&gt; db_name
+      &lt;span style=&#34;color: #003333&#34;&gt;@db_name&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; db_name
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
 
-    def chunks days
-      @history ||= get_history
-      parts = @history.group_by do |h|
-         h[:last_visit_time] / (days * US_IN_A_DAY)
-      end
-      parts.map { |k, group| group }
-    end
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;chunks&lt;/span&gt; days
+      &lt;span style=&#34;color: #003333&#34;&gt;@history&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;||=&lt;/span&gt; get_history
+      parts &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;@history&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;group_by &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;do&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;h&lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;
+         h&lt;span style=&#34;color: #555555&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #FFCC33&#34;&gt;:last_visit_time&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;/&lt;/span&gt; (days &lt;span style=&#34;color: #555555&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color: #336600&#34;&gt;US_IN_A_DAY&lt;/span&gt;)
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
+      parts&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;map { &lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;k, group&lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt; group }
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
 
-    private
-    def get_history
-      DbConnection.new(@db_name).urls_history
-    end
-  end
+    &lt;span style=&#34;color: #006699&#34;&gt;private&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;get_history&lt;/span&gt;
+      &lt;span style=&#34;color: #336600&#34;&gt;DbConnection&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;new(&lt;span style=&#34;color: #003333&#34;&gt;@db_name&lt;/span&gt;)&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;urls_history
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
 
-  class Analyzer
-    def self.graph chunks
-      chunks.map do |c|
-        c.find_all do |entry|
-          url = entry[:url]
-          url.include?(SITE) &amp;amp;&amp;amp;
-            !url.include?(&amp;quot;facebook&amp;quot;) &amp;amp;&amp;amp;
-            !url.include?(&amp;quot;google&amp;quot;)
-        end
-      end.find_all do |c|
-        !c.empty?
-      end.sort_by do |c|
-        c.length
-      end.map do |c|
-        c.map do |entry|
-          entry[:url]
-        end
-      end
-    end
-  end
-end
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Analyzer&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #CC00FF&#34;&gt;graph&lt;/span&gt; chunks
+      chunks&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;map &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;do&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;c&lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;
+        c&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;find_all &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;do&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;entry&lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;
+          url &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; entry&lt;span style=&#34;color: #555555&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #FFCC33&#34;&gt;:url&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;]&lt;/span&gt;
+          url&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;include?(&lt;span style=&#34;color: #336600&#34;&gt;SITE&lt;/span&gt;) &lt;span style=&#34;color: #555555&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+            &lt;span style=&#34;color: #555555&#34;&gt;!&lt;/span&gt;url&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;include?(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;facebook&amp;quot;&lt;/span&gt;) &lt;span style=&#34;color: #555555&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+            &lt;span style=&#34;color: #555555&#34;&gt;!&lt;/span&gt;url&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;include?(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;google&amp;quot;&lt;/span&gt;)
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;find_all &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;do&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;c&lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;
+        &lt;span style=&#34;color: #555555&#34;&gt;!&lt;/span&gt;c&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;empty?
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;sort_by &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;do&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;c&lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;
+        c&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;length
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;map &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;do&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;c&lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;
+        c&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;map &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;do&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;entry&lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;
+          entry&lt;span style=&#34;color: #555555&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #FFCC33&#34;&gt;:url&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;]&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
 
 
-history_loc = ARGV.first
-abort &amp;quot;Error: Pass the chromium history location as parameter&amp;quot; if history_loc.nil?
+history_loc &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #336600&#34;&gt;ARGV&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;first
+&lt;span style=&#34;color: #336666&#34;&gt;abort&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Error: Pass the chromium history location as parameter&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt; history_loc&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;nil?
 
-daily_chunks = ChromiumHP::Parser.new(history_loc + &amp;quot;/History&amp;quot;).chunks(1)
-ChromiumHP::Analyzer.graph(daily_chunks).each do |entries|
-  puts entries
-  puts &amp;quot;&amp;quot;
-end
-&lt;/code&gt;&lt;/pre&gt;
+daily_chunks &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #336600&#34;&gt;ChromiumHP&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color: #336600&#34;&gt;Parser&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;new(history_loc &lt;span style=&#34;color: #555555&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/History&amp;quot;&lt;/span&gt;)&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;chunks(&lt;span style=&#34;color: #FF6600&#34;&gt;1&lt;/span&gt;)
+&lt;span style=&#34;color: #336600&#34;&gt;ChromiumHP&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color: #336600&#34;&gt;Analyzer&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;graph(daily_chunks)&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;each &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;do&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;entries&lt;span style=&#34;color: #555555&#34;&gt;|&lt;/span&gt;
+  &lt;span style=&#34;color: #336666&#34;&gt;puts&lt;/span&gt; entries
+  &lt;span style=&#34;color: #336666&#34;&gt;puts&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 </description>
     </item>
     

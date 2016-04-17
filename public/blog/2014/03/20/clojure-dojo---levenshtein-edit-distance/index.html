@@ -105,43 +105,41 @@
 <p>This can be recursively solved for two strings <code>A0:AS</code> and <code>B0:BS</code> by comparing <code>AS</code>, <code>B0:BS</code>; <code>A0:AS</code>, <code>BS</code> and <code>AS</code>, <code>BS</code>.</p>
 
 <h3 id="code:d5d4c3a7257ad508bc68cd569fb16682">Code</h3>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>(<span style="color: #006699; font-weight: bold">ns </span><span style="color: #003333">clojure_dojo.core</span>)
 
-<pre><code class="language-clojure">(ns clojure_dojo.core)
-
-(defn edit-distance
-  &quot;Return the Levenshtein edit distance between two strings&quot;
-  [first second]
-  (cond
-   (empty? first) (count second)
-   (empty? second) (count first)
-   :else (min (+ 1 (edit-distance (drop 1 first) second))
-              (+ 1 (edit-distance first (drop 1 second)))
-              (+ (cond
-                  (= (take 1 first) (take 1 second)) 0
-                  :else 1)
-                 (edit-distance (drop 1 first) (drop 1 second))))))
-</code></pre>
+(<span style="color: #006699; font-weight: bold">defn </span><span style="color: #003333">edit-distance</span>
+  <span style="color: #CC3300">&quot;Return the Levenshtein edit distance between two strings&quot;</span>
+  [<span style="color: #336666">first </span><span style="color: #003333">second</span>]
+  (<span style="color: #CC00FF">cond</span>
+   (<span style="color: #CC00FF">empty?</span> <span style="color: #003333">first</span>) (<span style="color: #336666">count </span><span style="color: #003333">second</span>)
+   (<span style="color: #CC00FF">empty?</span> <span style="color: #003333">second</span>) (<span style="color: #336666">count </span><span style="color: #003333">first</span>)
+   <span style="color: #FFCC33">:else</span> (<span style="color: #336666">min </span>(<span style="color: #336666">+ </span><span style="color: #FF6600">1</span> (<span style="color: #CC00FF">edit-distance</span> (<span style="color: #336666">drop </span><span style="color: #FF6600">1</span> <span style="color: #003333">first</span>) <span style="color: #003333">second</span>))
+              (<span style="color: #336666">+ </span><span style="color: #FF6600">1</span> (<span style="color: #CC00FF">edit-distance</span> <span style="color: #336666">first </span>(<span style="color: #336666">drop </span><span style="color: #FF6600">1</span> <span style="color: #003333">second</span>)))
+              (<span style="color: #336666">+ </span>(<span style="color: #CC00FF">cond</span>
+                  (<span style="color: #336666">= </span>(<span style="color: #336666">take </span><span style="color: #FF6600">1</span> <span style="color: #003333">first</span>) (<span style="color: #336666">take </span><span style="color: #FF6600">1</span> <span style="color: #003333">second</span>)) <span style="color: #FF6600">0</span>
+                  <span style="color: #FFCC33">:else</span> <span style="color: #FF6600">1</span>)
+                 (<span style="color: #CC00FF">edit-distance</span> (<span style="color: #336666">drop </span><span style="color: #FF6600">1</span> <span style="color: #003333">first</span>) (<span style="color: #336666">drop </span><span style="color: #FF6600">1</span> <span style="color: #003333">second</span>))))))
+</pre></div>
 
 <h3 id="test:d5d4c3a7257ad508bc68cd569fb16682">Test</h3>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>(<span style="color: #006699; font-weight: bold">ns </span><span style="color: #003333">clojure_dojo.t-core</span>
+  (<span style="color: #FFCC33">:use</span> <span style="color: #003333">midje.sweet</span>)
+  (<span style="color: #FFCC33">:use</span> [<span style="color: #003333">clojure_dojo.core</span>]))
 
-<pre><code class="language-clojure">(ns clojure_dojo.t-core
-  (:use midje.sweet)
-  (:use [clojure_dojo.core]))
-
-(facts &quot;about `edit-distance`&quot;
-       (fact &quot;it returns length of other string if one string is empty&quot;
-             (edit-distance &quot;foo&quot; &quot;&quot;) =&gt; 3
-             (edit-distance &quot;&quot; &quot;foo&quot;) =&gt; 3)
-       (fact &quot;detects deletions&quot;
-             (edit-distance &quot;foo&quot; &quot;oo&quot;) =&gt; 1)
-       (fact &quot;detects substitutions&quot;
-             (edit-distance &quot;ab&quot;, &quot;cd&quot;) =&gt; 2)
-       (fact &quot;detects additions needed&quot;
-             (edit-distance &quot;oo&quot;, &quot;foo&quot;) =&gt; 1
-             (edit-distance &quot;kit&quot;, &quot;sitting&quot;) =&gt; 5
-             (edit-distance &quot;intention&quot;, &quot;execution&quot;) =&gt; 5
-             (edit-distance &quot;sittin&quot;, &quot;sitting&quot;) =&gt; 1))
-</code></pre>
+(<span style="color: #CC00FF">facts</span> <span style="color: #CC3300">&quot;about `edit-distance`&quot;</span>
+       (<span style="color: #CC00FF">fact</span> <span style="color: #CC3300">&quot;it returns length of other string if one string is empty&quot;</span>
+             (<span style="color: #CC00FF">edit-distance</span> <span style="color: #CC3300">&quot;foo&quot;</span> <span style="color: #CC3300">&quot;&quot;</span>) <span style="color: #003333">=&gt;</span> <span style="color: #FF6600">3</span>
+             (<span style="color: #CC00FF">edit-distance</span> <span style="color: #CC3300">&quot;&quot;</span> <span style="color: #CC3300">&quot;foo&quot;</span>) <span style="color: #003333">=&gt;</span> <span style="color: #FF6600">3</span>)
+       (<span style="color: #CC00FF">fact</span> <span style="color: #CC3300">&quot;detects deletions&quot;</span>
+             (<span style="color: #CC00FF">edit-distance</span> <span style="color: #CC3300">&quot;foo&quot;</span> <span style="color: #CC3300">&quot;oo&quot;</span>) <span style="color: #003333">=&gt;</span> <span style="color: #FF6600">1</span>)
+       (<span style="color: #CC00FF">fact</span> <span style="color: #CC3300">&quot;detects substitutions&quot;</span>
+             (<span style="color: #CC00FF">edit-distance</span> <span style="color: #CC3300">&quot;ab&quot;</span>, <span style="color: #CC3300">&quot;cd&quot;</span>) <span style="color: #003333">=&gt;</span> <span style="color: #FF6600">2</span>)
+       (<span style="color: #CC00FF">fact</span> <span style="color: #CC3300">&quot;detects additions needed&quot;</span>
+             (<span style="color: #CC00FF">edit-distance</span> <span style="color: #CC3300">&quot;oo&quot;</span>, <span style="color: #CC3300">&quot;foo&quot;</span>) <span style="color: #003333">=&gt;</span> <span style="color: #FF6600">1</span>
+             (<span style="color: #CC00FF">edit-distance</span> <span style="color: #CC3300">&quot;kit&quot;</span>, <span style="color: #CC3300">&quot;sitting&quot;</span>) <span style="color: #003333">=&gt;</span> <span style="color: #FF6600">5</span>
+             (<span style="color: #CC00FF">edit-distance</span> <span style="color: #CC3300">&quot;intention&quot;</span>, <span style="color: #CC3300">&quot;execution&quot;</span>) <span style="color: #003333">=&gt;</span> <span style="color: #FF6600">5</span>
+             (<span style="color: #CC00FF">edit-distance</span> <span style="color: #CC3300">&quot;sittin&quot;</span>, <span style="color: #CC3300">&quot;sitting&quot;</span>) <span style="color: #003333">=&gt;</span> <span style="color: #FF6600">1</span>))
+</pre></div>
 
 <h3 id="the-problem-with-this-approach:d5d4c3a7257ad508bc68cd569fb16682">The problem with this approach</h3>
 

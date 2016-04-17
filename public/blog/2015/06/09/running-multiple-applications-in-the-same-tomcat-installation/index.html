@@ -103,59 +103,51 @@
 <h2 id="a-typical-tomcat-installation:a2ed05b8bb95da785f1e814e64b0e342">A typical Tomcat installation</h2>
 
 <p>If we explode the Tomcat 8.0.23 <a href="http://mirrors.sonic.net/apache/tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23.tar.gz">tarball</a>, we get the following directory structure:</p>
-
-<pre><code class="language-bash">$ tar apache-tomcat-8.0.23.tar.gz
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>$ tar apache-tomcat-8.0.23.tar.gz
 
 $ ls apache-tomcat-8.0.23/
 LICENSE		RELEASE-NOTES	bin		lib		temp		work
 NOTICE		RUNNING.txt	conf		logs		webapps
-</code></pre>
+</pre></div>
 
 <p>This distribution, by default runs applications in a single JVM. How does it do this?</p>
 
 <p>Tomcat control scripts - <code>startup.sh</code>, <code>shutdown.sh</code>, <code>catalina.sh</code> uses the environment variables <code>CATALINA_HOME</code> and <code>CATALINA_BASE</code> to locate binaries and configuration files.</p>
 
 <p>From the documentaion inside <code>catalina.sh</code> under <code>apache-tomcat-8.0.23/bin/</code> we can see that:</p>
-
-<pre><code class="language-bash">#   CATALINA_HOME   May point at your Catalina &quot;build&quot; directory.
-#
-#   CATALINA_BASE   (Optional) Base directory for resolving dynamic portions
-#                   of a Catalina installation.  If not present, resolves to
-#                   the same directory that CATALINA_HOME points to.
-
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic">#   CATALINA_HOME   May point at your Catalina &quot;build&quot; directory.</span>
+<span style="color: #0099FF; font-style: italic">#</span>
+<span style="color: #0099FF; font-style: italic">#   CATALINA_BASE   (Optional) Base directory for resolving dynamic portions</span>
+<span style="color: #0099FF; font-style: italic">#                   of a Catalina installation.  If not present, resolves to</span>
+<span style="color: #0099FF; font-style: italic">#                   the same directory that CATALINA_HOME points to.</span>
+</pre></div>
 
 <p>This allows us to separate the <code>CATALINA_HOME</code> and <code>CATALINA_BASE</code> directories. The Tomcat binaries and scripts need to be inside <code>CATALINA_HOME</code> and our first application can deploy itself to <code>CATALINA_BASE</code>.</p>
 
 <h2 id="separating-catalina-home-and-catalina-base:a2ed05b8bb95da785f1e814e64b0e342">Separating CATALINA_HOME and CATALINA_BASE</h2>
 
 <p>The <code>app1</code> directory will have the following directories:</p>
-
-<pre><code class="language-bash">$ ls -a app1/
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>$ ls -a app1/
 .	..	bin	conf	logs	temp	webapps	work
-</code></pre>
+</pre></div>
 
 <p>The <code>bin</code> directory will have the <code>setenv.sh</code> script used to set additional environment variables for the application.</p>
 
 <p>The <code>tomcat</code> directory will have the following directories:</p>
-
-<pre><code class="language-bash">
-$ ls tomcat/
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>$ ls tomcat/
 LICENSE		NOTICE		RELEASE-NOTES	RUNNING.txt	bin		lib
-</code></pre>
+</pre></div>
 
 <p>The <code>bin</code> directory will have the Tomcat management scripts like <code>startup.sh</code>, <code>shutdown.sh</code>, <code>catalina.sh</code> etc.</p>
 
 <p>Now we can start <code>app1</code> by pointing <code>CATALINA_BASE</code> to <code>app1</code> and <code>CATALINA_HOME</code> to <code>tomcat</code>.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>$ <span style="color: #336666">export</span> <span style="color: #003333">CATALINA_HOME</span><span style="color: #555555">=</span>/Users/sdqali/src/sandbox/tomcat
 
-<pre><code class="language-bash">
-$ export CATALINA_HOME=/Users/sdqali/src/sandbox/tomcat
+$ <span style="color: #336666">export</span> <span style="color: #003333">CATALINA_BASE</span><span style="color: #555555">=</span>/Users/sdqali/src/sandbox/app1
 
-$ export CATALINA_BASE=/Users/sdqali/src/sandbox/app1
+$ <span style="color: #003333">$CATALINA_HOME</span>/bin/startup.sh
 
-$ $CATALINA_HOME/bin/startup.sh
-
-$ $CATALINA_HOME/bin/startup.sh
+$ <span style="color: #003333">$CATALINA_HOME</span>/bin/startup.sh
 Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app1
 Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
 Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app1/temp
@@ -164,21 +156,19 @@ Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users
 Tomcat started.
 
 $ curl -s -D - -o /dev/null http://127.0.0.1:8080
-HTTP/1.1 200 OK
+HTTP/1.1 <span style="color: #FF6600">200</span> OK
 Server: Apache-Coyote/1.1
-Content-Type: text/html;charset=UTF-8
+Content-Type: text/html;<span style="color: #003333">charset</span><span style="color: #555555">=</span>UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 09 Jun 2015 07:37:43 GMT
-</code></pre>
+Date: Tue, <span style="color: #FF6600">09</span> Jun <span style="color: #FF6600">2015</span> 07:37:43 GMT
+</pre></div>
 
 <p>Let&rsquo;s try and deploy a second application <code>app2</code> running on port <code>9090</code>.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>$ <span style="color: #336666">export</span> <span style="color: #003333">CATALINA_HOME</span><span style="color: #555555">=</span>/Users/sdqali/src/sandbox/tomcat
 
-<pre><code class="language-bash">
-$ export CATALINA_HOME=/Users/sdqali/src/sandbox/tomcat
+$ <span style="color: #336666">export</span> <span style="color: #003333">CATALINA_BASE</span><span style="color: #555555">=</span>/Users/sdqali/src/sandbox/app2
 
-$ export CATALINA_BASE=/Users/sdqali/src/sandbox/app2
-
-$ $CATALINA_HOME/bin/startup.sh
+$ <span style="color: #003333">$CATALINA_HOME</span>/bin/startup.sh
 Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app2
 Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
 Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app2/temp
@@ -187,66 +177,63 @@ Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users
 Tomcat started.
 
 $ curl -s -D - -o /dev/null http://127.0.0.1:9090
-HTTP/1.1 200 OK
+HTTP/1.1 <span style="color: #FF6600">200</span> OK
 Server: Apache-Coyote/1.1
-Content-Type: text/html;charset=UTF-8
+Content-Type: text/html;<span style="color: #003333">charset</span><span style="color: #555555">=</span>UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 09 Jun 2015 07:41:02 GMT
-</code></pre>
+Date: Tue, <span style="color: #FF6600">09</span> Jun <span style="color: #FF6600">2015</span> 07:41:02 GMT
+</pre></div>
 
 <h2 id="tying-it-all-together:a2ed05b8bb95da785f1e814e64b0e342">Tying it all together</h2>
 
 <p>At this point, it is useful to create management scripts that abstract away the environment variables and allows for starting up and shutting down applications individually. The <code>start.sh</code> script will be as follows.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic">#!/usr/bin/env sh</span>
 
-<pre><code class="language-bash">#!/usr/bin/env sh
+<span style="color: #0099FF; font-style: italic"># start.sh</span>
+<span style="color: #0099FF; font-style: italic"># Script to start a Tomcat application</span>
 
-# start.sh
-# Script to start a Tomcat application
+show_usage<span style="color: #555555">()</span> <span style="color: #555555">{</span>
+    <span style="color: #336666">echo</span> <span style="color: #CC3300">&quot;Usage: ./start.sh &lt;app-name&gt;&quot;</span>;
+    <span style="color: #336666">exit</span> 1;
+<span style="color: #555555">}</span>
 
-show_usage() {
-    echo &quot;Usage: ./start.sh &lt;app-name&gt;&quot;;
-    exit 1;
-}
-
-declare app_name=$1;
-[[ -z $app_name ]] &amp;&amp; show_usage;
+<span style="color: #336666">declare</span> <span style="color: #003333">app_name</span><span style="color: #555555">=</span><span style="color: #003333">$1</span>;
+<span style="color: #555555">[[</span> -z <span style="color: #003333">$app_name</span> <span style="color: #555555">]]</span> <span style="color: #555555">&amp;&amp;</span> show_usage;
 
 
-declare INSTALL_BASE=/Users/sdqali/src/sandbox
+<span style="color: #336666">declare</span> <span style="color: #003333">INSTALL_BASE</span><span style="color: #555555">=</span>/Users/sdqali/src/sandbox
 
-export CATALINA_HOME=$INSTALL_BASE/tomcat
-export CATALINA_BASE=$INSTALL_BASE/$app_name
+<span style="color: #336666">export</span> <span style="color: #003333">CATALINA_HOME</span><span style="color: #555555">=</span><span style="color: #003333">$INSTALL_BASE</span>/tomcat
+<span style="color: #336666">export</span> <span style="color: #003333">CATALINA_BASE</span><span style="color: #555555">=</span><span style="color: #003333">$INSTALL_BASE</span>/<span style="color: #003333">$app_name</span>
 
-$CATALINA_HOME/bin/startup.sh
-</code></pre>
+<span style="color: #003333">$CATALINA_HOME</span>/bin/startup.sh
+</pre></div>
 
 <p>Similarly, the <code>stop.sh</code> script will be:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic">#!/usr/bin/env sh</span>
 
-<pre><code class="language-bash">#!/usr/bin/env sh
+<span style="color: #0099FF; font-style: italic"># stop.sh</span>
+<span style="color: #0099FF; font-style: italic"># Script to stop a Tomcat application</span>
 
-# stop.sh
-# Script to stop a Tomcat application
+show_usage<span style="color: #555555">()</span> <span style="color: #555555">{</span>
+    <span style="color: #336666">echo</span> <span style="color: #CC3300">&quot;Usage: ./stop.sh &lt;app-name&gt;&quot;</span>;
+    <span style="color: #336666">exit</span> 1;
+<span style="color: #555555">}</span>
 
-show_usage() {
-    echo &quot;Usage: ./stop.sh &lt;app-name&gt;&quot;;
-    exit 1;
-}
-
-declare app_name=$1;
-[[ -z $app_name ]] &amp;&amp; show_usage;
+<span style="color: #336666">declare</span> <span style="color: #003333">app_name</span><span style="color: #555555">=</span><span style="color: #003333">$1</span>;
+<span style="color: #555555">[[</span> -z <span style="color: #003333">$app_name</span> <span style="color: #555555">]]</span> <span style="color: #555555">&amp;&amp;</span> show_usage;
 
 
-declare INSTALL_BASE=/Users/sdqali/src/sandbox
+<span style="color: #336666">declare</span> <span style="color: #003333">INSTALL_BASE</span><span style="color: #555555">=</span>/Users/sdqali/src/sandbox
 
-export CATALINA_HOME=$INSTALL_BASE/tomcat
-export CATALINA_BASE=$INSTALL_BASE/$app_name
+<span style="color: #336666">export</span> <span style="color: #003333">CATALINA_HOME</span><span style="color: #555555">=</span><span style="color: #003333">$INSTALL_BASE</span>/tomcat
+<span style="color: #336666">export</span> <span style="color: #003333">CATALINA_BASE</span><span style="color: #555555">=</span><span style="color: #003333">$INSTALL_BASE</span>/<span style="color: #003333">$app_name</span>
 
-$CATALINA_HOME/bin/shutdown.sh
-</code></pre>
+<span style="color: #003333">$CATALINA_HOME</span>/bin/shutdown.sh
+</pre></div>
 
 <p>We can manage individual applications using these scripts:</p>
-
-<pre><code class="language-bash">$ ./management/start.sh app2
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>$ ./management/start.sh app2
 Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app2
 Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
 Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app2/temp
@@ -255,14 +242,14 @@ Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users
 Tomcat started.
 
 $ nc -z  127.0.0.1 9090
-Connection to 127.0.0.1 port 9090 [tcp/websm] succeeded!
+Connection to 127.0.0.1 port <span style="color: #FF6600">9090</span> <span style="color: #555555">[</span>tcp/websm<span style="color: #555555">]</span> succeeded!
 
 $ curl -s -D - -o /dev/null http://127.0.0.1:9090
-HTTP/1.1 200 OK
+HTTP/1.1 <span style="color: #FF6600">200</span> OK
 Server: Apache-Coyote/1.1
-Content-Type: text/html;charset=UTF-8
+Content-Type: text/html;<span style="color: #003333">charset</span><span style="color: #555555">=</span>UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 09 Jun 2015 08:16:05 GMT
+Date: Tue, <span style="color: #FF6600">09</span> Jun <span style="color: #FF6600">2015</span> 08:16:05 GMT
 
 
 $ ./management/stop.sh app2
@@ -278,8 +265,8 @@ $ curl -v http://127.0.0.1:9090
 * Rebuilt URL to: http://127.0.0.1:9090/
 * Hostname was NOT found in DNS cache
 *   Trying 127.0.0.1...
-* connect to 127.0.0.1 port 9090 failed: Connection refused
-</code></pre>
+* connect to 127.0.0.1 port <span style="color: #FF6600">9090</span> failed: Connection refused
+</pre></div>
 
           </div>
         </div>

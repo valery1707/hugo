@@ -99,36 +99,34 @@
 <p>While working with Locust <sup class="footnote-ref" id="fnref:66b6e5fb09b6083bed97b4d7a2981cc2:1"><a rel="footnote" href="#fn:66b6e5fb09b6083bed97b4d7a2981cc2:1">1</a></sup> recently, we ran into a situation where we had to dynamically override an attribute in a class in the Locust library so as to control what value it got assigned. After a lot of scratching our heads and reading the Python documentation, we came across the <code>property</code> function. We were able to use this to hack together a solution that ensures that every time an attribute is read, it returns the result of executing a method.</p>
 
 <p>The following example demonstrates a stripped down version of this hack.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">import</span> <span style="color: #00CCFF; font-weight: bold">random</span>
 
-<pre><code>import random
+<span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Foo</span>(<span style="color: #336666">object</span>):
+    bar <span style="color: #555555">=</span> random<span style="color: #555555">.</span>random()
 
-class Foo(object):
-    bar = random.random()
+foo <span style="color: #555555">=</span> Foo()
 
-foo = Foo()
+<span style="color: #0099FF; font-style: italic"># Prints the value assigned when the Foo object is initialised.</span>
+<span style="color: #006699; font-weight: bold">print</span>(<span style="color: #CC3300">&quot;Before override&quot;</span>)
+<span style="color: #006699; font-weight: bold">print</span>(foo<span style="color: #555555">.</span>bar)
+<span style="color: #006699; font-weight: bold">print</span>(foo<span style="color: #555555">.</span>bar)
 
-# Prints the value assigned when the Foo object is initialised.
-print(&quot;Before override&quot;)
-print(foo.bar)
-print(foo.bar)
+<span style="color: #0099FF; font-style: italic"># Override</span>
+Foo<span style="color: #555555">.</span>bar <span style="color: #555555">=</span> <span style="color: #336666">property</span>(<span style="color: #006699; font-weight: bold">lambda</span> <span style="color: #336666">self</span>: random<span style="color: #555555">.</span>random())
 
-# Override
-Foo.bar = property(lambda self: random.random())
-
-print(&quot;After override&quot;)
-print(foo.bar)
-print(foo.bar)
-</code></pre>
+<span style="color: #006699; font-weight: bold">print</span>(<span style="color: #CC3300">&quot;After override&quot;</span>)
+<span style="color: #006699; font-weight: bold">print</span>(foo<span style="color: #555555">.</span>bar)
+<span style="color: #006699; font-weight: bold">print</span>(foo<span style="color: #555555">.</span>bar)
+</pre></div>
 
 <p>This snippet when executed will output the following:</p>
-
-<pre><code>Before override
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>Before override
 0.0373028550804
 0.0373028550804
 After override
 0.603160033663
 0.501455108419
-</code></pre>
+</pre></div>
 
 <p>It can be seen that before introducing the override, the value of the <code>bar</code> attribute is set when the class is initialised and as expected, it does not change how many ever times the attribute is read. However, after the override, the attribute is assigned a new value every time it is read.</p>
 

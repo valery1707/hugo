@@ -37,14 +37,12 @@
 Python&rsquo;s with statement provides a very convenient way of dealing with the situation where you have to do a setup and teardown to make something happen. A very good example for this is the situation where you want to gain a handler to a file, read data from the file and the close the file handler.
 
 Without the with statement, one would write something along the lines of:
-
 file = open(&quot;/tmp/foo.txt&quot;)
 data = file.read()
 file.close()
 
 
 There are two annoying things here. First, you end up forgetting to close the file handler. The second is how to handle exceptions that may occur once the file handler has been obtained. One could write something like this to get around this:
-
 file = open(&quot;/tmp/foo.txt&quot;)
 try:
     data = file.read()
@@ -53,7 +51,6 @@ finally:
 
 
 While this works well, it is unnecessarily verbose. This is where with is useful. The good thing about with apart from the better syntax is that it is very good handling exceptions. The above code would look like this, when using with:
-
 with open(&quot;/tmp/foo.txt&quot;) as file:
    data = file.read()
 
@@ -66,14 +63,12 @@ with open(&quot;/tmp/foo.txt&quot;) as file:
 Python&rsquo;s with statement provides a very convenient way of dealing with the situation where you have to do a setup and teardown to make something happen. A very good example for this is the situation where you want to gain a handler to a file, read data from the file and the close the file handler.
 
 Without the with statement, one would write something along the lines of:
-
 file = open(&quot;/tmp/foo.txt&quot;)
 data = file.read()
 file.close()
 
 
 There are two annoying things here. First, you end up forgetting to close the file handler. The second is how to handle exceptions that may occur once the file handler has been obtained. One could write something like this to get around this:
-
 file = open(&quot;/tmp/foo.txt&quot;)
 try:
     data = file.read()
@@ -82,7 +77,6 @@ finally:
 
 
 While this works well, it is unnecessarily verbose. This is where with is useful. The good thing about with apart from the better syntax is that it is very good handling exceptions. The above code would look like this, when using with:
-
 with open(&quot;/tmp/foo.txt&quot;) as file:
    data = file.read()
 
@@ -151,26 +145,23 @@ with open(&quot;/tmp/foo.txt&quot;) as file:
 <p>Python&rsquo;s <code>with</code> statement provides a very convenient way of dealing with the situation where you have to do a setup and teardown to make something happen. A very good example for this is the situation where you want to gain a handler to a file, read data from the file and the close the file handler.</p>
 
 <p>Without the <code>with</code> statement, one would write something along the lines of:</p>
-
-<pre><code class="language-python">file = open(&quot;/tmp/foo.txt&quot;)
-data = file.read()
-file.close()
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #336666">file</span> <span style="color: #555555">=</span> <span style="color: #336666">open</span>(<span style="color: #CC3300">&quot;/tmp/foo.txt&quot;</span>)
+data <span style="color: #555555">=</span> <span style="color: #336666">file</span><span style="color: #555555">.</span>read()
+<span style="color: #336666">file</span><span style="color: #555555">.</span>close()
+</pre></div>
 
 <p>There are two annoying things here. First, you end up forgetting to close the file handler. The second is how to handle exceptions that may occur once the file handler has been obtained. One could write something like this to get around this:</p>
-
-<pre><code class="language-python">file = open(&quot;/tmp/foo.txt&quot;)
-try:
-    data = file.read()
-finally:
-    file.close()
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #336666">file</span> <span style="color: #555555">=</span> <span style="color: #336666">open</span>(<span style="color: #CC3300">&quot;/tmp/foo.txt&quot;</span>)
+<span style="color: #006699; font-weight: bold">try</span>:
+    data <span style="color: #555555">=</span> <span style="color: #336666">file</span><span style="color: #555555">.</span>read()
+<span style="color: #006699; font-weight: bold">finally</span>:
+    <span style="color: #336666">file</span><span style="color: #555555">.</span>close()
+</pre></div>
 
 <p>While this works well, it is unnecessarily verbose. This is where <code>with</code> is useful. The good thing about <code>with</code> apart from the better syntax is that it is very good handling exceptions. The above code would look like this, when using <code>with</code>:</p>
-
-<pre><code class="language-python">with open(&quot;/tmp/foo.txt&quot;) as file:
-   data = file.read()
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">with</span> <span style="color: #336666">open</span>(<span style="color: #CC3300">&quot;/tmp/foo.txt&quot;</span>) <span style="color: #006699; font-weight: bold">as</span> <span style="color: #336666">file</span>:
+   data <span style="color: #555555">=</span> <span style="color: #336666">file</span><span style="color: #555555">.</span>read()
+</pre></div>
 
 <h2 id="how-does-it-work:ac4d2c4b2f71b3b47d24799d64503bb3">How does it work?</h2>
 
@@ -179,35 +170,33 @@ finally:
 <p>After the statement that follows <code>with</code> is evaluated, the <code>__enter__()</code> function on the resulting object is called. The value returned by this function is assigned to the variable following <code>as</code>. After every statement in the block is evaluated, the <code>__exit__()</code> function is called.</p>
 
 <p>This can be demonstrated with the following example:</p>
-
-<pre><code class="language-python">#!/usr/bin/env python
-# with_example01.py
-
-
-class Sample:
-    def __enter__(self):
-        print &quot;In __enter__()&quot;
-        return &quot;Foo&quot;
-
-    def __exit__(self, type, value, trace):
-        print &quot;In __exit__()&quot;
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic">#!/usr/bin/env python</span>
+<span style="color: #0099FF; font-style: italic"># with_example01.py</span>
 
 
-def get_sample():
-    return Sample()
+<span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Sample</span>:
+    <span style="color: #006699; font-weight: bold">def</span> <span style="color: #CC00FF">__enter__</span>(<span style="color: #336666">self</span>):
+        <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;In __enter__()&quot;</span>
+        <span style="color: #006699; font-weight: bold">return</span> <span style="color: #CC3300">&quot;Foo&quot;</span>
+
+    <span style="color: #006699; font-weight: bold">def</span> <span style="color: #CC00FF">__exit__</span>(<span style="color: #336666">self</span>, <span style="color: #336666">type</span>, value, trace):
+        <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;In __exit__()&quot;</span>
 
 
-with get_sample() as sample:
-    print &quot;sample:&quot;, sample
-</code></pre>
+<span style="color: #006699; font-weight: bold">def</span> <span style="color: #CC00FF">get_sample</span>():
+    <span style="color: #006699; font-weight: bold">return</span> Sample()
+
+
+<span style="color: #006699; font-weight: bold">with</span> get_sample() <span style="color: #006699; font-weight: bold">as</span> sample:
+    <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;sample:&quot;</span>, sample
+</pre></div>
 
 <p>When executed, this will result in:</p>
-
-<pre><code class="language-bash">bash-3.2$ ./with_example01.py
-In __enter__()
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>bash-3.2$ ./with_example01.py
+In __enter__<span style="color: #555555">()</span>
 sample: Foo
-In __exit__()
-</code></pre>
+In __exit__<span style="color: #555555">()</span>
+</pre></div>
 
 <p>As you can see,</p>
 
@@ -219,43 +208,41 @@ In __exit__()
 </ol>
 
 <p>What makes <code>with</code> really powerful is the fact that it can handle exceptions. You would have noticed that the <code>__exit__()</code> function for <code>Sample</code> takes three arguments - <code>val</code>, <code>type</code> and <code>trace</code>. These are useful in exception handling. Let&rsquo;s see how this works by modifying the above example.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic">#!/usr/bin/env python</span>
+<span style="color: #0099FF; font-style: italic"># with_example02.py</span>
 
-<pre><code class="language-python">#!/usr/bin/env python
-# with_example02.py
 
+<span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Sample</span>:
+    <span style="color: #006699; font-weight: bold">def</span> <span style="color: #CC00FF">__enter__</span>(<span style="color: #336666">self</span>):
+        <span style="color: #006699; font-weight: bold">return</span> <span style="color: #336666">self</span>
 
-class Sample:
-    def __enter__(self):
-        return self
+    <span style="color: #006699; font-weight: bold">def</span> <span style="color: #CC00FF">__exit__</span>(<span style="color: #336666">self</span>, <span style="color: #336666">type</span>, value, trace):
+        <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;type:&quot;</span>, <span style="color: #336666">type</span>
+        <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;value:&quot;</span>, value
+        <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;trace:&quot;</span>, trace
 
-    def __exit__(self, type, value, trace):
-        print &quot;type:&quot;, type
-        print &quot;value:&quot;, value
-        print &quot;trace:&quot;, trace
+    <span style="color: #006699; font-weight: bold">def</span> <span style="color: #CC00FF">do_something</span>(<span style="color: #336666">self</span>):
+        bar <span style="color: #555555">=</span> <span style="color: #FF6600">1</span><span style="color: #555555">/</span><span style="color: #FF6600">0</span>
+        <span style="color: #006699; font-weight: bold">return</span> bar <span style="color: #555555">+</span> <span style="color: #FF6600">10</span>
 
-    def do_something(self):
-        bar = 1/0
-        return bar + 10
-
-with Sample() as sample:
-    sample.do_something()
-</code></pre>
+<span style="color: #006699; font-weight: bold">with</span> Sample() <span style="color: #006699; font-weight: bold">as</span> sample:
+    sample<span style="color: #555555">.</span>do_something()
+</pre></div>
 
 <p>Notice how in this example, instead of <code>get_sample()</code>, <code>with</code> takes <code>Sample()</code>. It does not matter, as long as the statement that follows <code>with</code> evaluates to an object that has an <code>__enter__()</code> and <code>__exit__()</code> functions. In this case, <code>Sample()</code>&rsquo;s <code>__enter__()</code> returns the newly created instance of <code>Sample</code> and that is what gets passed to <code>sample</code>.</p>
 
 <p>When executed:</p>
-
-<pre><code class="language-bash">bash-3.2$ ./with_example02.py
-type: &lt;type 'exceptions.ZeroDivisionError'&gt;
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>bash-3.2$ ./with_example02.py
+type: &lt;<span style="color: #336666">type</span> <span style="color: #CC3300">&#39;exceptions.ZeroDivisionError&#39;</span>&gt;
 value: integer division or modulo by zero
 trace: &lt;traceback object at 0x1004a8128&gt;
-Traceback (most recent call last):
-  File &quot;./with_example02.py&quot;, line 19, in &lt;module&gt;
-    sample.do_something()
-  File &quot;./with_example02.py&quot;, line 15, in do_something
-    bar = 1/0
+Traceback <span style="color: #555555">(</span>most recent call last<span style="color: #555555">)</span>:
+  File <span style="color: #CC3300">&quot;./with_example02.py&quot;</span>, line 19, in &lt;module&gt;
+    sample.do_something<span style="color: #555555">()</span>
+  File <span style="color: #CC3300">&quot;./with_example02.py&quot;</span>, line 15, in do_something
+    <span style="color: #003333">bar</span> <span style="color: #555555">=</span> 1/0
 ZeroDivisionError: integer division or modulo by zero
-</code></pre>
+</pre></div>
 
 <p>Essentially, if there are exceptions being thrown from anywhere inside the block, the <code>__exit__()</code> function for the object is called. As you can see, the type, value and the stack trace associated with the exception thrown is passed to this function. In this case, you can see that there was a <code>ZeroDivisionError</code> exception being thrown. People implementing libraries can write code that clean up resources, close files etc. in their <code>__exit__()</code> functions.</p>
 

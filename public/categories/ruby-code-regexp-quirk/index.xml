@@ -17,14 +17,13 @@
       <description>
 
 &lt;p&gt;Ruby&amp;rsquo;s regular expressions support &lt;a href=&#34;http://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/&#34;&gt;named capture groups&lt;/a&gt;, since 1.9. However, there is a weird behaviour while using named capture groups with the &lt;code&gt;Regexp#=~&lt;/code&gt; method. When named capture groups are used with &lt;code&gt;=~&lt;/code&gt;, the captured values are placed in local variables with the same name as the capture group. The following example demonstrates this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#!/usr/bin/env ruby&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;#!/usr/bin/env ruby
-
-month = &amp;quot;January&amp;quot;
-test_string = &amp;quot;Today&#39;s date is: 9/28/2013.&amp;quot;
-/(?&amp;lt;month&amp;gt;\d{1,2})\/(?&amp;lt;day&amp;gt;\d{1,2})\/(?&amp;lt;year&amp;gt;\d{4})/ =~ test_string
-puts month.inspect
-&lt;/code&gt;&lt;/pre&gt;
+month &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;January&amp;quot;&lt;/span&gt;
+test_string &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Today&amp;#39;s date is: 9/28/2013.&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #33AAAA&#34;&gt;/(?&amp;lt;month&amp;gt;\d{1,2})\/(?&amp;lt;day&amp;gt;\d{1,2})\/(?&amp;lt;year&amp;gt;\d{4})/&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=~&lt;/span&gt; test_string
+&lt;span style=&#34;color: #336666&#34;&gt;puts&lt;/span&gt; month&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;inspect
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This when executed will print &lt;code&gt;9&lt;/code&gt;.&lt;/p&gt;
 
@@ -37,27 +36,25 @@ puts month.inspect
 &lt;p&gt;This local variable assignment does not happen if the regular expression is on the right-hand side of the expression or the regular expression contains a variable interpolation.&lt;/p&gt;
 
 &lt;h3 id=&#34;regexp-on-right-hand-side:e98d9157a9ede2fb8b5545f06d48b7a8&#34;&gt;Regexp on right-hand side&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#!/usr/bin/env ruby&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;#!/usr/bin/env ruby
-
-month = &amp;quot;January&amp;quot;
-test_string = &amp;quot;Today&#39;s date is: 9/28/2013.&amp;quot;
-test_string =~ /(?&amp;lt;month&amp;gt;\d{1,2})\/(?&amp;lt;day&amp;gt;\d{1,2})\/(?&amp;lt;year&amp;gt;\d{4})/
-puts month.inspect
-&lt;/code&gt;&lt;/pre&gt;
+month &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;January&amp;quot;&lt;/span&gt;
+test_string &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Today&amp;#39;s date is: 9/28/2013.&amp;quot;&lt;/span&gt;
+test_string &lt;span style=&#34;color: #555555&#34;&gt;=~&lt;/span&gt; &lt;span style=&#34;color: #33AAAA&#34;&gt;/(?&amp;lt;month&amp;gt;\d{1,2})\/(?&amp;lt;day&amp;gt;\d{1,2})\/(?&amp;lt;year&amp;gt;\d{4})/&lt;/span&gt;
+&lt;span style=&#34;color: #336666&#34;&gt;puts&lt;/span&gt; month&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;inspect
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This will print &lt;code&gt;January&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h3 id=&#34;regexp-with-interpolation:e98d9157a9ede2fb8b5545f06d48b7a8&#34;&gt;Regexp with interpolation&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#!/usr/bin/env ruby&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;#!/usr/bin/env ruby
-
-month = &amp;quot;January&amp;quot;
-DAY = &amp;quot;day&amp;quot;
-test_string = &amp;quot;Today&#39;s date is: 9/28/2013.&amp;quot;
-/(?&amp;lt;month&amp;gt;\d{1,2})\/(?&amp;lt;#{DAY}&amp;gt;\d{1,2})\/(?&amp;lt;year&amp;gt;\d{4})/ =~ test_string
-puts month.inspect
-&lt;/code&gt;&lt;/pre&gt;
+month &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;January&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #336600&#34;&gt;DAY&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;day&amp;quot;&lt;/span&gt;
+test_string &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Today&amp;#39;s date is: 9/28/2013.&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #33AAAA&#34;&gt;/(?&amp;lt;month&amp;gt;\d{1,2})\/(?&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #AA0000&#34;&gt;#{&lt;/span&gt;&lt;span style=&#34;color: #336600&#34;&gt;DAY&lt;/span&gt;&lt;span style=&#34;color: #AA0000&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color: #33AAAA&#34;&gt;&amp;gt;\d{1,2})\/(?&amp;lt;year&amp;gt;\d{4})/&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=~&lt;/span&gt; test_string
+&lt;span style=&#34;color: #336666&#34;&gt;puts&lt;/span&gt; month&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;inspect
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This will print &lt;code&gt;January&lt;/code&gt;.&lt;/p&gt;
 

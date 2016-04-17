@@ -55,28 +55,27 @@ file to the page.&lt;/p&gt;
 &lt;code&gt;http://webcache.googleusercontent.com/search?q=cache:&lt;/code&gt; to the beginning
 of the current URL and ask chrome to load the new URL in the same
 tab. The interesting bit of the code is below:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;(function () {
-  var navigateToCachedPage = function (tab) {
-    var gCacheUrlPrefix = &amp;quot;http://webcache.googleusercontent.com/search?q=cache:&amp;quot;;
-    var currentUrl = tab.url;
-    var cacheUrl = gCacheUrlPrefix + currentUrl;
-    chrome.tabs.update(tab.id, {url: cacheUrl});
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;(&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt; () {
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;var&lt;/span&gt; navigateToCachedPage &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt; (tab) {
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;var&lt;/span&gt; gCacheUrlPrefix &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://webcache.googleusercontent.com/search?q=cache:&amp;quot;&lt;/span&gt;;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;var&lt;/span&gt; currentUrl &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; tab.url;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;var&lt;/span&gt; cacheUrl &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; gCacheUrlPrefix &lt;span style=&#34;color: #555555&#34;&gt;+&lt;/span&gt; currentUrl;
+    chrome.tabs.update(tab.id, {url&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; cacheUrl});
   };
 
-  chrome.browserAction.onClicked.addListener(function(tab) {
+  chrome.browserAction.onClicked.addListener(&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt;(tab) {
     navigateToCachedPage (tab);
   });
 
   chrome.contextMenus.create({
-    title: &amp;quot;View Google&#39;s cache&amp;quot;,
-    contexts:[&amp;quot;all&amp;quot;],
-    onclick: function (clickData, tab) {
+    title&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;View Google&amp;#39;s cache&amp;quot;&lt;/span&gt;,
+    contexts&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt;[&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;all&amp;quot;&lt;/span&gt;],
+    onclick&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt; (clickData, tab) {
       navigateToCachedPage (tab);
     }
   });
 }) ();
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;I used this
 &lt;a href=&#34;http://www.iconfinder.com/icondetails/7065/128/cache_icon&#34;&gt;beautiful icon&lt;/a&gt;

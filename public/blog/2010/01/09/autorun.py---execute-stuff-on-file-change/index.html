@@ -103,59 +103,56 @@
 <p><code>~/src/sdq/ocr$ ./autorun.py &quot;python Test*.py&quot;</code></p>
 
 <p>That would start <code>autorun.py</code> and every time I modify a file in the present directory the command  <code>python Test*.py</code> is executed. In my case, I am using the unittest framework that comes with Python. So everytime, a file is updates, it runs all my unit tests, as seen below:</p>
-
-<pre><code class="language-bash">sadiquea@sadiquea-laptop:~/src/sdq/ocr$ ./autorun.py &quot;python Test*.py&quot;
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>sadiquea@sadiquea-laptop:~/src/sdq/ocr$ ./autorun.py <span style="color: #CC3300">&quot;python Test*.py&quot;</span>
 Autorunner in action
 .............
 
 ----------------------------------------------------------------------
 
-Ran 13 tests in 0.763s
+Ran <span style="color: #FF6600">13</span> tests in 0.763s
 
 OK
-</code></pre>
+</pre></div>
 
 <p>If I were working with Ruby and wanted to run all my unit tests when I modify the files, I could start the tool like this: <code>./autorun.py &quot;rake spec&quot;</code></p>
 
 <p>I would really like to add the ability to exclude some files/subdirectories from being watched for changes.</p>
 
 <p>Here is the code snippet that does the trick:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic">#!/usr/bin/env python</span>
 
-<pre><code class="language-python">#!/usr/bin/env python
+<span style="color: #006699; font-weight: bold">import</span> <span style="color: #00CCFF; font-weight: bold">sys</span>
+<span style="color: #006699; font-weight: bold">import</span> <span style="color: #00CCFF; font-weight: bold">os</span>
+<span style="color: #006699; font-weight: bold">import</span> <span style="color: #00CCFF; font-weight: bold">pyinotify</span>
 
-import sys
-import os
-import pyinotify
+<span style="color: #006699; font-weight: bold">if</span> <span style="color: #336666">len</span>(sys<span style="color: #555555">.</span>argv)<span style="color: #555555">==</span><span style="color: #FF6600">1</span>:
+    <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;Please pass a command to excute as a parameter&quot;</span>
+    <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;For example autorun.py &#39;ruby foo.rb&#39;&quot;</span>
+    sys<span style="color: #555555">.</span>exit()
 
-if len(sys.argv)==1:
-    print &quot;Please pass a command to excute as a parameter&quot;
-    print &quot;For example autorun.py 'ruby foo.rb'&quot;
-    sys.exit()
+commandToRun <span style="color: #555555">=</span> sys<span style="color: #555555">.</span>argv[<span style="color: #FF6600">1</span>]
 
-commandToRun = sys.argv[1]
+watchManager <span style="color: #555555">=</span> pyinotify<span style="color: #555555">.</span>WatchManager()
+mask <span style="color: #555555">=</span> pyinotify<span style="color: #555555">.</span>IN_MODIFY
 
-watchManager = pyinotify.WatchManager()
-mask = pyinotify.IN_MODIFY
+<span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">ActionProcesser</span>(pyinotify<span style="color: #555555">.</span>ProcessEvent):
+    <span style="color: #006699; font-weight: bold">def</span> <span style="color: #CC00FF">process_IN_MODIFY</span>(<span style="color: #336666">self</span>, event):
+        <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;Autorunner in action&quot;</span>
+        os<span style="color: #555555">.</span>system(commandToRun)
 
-class ActionProcesser(pyinotify.ProcessEvent):
-    def process_IN_MODIFY(self, event):
-        print &quot;Autorunner in action&quot;
-        os.system(commandToRun)
+notifier <span style="color: #555555">=</span> pyinotify<span style="color: #555555">.</span>Notifier(watchManager, ActionProcesser())
 
-notifier = pyinotify.Notifier(watchManager, ActionProcesser())
+wdd <span style="color: #555555">=</span> watchManager<span style="color: #555555">.</span>add_watch(os<span style="color: #555555">.</span>getcwd(), mask, rec<span style="color: #555555">=</span><span style="color: #336666">True</span>)
 
-wdd = watchManager.add_watch(os.getcwd(), mask, rec=True)
-
-while True:
-    try:
-        notifier.process_events()
-        if notifier.check_events():
-            notifier.read_events()
-    except KeyboardInterrupt:
-        notifier.stop()
-        break
-
-</code></pre>
+<span style="color: #006699; font-weight: bold">while</span> <span style="color: #336666">True</span>:
+    <span style="color: #006699; font-weight: bold">try</span>:
+        notifier<span style="color: #555555">.</span>process_events()
+        <span style="color: #006699; font-weight: bold">if</span> notifier<span style="color: #555555">.</span>check_events():
+            notifier<span style="color: #555555">.</span>read_events()
+    <span style="color: #006699; font-weight: bold">except</span> <span style="color: #CC0000; font-weight: bold">KeyboardInterrupt</span>:
+        notifier<span style="color: #555555">.</span>stop()
+        <span style="color: #006699; font-weight: bold">break</span>
+</pre></div>
 
           </div>
         </div>

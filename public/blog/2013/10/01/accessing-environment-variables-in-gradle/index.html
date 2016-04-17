@@ -99,8 +99,7 @@
 <p>While attempting to build a signed version of my app, I found a <a href="http://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle">Gradle recipe</a> for signing Android applications. However, it used hard coded parameters including passwords. This lead me to figuring out how to use environment variables in Gradle scripts.</p>
 
 <p>Since Gradle scripts are Groovy files, Groovy&rsquo;s <code>System.getEnv</code> method will do the trick. The recipe modified to use this and thereby eliminate hard coded parameters will look like this:</p>
-
-<pre><code>signingConfigs {
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>signingConfigs {
 	release {
 		storeFile file(System.getenv(&quot;KEYSTORE&quot;))
 		storePassword System.getenv(&quot;KEYSTORE_PASSWORD&quot;)
@@ -114,7 +113,7 @@ buildTypes {
 		signingConfig signingConfigs.release
 	}
 }
-</code></pre>
+</pre></div>
 <div class="footnotes">
 
 <hr />

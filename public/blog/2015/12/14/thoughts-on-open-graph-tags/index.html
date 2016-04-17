@@ -101,12 +101,11 @@
 <p>The Open Graph protocol was designed by Facebook to help content creators generate a richer preview of links to their content when they get posted in to Facebook. It was originally proposed as a simple mark up that can be adopted in platforms beyond Facebook. The Open Graph Protocol Design Decisions presentation <sup class="footnote-ref" id="fnref:e367f31996624c102c873f5b8b6f4460:1"><a rel="footnote" href="#fn:e367f31996624c102c873f5b8b6f4460:1">1</a></sup> does a very good job of enumerating the motivation and design decisions made for Open Graph. I have lately been reading and experimenting with these tags and I notice a fair bit of differences when it comes to how these tags are used by different platforms.</p>
 
 <p>This is by no means an exhaustive list–these are applications I use frequently use and hence encounter the usage of Open Graph tags in. I am deliberately scoping this discussion to a sub set of tags including the following which are the most common tags I have encountered:</p>
-
-<pre><code>og:title
-og:description
-og:url
-og:image
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>og<span style="color: #555555">:</span>title
+og<span style="color: #555555">:</span>description
+og<span style="color: #555555">:</span>url
+og<span style="color: #555555">:</span>image
+</pre></div>
 
 <h2 id="facebook:e367f31996624c102c873f5b8b6f4460">Facebook</h2>
 
@@ -135,11 +134,10 @@ og:image
 <p>As we saw in the example of Twitter, linking to the creator of content is not something that can be solved purely with Open Graph tags. Open Graph does specify an <code>author</code> type <sup class="footnote-ref" id="fnref:e367f31996624c102c873f5b8b6f4460:4"><a rel="footnote" href="#fn:e367f31996624c102c873f5b8b6f4460:4">4</a></sup>. But in a world where links get shared to multiple platforms, the meaning of this tag is specific to the platform–it could be a Twitter id, a Facebook profile link, a Slack user id, etc. This does force the use of platform specific tags like <code>twitter:site</code>.</p>
 
 <p>It would be interesting to see if Open Graph would one day support scoped author tags that can specify what <code>author:username</code> means for different platforms like this:</p>
-
-<pre><code class="language-html">&lt;meta property=&quot;profile:username&quot; scope=“twitter.com“ content=&quot;@sdqali&quot; /&gt;
-&lt;meta property=&quot;profile:username&quot; scope=“facebook.com“ content=&quot;http://facebook.com/some-profile-id&quot; /&gt;
-&lt;meta property=&quot;profile:username&quot; scope=“slack.com“ content=&quot;@some-slack-id&quot; /&gt;
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>&lt;<span style="color: #330099; font-weight: bold">meta</span> <span style="color: #330099">property</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;profile:username&quot;</span> <span style="color: #330099">scope</span><span style="color: #555555">=</span><span style="color: #CC3300">“twitter.com“</span> <span style="color: #330099">content</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;@sdqali&quot;</span> /&gt;
+&lt;<span style="color: #330099; font-weight: bold">meta</span> <span style="color: #330099">property</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;profile:username&quot;</span> <span style="color: #330099">scope</span><span style="color: #555555">=</span><span style="color: #CC3300">“facebook.com“</span> <span style="color: #330099">content</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;http://facebook.com/some-profile-id&quot;</span> /&gt;
+&lt;<span style="color: #330099; font-weight: bold">meta</span> <span style="color: #330099">property</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;profile:username&quot;</span> <span style="color: #330099">scope</span><span style="color: #555555">=</span><span style="color: #CC3300">“slack.com“</span> <span style="color: #330099">content</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;@some-slack-id&quot;</span> /&gt;
+</pre></div>
 
 <p>In conclusion, while Open Graph tags are used by a lot of platforms, there are specific pieces of information for which platform specific tags and annotations are needed.</p>
 <div class="footnotes">

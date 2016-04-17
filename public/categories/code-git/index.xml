@@ -27,16 +27,15 @@ Use the &lt;code&gt;core.commentchar&lt;/code&gt; configuration to change the ch
 &lt;p&gt;We use the format &lt;code&gt;#123 Foo bar&lt;/code&gt; for the message where &lt;code&gt;123&lt;/code&gt; is the issue number because it lets &lt;a href=&#34;http://www.thoughtworks-studios.com/mingle&#34;&gt;Mingle&lt;/a&gt;, our project management tool track the commits made against each card.&lt;/p&gt;
 
 &lt;p&gt;Things work fine, except for me. I almost never use &lt;code&gt;git ci -m&lt;/code&gt;. I like Git to open up an editor (almost always Emacs), and type my comment message out. But if I type the commit message according to the convention, because the line starts with a &lt;code&gt;#&lt;/code&gt;, Git would treat it as a comment and the commit will be aborted.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;#123 Foobar
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;#123 Foobar
 # Please enter the commit message for your changes. Lines starting
-# with &#39;#&#39; will be ignored, and an empty message aborts the commit.
+# with &amp;#39;#&amp;#39; will be ignored, and an empty message aborts the commit.
 # On branch source
 #
 # Changes to be committed:
 #   (use &amp;quot;git reset HEAD &amp;lt;file&amp;gt;...&amp;quot; to unstage)
 ...
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;I have been getting around this issue by pre-pending a space before the message. So I was really happy to see that Git &lt;code&gt;1.8.2&lt;/code&gt; ships with a new configuration &lt;code&gt;core.commentchar&lt;/code&gt;. This let&amp;rsquo;s you configure the characters that marks a comment in the commit message. From the &lt;a href=&#34;http://git-scm.com/docs/git-config&#34;&gt;doc&lt;/a&gt;:
 &amp;gt; core.commentchar
@@ -44,16 +43,15 @@ Use the &lt;code&gt;core.commentchar&lt;/code&gt; configuration to change the ch
 &amp;gt;    Commands such as commit and tag that lets you edit messages consider a line that begins with this character commented, and removes them after the editor returns (default #).&lt;/p&gt;
 
 &lt;p&gt;So with this set to &lt;code&gt;$&lt;/code&gt;, I can just type in my commit message.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;#123 Foobar
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;#123 Foobar
 $ Please enter the commit message for your changes. Lines starting
-$ with &#39;$&#39; will be ignored, and an empty message aborts the commit.
+$ with &amp;#39;$&amp;#39; will be ignored, and an empty message aborts the commit.
 $ On branch source
 $
 $ Changes to be committed:
 $   (use &amp;quot;git reset HEAD &amp;lt;file&amp;gt;...&amp;quot; to unstage)
 ...
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This configuration is available only in versions &lt;code&gt;1.8.2&lt;/code&gt; and later.&lt;/p&gt;
 </description>

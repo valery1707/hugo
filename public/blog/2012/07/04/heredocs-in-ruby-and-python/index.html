@@ -37,7 +37,6 @@
 Python
 
 Consider the following snippet:
-
 # test.py
 
 print &quot;some text in single line&quot;
@@ -52,7 +51,6 @@ print &quot;and then another single line&quot;
 
 
 When run, this would result in this:
-
 bash-3.2$ python test.py
 some text in single line
 
@@ -74,7 +72,6 @@ Notice how there is a preceding and trailing linebreak around the string printed
 Python
 
 Consider the following snippet:
-
 # test.py
 
 print &quot;some text in single line&quot;
@@ -89,7 +86,6 @@ print &quot;and then another single line&quot;
 
 
 When run, this would result in this:
-
 bash-3.2$ python test.py
 some text in single line
 
@@ -167,23 +163,21 @@ Notice how there is a preceding and trailing linebreak around the string printed
 <h2 id="python:1862f2fee684b3ca532b180bcd0276b6">Python</h2>
 
 <p>Consider the following snippet:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic"># test.py</span>
 
-<pre><code class="language-python"># test.py
+<span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;some text in single line&quot;</span>
 
-print &quot;some text in single line&quot;
-
-print &quot;&quot;&quot;
-As opposed to
-some text
-written as
-heredoc
-&quot;&quot;&quot;
-print &quot;and then another single line&quot;
-</code></pre>
+<span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;&quot;&quot;</span>
+<span style="color: #CC3300">As opposed to</span>
+<span style="color: #CC3300">some text</span>
+<span style="color: #CC3300">written as</span>
+<span style="color: #CC3300">heredoc</span>
+<span style="color: #CC3300">&quot;&quot;&quot;</span>
+<span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;and then another single line&quot;</span>
+</pre></div>
 
 <p>When run, this would result in this:</p>
-
-<pre><code class="language-bash">bash-3.2$ python test.py
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>bash-3.2$ python test.py
 some text in single line
 
 As opposed to
@@ -191,65 +185,61 @@ some text
 written as
 heredoc
 
-and then another single line
-</code></pre>
+and <span style="color: #006699; font-weight: bold">then</span> another single line
+</pre></div>
 
 <p>Notice how there is a preceding and trailing linebreak around the string printed using heredoc.</p>
 
 <p>I spent a lot of time trying to figure out how and why this was happening. Finally, help came from <code>@dibb</code> on <code>#python</code>. Looks like I was doing it wrong. In Python, the useful part of the heredoc starts immediately after the <code>&quot;&quot;&quot;</code>. So if you don&rsquo;t want those excess linebreaks, you should write something like this:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic"># test2.py</span>
 
-<pre><code class="language-python"># test2.py
+<span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;some text in single line&quot;</span>
 
-print &quot;some text in single line&quot;
+<span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;&quot;&quot;As opposed to</span>
+<span style="color: #CC3300">some text</span>
+<span style="color: #CC3300">written as</span>
+<span style="color: #CC3300">heredoc&quot;&quot;&quot;</span>
 
-print &quot;&quot;&quot;As opposed to
-some text
-written as
-heredoc&quot;&quot;&quot;
-
-print &quot;and then another single line&quot;
-</code></pre>
+<span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;and then another single line&quot;</span>
+</pre></div>
 
 <p>When run, this would print the text without the extra line breaks:</p>
-
-<pre><code class="language-bash">bash-3.2$ python test2.py
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>bash-3.2$ python test2.py
 some text in single line
 As opposed to
 some text
 written as
 heredoc
-and then another single line
-</code></pre>
+and <span style="color: #006699; font-weight: bold">then</span> another single line
+</pre></div>
 
 <p>If you don&rsquo;t want to write the string just after the <code>&quot;&quot;&quot;</code>, you could use a <code>\</code> to remove the linebreaks, like this:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic"># test3.py</span>
 
-<pre><code class="language-python"># test3.py
-
-print &quot;&quot;&quot;\
-As opposed to
-some text
-written as
-heredoc\
-&quot;&quot;&quot;
-</code></pre>
+<span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;&quot;&quot;</span><span style="color: #CC3300; font-weight: bold">\</span>
+<span style="color: #CC3300">As opposed to</span>
+<span style="color: #CC3300">some text</span>
+<span style="color: #CC3300">written as</span>
+<span style="color: #CC3300">heredoc</span><span style="color: #CC3300; font-weight: bold">\</span>
+<span style="color: #CC3300">&quot;&quot;&quot;</span>
+</pre></div>
 
 <h2 id="ruby:1862f2fee684b3ca532b180bcd0276b6">Ruby</h2>
 
 <p>I come from the Ruby world, where the heredocs behave in a slightly different way. The equivalent code in Ruby would look like this:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic"># test.rb</span>
 
-<pre><code class="language-ruby"># test.rb
+<span style="color: #336666">puts</span> <span style="color: #CC3300">&quot;some text in single line&quot;</span>
 
-puts &quot;some text in single line&quot;
+<span style="color: #336666">puts</span> <span style="color: #555555">&lt;&lt;-</span><span style="color: #336600">STR</span>
+<span style="color: #CC3300">As opposed to</span>
+<span style="color: #CC3300">some text</span>
+<span style="color: #CC3300">written as</span>
+<span style="color: #CC3300">heredoc</span>
+<span style="color: #336600">STR</span>
 
-puts &lt;&lt;-STR
-As opposed to
-some text
-written as
-heredoc
-STR
-
-puts &quot;and then another single line&quot;
-</code></pre>
+<span style="color: #336666">puts</span> <span style="color: #CC3300">&quot;and then another single line&quot;</span>
+</pre></div>
 
 <p>Notice how the actual content of the heredoc begins only on the line after <code>&lt;&lt;-STR</code></p>
 

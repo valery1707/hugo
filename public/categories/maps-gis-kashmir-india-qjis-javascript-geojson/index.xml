@@ -68,9 +68,8 @@ fs.writeFileSync(&amp;quot;full_india.geo.json&amp;quot;, JSON.stringify(india))
 &lt;/ol&gt;
 
 &lt;p&gt;Now the GeoJSON file can be transformed back in to a shape file.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;ogr2ogr -f &#39;ESRI Shapefile&#39; full_india.shp full_india.geo.json
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;ogr2ogr -f &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;ESRI Shapefile&amp;#39;&lt;/span&gt; full_india.shp full_india.geo.json
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Back to Kashmir and laws. Will this map save one from trouble? I am not sure, but this is an improvement on the omission of territories.&lt;/p&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
