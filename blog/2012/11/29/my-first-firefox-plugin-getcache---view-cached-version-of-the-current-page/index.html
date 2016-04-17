@@ -145,18 +145,17 @@ well documented.</p>
 <p>The bulk of the code is JavaScript. The API is easy to use. The
 following snippet adds a widget to the Addon toolbar at the bottom of
 the Firefox window:</p>
-
-<pre><code class="language-javascript">    var createWidget = function () {
-      new Widget({
-        id: &quot;sdqali-getcache&quot;,
-        label: &quot;Get Google's cached version of the current page..&quot;,
-        contentURL: self.data.url (&quot;images/icon.png&quot;),
-        onClick: function(event) {
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>    <span style="color: #006699; font-weight: bold">var</span> createWidget <span style="color: #555555">=</span> <span style="color: #006699; font-weight: bold">function</span> () {
+      <span style="color: #006699; font-weight: bold">new</span> Widget({
+        id<span style="color: #555555">:</span> <span style="color: #CC3300">&quot;sdqali-getcache&quot;</span>,
+        label<span style="color: #555555">:</span> <span style="color: #CC3300">&quot;Get Google&#39;s cached version of the current page..&quot;</span>,
+        contentURL<span style="color: #555555">:</span> self.data.url (<span style="color: #CC3300">&quot;images/icon.png&quot;</span>),
+        onClick<span style="color: #555555">:</span> <span style="color: #006699; font-weight: bold">function</span>(event) {
           loadCachedPage ();
         }
       });
     };
-</code></pre>
+</pre></div>
 
 <h2 id="adding-context-menu-entries:eb75f3cd376b68e9a96e1ddceafda970">Adding context menu entries</h2>
 

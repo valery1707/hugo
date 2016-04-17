@@ -95,26 +95,24 @@
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>I was reading this very interesting <a href="http://forums.xkcd.com/viewtopic.php?f=7&amp;t=11765">thread</a> on the xkcd forum when I noticed a post from a user with the following signature in binary:</p>
-
-<pre><code class="language-bash">01001101 01100001 01100100 01100101 00100000 01011001 01101111 01110101 00100000 01001100 01101111 01101111 01101011 00100001&quot;
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #FF6600">01001101</span> <span style="color: #FF6600">01100001</span> <span style="color: #FF6600">01100100</span> <span style="color: #FF6600">01100101</span> <span style="color: #FF6600">00100000</span> <span style="color: #FF6600">01011001</span> <span style="color: #FF6600">01101111</span> <span style="color: #FF6600">01110101</span> <span style="color: #FF6600">00100000</span> <span style="color: #FF6600">01001100</span> <span style="color: #FF6600">01101111</span> <span style="color: #FF6600">01101111</span> <span style="color: #FF6600">01101011</span> 00100001<span style="color: #CC3300">&quot;</span>
+</pre></div>
 
 <p>At first, that did not particularly entice me, mostly because the topic being discussed was really interesting, but it did come back to my focus when I saw that another user had quoted the signature, along with the comment <code>Yeah, you know it. LOL :-)</code>. I had to find what the original message was.</p>
 
 <p>So couple of minutes of Ruby later, I figured it out. His message was simple - <code>Made You Look!</code>. Yeah, he sure did!</p>
 
 <p>Here is the rather simple Ruby code snippet that did the trick:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>code <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;01001101 01100001 01100100 01100101 00100000 01011001 01101111 01110101 00100000 01001100 01101111 01101111 01101011 00100001&quot;</span>
 
-<pre><code class="language-ruby">code = &quot;01001101 01100001 01100100 01100101 00100000 01011001 01101111 01110101 00100000 01001100 01101111 01101111 01101011 00100001&quot;
+parts <span style="color: #555555">=</span> code<span style="color: #555555">.</span>split <span style="color: #CC3300">&quot; &quot;</span>
 
-parts = code.split &quot; &quot;
+text <span style="color: #555555">=</span> parts<span style="color: #555555">.</span>map <span style="color: #006699; font-weight: bold">do</span> <span style="color: #555555">|</span><span style="color: #336666">p</span><span style="color: #555555">|</span>
+  <span style="color: #336666">p</span><span style="color: #555555">.</span>to_i(<span style="color: #FF6600">2</span>)<span style="color: #555555">.</span>chr
+<span style="color: #006699; font-weight: bold">end</span><span style="color: #555555">.</span>to_s
 
-text = parts.map do |p|
-  p.to_i(2).chr
-end.to_s
-
-puts text
-</code></pre>
+<span style="color: #336666">puts</span> text
+</pre></div>
 
           </div>
         </div>

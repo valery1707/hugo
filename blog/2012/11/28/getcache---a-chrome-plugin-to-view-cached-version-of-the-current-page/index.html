@@ -179,28 +179,27 @@ file to the page.</p>
 <code>http://webcache.googleusercontent.com/search?q=cache:</code> to the beginning
 of the current URL and ask chrome to load the new URL in the same
 tab. The interesting bit of the code is below:</p>
-
-<pre><code class="language-javascript">(function () {
-  var navigateToCachedPage = function (tab) {
-    var gCacheUrlPrefix = &quot;http://webcache.googleusercontent.com/search?q=cache:&quot;;
-    var currentUrl = tab.url;
-    var cacheUrl = gCacheUrlPrefix + currentUrl;
-    chrome.tabs.update(tab.id, {url: cacheUrl});
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>(<span style="color: #006699; font-weight: bold">function</span> () {
+  <span style="color: #006699; font-weight: bold">var</span> navigateToCachedPage <span style="color: #555555">=</span> <span style="color: #006699; font-weight: bold">function</span> (tab) {
+    <span style="color: #006699; font-weight: bold">var</span> gCacheUrlPrefix <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;http://webcache.googleusercontent.com/search?q=cache:&quot;</span>;
+    <span style="color: #006699; font-weight: bold">var</span> currentUrl <span style="color: #555555">=</span> tab.url;
+    <span style="color: #006699; font-weight: bold">var</span> cacheUrl <span style="color: #555555">=</span> gCacheUrlPrefix <span style="color: #555555">+</span> currentUrl;
+    chrome.tabs.update(tab.id, {url<span style="color: #555555">:</span> cacheUrl});
   };
 
-  chrome.browserAction.onClicked.addListener(function(tab) {
+  chrome.browserAction.onClicked.addListener(<span style="color: #006699; font-weight: bold">function</span>(tab) {
     navigateToCachedPage (tab);
   });
 
   chrome.contextMenus.create({
-    title: &quot;View Google's cache&quot;,
-    contexts:[&quot;all&quot;],
-    onclick: function (clickData, tab) {
+    title<span style="color: #555555">:</span> <span style="color: #CC3300">&quot;View Google&#39;s cache&quot;</span>,
+    contexts<span style="color: #555555">:</span>[<span style="color: #CC3300">&quot;all&quot;</span>],
+    onclick<span style="color: #555555">:</span> <span style="color: #006699; font-weight: bold">function</span> (clickData, tab) {
       navigateToCachedPage (tab);
     }
   });
 }) ();
-</code></pre>
+</pre></div>
 
 <p>I used this
 <a href="http://www.iconfinder.com/icondetails/7065/128/cache_icon">beautiful icon</a>

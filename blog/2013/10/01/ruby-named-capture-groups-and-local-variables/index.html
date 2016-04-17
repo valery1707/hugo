@@ -97,14 +97,13 @@
             
 
 <p>Ruby&rsquo;s regular expressions support <a href="/blog/2013/09/29/named-capture-groups-in-regular-expressions/">named capture groups</a>, since 1.9. However, there is a weird behaviour while using named capture groups with the <code>Regexp#=~</code> method. When named capture groups are used with <code>=~</code>, the captured values are placed in local variables with the same name as the capture group. The following example demonstrates this:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic">#!/usr/bin/env ruby</span>
 
-<pre><code class="language-ruby">#!/usr/bin/env ruby
-
-month = &quot;January&quot;
-test_string = &quot;Today's date is: 9/28/2013.&quot;
-/(?&lt;month&gt;\d{1,2})\/(?&lt;day&gt;\d{1,2})\/(?&lt;year&gt;\d{4})/ =~ test_string
-puts month.inspect
-</code></pre>
+month <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;January&quot;</span>
+test_string <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;Today&#39;s date is: 9/28/2013.&quot;</span>
+<span style="color: #33AAAA">/(?&lt;month&gt;\d{1,2})\/(?&lt;day&gt;\d{1,2})\/(?&lt;year&gt;\d{4})/</span> <span style="color: #555555">=~</span> test_string
+<span style="color: #336666">puts</span> month<span style="color: #555555">.</span>inspect
+</pre></div>
 
 <p>This when executed will print <code>9</code>.</p>
 
@@ -117,27 +116,25 @@ puts month.inspect
 <p>This local variable assignment does not happen if the regular expression is on the right-hand side of the expression or the regular expression contains a variable interpolation.</p>
 
 <h3 id="regexp-on-right-hand-side:e98d9157a9ede2fb8b5545f06d48b7a8">Regexp on right-hand side</h3>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic">#!/usr/bin/env ruby</span>
 
-<pre><code class="language-ruby">#!/usr/bin/env ruby
-
-month = &quot;January&quot;
-test_string = &quot;Today's date is: 9/28/2013.&quot;
-test_string =~ /(?&lt;month&gt;\d{1,2})\/(?&lt;day&gt;\d{1,2})\/(?&lt;year&gt;\d{4})/
-puts month.inspect
-</code></pre>
+month <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;January&quot;</span>
+test_string <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;Today&#39;s date is: 9/28/2013.&quot;</span>
+test_string <span style="color: #555555">=~</span> <span style="color: #33AAAA">/(?&lt;month&gt;\d{1,2})\/(?&lt;day&gt;\d{1,2})\/(?&lt;year&gt;\d{4})/</span>
+<span style="color: #336666">puts</span> month<span style="color: #555555">.</span>inspect
+</pre></div>
 
 <p>This will print <code>January</code>.</p>
 
 <h3 id="regexp-with-interpolation:e98d9157a9ede2fb8b5545f06d48b7a8">Regexp with interpolation</h3>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic">#!/usr/bin/env ruby</span>
 
-<pre><code class="language-ruby">#!/usr/bin/env ruby
-
-month = &quot;January&quot;
-DAY = &quot;day&quot;
-test_string = &quot;Today's date is: 9/28/2013.&quot;
-/(?&lt;month&gt;\d{1,2})\/(?&lt;#{DAY}&gt;\d{1,2})\/(?&lt;year&gt;\d{4})/ =~ test_string
-puts month.inspect
-</code></pre>
+month <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;January&quot;</span>
+<span style="color: #336600">DAY</span> <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;day&quot;</span>
+test_string <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;Today&#39;s date is: 9/28/2013.&quot;</span>
+<span style="color: #33AAAA">/(?&lt;month&gt;\d{1,2})\/(?&lt;</span><span style="color: #AA0000">#{</span><span style="color: #336600">DAY</span><span style="color: #AA0000">}</span><span style="color: #33AAAA">&gt;\d{1,2})\/(?&lt;year&gt;\d{4})/</span> <span style="color: #555555">=~</span> test_string
+<span style="color: #336666">puts</span> month<span style="color: #555555">.</span>inspect
+</pre></div>
 
 <p>This will print <code>January</code>.</p>
 

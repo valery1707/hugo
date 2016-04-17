@@ -97,15 +97,13 @@
             
 
 <p>I use the <a href="http://www.emacswiki.org/emacs/FlySpell">flyspell-mode</a> as a spell checking mechanism in emacs. Recently, I moved to Mac OS X, and I began to get this error whenever I started emacs:</p>
-
-<pre><code class="language-bash">Error enabling Flyspell mode:
-(Searching for program No such file or directory aspell)
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>Error enabling Flyspell mode:
+<span style="color: #555555">(</span>Searching <span style="color: #006699; font-weight: bold">for</span> program No such file or directory aspell<span style="color: #555555">)</span>
+</pre></div>
 
 <p>I had installed aspell with Homebrew. The issue seemed to be that Emacs was unable to find the aspell binary. Homebrew installs binaries in <strong>/usr/local/bin</strong> and it was in my $PATH. It turns out Emacs uses it&rsquo;s own exec path to look for binaries to execute in sub-processes. So the fix is to add the <strong>/usr/local/bin</strong> path to the exec-path. This is the change needed to the <strong>~/.emacs</strong> file:</p>
-
-<pre><code class="language-lisp"> '(exec-path (quote (&quot;/usr/bin&quot; &quot;/bin&quot; &quot;/usr/sbin&quot; &quot;/sbin&quot; &quot;/usr/local/bin&quot;))))
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span> <span style="color: #555555">&#39;</span>(<span style="color: #003333">exec-path</span> (<span style="color: #006699; font-weight: bold">quote</span> (<span style="color: #CC3300">&quot;/usr/bin&quot;</span> <span style="color: #CC3300">&quot;/bin&quot;</span> <span style="color: #CC3300">&quot;/usr/sbin&quot;</span> <span style="color: #CC3300">&quot;/sbin&quot;</span> <span style="color: #CC3300">&quot;/usr/local/bin&quot;</span>))))
+</pre></div>
 
 <p>Notice the <strong>/usr/local/bin</strong> in there.</p>
 
@@ -113,10 +111,9 @@
 
 <p>This does not seem to work. A better way to do this is to add the
 following:</p>
-
-<pre><code class="language-lisp">(setenv &quot;PATH&quot; (concat (getenv &quot;PATH&quot;) &quot;:/usr/local/bin&quot;))
-(setq exec-path (append exec-path '(&quot;/usr/local/bin&quot;)))
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>(<span style="color: #003333">setenv</span> <span style="color: #CC3300">&quot;PATH&quot;</span> (<span style="color: #003333">concat</span> (<span style="color: #003333">getenv</span> <span style="color: #CC3300">&quot;PATH&quot;</span>) <span style="color: #CC3300">&quot;:/usr/local/bin&quot;</span>))
+(<span style="color: #006699; font-weight: bold">setq</span> <span style="color: #003333">exec-path</span> (<span style="color: #336666">append</span> <span style="color: #003333">exec-path</span> <span style="color: #555555">&#39;</span>(<span style="color: #CC3300">&quot;/usr/local/bin&quot;</span>)))
+</pre></div>
 
           </div>
         </div>

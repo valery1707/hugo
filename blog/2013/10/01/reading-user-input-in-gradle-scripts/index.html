@@ -99,8 +99,7 @@
 <p>Continuing from the last <a href="/blog/2013/10/01/accessing-environment-variables-in-gradle/">blog post</a>, I have been looking at reading user input from a Gradle script. This was a result of Stack Overflow user <em>user672009</em>&rsquo;s <a href="http://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle/19130098#19130098">question</a> about prompting for input from a Gradle script so the one does not have to include passwords in the script while checking in.</p>
 
 <p>Just like the last example, the fact that Gradle scripts are written in a Groovy DSL comes to our help. Groovy&rsquo;s <code>System. console(). readLine</code> can be called from inside Gradle tasks. The same recipe from the last post can be rewritten to prompt for various parameters.</p>
-
-<pre><code>signingConfigs {
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>signingConfigs {
 	release {
 		storeFile file(System.console().readLine(&quot;\n\$ Enter keystore path: &quot;))
 		storePassword System.console().readLine(&quot;\n\$ Enter keystore password: &quot;)
@@ -114,7 +113,7 @@ buildTypes {
 		signingConfig signingConfigs.release
 	}
 }
-</code></pre>
+</pre></div>
 
 <h3 id="this-is-a-bad-idea:189e28200ef3f03936fdb2c2931b4450">This is a bad idea</h3>
 

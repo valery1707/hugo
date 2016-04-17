@@ -102,19 +102,17 @@
 <li>Grab jsonlint. It is a command line utility that validates JSON. There seems to be two flavors of jsonlint available. A pure JavaScript implementation <sup class="footnote-ref" id="fnref:b6f5919ed39f22c8068bb14b6b3e4c14:2"><a rel="footnote" href="#fn:b6f5919ed39f22c8068bb14b6b3e4c14:2">2</a></sup> that runs on the Node.js runtime and a native Mac OS X <sup class="footnote-ref" id="fnref:b6f5919ed39f22c8068bb14b6b3e4c14:3"><a rel="footnote" href="#fn:b6f5919ed39f22c8068bb14b6b3e4c14:3">3</a></sup> version. We use the Node.js version.</li>
 
 <li><p>Ensure that your Emacs can find the jsonlint binary. This can be done by adding the following snippet in your Emacs configuration:</p>
-
-<pre><code class="language-cl">(setenv &quot;PATH&quot; (concat (getenv &quot;PATH&quot;) &quot;:/usr/local/share/npm/bin&quot;))
-(setq exec-path (append exec-path '(&quot;/usr/local/share/npm/bin&quot;)))
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>(<span style="color: #003333">setenv</span> <span style="color: #CC3300">&quot;PATH&quot;</span> (<span style="color: #003333">concat</span> (<span style="color: #003333">getenv</span> <span style="color: #CC3300">&quot;PATH&quot;</span>) <span style="color: #CC3300">&quot;:/usr/local/share/npm/bin&quot;</span>))
+(<span style="color: #006699; font-weight: bold">setq</span> <span style="color: #003333">exec-path</span> (<span style="color: #336666">append</span> <span style="color: #003333">exec-path</span> <span style="color: #555555">&#39;</span>(<span style="color: #CC3300">&quot;/usr/local/share/npm/bin&quot;</span>)))
+</pre></div>
 
 <p>Of course, the path you add will depend on where your installation process put the binary.</p></li>
 
 <li><p>Install <code>flymake-json</code> <sup class="footnote-ref" id="fnref:b6f5919ed39f22c8068bb14b6b3e4c14:4"><a rel="footnote" href="#fn:b6f5919ed39f22c8068bb14b6b3e4c14:4">4</a></sup>, using your Emacs package manager.</p></li>
 
 <li><p>Bind a key to <code>flymake-json-load</code> which is the command to perform jsonlint on the current file. This can be done with the following snippet:</p>
-
-<pre><code class="language-cl">(global-set-key (kbd &quot;C-c j v&quot;) 'flymake-json-load)
-</code></pre></li>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>(<span style="color: #003333">global-set-key</span> (<span style="color: #003333">kbd</span> <span style="color: #CC3300">&quot;C-c j v&quot;</span>) <span style="color: #FFCC33">&#39;flymake-json-load</span>)
+</pre></div></li>
 </ul>
 
 <p>Enjoy!</p>

@@ -47,18 +47,17 @@ well documented.&lt;/p&gt;
 &lt;p&gt;The bulk of the code is JavaScript. The API is easy to use. The
 following snippet adds a widget to the Addon toolbar at the bottom of
 the Firefox window:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;    var createWidget = function () {
-      new Widget({
-        id: &amp;quot;sdqali-getcache&amp;quot;,
-        label: &amp;quot;Get Google&#39;s cached version of the current page..&amp;quot;,
-        contentURL: self.data.url (&amp;quot;images/icon.png&amp;quot;),
-        onClick: function(event) {
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;var&lt;/span&gt; createWidget &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt; () {
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; Widget({
+        id&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;sdqali-getcache&amp;quot;&lt;/span&gt;,
+        label&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Get Google&amp;#39;s cached version of the current page..&amp;quot;&lt;/span&gt;,
+        contentURL&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; self.data.url (&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;images/icon.png&amp;quot;&lt;/span&gt;),
+        onClick&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt;(event) {
           loadCachedPage ();
         }
       });
     };
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id=&#34;adding-context-menu-entries:eb75f3cd376b68e9a96e1ddceafda970&#34;&gt;Adding context menu entries&lt;/h2&gt;
 

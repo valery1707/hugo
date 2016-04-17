@@ -95,25 +95,24 @@
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>One of the features that I miss most in Bash is the shared history between terminals that Zsh supports. I was hunting down a solution for this and came across this Stack Overflow answer <sup class="footnote-ref" id="fnref:2b4ddf3398db24795bd65c393ff1e13d:1"><a rel="footnote" href="#fn:2b4ddf3398db24795bd65c393ff1e13d:1">1</a></sup> by user <em>lesmana</em>. This code snippet does the trick:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #003333">HISTSIZE</span><span style="color: #555555">=</span>9000
+<span style="color: #003333">HISTFILESIZE</span><span style="color: #555555">=</span><span style="color: #003333">$HISTSIZE</span>
+<span style="color: #003333">HISTCONTROL</span><span style="color: #555555">=</span>ignorespace:ignoredups
 
-<pre><code class="language-bash">HISTSIZE=9000
-HISTFILESIZE=$HISTSIZE
-HISTCONTROL=ignorespace:ignoredups
-
-history() {
+history<span style="color: #555555">()</span> <span style="color: #555555">{</span>
   _bash_history_sync
-  builtin history &quot;$@&quot;
-}
+  <span style="color: #336666">builtin</span> <span style="color: #336666">history</span> <span style="color: #CC3300">&quot;</span><span style="color: #003333">$@</span><span style="color: #CC3300">&quot;</span>
+<span style="color: #555555">}</span>
 
-_bash_history_sync() {
-  builtin history -a         #1
-  HISTFILESIZE=$HISTSIZE     #2
-  builtin history -c         #3
-  builtin history -r         #4
-}
+_bash_history_sync<span style="color: #555555">()</span> <span style="color: #555555">{</span>
+  <span style="color: #336666">builtin</span> <span style="color: #336666">history</span> -a         <span style="color: #0099FF; font-style: italic">#1</span>
+  <span style="color: #003333">HISTFILESIZE</span><span style="color: #555555">=</span><span style="color: #003333">$HISTSIZE</span>     <span style="color: #0099FF; font-style: italic">#2</span>
+  <span style="color: #336666">builtin</span> <span style="color: #336666">history</span> -c         <span style="color: #0099FF; font-style: italic">#3</span>
+  <span style="color: #336666">builtin</span> <span style="color: #336666">history</span> -r         <span style="color: #0099FF; font-style: italic">#4</span>
+<span style="color: #555555">}</span>
 
-PROMPT_COMMAND=&quot;_bash_history_sync;$PROMPT_COMMAND&quot;
-</code></pre>
+<span style="color: #003333">PROMPT_COMMAND</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;_bash_history_sync;</span><span style="color: #003333">$PROMPT_COMMAND</span><span style="color: #CC3300">&quot;</span>
+</pre></div>
 
 <p>This is very hacky—This setting overrides the shell prompt to sync history every time the prompt is loaded. But like all great hacks, it works.</p>
 <div class="footnotes">

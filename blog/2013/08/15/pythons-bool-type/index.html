@@ -95,40 +95,35 @@
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>Python does not have a true boolean type. The <code>True</code> and <code>False</code> built-in values in Python are wrappers around the integers <code>1</code> and <code>0</code>. This results in some interesting results involving True and False.</p>
-
-<pre><code class="language-python">&gt;&gt;&gt; True == 1
-True
-&gt;&gt;&gt; False == 0
-True
-&gt;&gt;&gt; True + 9
-10
-&gt;&gt;&gt; False - 1
--1
-&gt;&gt;&gt; str(True)
-'True'
-&gt;&gt;&gt; repr(True)
-'True'
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #555555">&gt;&gt;&gt;</span> <span style="color: #336666">True</span> <span style="color: #555555">==</span> <span style="color: #FF6600">1</span>
+<span style="color: #336666">True</span>
+<span style="color: #555555">&gt;&gt;&gt;</span> <span style="color: #336666">False</span> <span style="color: #555555">==</span> <span style="color: #FF6600">0</span>
+<span style="color: #336666">True</span>
+<span style="color: #555555">&gt;&gt;&gt;</span> <span style="color: #336666">True</span> <span style="color: #555555">+</span> <span style="color: #FF6600">9</span>
+<span style="color: #FF6600">10</span>
+<span style="color: #555555">&gt;&gt;&gt;</span> <span style="color: #336666">False</span> <span style="color: #555555">-</span> <span style="color: #FF6600">1</span>
+<span style="color: #555555">-</span><span style="color: #FF6600">1</span>
+<span style="color: #555555">&gt;&gt;&gt;</span> <span style="color: #336666">str</span>(<span style="color: #336666">True</span>)
+<span style="color: #CC3300">&#39;True&#39;</span>
+<span style="color: #555555">&gt;&gt;&gt;</span> <span style="color: #336666">repr</span>(<span style="color: #336666">True</span>)
+<span style="color: #CC3300">&#39;True&#39;</span>
+</pre></div>
 
 <p>The Python bool implementation got formalised in PEP 285 <sup class="footnote-ref" id="fnref:7cccdb5320cc2243dc45bf92318883e6:1"><a rel="footnote" href="#fn:7cccdb5320cc2243dc45bf92318883e6:1">1</a></sup> in 2002 by Guido van Rossum. The specification gives a lot of insight into von Rossum&rsquo;s insistence on maintaining backward compatibility and the Python way. It also touches up on another aspect of truthness in Python. In Python, almost all objects can be used to represent truth values. This means an empty list is false and a non-empty list is true.</p>
 
 <p>So this</p>
-
-<pre><code class="language-python">if []:
-    print &quot;Truth&quot;
-else:
-    print &quot;Falsehood&quot;
-
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">if</span> []:
+    <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;Truth&quot;</span>
+<span style="color: #006699; font-weight: bold">else</span>:
+    <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;Falsehood&quot;</span>
+</pre></div>
 
 <p>will print &ldquo;Falsehood&rdquo; and the following</p>
-
-<pre><code class="language-python">if [1, 2, 3]:
-    print &quot;Truth&quot;
-else:
-    print &quot;Falsehood&quot;
-
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">if</span> [<span style="color: #FF6600">1</span>, <span style="color: #FF6600">2</span>, <span style="color: #FF6600">3</span>]:
+    <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;Truth&quot;</span>
+<span style="color: #006699; font-weight: bold">else</span>:
+    <span style="color: #006699; font-weight: bold">print</span> <span style="color: #CC3300">&quot;Falsehood&quot;</span>
+</pre></div>
 
 <p>will print &ldquo;Truth&rdquo;.</p>
 <div class="footnotes">

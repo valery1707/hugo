@@ -99,47 +99,41 @@
             <p>Cloud Foundry allows fine grained declaration of security groups, down to IP address ranges and Ports. While this provides great flexibility, making sense of why each rule in a security group exists and what each does is really difficult because of the limitations of the security group declaration mechanism.</p>
 
 <p>The Cloud Foundry command line tool allows the creation of security groups from JSON declarations. The <code>create-security-group</code> command works like so:</p>
-
-<pre><code class="language-bash">&gt; cf create-security-group SECURITY_GROUP PATH_TO_JSON_RULES_FILE
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>&gt; cf create-security-group SECURITY_GROUP PATH_TO_JSON_RULES_FILE
+</pre></div>
 
 <p>The JSON file needs to declare an array of rules where each rule has the following structure:</p>
-
-<pre><code class="language-json">{
-   &quot;protocol&quot;: &quot;tcp&quot;,
-   &quot;destination&quot;: &quot;10.244.1.18&quot;,
-   &quot;ports&quot;: &quot;3306&quot;,
-   &quot;log&quot;: true
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>{
+   <span style="color: #330099; font-weight: bold">&quot;protocol&quot;</span>: <span style="color: #CC3300">&quot;tcp&quot;</span>,
+   <span style="color: #330099; font-weight: bold">&quot;destination&quot;</span>: <span style="color: #CC3300">&quot;10.244.1.18&quot;</span>,
+   <span style="color: #330099; font-weight: bold">&quot;ports&quot;</span>: <span style="color: #CC3300">&quot;3306&quot;</span>,
+   <span style="color: #330099; font-weight: bold">&quot;log&quot;</span>: <span style="color: #006699; font-weight: bold">true</span>
 }
-</code></pre>
+</pre></div>
 
 <p>In my Cloud Foundry environment, I have a security group assigned to a <code>Space</code> with the following declaration:</p>
-
-<pre><code class="language-json">[
-  {&quot;protocol&quot;:&quot;tcp&quot;,&quot;destination&quot;:&quot;&lt;ip-foo&gt;&quot;,&quot;ports&quot;:&quot;3306&quot;},
-  {&quot;protocol&quot;:&quot;tcp&quot;,&quot;destination&quot;:&quot;&lt;some-ip&gt;-&lt;another-ip&gt;&quot;,&quot;ports&quot;:&quot;55882&quot;},
-  {&quot;protocol&quot;:&quot;tcp&quot;,&quot;destination&quot;:&quot;&lt;ip-bar&gt;&quot;,&quot;ports&quot;:&quot;443&quot;}
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>[
+  {<span style="color: #330099; font-weight: bold">&quot;protocol&quot;</span>:<span style="color: #CC3300">&quot;tcp&quot;</span>,<span style="color: #330099; font-weight: bold">&quot;destination&quot;</span>:<span style="color: #CC3300">&quot;&lt;ip-foo&gt;&quot;</span>,<span style="color: #330099; font-weight: bold">&quot;ports&quot;</span>:<span style="color: #CC3300">&quot;3306&quot;</span>},
+  {<span style="color: #330099; font-weight: bold">&quot;protocol&quot;</span>:<span style="color: #CC3300">&quot;tcp&quot;</span>,<span style="color: #330099; font-weight: bold">&quot;destination&quot;</span>:<span style="color: #CC3300">&quot;&lt;some-ip&gt;-&lt;another-ip&gt;&quot;</span>,<span style="color: #330099; font-weight: bold">&quot;ports&quot;</span>:<span style="color: #CC3300">&quot;55882&quot;</span>},
+  {<span style="color: #330099; font-weight: bold">&quot;protocol&quot;</span>:<span style="color: #CC3300">&quot;tcp&quot;</span>,<span style="color: #330099; font-weight: bold">&quot;destination&quot;</span>:<span style="color: #CC3300">&quot;&lt;ip-bar&gt;&quot;</span>,<span style="color: #330099; font-weight: bold">&quot;ports&quot;</span>:<span style="color: #CC3300">&quot;443&quot;</span>}
 ]
-</code></pre>
+</pre></div>
 
 <p>With only 3 rules in place, it is already confusing what service each rule is for and why they are there.</p>
 
 <p>I believe this can be easily improved by allowing an extra field <code>comment</code> that provides context about each rule. With this in place, the rules will look like this:</p>
-
-<pre><code class="language-json">[
-  {&quot;protocol&quot;:&quot;tcp&quot;,&quot;destination&quot;:&quot;&lt;ip-foo&gt;&quot;,&quot;ports&quot;:&quot;3306&quot;, &quot;comment&quot;: &quot;Allow database connection to PostgreSQL at hosted-postgres-service.com&quot;},
-  {&quot;protocol&quot;:&quot;tcp&quot;,&quot;destination&quot;:&quot;&lt;some-ip&gt;-&lt;another-ip&gt;&quot;,&quot;ports&quot;:&quot;55882&quot;, &quot;comment&quot;: &quot;Allow logging to hosted-logging-service.com&quot;},
-  {&quot;protocol&quot;:&quot;tcp&quot;,&quot;destination&quot;:&quot;&lt;ip-bar&gt;&quot;,&quot;ports&quot;:&quot;443&quot;, &quot;comment&quot;: &quot;Allow monitoring service at hosted-monitoring-service.com&quot;}
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>[
+  {<span style="color: #330099; font-weight: bold">&quot;protocol&quot;</span>:<span style="color: #CC3300">&quot;tcp&quot;</span>,<span style="color: #330099; font-weight: bold">&quot;destination&quot;</span>:<span style="color: #CC3300">&quot;&lt;ip-foo&gt;&quot;</span>,<span style="color: #330099; font-weight: bold">&quot;ports&quot;</span>:<span style="color: #CC3300">&quot;3306&quot;</span>, <span style="color: #330099; font-weight: bold">&quot;comment&quot;</span>: <span style="color: #CC3300">&quot;Allow database connection to PostgreSQL at hosted-postgres-service.com&quot;</span>},
+  {<span style="color: #330099; font-weight: bold">&quot;protocol&quot;</span>:<span style="color: #CC3300">&quot;tcp&quot;</span>,<span style="color: #330099; font-weight: bold">&quot;destination&quot;</span>:<span style="color: #CC3300">&quot;&lt;some-ip&gt;-&lt;another-ip&gt;&quot;</span>,<span style="color: #330099; font-weight: bold">&quot;ports&quot;</span>:<span style="color: #CC3300">&quot;55882&quot;</span>, <span style="color: #330099; font-weight: bold">&quot;comment&quot;</span>: <span style="color: #CC3300">&quot;Allow logging to hosted-logging-service.com&quot;</span>},
+  {<span style="color: #330099; font-weight: bold">&quot;protocol&quot;</span>:<span style="color: #CC3300">&quot;tcp&quot;</span>,<span style="color: #330099; font-weight: bold">&quot;destination&quot;</span>:<span style="color: #CC3300">&quot;&lt;ip-bar&gt;&quot;</span>,<span style="color: #330099; font-weight: bold">&quot;ports&quot;</span>:<span style="color: #CC3300">&quot;443&quot;</span>, <span style="color: #330099; font-weight: bold">&quot;comment&quot;</span>: <span style="color: #CC3300">&quot;Allow monitoring service at hosted-monitoring-service.com&quot;</span>}
 ]
-</code></pre>
+</pre></div>
 
 <p>As things stand, Cloud Foundry Cloud Controller does not allow any extra fields to exist in a rule. For example, the above declaration will cause an error while trying to create a security group.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>&gt; cf create-security-group sample-space-security-group spec.json
 
-<pre><code class="language-bash">&gt; cf create-security-group sample-space-security-group spec.json
-
-Server error, status code: 400, error code: 300001, message: The security group is invalid: rules rule number 1 contains the invalid field 'comment', rules rule number 2 contains the invalid field 'comment', rules rule number 3 contains the invalid field 'comment'
-
-</code></pre>
+Server error, status code: 400, error code: 300001, message: The security group is invalid: rules rule number <span style="color: #FF6600">1</span> contains the invalid field <span style="color: #CC3300">&#39;comment&#39;</span>, rules rule number <span style="color: #FF6600">2</span> contains the invalid field <span style="color: #CC3300">&#39;comment&#39;</span>, rules rule number <span style="color: #FF6600">3</span> contains the invalid field <span style="color: #CC3300">&#39;comment&#39;</span>
+</pre></div>
 
 <p>If JSON allowed comments, commenting would result in a slightly more readable declaration file, although it won&rsquo;t be stored in the Cloud Controller database and hence won&rsquo;t be available upon querying with <code>cf security-group &lt;security-group-name&gt;</code>. This is a moot point anyway, as JSON <a href="https://plus.google.com/+DouglasCrockfordEsq/posts/RK8qyGVaGSr">explicitly</a> doesn&rsquo;t allow comments. There are workarounds that involve minifying the JSON input before parsing the configurations, but I don&rsquo;t think that is the right direction to head to.</p>
 

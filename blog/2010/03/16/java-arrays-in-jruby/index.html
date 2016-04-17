@@ -101,30 +101,27 @@
 <p>I will be using a dummy example for describing the problem.</p>
 
 <p>The following code snippet tries to compare two arrays in JRuby using Java Arrays&rsquo; equals method. In JRuby world, one would expect this to work. Actually, one should not, but Ruby really gets into you.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #336666">require</span> <span style="color: #CC3300">&#39;java&#39;</span>
+import <span style="color: #CC3300">&#39;java.util.Arrays&#39;</span>
 
-<pre><code class="language-ruby">require 'java'
-import 'java.util.Arrays'
-
-puts &quot;Arrays equal&quot; if Arrays.equals([1, 2, 3], [1, 2, 3])
-</code></pre>
+<span style="color: #336666">puts</span> <span style="color: #CC3300">&quot;Arrays equal&quot;</span> <span style="color: #006699; font-weight: bold">if</span> <span style="color: #336600">Arrays</span><span style="color: #555555">.</span>equals(<span style="color: #555555">[</span><span style="color: #FF6600">1</span>, <span style="color: #FF6600">2</span>, <span style="color: #FF6600">3</span><span style="color: #555555">]</span>, <span style="color: #555555">[</span><span style="color: #FF6600">1</span>, <span style="color: #FF6600">2</span>, <span style="color: #FF6600">3</span><span style="color: #555555">]</span>)
+</pre></div>
 
 <p>Well, it does not. You get an error:</p>
-
-<pre><code class="language-bash">no equals with arguments matching [class org.jruby.RubyArray, class org.jruby.RubyArray] on object Java::JavaUtil::Arrays (NameError)
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>no equals with arguments matching <span style="color: #555555">[</span>class org.jruby.RubyArray, class org.jruby.RubyArray<span style="color: #555555">]</span> on object Java::JavaUtil::Arrays <span style="color: #555555">(</span>NameError<span style="color: #555555">)</span>
+</pre></div>
 
 <p>This error message is informative. In our case, our unit tests threw an error that was very difficult to make any sense of. The reason why this fails is obvious.</p>
 
 <p>Java does care about the Type of things that form an Array. So you need to cast it to the correct type.</p>
 
 <p>Here is the code that actually works:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #336666">require</span> <span style="color: #CC3300">&#39;java&#39;</span>
+import <span style="color: #CC3300">&#39;java.util.Arrays&#39;</span>
 
-<pre><code class="language-ruby">require 'java'
-import 'java.util.Arrays'
-
-puts &quot;Arrays equal&quot; if Arrays.equals([1,2,3].to_java(java.lang.Integer),
-                                     [1,2,3].to_java(java.lang.Integer))
-</code></pre>
+<span style="color: #336666">puts</span> <span style="color: #CC3300">&quot;Arrays equal&quot;</span> <span style="color: #006699; font-weight: bold">if</span> <span style="color: #336600">Arrays</span><span style="color: #555555">.</span>equals(<span style="color: #555555">[</span><span style="color: #FF6600">1</span>,<span style="color: #FF6600">2</span>,<span style="color: #FF6600">3</span><span style="color: #555555">].</span>to_java(java<span style="color: #555555">.</span>lang<span style="color: #555555">.</span>Integer),
+                                     <span style="color: #555555">[</span><span style="color: #FF6600">1</span>,<span style="color: #FF6600">2</span>,<span style="color: #FF6600">3</span><span style="color: #555555">].</span>to_java(java<span style="color: #555555">.</span>lang<span style="color: #555555">.</span>Integer))
+</pre></div>
 
 <p>The <code>to_java</code> method casts the elements of the Ruby array into Java array with elements of type specified.</p>
 

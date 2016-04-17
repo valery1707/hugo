@@ -139,11 +139,10 @@ bundle exec rake --version
 <h2 id="use-a-devenv-file:85e1ecb3737055d5335b82c4e19bf867">Use a devenv file</h2>
 
 <p>This is a hacky way doing things and it was the first that came to my mind when I was looking at this problem. This approach involves adding a project specific <code>devenv</code> file that is sourced when one starts to work on that project. This file will set the <code>GEM_HOME</code> and <code>GEM_PATH</code> environment variables to the directory where the gemset is supposed to live as well as prepend the <code>gems/bin</code> directory of the gemset to <code>PATH</code>. An example <code>devenv</code> file will be as follows</p>
-
-<pre><code class="language-bash">export GEM_PATH=./.gems
-export GEM_HOME=./.gems
-export PATH=./.gems/bin:$PATH
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #336666">export</span> <span style="color: #003333">GEM_PATH</span><span style="color: #555555">=</span>./.gems
+<span style="color: #336666">export</span> <span style="color: #003333">GEM_HOME</span><span style="color: #555555">=</span>./.gems
+<span style="color: #336666">export</span> <span style="color: #003333">PATH</span><span style="color: #555555">=</span>./.gems/bin:<span style="color: #003333">$PATH</span>
+</pre></div>
 
 <p>In the end, I ended up choosing the <code>bundler</code> approach. I use bundler in most of my Ruby projects anyway. The downside to this is that every invocation will be spawning a <code>bundler</code> process, in addition to whatever we intend to do.</p>
 <div class="footnotes">

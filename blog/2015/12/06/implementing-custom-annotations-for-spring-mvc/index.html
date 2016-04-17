@@ -103,49 +103,45 @@
 <p>This allows us to build composed annotations <sup class="footnote-ref" id="fnref:b72714563591dcee83238042a831f26c:2"><a rel="footnote" href="#fn:b72714563591dcee83238042a831f26c:2">2</a></sup> that combine the behavior of multiple annotations. The <code>@AliasFor</code> annotation allows us to override attribute names, thereby adding great flexibility while composing.</p>
 
 <p>This is a common pattern in code bases that use Spring MVC.</p>
-
-<pre><code class="language-java">    @RequestMapping(path = &quot;/register&quot;,
-            method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    @ResponseStatus(HttpStatus.CREATED)
-    public Map register(@RequestBody @Valid EmailRequest emailRequest) {
-        return registrationService.register(emailRequest);
-    }
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>    <span style="color: #9999FF">@RequestMapping</span><span style="color: #555555">(</span>path <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;/register&quot;</span><span style="color: #555555">,</span>
+            method <span style="color: #555555">=</span> RequestMethod<span style="color: #555555">.</span><span style="color: #330099">POST</span><span style="color: #555555">,</span>
+            consumes <span style="color: #555555">=</span> MediaType<span style="color: #555555">.</span><span style="color: #330099">APPLICATION_JSON_VALUE</span><span style="color: #555555">,</span>
+            produces <span style="color: #555555">=</span> MediaType<span style="color: #555555">.</span><span style="color: #330099">APPLICATION_JSON_VALUE</span>
+    <span style="color: #555555">)</span>
+    <span style="color: #9999FF">@ResponseStatus</span><span style="color: #555555">(</span>HttpStatus<span style="color: #555555">.</span><span style="color: #330099">CREATED</span><span style="color: #555555">)</span>
+    <span style="color: #006699; font-weight: bold">public</span> Map <span style="color: #CC00FF">register</span><span style="color: #555555">(</span><span style="color: #9999FF">@RequestBody</span> <span style="color: #9999FF">@Valid</span> EmailRequest emailRequest<span style="color: #555555">)</span> <span style="color: #555555">{</span>
+        <span style="color: #006699; font-weight: bold">return</span> registrationService<span style="color: #555555">.</span><span style="color: #330099">register</span><span style="color: #555555">(</span>emailRequest<span style="color: #555555">);</span>
+    <span style="color: #555555">}</span>
+</pre></div>
 
 <p>The two annotations as applied on this method represent the fact that this is an end point that a client can <code>POST</code> JSON to and produces JSON and a <code>201 Created</code> HTTP status when it succeeds. If we had 20 end points that did the similar operations, it would be really useful to have a <code>@PostJson</code> annotation that did the same thing.</p>
 
 <p>The following is one way of writing such an annotation.</p>
-
-<pre><code class="language-java">@Target(METHOD)
-@Retention(RUNTIME)
-@Documented
-@RequestMapping(method = RequestMethod.POST,
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-)
-@ResponseStatus(HttpStatus.CREATED)
-public @interface PostJson {
-    @AliasFor(annotation = RequestMapping.class, attribute = &quot;path&quot;)
-    String[] path() default {};
-}
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Target</span><span style="color: #555555">(</span>METHOD<span style="color: #555555">)</span>
+<span style="color: #9999FF">@Retention</span><span style="color: #555555">(</span>RUNTIME<span style="color: #555555">)</span>
+<span style="color: #9999FF">@Documented</span>
+<span style="color: #9999FF">@RequestMapping</span><span style="color: #555555">(</span>method <span style="color: #555555">=</span> RequestMethod<span style="color: #555555">.</span><span style="color: #330099">POST</span><span style="color: #555555">,</span>
+        consumes <span style="color: #555555">=</span> MediaType<span style="color: #555555">.</span><span style="color: #330099">APPLICATION_JSON_VALUE</span><span style="color: #555555">,</span>
+        produces <span style="color: #555555">=</span> MediaType<span style="color: #555555">.</span><span style="color: #330099">APPLICATION_JSON_VALUE</span>
+<span style="color: #555555">)</span>
+<span style="color: #9999FF">@ResponseStatus</span><span style="color: #555555">(</span>HttpStatus<span style="color: #555555">.</span><span style="color: #330099">CREATED</span><span style="color: #555555">)</span>
+<span style="color: #006699; font-weight: bold">public</span> <span style="color: #9999FF">@interface</span> PostJson <span style="color: #555555">{</span>
+    <span style="color: #9999FF">@AliasFor</span><span style="color: #555555">(</span>annotation <span style="color: #555555">=</span> RequestMapping<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">,</span> attribute <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;path&quot;</span><span style="color: #555555">)</span>
+    String<span style="color: #555555">[]</span> <span style="color: #CC00FF">path</span><span style="color: #555555">()</span> <span style="color: #006699; font-weight: bold">default</span> <span style="color: #555555">{};</span>
+<span style="color: #555555">}</span>
+</pre></div>
 
 <p>This annotation takes a single parameter <code>path</code> that represents that URL path to which it will respond to. This can now be applied on the register end point.</p>
-
-<pre><code class="language-java">    @PostJson(path = &quot;/register&quot;)
-    public Map register(@RequestBody @Valid EmailRequest emailRequest) {
-        return registrationService.register(emailRequest);
-    }
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>    <span style="color: #9999FF">@PostJson</span><span style="color: #555555">(</span>path <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;/register&quot;</span><span style="color: #555555">)</span>
+    <span style="color: #006699; font-weight: bold">public</span> Map <span style="color: #CC00FF">register</span><span style="color: #555555">(</span><span style="color: #9999FF">@RequestBody</span> <span style="color: #9999FF">@Valid</span> EmailRequest emailRequest<span style="color: #555555">)</span> <span style="color: #555555">{</span>
+        <span style="color: #006699; font-weight: bold">return</span> registrationService<span style="color: #555555">.</span><span style="color: #330099">register</span><span style="color: #555555">(</span>emailRequest<span style="color: #555555">);</span>
+    <span style="color: #555555">}</span>
+</pre></div>
 
 <p>If we wanted to allow the consumers of <code>@PostJson</code> to override other parameters of <code>@RequestMapping</code> or <code>@ResponseStatus</code>, it can be achieved by adding more aliases. For example, the following will allow users to specify a reason phrase.</p>
-
-<pre><code class="language-java">    @AliasFor(annotation = ResponseStatus.class, attribute = &quot;reason&quot;)
-    String[] reason() default {};
-</code></pre>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>    <span style="color: #9999FF">@AliasFor</span><span style="color: #555555">(</span>annotation <span style="color: #555555">=</span> ResponseStatus<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">,</span> attribute <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;reason&quot;</span><span style="color: #555555">)</span>
+    String<span style="color: #555555">[]</span> <span style="color: #CC00FF">reason</span><span style="color: #555555">()</span> <span style="color: #006699; font-weight: bold">default</span> <span style="color: #555555">{};</span>
+</pre></div>
 
 <p>This pattern can easily be extended to introduce annotations like <code>@GetJson</code>, <code>@PutJson</code>, <code>@PostXml</code> and so on and so forth.</p>
 <div class="footnotes">
