@@ -10,3 +10,5 @@ permalinks:
 metadataformat: "yaml"
 params:
   description: "A blog about the Code I write and the Technologies I use. And other things that interest me."
+PygmentsCodeFences: true
+pygmentsstyle: "manni"
