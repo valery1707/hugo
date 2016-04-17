@@ -57,7 +57,7 @@ At work, while looking for a solution to this, we stumbled across Spring's `Exit
 
 Our new command line runner will be as:
 
-```
+```java
 @Component
 @Profile("exception")
 public class WillThrow implements CommandLineRunner{
@@ -68,7 +68,7 @@ public class WillThrow implements CommandLineRunner{
 ```
 And the exception will resemble:
 
-```
+```java
 public class ExceptionWithExitCode extends RuntimeException implements ExitCodeGenerator {
     public ExceptionWithExitCode(String message) {
         super(message);
