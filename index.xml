@@ -5,8 +5,48 @@
     <link>http://sdqali.in/</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 17 Apr 2016 23:36:48 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 19 Apr 2016 22:29:12 -0400</lastBuildDate>
     <atom:link href="http://sdqali.in/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Programmable exit codes for spring command line applications - 2</title>
+      <link>http://sdqali.in/blog/2016/04/19/programmable-exit-codes-for-spring-command-line-applications---2/</link>
+      <pubDate>Tue, 19 Apr 2016 22:29:12 -0400</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/04/19/programmable-exit-codes-for-spring-command-line-applications---2/</guid>
+      <description>&lt;p&gt;In the last &lt;a href=&#34;http://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/&#34;&gt;blog post&lt;/a&gt;, we took a look at how to implement programmable exit codes for spring command line applications by using exceptions that implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt;. This time, we will take a look at how to achieve the same without having to depend on an exception.&lt;/p&gt;
+
+&lt;p&gt;This approach depends on the command line runner implementing the &lt;code&gt;ExitCodeGenerator&lt;/code&gt;. This does require the usage of &lt;code&gt;System.exit&lt;/code&gt;, but instead of it being invoked from different command line runners, it will be used in a single place as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Application&lt;/span&gt;  &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;[]&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        ConfigurableApplicationContext ctx &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; SpringApplication&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Application&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+        System&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;exit&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SpringApplication&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;exit&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;ctx&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The command line runner will now implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@Profile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;hello&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;HelloWorld&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; CommandLineRunner&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ExitCodeGenerator &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;...&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        System&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Hello World!&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;getExitCode&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;45&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This is how the application behaves when run:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ java -Dspring.profiles.active&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;hello -jar build/libs/exit-code-demo-1.0-SNAPSHOT.jar &amp;gt; /dev/null 2&amp;gt;&amp;amp;1
+$ &lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;$?&lt;/span&gt;
+45
+&lt;/pre&gt;&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Programmable exit codes for Spring command line applications</title>
@@ -50,7 +90,7 @@ $ &lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#
 
 &lt;p&gt;This looks straightforward and easy. However, exiting the application from within the &lt;code&gt;CommandLineRunner&lt;/code&gt; makes integration testing of this application difficult. Our tests will simply stop execution at that point without giving us the opportunity to assert anything.&lt;/p&gt;
 
-&lt;p&gt;At work, while looking for a solution to this, we stumbled across Spring&amp;rsquo;s &lt;code&gt;ExitCodeGenerator&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3e18ae9ccb3e0a2002a001a59d30627f:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3e18ae9ccb3e0a2002a001a59d30627f:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. It is an interface whose implementations Spring uses to look up what exit code to use. There are at least two ways to make use of &lt;code&gt;ExitCodeGenerator&lt;/code&gt; - one involves making the application&amp;rsquo;s Exceptions implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt; and the other involves making the &lt;code&gt;Application&lt;/code&gt; class an implementation of &lt;code&gt;ExitCodeGenerator&lt;/code&gt;. We will look at the first approach here.&lt;/p&gt;
+&lt;p&gt;At work, while looking for a solution to this, we stumbled across Spring&amp;rsquo;s &lt;code&gt;ExitCodeGenerator&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3e18ae9ccb3e0a2002a001a59d30627f:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3e18ae9ccb3e0a2002a001a59d30627f:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. It is an interface whose implementations Spring uses to look up what exit code to use. There are at least two ways to make use of &lt;code&gt;ExitCodeGenerator&lt;/code&gt; - one involves making the application&amp;rsquo;s Exceptions implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt; and the other involves making the command line runners themselves implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt;. We will look at the first approach here.&lt;/p&gt;
 
 &lt;p&gt;Our new command line runner will be as:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
@@ -1330,42 +1370,6 @@ fs.writeFileSync(&amp;quot;full_india.geo.json&amp;quot;, JSON.stringify(india))
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:331feb6386b5b7cd03d2133ef33a86dd:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>A list of GIS tools</title>
-      <link>http://sdqali.in/blog/2014/08/03/a-list-of-gis-tools/</link>
-      <pubDate>Sun, 03 Aug 2014 00:00:00 +0000</pubDate>
-      
-      <guid>http://sdqali.in/blog/2014/08/03/a-list-of-gis-tools/</guid>
-      <description>
-
-&lt;p&gt;I have been playing around with maps a lot these days and have ended up using various tools in the process. This blog post is a way to make a note of these tools for later use.&lt;/p&gt;
-
-&lt;h1 id=&#34;geojson-io:7591cb75a8855983e3f9edf802cbce55&#34;&gt;geojson.io&lt;/h1&gt;
-
-&lt;p&gt;Mapbox&amp;rsquo;s &lt;a href=&#34;http://geojson.io/&#34;&gt;geojson.io&lt;/a&gt; is a simple tool for creating, editing and sharing maps. It lets you import map data in various formats and has an editor to modify maps.&lt;/p&gt;
-
-&lt;h1 id=&#34;geojson-topojson:7591cb75a8855983e3f9edf802cbce55&#34;&gt;GeoJSON-TopoJSON&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/JeffPaine&#34;&gt;Jeff Paine&lt;/a&gt;&amp;rsquo;s &lt;a href=&#34;https://github.com/JeffPaine/geojson-topojson&#34;&gt;GeoJSON-TopoJSON&lt;/a&gt; is a simple tool to convert between the more common GeoJSON format and the TopoJSON format used by libraries like D3.js. It is a simple tool, but it does exactly what it says on the tin.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-distillery:7591cb75a8855983e3f9edf802cbce55&#34;&gt;The Distillery&lt;/h1&gt;
-
-&lt;p&gt;The New York Times&amp;rsquo; &lt;a href=&#34;http://shancarter.com/&#34;&gt;Shan Carter&lt;/a&gt; built &lt;a href=&#34;http://shancarter.github.io/distillery/&#34;&gt;The Distillery&lt;/a&gt;, a GUI around TopoJSON. Apart from converting GeoJSON to TopoJSON, it allows you to alter the map&amp;rsquo;s projection.&lt;/p&gt;
-
-&lt;h1 id=&#34;ogr2ogr:7591cb75a8855983e3f9edf802cbce55&#34;&gt;ogr2ogr&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.gdal.org/ogr2ogr.html&#34;&gt;ogr2ogr&lt;/a&gt; is a command line utility to convert features data between different file formats.&lt;/p&gt;
-
-&lt;h1 id=&#34;ogre-ogr2ogr-web-client:7591cb75a8855983e3f9edf802cbce55&#34;&gt;Ogre - ogr2ogr web client&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://ogre.adc4gis.com/&#34;&gt;Ogre&lt;/a&gt; is a web UI around ogr2ogr. It lets you do transformations on your map files when you are lazy and don&amp;rsquo;t want to use the command line to run ogr2ogr.&lt;/p&gt;
-
-&lt;h1 id=&#34;merge-geojson-features:7591cb75a8855983e3f9edf802cbce55&#34;&gt;merge-geojson-features&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://www.npmjs.org/package/&#34;&gt;merge-geojson-features&lt;/a&gt; is a Node.js module to combine Features defined in different files in to a single FeatureCollection. I use it when I am not in the mood to alter GeoJSON objects from a JavaScript console by hand.&lt;/p&gt;
 </description>
     </item>
     

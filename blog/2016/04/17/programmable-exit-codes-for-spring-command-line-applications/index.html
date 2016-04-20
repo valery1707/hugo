@@ -32,11 +32,13 @@
   <meta name="twitter:site" content="@sdqali">
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Programmable exit codes for Spring command line applications">
-  <meta name="twitter:description" content="Spring&rsquo;s CommandLineRunner provides a great mechanism to build command line applications. While this convenience is great, applications that use CommandLineRunner require extra effort in some areas like integration testing. Exit codes are such an area - applications that use command line runners always report their exit code as 0 even if there are exceptions thrown. This blog post explains a way to get to programmable exit codes for such applications. The following example demonstrates this problem.">
+  <meta name="twitter:description" content="Spring&rsquo;s CommandLineRunner provides a great mechanism to build command line applications. While this convenience is great, applications that use CommandLineRunner require extra effort in some areas like integration testing. Exit codes are such an area - applications that use command line runners always report their exit code as 0 even if there are exceptions thrown. This blog post explains a way to get to programmable exit codes for such applications.
+">
   <meta name="twitter:image" content="http://sdqali.in/images/spring-by-pivotal.png">
 
   <meta property="og:title" content="Programmable exit codes for Spring command line applications" />
-  <meta property="og:description" content="Spring&rsquo;s CommandLineRunner provides a great mechanism to build command line applications. While this convenience is great, applications that use CommandLineRunner require extra effort in some areas like integration testing. Exit codes are such an area - applications that use command line runners always report their exit code as 0 even if there are exceptions thrown. This blog post explains a way to get to programmable exit codes for such applications. The following example demonstrates this problem." itemprop="description"/>
+  <meta property="og:description" content="Spring&rsquo;s CommandLineRunner provides a great mechanism to build command line applications. While this convenience is great, applications that use CommandLineRunner require extra effort in some areas like integration testing. Exit codes are such an area - applications that use command line runners always report their exit code as 0 even if there are exceptions thrown. This blog post explains a way to get to programmable exit codes for such applications.
+" itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/" />
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
   <body>
@@ -130,7 +132,7 @@ $ <span style="color: #336666">echo</span> <span style="color: #003333">$?</span
 
 <p>This looks straightforward and easy. However, exiting the application from within the <code>CommandLineRunner</code> makes integration testing of this application difficult. Our tests will simply stop execution at that point without giving us the opportunity to assert anything.</p>
 
-<p>At work, while looking for a solution to this, we stumbled across Spring&rsquo;s <code>ExitCodeGenerator</code> <sup class="footnote-ref" id="fnref:3e18ae9ccb3e0a2002a001a59d30627f:1"><a rel="footnote" href="#fn:3e18ae9ccb3e0a2002a001a59d30627f:1">1</a></sup>. It is an interface whose implementations Spring uses to look up what exit code to use. There are at least two ways to make use of <code>ExitCodeGenerator</code> - one involves making the application&rsquo;s Exceptions implement <code>ExitCodeGenerator</code> and the other involves making the <code>Application</code> class an implementation of <code>ExitCodeGenerator</code>. We will look at the first approach here.</p>
+<p>At work, while looking for a solution to this, we stumbled across Spring&rsquo;s <code>ExitCodeGenerator</code> <sup class="footnote-ref" id="fnref:3e18ae9ccb3e0a2002a001a59d30627f:1"><a rel="footnote" href="#fn:3e18ae9ccb3e0a2002a001a59d30627f:1">1</a></sup>. It is an interface whose implementations Spring uses to look up what exit code to use. There are at least two ways to make use of <code>ExitCodeGenerator</code> - one involves making the application&rsquo;s Exceptions implement <code>ExitCodeGenerator</code> and the other involves making the command line runners themselves implement <code>ExitCodeGenerator</code>. We will look at the first approach here.</p>
 
 <p>Our new command line runner will be as:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Component</span>
