@@ -8,6 +8,7 @@ Tags:
 - Java
 date: 2016-04-19T22:29:12-04:00
 title: Programmable exit codes for spring command line applications - 2
+image: "images/spring-by-pivotal.png"
 ---
 In the last [blog post](/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/), we took a look at how to implement programmable exit codes for spring command line applications by using exceptions that implement `ExitCodeGenerator`. This time, we will take a look at how to achieve the same without having to depend on an exception.
 
