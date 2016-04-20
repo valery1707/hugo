@@ -12,6 +12,8 @@ image: "images/spring-by-pivotal.png"
 ---
 Spring's `CommandLineRunner` provides a great mechanism to build command line applications. While this convenience is great, applications that use `CommandLineRunner` require extra effort in some areas like integration testing. Exit codes are such an area - applications that use command line runners always report their exit code as `0` even if there are exceptions thrown. This blog post explains a way to get to programmable exit codes for such applications.
 
+<!--more-->
+
 The following example demonstrates this problem. Here we have a simple implementation of `CommandLineRunner` that simply throws a `RuntimeException` when started.
 ```java
 @Component
@@ -53,7 +55,7 @@ $ echo $?
 
 This looks straightforward and easy. However, exiting the application from within the `CommandLineRunner` makes integration testing of this application difficult. Our tests will simply stop execution at that point without giving us the opportunity to assert anything.
 
-At work, while looking for a solution to this, we stumbled across Spring's `ExitCodeGenerator` [^1]. It is an interface whose implementations Spring uses to look up what exit code to use. There are at least two ways to make use of `ExitCodeGenerator` - one involves making the application's Exceptions implement `ExitCodeGenerator` and the other involves making the `Application` class an implementation of `ExitCodeGenerator`. We will look at the first approach here.
+At work, while looking for a solution to this, we stumbled across Spring's `ExitCodeGenerator` [^1]. It is an interface whose implementations Spring uses to look up what exit code to use. There are at least two ways to make use of `ExitCodeGenerator` - one involves making the application's Exceptions implement `ExitCodeGenerator` and the other involves making the command line runners themselves implement `ExitCodeGenerator`. We will look at the first approach here.
 
 Our new command line runner will be as:
 
