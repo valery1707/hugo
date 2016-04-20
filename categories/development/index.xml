@@ -45,6 +45,8 @@
 $ &lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;$?&lt;/span&gt;
 45
 &lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This allows us to delegate how the application should exit to the command line runners themselves, without having to throw exceptions.&lt;/p&gt;
 </description>
     </item>
     
