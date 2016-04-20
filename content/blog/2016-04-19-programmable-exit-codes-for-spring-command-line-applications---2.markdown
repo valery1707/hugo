@@ -46,3 +46,5 @@ $ java -Dspring.profiles.active=hello -jar build/libs/exit-code-demo-1.0-SNAPSHO
 $ echo $?
 45
 ```
+
+This allows us to delegate how the application should exit to the command line runners themselves, without having to throw exceptions.
