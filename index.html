@@ -15,6 +15,7 @@
 
     
     <link href="/css/clean-blog.min.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
 
     
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -79,6 +80,19 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2016/04/24/deprecating-domain-events-in-axon/'>
+              <h2 class="post-title">
+                Deprecating domain events in Axon
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              <p>Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.</p>
+
+            </p>
+            <p class="post-meta">Posted on Sun, Apr 24, 2016</p>
+          </div>
           
           <div class="post-preview">
             <a href='http://sdqali.in/blog/2016/04/19/programmable-exit-codes-for-spring-command-line-applications---2/'>
@@ -197,19 +211,6 @@ Apache Camel [^1] makes a natural choice as the base for implementing such a dat
 
             </p>
             <p class="post-meta">Posted on Sun, Dec 6, 2015</p>
-          </div>
-          
-          <div class="post-preview">
-            <a href='http://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/'>
-              <h2 class="post-title">
-                Validating RequestParams and PathVariables in Spring MVC
-              </h2>
-            </a>
-            <p class="post-subtitle">
-              <p>Spring MVC provides a convenient way to validate inputs to API end points through the use of <code>JSR-303</code> annotations. While this mechanism works great for end points that consume a <code>RequestBody</code> (as is the case with most <code>POST</code> and <code>PUT</code> requests), it is not easy to achieve the same effect for end points that consume primitives in the form of path variables or request parameters (as is the case with most <code>GET</code> requests).</p>
-
-            </p>
-            <p class="post-meta">Posted on Fri, Dec 4, 2015</p>
           </div>
           
           

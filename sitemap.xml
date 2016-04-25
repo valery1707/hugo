@@ -3,8 +3,13 @@
   
   <url>
     <loc>http://sdqali.in/</loc>
-    <lastmod>2016-04-19T22:29:12-04:00</lastmod>
+    <lastmod>2016-04-24T18:35:43-05:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://sdqali.in/blog/2016/04/24/deprecating-domain-events-in-axon/</loc>
+    <lastmod>2016-04-24T18:35:43-05:00</lastmod>
   </url>
   
   <url>
