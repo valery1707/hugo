@@ -5,8 +5,110 @@
     <link>http://sdqali.in/blog/</link>
     <description>Recent content in Blogs on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 19 Apr 2016 22:29:12 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 24 Apr 2016 18:35:43 -0500</lastBuildDate>
     <atom:link href="http://sdqali.in/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Deprecating domain events in Axon</title>
+      <link>http://sdqali.in/blog/2016/04/24/deprecating-domain-events-in-axon/</link>
+      <pubDate>Sun, 24 Apr 2016 18:35:43 -0500</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/04/24/deprecating-domain-events-in-axon/</guid>
+      <description>
+
+&lt;p&gt;Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.&lt;/p&gt;
+
+&lt;p&gt;Obviously, we need an Upcaster &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:7963631362ccfc0a65724f391287b97d:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:7963631362ccfc0a65724f391287b97d:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; to take care of this situation. The Upcaster in this scenario will have to upcast this event to something representing the non-existence of this event, regardless of the revision. There are two ways to address this issue - Upcasting to an explicit NoOpEvent and upcasting to an empty list.&lt;/p&gt;
+
+&lt;h2 id=&#34;upcasting-to-a-noopevent:7963631362ccfc0a65724f391287b97d&#34;&gt;Upcasting to a NoOpEvent&lt;/h2&gt;
+
+&lt;p&gt;Given an event &lt;code&gt;ValidationForFirstNameFailedEvent&lt;/code&gt;, an upcaster that upcasts to a &lt;code&gt;NoOpEvent&lt;/code&gt; can be implemented as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;DeprecateValidationForFirstNameFailedEventUpcaster&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; AbstractSingleEntryUpcaster &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;protected&lt;/span&gt; Object &lt;span style=&#34;color: #CC00FF&#34;&gt;doUpcast&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SerializedObject intermediateRepresentation&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; UpcastingContext context&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; SimpleSerializedType&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;NoOpEvent&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getName&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(),&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;1&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;protected&lt;/span&gt; SerializedType &lt;span style=&#34;color: #CC00FF&#34;&gt;doUpcast&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SerializedType serializedType&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; SimpleSerializedType&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;NoOpEvent&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getName&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(),&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;1&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;canUpcast&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SerializedType serializedType&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; serializedType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getName&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;equals&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;ValidationForFirstNameFailedEvent&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getName&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Class &lt;span style=&#34;color: #CC00FF&#34;&gt;expectedRepresentationType&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; JsonNode&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As expected, this upcaster does not look at the revision of the intermediate representation and simply looks at the type of the event. And it completely discards any fields in the event and returns a simple type of the &lt;code&gt;NoOpEvent&lt;/code&gt; class. Note that in this case, we are serializing the event as JSON using Jackson, hence the expected representation type is &lt;code&gt;com.fasterxml.jackson.databind.JsonNode&lt;/code&gt;. If we were to use Axon&amp;rsquo;s default XML serialization, the expected representation type will be &lt;code&gt;org.dom4j.Document&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;upcasting-to-an-empty-list:7963631362ccfc0a65724f391287b97d&#34;&gt;Upcasting to an empty list&lt;/h3&gt;
+
+&lt;p&gt;Upcasting to an empty list can be easily achieved by implementing &lt;code&gt;Upcaster&amp;lt;T&amp;gt;&lt;/code&gt; instead of extending &lt;code&gt;AbstractSingleEntryUpcaster&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ValidationForFirstNameFailedEventToEmptyListUpcaster&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; Upcaster&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;JsonNode&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;canUpcast&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SerializedType serializedType&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; serializedType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getName&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;equals&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;ValidationForFirstNameFailedEvent&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getName&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Class&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;JsonNode&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;expectedRepresentationType&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; JsonNode&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;SerializedObject&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&amp;gt;&amp;gt;&lt;/span&gt; upcast&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SerializedObject&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;JsonNode&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; intermediateRepresentation&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+        List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;SerializedType&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; expectedTypes&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; UpcastingContext context&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;emptyList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;SerializedType&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;upcast&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SerializedType serializedType&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;emptyList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This can also be done through extending &lt;code&gt;AbstractSingleEntryUpcaster&lt;/code&gt; and returning &lt;code&gt;null&lt;/code&gt; from both &lt;code&gt;upcast&lt;/code&gt; methods. The class in turns returns empty lists for us. This is evident if we look at the JavaDoc for the methods&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;    &lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;/**&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;     * Upcasts the given &amp;lt;code&amp;gt;intermediateRepresentation&amp;lt;/code&amp;gt; into zero or more other representations. The returned&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;     * list of Serialized Objects must match the given list of serialized types.&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;     * &amp;lt;p/&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;     * This method may return &amp;lt;code&amp;gt;null&amp;lt;/code&amp;gt; to indicate a deprecated object.&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;     *&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;     * @param intermediateRepresentation The representation of the object to upcast&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;     * @param context                    An instance describing the context of the object to upcast&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;     * @return the new representation of the object&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;     */&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;abstract&lt;/span&gt; T &lt;span style=&#34;color: #CC00FF&#34;&gt;doUpcast&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SerializedObject&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; intermediateRepresentation&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+                                  UpcastingContext context&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I posted this question in the &lt;a href=&#34;https://groups.google.com/forum/#!topic/axonframework/G2tlU06mRPM&#34;&gt;Axon mailing list&lt;/a&gt; as well as our internal developer mailing list and upcasting to an empty list was the more popular choice. Allard Buijze, the creator of Axon had this to say:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;by upcasting to an empty list, you&amp;rsquo;re explicitly indicating that the event no longer exists. When upcasting to a NoOpEvent, you implicitly mean the same thing, as no one is interested in a NoOp event.
+So you achieve the same thing, but explicit always beats implicit in DDD ;-)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;While I agree with Allard that being explicit is better than being implicit (and not just in the context of DDD), I am not convinced that upcasting to an empty list is more explicit than upcasting to an explicit type. However, we went ahead with the empty list approach as it was the consensus among my coworkers.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:7963631362ccfc0a65724f391287b97d:1&#34;&gt;Upcasting is a technique of migrating the schema of events in an event-sourced system to keep up with changes in the business requirements. The Axon documentation has a &lt;a href=&#34;http://www.axonframework.org/docs/2.0/repositories-and-event-stores.html#event-upcasting&#34;&gt;very good primer&lt;/a&gt; on upcasting, specifically in the context of Axon.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:7963631362ccfc0a65724f391287b97d:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Programmable exit codes for spring command line applications - 2</title>
@@ -1292,86 +1394,6 @@ applications:
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;To see how to adjust the memory parameters by modifying the Java build pack, see Haydon Ryan&amp;rsquo;s blog post &lt;a href=&#34;http://www.haydonryan.com/java-8-increasing-metaspace-size-in-cloud-foundry/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Disputed territories and merging shapes and features</title>
-      <link>http://sdqali.in/blog/2014/08/08/disputed-territories-and-merging-shapes-and-features/</link>
-      <pubDate>Fri, 08 Aug 2014 00:00:00 +0000</pubDate>
-      
-      <guid>http://sdqali.in/blog/2014/08/08/disputed-territories-and-merging-shapes-and-features/</guid>
-      <description>&lt;p&gt;Making a map that shows a disputed territory can be a tricky business. Nation states vigorously contest maps that appear to portray a boundary that challenges what a border looks like. From the Falkland Islands to Kuril Islands; from Western Sahara to Arunachal Pradesh, disputed territories result in omissions, additions and inaccuracies in maps.&lt;/p&gt;
-
-&lt;p&gt;I grew up looking at maps in books printed by the Oxford Press, that came with a disclaimer in blue rubber stamped across them that stated how the map was wrong. This was due to the fact that the maps showed only the parts of Kashmir being administered by India, thereby omitting areas under Chinese and Pakistani control. The Criminal Law Amendment Act, 1961 in India makes it punishable with imprisonment up to 6 months to publish a map that excludes all or parts of Kashmir&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:331feb6386b5b7cd03d2133ef33a86dd:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:331feb6386b5b7cd03d2133ef33a86dd:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
-
-&lt;p&gt;This creates a lot of trouble for people who make maps for fun or to visualize data. Survey of India does not make it easy to get hold of shape files that represent India&amp;rsquo;s boundaries, and all the shape files that are available from international sources exclude parts of Kashmir. So, how do we solve this problem?&lt;/p&gt;
-
-&lt;p&gt;The North American Cartographic Information Society&amp;rsquo;s Natural Earth &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:331feb6386b5b7cd03d2133ef33a86dd:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:331feb6386b5b7cd03d2133ef33a86dd:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; maps has all the disputed territories available for download as shape files. One way to solve the issue on our hands will be to take the shapes relevant to Kashmir from this file and merge it with the rest of India.&lt;/p&gt;
-
-&lt;p&gt;We will explore how to perform and an operation like this through QGIS &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:331feb6386b5b7cd03d2133ef33a86dd:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:331feb6386b5b7cd03d2133ef33a86dd:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Open the disputed areas shape file in QGIS.&lt;/li&gt;
-&lt;li&gt;Select all the regions in Kashmir that are seen by India as it&amp;rsquo;s territories.&lt;/li&gt;
-&lt;li&gt;In order to make merging these shapes easier, we will introduce a new attribute on them. Go to &lt;code&gt;Layer → Open Attribute Table&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Switch to editing mode in the Attribute Table by clicking the &lt;code&gt;Toggle editing mode&lt;/code&gt; button.&lt;/li&gt;
-&lt;li&gt;Click &lt;code&gt;New column&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Choose a name for the column. In this example we are using &lt;code&gt;target&lt;/code&gt;. Select &lt;code&gt;Text (string)&lt;/code&gt; as the Type and choose a number like &lt;code&gt;10&lt;/code&gt; for width.&lt;/li&gt;
-&lt;li&gt;For all the selected shapes, set the value of &lt;code&gt;target&lt;/code&gt; to Kashmir.&lt;/li&gt;
-&lt;li&gt;Use the &lt;code&gt;Dissolve&lt;/code&gt; tool, found at &lt;code&gt;Vector → Geoprocessing tools → Dissolve&lt;/code&gt; to dissolve the shapes in to a single shape file. Choose &lt;code&gt;target&lt;/code&gt; as the value for &lt;code&gt;dissolve&lt;/code&gt; field. Save the output to a new shape file.&lt;/li&gt;
-&lt;li&gt;Install the QGIS plugin &lt;code&gt;MergeShapes&lt;/code&gt;. Plugins can be installed from &lt;code&gt;Plugins → Manage and Install Plugins&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Copy the &lt;a href=&#34;http://biogeo.ucdavis.edu/data/diva/adm/IND_adm.zip&#34;&gt;India shape file&lt;/a&gt; from DIVA-GIS and the newly generated Kashmir shape file to a directory.&lt;/li&gt;
-&lt;li&gt;Merge these into a single shape using &lt;code&gt;Vector → MergeShapes → MergeShapes&lt;/code&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;With that we have a shape File for India that closely resembles India&amp;rsquo;s official version.&lt;/p&gt;
-
-&lt;p&gt;Once we have the shape File for Kashmir from step &lt;code&gt;8&lt;/code&gt;, we could do the merging by converting both shape Files to their corresponding GeoJSON formats and doing simple JavaScript operations on the objects.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Start by converting both shape Files to their GeoJSON representation.
-&lt;code&gt;bash
-&amp;gt; ogr2ogr -f GeoJSON india.geo.json india.shp
-&amp;gt; ogr2ogr -f GeoJSON kashmir.geo.json kashmir.shp
-&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Load the two feature collections in to a JavaScript console. I tend to use Chromium&amp;rsquo;s Developer Tools, but in this example I am using  Node.js&amp;rsquo; REPL.
-&lt;code&gt;javascript
-kashmir = JSON.parse(fs.readFileSync(&amp;quot;./kashmir.geo.json&amp;quot;).toString());
-india = JSON.parse(fs.readFileSync(&amp;quot;./india.geo.json&amp;quot;).toString());
-&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Identify the Kashmir feature in the India feature collection.
-&lt;code&gt;javascript
-kin = india.features.filter(function(f) {return f.properties.NAME_1.match(&amp;quot;Kashmir&amp;quot;);})[0];
-&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Replace it&amp;rsquo;s coordinates with the unified Kashmir we generated.
-&lt;code&gt;javascript
-kin.geometry.coordinates = kashmir.features[0].geometry.coordinates;
-&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Save it back to a GeoJSON file.
-&lt;code&gt;javascript
-fs.writeFileSync(&amp;quot;full_india.geo.json&amp;quot;, JSON.stringify(india));
-&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now the GeoJSON file can be transformed back in to a shape file.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;ogr2ogr -f &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;ESRI Shapefile&amp;#39;&lt;/span&gt; full_india.shp full_india.geo.json
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Back to Kashmir and laws. Will this map save one from trouble? I am not sure, but this is an improvement on the omission of territories.&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:331feb6386b5b7cd03d2133ef33a86dd:1&#34;&gt;The Criminal Law Amendment Act, 1961 - &lt;a href=&#34;http://www.vakilno1.com/bareacts/laws/the-criminal-law-amendment-act-1961.html#2_Questioning_the_territorial_integrity_or_frontiers_of_India_in_a_manner_prejudicial_to_the_interests_of_safety_and_security_of_India&#34;&gt;Questioning the territorial integrity or frontiers of India in a manner prejudicial to the interests of safety and security of India.&lt;/a&gt;
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:331feb6386b5b7cd03d2133ef33a86dd:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:331feb6386b5b7cd03d2133ef33a86dd:2&#34;&gt;Natural Earth is a public domain map dataset available at 1:10m, 1:50m, and 1:110 million scales. The data set is available for download &lt;a href=&#34;http://www.naturalearthdata.com/downloads/&#34;&gt;here&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:331feb6386b5b7cd03d2133ef33a86dd:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:331feb6386b5b7cd03d2133ef33a86dd:3&#34;&gt;&lt;a href=&#34;http://qgis.org/en/site/&#34;&gt;QGIS&lt;/a&gt; is a cross-platform free and open source desktop geographic information systems application that provides data viewing, editing, and analysis capabilities.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:331feb6386b5b7cd03d2133ef33a86dd:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
 </description>
     </item>
     
