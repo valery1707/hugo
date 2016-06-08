@@ -33,12 +33,12 @@
   <meta name="twitter:site" content="@sdqali">
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Filtering responses in Spring MVC">
-  <meta name="twitter:description" content="Yesterday my colleague Imadad asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.
+  <meta name="twitter:description" content="Yesterday my colleague Imdad asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.
 ">
   <meta name="twitter:image" content="http://sdqali.in/">
 
   <meta property="og:title" content="Filtering responses in Spring MVC" />
-  <meta property="og:description" content="Yesterday my colleague Imadad asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.
+  <meta property="og:description" content="Yesterday my colleague Imdad asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.
 " itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2016/06/08/filtering-responses-in-spring-mvc/" />
   <meta property="og:image" content="http://sdqali.in/" />
@@ -97,7 +97,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <p>Yesterday my colleague <a href="https://twitter.com/imdhmd">Imadad</a> asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.</p>
+            <p>Yesterday my colleague <a href="https://twitter.com/imdhmd">Imdad</a> asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.</p>
 
 <p>For the purposes of this blog post, the response of the end point will be a collection of repositories, taken from the GitHub API for the end point <code>https://api.github.com/users/rails/repos</code>. This has the following structure.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>[
@@ -147,7 +147,7 @@
 <p>We want our mechanism to be easy to use and I came with annotation that we would use as follows:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">ReposController</span> <span style="color: #555555">{</span>
     <span style="color: #9999FF">@RequestMapping</span><span style="color: #555555">(</span>path <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;/repos&quot;</span><span style="color: #555555">,</span> method <span style="color: #555555">=</span> GET<span style="color: #555555">)</span>
-    <span style="color: #9999FF">@FilterJsonBy</span><span style="color: #555555">(</span>keys <span style="color: #555555">=</span> <span style="color: #555555">{</span><span style="color: #CC3300">&quot;fork&quot;</span><span style="color: #555555">,</span> <span style="color: #CC3300">&quot;language&quot;</span><span style="color: #555555">})</span>
+    <span style="color: #9999FF">@JsonFilter</span><span style="color: #555555">(</span>keys <span style="color: #555555">=</span> <span style="color: #555555">{</span><span style="color: #CC3300">&quot;fork&quot;</span><span style="color: #555555">,</span> <span style="color: #CC3300">&quot;language&quot;</span><span style="color: #555555">})</span>
     <span style="color: #006699; font-weight: bold">public</span> List <span style="color: #CC00FF">repos</span><span style="color: #555555">()</span> <span style="color: #006699; font-weight: bold">throws</span> URISyntaxException<span style="color: #555555">,</span> IOException <span style="color: #555555">{</span>
       <span style="color: #0099FF; font-style: italic">// ...</span>
     <span style="color: #555555">}</span>
@@ -158,7 +158,7 @@
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Target</span><span style="color: #555555">(</span>ElementType<span style="color: #555555">.</span><span style="color: #330099">METHOD</span><span style="color: #555555">)</span>
 <span style="color: #9999FF">@Documented</span>
 <span style="color: #9999FF">@Retention</span><span style="color: #555555">(</span>RetentionPolicy<span style="color: #555555">.</span><span style="color: #330099">RUNTIME</span><span style="color: #555555">)</span>
-<span style="color: #006699; font-weight: bold">public</span> <span style="color: #9999FF">@interface</span> FilterJsonBy <span style="color: #555555">{</span>
+<span style="color: #006699; font-weight: bold">public</span> <span style="color: #9999FF">@interface</span> JsonFilter <span style="color: #555555">{</span>
     <span style="color: #0099FF; font-style: italic">// JSON keys that will be used for filtering</span>
     String<span style="color: #555555">[]</span> <span style="color: #CC00FF">keys</span><span style="color: #555555">()</span> <span style="color: #006699; font-weight: bold">default</span> <span style="color: #555555">{};</span>
 <span style="color: #555555">}</span>
@@ -180,11 +180,11 @@
 <span style="color: #555555">}</span>
 </pre></div>
 
-<p>For our case, we want the advice to modify response only if the controller method has the <code>@FilterJsonBy</code> annotation. This is possible with the following implementation of the <code>supports</code> method:</p>
+<p>For our case, we want the advice to modify response only if the controller method has the <code>@JsonFilter</code> annotation. This is possible with the following implementation of the <code>supports</code> method:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>    <span style="color: #9999FF">@Override</span>
     <span style="color: #006699; font-weight: bold">public</span> <span style="color: #007788; font-weight: bold">boolean</span> <span style="color: #CC00FF">supports</span><span style="color: #555555">(</span>MethodParameter returnType<span style="color: #555555">,</span> Class<span style="color: #555555">&lt;?</span> <span style="color: #006699; font-weight: bold">extends</span> HttpMessageConverter<span style="color: #555555">&lt;?&gt;&gt;</span> converterType<span style="color: #555555">)</span> <span style="color: #555555">{</span>
         List<span style="color: #555555">&lt;</span>Annotation<span style="color: #555555">&gt;</span> annotations <span style="color: #555555">=</span> Arrays<span style="color: #555555">.</span><span style="color: #330099">asList</span><span style="color: #555555">(</span>returnType<span style="color: #555555">.</span><span style="color: #330099">getMethodAnnotations</span><span style="color: #555555">());</span>
-        <span style="color: #006699; font-weight: bold">return</span> annotations<span style="color: #555555">.</span><span style="color: #330099">stream</span><span style="color: #555555">().</span><span style="color: #330099">anyMatch</span><span style="color: #555555">(</span>annotation <span style="color: #555555">-&gt;</span> annotation<span style="color: #555555">.</span><span style="color: #330099">annotationType</span><span style="color: #555555">().</span><span style="color: #330099">equals</span><span style="color: #555555">(</span>FilterJsonBy<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">));</span>
+        <span style="color: #006699; font-weight: bold">return</span> annotations<span style="color: #555555">.</span><span style="color: #330099">stream</span><span style="color: #555555">().</span><span style="color: #330099">anyMatch</span><span style="color: #555555">(</span>annotation <span style="color: #555555">-&gt;</span> annotation<span style="color: #555555">.</span><span style="color: #330099">annotationType</span><span style="color: #555555">().</span><span style="color: #330099">equals</span><span style="color: #555555">(</span>JsonFilter<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">));</span>
     <span style="color: #555555">}</span>
 </pre></div>
 
@@ -195,7 +195,7 @@
         List<span style="color: #555555">&lt;</span>Map<span style="color: #555555">&lt;</span>String<span style="color: #555555">,</span> Object<span style="color: #555555">&gt;&gt;</span> values <span style="color: #555555">=</span> <span style="color: #555555">(</span>List<span style="color: #555555">&lt;</span>Map<span style="color: #555555">&lt;</span>String<span style="color: #555555">,</span> Object<span style="color: #555555">&gt;&gt;)</span> body<span style="color: #555555">;</span>
 
         <span style="color: #0099FF; font-style: italic">// Identify keys we are interested in.</span>
-        FilterJsonBy annotation <span style="color: #555555">=</span> returnType<span style="color: #555555">.</span><span style="color: #330099">getMethodAnnotation</span><span style="color: #555555">(</span>FilterJsonBy<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">);</span>
+        JsonFilter annotation <span style="color: #555555">=</span> returnType<span style="color: #555555">.</span><span style="color: #330099">getMethodAnnotation</span><span style="color: #555555">(</span>JsonFilter<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">);</span>
         List<span style="color: #555555">&lt;</span>String<span style="color: #555555">&gt;</span> possibleFilters <span style="color: #555555">=</span> Arrays<span style="color: #555555">.</span><span style="color: #330099">asList</span><span style="color: #555555">(</span>annotation<span style="color: #555555">.</span><span style="color: #330099">keys</span><span style="color: #555555">());</span>
 
         HttpServletRequest servletRequest <span style="color: #555555">=</span> <span style="color: #555555">((</span>ServletServerHttpRequest<span style="color: #555555">)</span> request<span style="color: #555555">).</span><span style="color: #330099">getServletRequest</span><span style="color: #555555">();</span>
