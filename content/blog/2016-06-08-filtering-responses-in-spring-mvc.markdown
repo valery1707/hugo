@@ -11,7 +11,7 @@ date: 2016-06-08T13:23:16-04:00
 title: Filtering responses in Spring MVC
 ---
 
-Yesterday my colleague [Imadad](https://twitter.com/imdhmd) asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.
+Yesterday my colleague [Imdad](https://twitter.com/imdhmd) asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.
 
 <!--more-->
 For the purposes of this blog post, the response of the end point will be a collection of repositories, taken from the GitHub API for the end point `https://api.github.com/users/rails/repos`. This has the following structure.
@@ -68,7 +68,7 @@ We want our mechanism to be easy to use and I came with annotation that we would
 ```java
 public class ReposController {
     @RequestMapping(path = "/repos", method = GET)
-    @FilterJsonBy(keys = {"fork", "language"})
+    @JsonFilter(keys = {"fork", "language"})
     public List repos() throws URISyntaxException, IOException {
       // ...
     }
@@ -81,7 +81,7 @@ The annotation itself takes the following form:
 @Target(ElementType.METHOD)
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FilterJsonBy {
+public @interface JsonFilter {
     // JSON keys that will be used for filtering
     String[] keys() default {};
 }
@@ -106,13 +106,13 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<List> {
 
 ```
 
-For our case, we want the advice to modify response only if the controller method has the `@FilterJsonBy` annotation. This is possible with the following implementation of the `supports` method:
+For our case, we want the advice to modify response only if the controller method has the `@JsonFilter` annotation. This is possible with the following implementation of the `supports` method:
 
 ```java
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         List<Annotation> annotations = Arrays.asList(returnType.getMethodAnnotations());
-        return annotations.stream().anyMatch(annotation -> annotation.annotationType().equals(FilterJsonBy.class));
+        return annotations.stream().anyMatch(annotation -> annotation.annotationType().equals(JsonFilter.class));
     }
 ```
 
@@ -125,7 +125,7 @@ The actual filtering of the response itself involves filtering the `List` for on
         List<Map<String, Object>> values = (List<Map<String, Object>>) body;
 
         // Identify keys we are interested in.
-        FilterJsonBy annotation = returnType.getMethodAnnotation(FilterJsonBy.class);
+        JsonFilter annotation = returnType.getMethodAnnotation(JsonFilter.class);
         List<String> possibleFilters = Arrays.asList(annotation.keys());
 
         HttpServletRequest servletRequest = ((ServletServerHttpRequest) request).getServletRequest();
