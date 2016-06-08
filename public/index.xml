@@ -135,6 +135,8 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;For every entry in the list, we compare query parameter values in the request&amp;rsquo;s URL to the one in the map and filter out only those entries where every combination matches. This is probably not the most efficient way of doing it, but for a quick hack, I am okay with it. Please feel free to take this and improve it. The code for this example is available on &lt;a href=&#34;https://github.com/sdqali/spring-json-filter&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;PS: Imdad may or may not have asked me to credit him for this blog post. ;-)&lt;/p&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
 
 &lt;hr /&gt;
