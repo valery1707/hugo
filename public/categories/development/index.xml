@@ -5,8 +5,147 @@
     <link>http://sdqali.in/categories/development/</link>
     <description>Recent content in Development on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 24 Apr 2016 18:35:43 -0500</lastBuildDate>
+    <lastBuildDate>Wed, 08 Jun 2016 13:23:16 -0400</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/development/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Filtering responses in Spring MVC</title>
+      <link>http://sdqali.in/blog/2016/06/08/filtering-responses-in-spring-mvc/</link>
+      <pubDate>Wed, 08 Jun 2016 13:23:16 -0400</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/06/08/filtering-responses-in-spring-mvc/</guid>
+      <description>&lt;p&gt;Yesterday my colleague &lt;a href=&#34;https://twitter.com/imdhmd&#34;&gt;Imadad&lt;/a&gt; asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.&lt;/p&gt;
+
+&lt;p&gt;For the purposes of this blog post, the response of the end point will be a collection of repositories, taken from the GitHub API for the end point &lt;code&gt;https://api.github.com/users/rails/repos&lt;/code&gt;. This has the following structure.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;[
+  {
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;id&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #FF6600&#34;&gt;20544&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;account_location&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;full_name&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;rails/account_location&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;owner&amp;quot;&lt;/span&gt;: {
+      &lt;span style=&#34;color: #AA0000; background-color: #FFAAAA&#34;&gt;...&lt;/span&gt;
+    },
+    &lt;span style=&#34;color: #AA0000; background-color: #FFAAAA&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;watchers_count&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #FF6600&#34;&gt;70&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;language&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Ruby&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;has_issues&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;false&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;has_downloads&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;true&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;has_wiki&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;false&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;has_pages&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;false&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;forks_count&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #FF6600&#34;&gt;12&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;mirror_url&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;null&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;open_issues_count&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #FF6600&#34;&gt;0&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;forks&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #FF6600&#34;&gt;12&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;open_issues&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #FF6600&#34;&gt;0&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;watchers&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #FF6600&#34;&gt;70&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;default_branch&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;master&amp;quot;&lt;/span&gt;
+  }
+  &lt;span style=&#34;color: #AA0000; background-color: #FFAAAA&#34;&gt;...&lt;/span&gt;
+  &lt;span style=&#34;color: #AA0000; background-color: #FFAAAA&#34;&gt;...&lt;/span&gt;
+]
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We have a simple end point that reads a file with this response and responds with a JSON representation of it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RestController&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ReposController&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;path &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/repos&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; method &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; GET&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; List &lt;span style=&#34;color: #CC00FF&#34;&gt;repos&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; URISyntaxException&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; IOException &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        URL url &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getClass&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getClassLoader&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getResource&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;repos.json&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;toURI&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;toURL&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+
+        ObjectMapper objectMapper &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; ObjectMapper&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; objectMapper&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;readValue&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;url&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; List&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;What we want to do is to provide a convenient mechanism so that this end point can respond for request made with url parameters which it uses to filter repositories. For example, we expect the request to &lt;code&gt;http://localhost:8080/repos?fork=true&amp;amp;language=Ruby&lt;/code&gt; to have a JSON response with an array containing only those repositories that are forks and have Ruby as their primary language. Of course, it is worth pointing out that in actual system, you would want to do these kind of filtering at the data layer instead of the web layer, but this is an exercise to see how we could do it at the Spring layer.&lt;/p&gt;
+
+&lt;p&gt;We want our mechanism to be easy to use and I came with annotation that we would use as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ReposController&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;path &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/repos&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; method &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; GET&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@FilterJsonBy&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;keys &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;fork&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;language&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;})&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; List &lt;span style=&#34;color: #CC00FF&#34;&gt;repos&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; URISyntaxException&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; IOException &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+      &lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;// ...&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The annotation itself takes the following form:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Target&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;ElementType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;METHOD&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@Documented&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@Retention&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;RetentionPolicy&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;RUNTIME&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #9999FF&#34;&gt;@interface&lt;/span&gt; FilterJsonBy &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;// JSON keys that will be used for filtering&lt;/span&gt;
+    String&lt;span style=&#34;color: #555555&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;keys&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;default&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{};&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Spring MVC provides a &lt;code&gt;ResponseBodyAdvice&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:0abddd3b4cf30c5684cc1ab73a7952dc:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:0abddd3b4cf30c5684cc1ab73a7952dc:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; to customize the response immediately after the execution of a controller method, which is exactly what we want in this situation. The interface expects us to implement two methods.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@ControllerAdvice&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;JsonFilterAdvice&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; ResponseBodyAdvice&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;List&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;supports&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MethodParameter returnType&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Class&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; HttpMessageConverter&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&amp;gt;&amp;gt;&lt;/span&gt; converterType&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; List &lt;span style=&#34;color: #CC00FF&#34;&gt;beforeBodyWrite&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;List body&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; MethodParameter returnType&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; MediaType selectedContentType&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Class&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt;
+    HttpMessageConverter&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&amp;gt;&amp;gt;&lt;/span&gt; selectedConverterType&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ServerHttpRequest request&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ServerHttpResponse response&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; body&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For our case, we want the advice to modify response only if the controller method has the &lt;code&gt;@FilterJsonBy&lt;/code&gt; annotation. This is possible with the following implementation of the &lt;code&gt;supports&lt;/code&gt; method:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;supports&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MethodParameter returnType&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Class&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; HttpMessageConverter&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&amp;gt;&amp;gt;&lt;/span&gt; converterType&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Annotation&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; annotations &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; Arrays&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;asList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;returnType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getMethodAnnotations&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; annotations&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;stream&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;anyMatch&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;annotation &lt;span style=&#34;color: #555555&#34;&gt;-&amp;gt;&lt;/span&gt; annotation&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;annotationType&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;equals&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;FilterJsonBy&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The actual filtering of the response itself involves filtering the &lt;code&gt;List&lt;/code&gt; for only those entries where every filter key has values provided in the incoming request. The following implementation achieves this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; List &lt;span style=&#34;color: #CC00FF&#34;&gt;beforeBodyWrite&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;List body&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; MethodParameter returnType&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; MediaType selectedContentType&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Class&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt;
+            HttpMessageConverter&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&amp;gt;&amp;gt;&lt;/span&gt; selectedConverterType&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ServerHttpRequest request&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ServerHttpResponse response&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Map&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; values &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Map&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&amp;gt;)&lt;/span&gt; body&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+        &lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;// Identify keys we are interested in.&lt;/span&gt;
+        FilterJsonBy annotation &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; returnType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getMethodAnnotation&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;FilterJsonBy&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+        List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; possibleFilters &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; Arrays&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;asList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;annotation&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;keys&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
+
+        HttpServletRequest servletRequest &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;((&lt;/span&gt;ServletServerHttpRequest&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; request&lt;span style=&#34;color: #555555&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getServletRequest&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+
+        List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Map&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; result &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; values&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;stream&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;filter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;map &lt;span style=&#34;color: #555555&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+            &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; match &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+            Enumeration&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; parameterNames &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; servletRequest&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getParameterNames&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+            &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;while&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;parameterNames&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;hasMoreElements&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;())&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+                String parameterName &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; parameterNames&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;nextElement&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+                &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;possibleFilters&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;contains&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;parameterName&lt;span style=&#34;color: #555555&#34;&gt;))&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+                    String parameterValue &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; servletRequest&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getParameter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;parameterName&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+                    Object valueFromMap &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; map&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;parameterName&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+                    match &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;valueFromMap &lt;span style=&#34;color: #555555&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; valueFromMap&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;toString&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;equals&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;parameterValue&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;toString&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
+                &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+            &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+            &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; match&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color: #555555&#34;&gt;}).&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;collect&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Collectors&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;toList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; result&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For every entry in the list, we compare query parameter values in the request&amp;rsquo;s URL to the one in the map and filter out only those entries where every combination matches. This is probably not the most efficient way of doing it, but for a quick hack, I am okay with it. Please feel free to take this and improve it. The code for this example is available on &lt;a href=&#34;https://github.com/sdqali/spring-json-filter&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:0abddd3b4cf30c5684cc1ab73a7952dc:1&#34;&gt;&lt;code&gt;ResponseBodyAdvice&lt;/code&gt; is an interface that can be wired with a &lt;code&gt;@ControllerAdvice&lt;/code&gt; annotation to customize the response of controller methods. See the documentation &lt;a href=&#34;http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/servlet/mvc/method/annotation/ResponseBodyAdvice.html&#34;&gt;here&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:0abddd3b4cf30c5684cc1ab73a7952dc:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Deprecating domain events in Axon</title>
@@ -1332,68 +1471,6 @@ Server error, status code: 400, error code: 300001, message: The security group 
 &lt;p&gt;If JSON allowed comments, commenting would result in a slightly more readable declaration file, although it won&amp;rsquo;t be stored in the Cloud Controller database and hence won&amp;rsquo;t be available upon querying with &lt;code&gt;cf security-group &amp;lt;security-group-name&amp;gt;&lt;/code&gt;. This is a moot point anyway, as JSON &lt;a href=&#34;https://plus.google.com/+DouglasCrockfordEsq/posts/RK8qyGVaGSr&#34;&gt;explicitly&lt;/a&gt; doesn&amp;rsquo;t allow comments. There are workarounds that involve minifying the JSON input before parsing the configurations, but I don&amp;rsquo;t think that is the right direction to head to.&lt;/p&gt;
 
 &lt;p&gt;I have filed a &lt;a href=&#34;https://github.com/cloudfoundry/cloud_controller_ng/issues/382&#34;&gt;ticket&lt;/a&gt; against Cloud Controller to address this issue. It &lt;a href=&#34;https://github.com/cloudfoundry/cloud_controller_ng/blob/cacb5563264208e920f4b7fecc7060f89b929fbb/lib/cloud_controller/rule_validator.rb#L6&#34;&gt;doesn&amp;rsquo;t look like a difficult&lt;/a&gt; feature to implement. Hopefully this is available in Cloud Controller soon.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Configuring Cloud Foundry Java Memory Parameters</title>
-      <link>http://sdqali.in/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/</link>
-      <pubDate>Wed, 20 May 2015 19:42:56 -0700</pubDate>
-      
-      <guid>http://sdqali.in/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/</guid>
-      <description>&lt;p&gt;This week I have been trying out Cloud Foundry. Today while trying to set up monitoring through AppDynamics, the sample application that I was using started crashing because of a Java memory error. This blog post discusses how to prevent this from happening by configuring Java memory parameters used by the application.&lt;/p&gt;
-
-&lt;p&gt;This is what was in the Cloud Foundry logs.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;May &lt;span style=&#34;color: #FF6600&#34;&gt;20&lt;/span&gt; 18:14:51 CloudFoundry 6767b9fd-1874-43cb-a4f8-7470a17c90ae/&lt;span style=&#34;color: #555555&#34;&gt;[&lt;/span&gt;App/2&lt;span style=&#34;color: #555555&#34;&gt;]&lt;/span&gt;:  /bin/bash: line 31:    &lt;span style=&#34;color: #FF6600&#34;&gt;32&lt;/span&gt; Killed                  &lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;SERVER_PORT&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;$PORT&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;$PWD&lt;/span&gt;/.java-buildpack/open_jdk_jre/bin/java -cp &lt;span style=&#34;color: #003333&#34;&gt;$PWD&lt;/span&gt;/.:&lt;span style=&#34;color: #003333&#34;&gt;$PWD&lt;/span&gt;/.java-buildpack/spring_auto_reconfiguration/spring_auto_reconfiguration-1.4.0_RELEASE.jar -Djava.io.tmpdir&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;$TMPDIR&lt;/span&gt; -XX:OnOutOfMemoryError&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;$PWD&lt;/span&gt;/.java-buildpack/open_jdk_jre/bin/killjava.sh -Xmx499200K -Xms499200K -XX:MaxPermSize&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;65M -XX:PermSize&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;65M -Xss1M -javaagent:&lt;span style=&#34;color: #003333&#34;&gt;$PWD&lt;/span&gt;/.java-buildpack/app_dynamics_agent/javaagent.jar -Dappdynamics.agent.applicationName&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;******&amp;#39;&lt;/span&gt; -Dappdynamics.agent.tierName&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;******&amp;#39;&lt;/span&gt; -Dappdynamics.agent.nodeName&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;$(&lt;/span&gt;expr &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;$VCAP_APPLICATION&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&lt;/span&gt; : &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;.*instance_id[&amp;quot;: ]*&amp;quot;\([a-z0-9]\+\)&amp;quot;.*&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;)&lt;/span&gt; -Dappdynamics.agent.accountAccessKey&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;****** -Dappdynamics.agent.accountName&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;******* -Dappdynamics.controller.hostName&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;******.saas.appdynamics.com -Dappdynamics.controller.port&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #FF6600&#34;&gt;443&lt;/span&gt; -Dappdynamics.controller.ssl.enabled&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #336666&#34;&gt;true&lt;/span&gt; org.springframework.boot.loader.JarLauncher &lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;It can be seen that the &lt;code&gt;MaxPermSize&lt;/code&gt; is set to &lt;code&gt;65M&lt;/code&gt;. Now, this is not something I configured for this app. This value was assigned by the Java build pack generated by Cloud Foundry when the app was deployed. This can be in the &lt;a href=&#34;https://github.com/cloudfoundry/java-buildpack&#34;&gt;Java build pack&lt;/a&gt;&amp;rsquo;s OpenJDK JRE configuration.&lt;/p&gt;
-# config/open_jdk_jre.yml
----
-jre:
-  version: 1.8.0_+
-  repository_root: &#34;{default.repository.root}/openjdk/{platform}/{architecture}&#34;
-memory_calculator:
-  version: 1.+
-  repository_root: &#34;{default.repository.root}/memory-calculator/{platform}/{architecture}&#34;
-  memory_sizes:
-    metaspace: 64m..
-    permgen: 64m..
-  memory_heuristics:
-    heap: 75
-    metaspace: 10
-    permgen: 10
-    stack: 5
-    native: 10
-
-&lt;p&gt;The only way to change this value is to change the configurations of the Java build pack. There are two ways to do this:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Fork the build pack, modify the default memory parameters and use this build pack to deploy.&lt;/li&gt;
-&lt;li&gt;Override the memory parameters used by the build pack at deploy time.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Option 1 seems to be an overkill and Cloud Foundry provides a &lt;a href=&#34;https://github.com/cloudfoundry/java-buildpack/blob/master/README.md#configuration-and-extension&#34;&gt;relatively easy method&lt;/a&gt; to override build pack parameters. Option 2 is the approach I decided to take.&lt;/p&gt;
-
-&lt;p&gt;There are &lt;a href=&#34;https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md&#34;&gt;two sets of mappings&lt;/a&gt; that control the various Java memory configurations - &lt;code&gt;memory_sizes&lt;/code&gt; and &lt;code&gt;memory_heuristics&lt;/code&gt;. Together, these two parameters provide a lot of &lt;a href=&#34;https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md#memory-calculation&#34;&gt;flexibility&lt;/a&gt; to control memory allocation. For the particular issue my application faced, all I need to do is to force an appropriate value for &lt;code&gt;MaxPermSize&lt;/code&gt; and this can be done by setting the &lt;code&gt;JBP_CONFIG_OPEN_JDK_MEMORY_CALCULATOR&lt;/code&gt; environment variable as:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;cf set-env app-name JBP_CONFIG_OPEN_JDK_MEMORY_CALCULATOR &lt;span style=&#34;color: #555555&#34;&gt;[&lt;/span&gt;memory_sizes: &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;metaspace: 128m&lt;span style=&#34;color: #555555&#34;&gt;}]&lt;/span&gt;&lt;span style=&#34;color: #AA0000; background-color: #FFAAAA&#34;&gt;&amp;#39;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;While this configurations works for applications running under Java &lt;code&gt;1.8&lt;/code&gt;, the right parameter to use for applications running under Java &lt;code&gt;1.7&lt;/code&gt; is &lt;code&gt;permgen&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;cf set-env app-name JBP_CONFIG_OPEN_JDK_JRE &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;[memory_sizes: {metaspace: 128m}]&amp;#39;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;After re-staging the application and making sure the application works as expected, I added this environment variable to the application&amp;rsquo;s &lt;code&gt;manifest.yml&lt;/code&gt; file.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #00CCFF; font-weight: bold&#34;&gt;---&lt;/span&gt;
-applications:
-- name: test-app
-  ...
-  env:
-    JBP_CONFIG_OPEN_JDK_MEMORY_CALCULATOR: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;[memory_sizes:&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;{metaspace:&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;128m}]&amp;quot;&lt;/span&gt;
-  ...
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;To see how to adjust the memory parameters by modifying the Java build pack, see Haydon Ryan&amp;rsquo;s blog post &lt;a href=&#34;http://www.haydonryan.com/java-8-increasing-metaspace-size-in-cloud-foundry/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
