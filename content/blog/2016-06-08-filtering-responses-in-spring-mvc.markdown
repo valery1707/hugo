@@ -148,4 +148,6 @@ The actual filtering of the response itself involves filtering the `List` for on
 ```
 For every entry in the list, we compare query parameter values in the request's URL to the one in the map and filter out only those entries where every combination matches. This is probably not the most efficient way of doing it, but for a quick hack, I am okay with it. Please feel free to take this and improve it. The code for this example is available on [GitHub](https://github.com/sdqali/spring-json-filter).
 
+PS: Imdad may or may not have asked me to credit him for this blog post. ;-)
+
 [^1]: `ResponseBodyAdvice` is an interface that can be wired with a `@ControllerAdvice` annotation to customize the response of controller methods. See the documentation [here](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/servlet/mvc/method/annotation/ResponseBodyAdvice.html).
