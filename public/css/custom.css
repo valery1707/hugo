@@ -5,3 +5,29 @@
 img {
     max-width: 100%;
 }
+
+//
+.intro-header {
+    background: none;
+    background-image: none;
+}
+
+.intro-header .site-heading, .intro-header .post-heading, .intro-header .page-heading {
+    color: #000;
+}
+
+.navbar-custom .nav li a, .navbar-custom .navbar-brand {
+    color: #000;
+}
+
+.navbar-custom .nav li a:hover {
+    color: #337ab7;
+}
+
+.navbar-custom a.navbar-brand:hover  {
+    color: #337ab7;
+}
+
+.intro-header {
+    margin-bottom: 0px;
+}
