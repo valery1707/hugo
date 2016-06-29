@@ -5,8 +5,114 @@
     <link>http://sdqali.in/categories/development/</link>
     <description>Recent content in Development on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 08 Jun 2016 13:23:16 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 28 Jun 2016 23:17:51 -0400</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/development/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Injecting dependencies into a Spring @Configuration</title>
+      <link>http://sdqali.in/blog/2016/06/28/injecting-dependencies-into-a-spring-configuration/</link>
+      <pubDate>Tue, 28 Jun 2016 23:17:51 -0400</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/06/28/injecting-dependencies-into-a-spring-configuration/</guid>
+      <description>&lt;p&gt;This is one of those blog posts about things I wish I had known before I spent a lot of time figuring out when something was not working as expected. Recently, we have been trying to extend a &lt;code&gt;WebMvcConfigurerAdapter&lt;/code&gt; to wire up an HTTP request interceptor. And things did not work as we expected it to and we learned that our understanding of how Spring behaved under this situation was wrong. This is a write up to refer back to if and when we encounter this issue again.&lt;/p&gt;
+
+&lt;p&gt;Spring&amp;rsquo;s &lt;code&gt;@Configuration&lt;/code&gt; annotation allows us to create a class that provides a set of beans. Because we wanted to wire up interceptors when the application started, it felt reasonable to annotate the extended &lt;code&gt;WebMvcConfigurerAdapter&lt;/code&gt; adaptor as a &lt;code&gt;@Configuration&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;So we ended up with code that looked as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Config&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; WebMvcConfigurerAdapter &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; HandlerInterceptor handlerInterceptor&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@SuppressWarnings&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;unused&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;Config&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;Config&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HandlerInterceptor handlerInterceptor&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;handlerInterceptor&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; handlerInterceptor&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;addInterceptors&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;InterceptorRegistry registry&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        registry&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;addInterceptor&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;handlerInterceptor&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;addInterceptors&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;registry&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The interceptor itself is declared a &lt;code&gt;@Component&lt;/code&gt; of the following form:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;SessionCheckInterceptor&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; HandlerInterceptor &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;preHandle&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HttpServletRequest request&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; HttpServletResponse response&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object handler&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;request&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getHeader&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;session&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+            response&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setStatus&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HttpServletResponse&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;SC_BAD_REQUEST&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+            &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;false&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+            &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;postHandle&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HttpServletRequest request&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; HttpServletResponse response&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object handler&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ModelAndView modelAndView&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;afterCompletion&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HttpServletRequest request&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; HttpServletResponse response&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object handler&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Exception ex&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As you can see, the interceptor checks every request for a &lt;code&gt;session&lt;/code&gt; header and responds with a &lt;code&gt;BAD_REQUEST (400)&lt;/code&gt; in the absence of it.&lt;/p&gt;
+
+&lt;p&gt;This code compiles fine, but when you run it, you will be confronted with the following stack trace:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;Factory method &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;requestMappingHandlerMapping&amp;#39;&lt;/span&gt; threw exception; nested exception is java.lang.IllegalArgumentException: Interceptor is required
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So, what happened? Looking at the stack trace reveals the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;Caused by: java.lang.IllegalArgumentException: Interceptor is required
+    at org.springframework.util.Assert.notNull&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Assert.java:115&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    at org.springframework.web.servlet.config.annotation.InterceptorRegistration.&amp;lt;init&amp;gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;InterceptorRegistration.java:51&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    at org.springframework.web.servlet.config.annotation.InterceptorRegistry.addInterceptor&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;InterceptorRegistry.java:45&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    at in.sdqali.spring.config.Config.addInterceptors&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Config.java:30&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Evidently, the interceptor we wired up is &lt;code&gt;null&lt;/code&gt;. After a spending a lot of time on this, we discovered this line on the java doc for &lt;code&gt;@Configuration&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;@Configuration is meta-annotated with @Component, therefore
+@Configuration classes are candidates for component scanning (typically using
+Spring XML&amp;#39;s &amp;lt;context:component-scan/&amp;gt; element) and therefore may also take
+advantage of @Autowired/@Inject
+at the field and method level (but not at the constructor level).
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;A simple fix is to inject the interceptor through a setter as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Config&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; WebMvcConfigurerAdapter &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; HandlerInterceptor handlerInterceptor&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@SuppressWarnings&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;unused&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;Config&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;setHandlerInterceptor&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HandlerInterceptor handlerInterceptor&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;handlerInterceptor&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; handlerInterceptor&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;addInterceptors&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;InterceptorRegistry registry&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        registry&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;addInterceptor&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;handlerInterceptor&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;addInterceptors&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;registry&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It took us a lot of time debugging and stepping through Spring code before we finally figured out what the issue was, but we could have discovered it in seconds from the java doc. There is a lesson in there for us.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Filtering responses in Spring MVC</title>
@@ -1422,57 +1528,6 @@ $ curl -v http://127.0.0.1:9090
 *   Trying 127.0.0.1...
 * connect to 127.0.0.1 port &lt;span style=&#34;color: #FF6600&#34;&gt;9090&lt;/span&gt; failed: Connection refused
 &lt;/pre&gt;&lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Making sense of Cloud Foundry security group declarations</title>
-      <link>http://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/</link>
-      <pubDate>Thu, 21 May 2015 22:58:41 -0700</pubDate>
-      
-      <guid>http://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/</guid>
-      <description>&lt;p&gt;Cloud Foundry allows fine grained declaration of security groups, down to IP address ranges and Ports. While this provides great flexibility, making sense of why each rule in a security group exists and what each does is really difficult because of the limitations of the security group declaration mechanism.&lt;/p&gt;
-
-&lt;p&gt;The Cloud Foundry command line tool allows the creation of security groups from JSON declarations. The &lt;code&gt;create-security-group&lt;/code&gt; command works like so:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; cf create-security-group SECURITY_GROUP PATH_TO_JSON_RULES_FILE
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The JSON file needs to declare an array of rules where each rule has the following structure:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;{
-   &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;protocol&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;tcp&amp;quot;&lt;/span&gt;,
-   &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;destination&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;10.244.1.18&amp;quot;&lt;/span&gt;,
-   &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;ports&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;3306&amp;quot;&lt;/span&gt;,
-   &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;log&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;true&lt;/span&gt;
-}
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;In my Cloud Foundry environment, I have a security group assigned to a &lt;code&gt;Space&lt;/code&gt; with the following declaration:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;[
-  {&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;protocol&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;tcp&amp;quot;&lt;/span&gt;,&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;destination&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;lt;ip-foo&amp;gt;&amp;quot;&lt;/span&gt;,&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;ports&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;3306&amp;quot;&lt;/span&gt;},
-  {&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;protocol&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;tcp&amp;quot;&lt;/span&gt;,&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;destination&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;lt;some-ip&amp;gt;-&amp;lt;another-ip&amp;gt;&amp;quot;&lt;/span&gt;,&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;ports&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;55882&amp;quot;&lt;/span&gt;},
-  {&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;protocol&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;tcp&amp;quot;&lt;/span&gt;,&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;destination&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;lt;ip-bar&amp;gt;&amp;quot;&lt;/span&gt;,&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;ports&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;443&amp;quot;&lt;/span&gt;}
-]
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;With only 3 rules in place, it is already confusing what service each rule is for and why they are there.&lt;/p&gt;
-
-&lt;p&gt;I believe this can be easily improved by allowing an extra field &lt;code&gt;comment&lt;/code&gt; that provides context about each rule. With this in place, the rules will look like this:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;[
-  {&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;protocol&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;tcp&amp;quot;&lt;/span&gt;,&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;destination&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;lt;ip-foo&amp;gt;&amp;quot;&lt;/span&gt;,&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;ports&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;3306&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;comment&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Allow database connection to PostgreSQL at hosted-postgres-service.com&amp;quot;&lt;/span&gt;},
-  {&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;protocol&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;tcp&amp;quot;&lt;/span&gt;,&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;destination&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;lt;some-ip&amp;gt;-&amp;lt;another-ip&amp;gt;&amp;quot;&lt;/span&gt;,&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;ports&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;55882&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;comment&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Allow logging to hosted-logging-service.com&amp;quot;&lt;/span&gt;},
-  {&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;protocol&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;tcp&amp;quot;&lt;/span&gt;,&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;destination&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;lt;ip-bar&amp;gt;&amp;quot;&lt;/span&gt;,&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;ports&amp;quot;&lt;/span&gt;:&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;443&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;comment&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Allow monitoring service at hosted-monitoring-service.com&amp;quot;&lt;/span&gt;}
-]
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;As things stand, Cloud Foundry Cloud Controller does not allow any extra fields to exist in a rule. For example, the above declaration will cause an error while trying to create a security group.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; cf create-security-group sample-space-security-group spec.json
-
-Server error, status code: 400, error code: 300001, message: The security group is invalid: rules rule number &lt;span style=&#34;color: #FF6600&#34;&gt;1&lt;/span&gt; contains the invalid field &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;comment&amp;#39;&lt;/span&gt;, rules rule number &lt;span style=&#34;color: #FF6600&#34;&gt;2&lt;/span&gt; contains the invalid field &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;comment&amp;#39;&lt;/span&gt;, rules rule number &lt;span style=&#34;color: #FF6600&#34;&gt;3&lt;/span&gt; contains the invalid field &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;comment&amp;#39;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;If JSON allowed comments, commenting would result in a slightly more readable declaration file, although it won&amp;rsquo;t be stored in the Cloud Controller database and hence won&amp;rsquo;t be available upon querying with &lt;code&gt;cf security-group &amp;lt;security-group-name&amp;gt;&lt;/code&gt;. This is a moot point anyway, as JSON &lt;a href=&#34;https://plus.google.com/+DouglasCrockfordEsq/posts/RK8qyGVaGSr&#34;&gt;explicitly&lt;/a&gt; doesn&amp;rsquo;t allow comments. There are workarounds that involve minifying the JSON input before parsing the configurations, but I don&amp;rsquo;t think that is the right direction to head to.&lt;/p&gt;
-
-&lt;p&gt;I have filed a &lt;a href=&#34;https://github.com/cloudfoundry/cloud_controller_ng/issues/382&#34;&gt;ticket&lt;/a&gt; against Cloud Controller to address this issue. It &lt;a href=&#34;https://github.com/cloudfoundry/cloud_controller_ng/blob/cacb5563264208e920f4b7fecc7060f89b929fbb/lib/cloud_controller/rule_validator.rb#L6&#34;&gt;doesn&amp;rsquo;t look like a difficult&lt;/a&gt; feature to implement. Hopefully this is available in Cloud Controller soon.&lt;/p&gt;
 </description>
     </item>
     
