@@ -111,6 +111,8 @@ at the field and method level (but not at the constructor level).
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;It took us a lot of time debugging and stepping through Spring code before we finally figured out what the issue was, but we could have discovered it in seconds from the java doc. There is a lesson in there for us.&lt;/p&gt;
+
+&lt;p&gt;The example code to demonstrate this is available on &lt;a href=&#34;https://github.com/sdqali/config-constructor-poc&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
