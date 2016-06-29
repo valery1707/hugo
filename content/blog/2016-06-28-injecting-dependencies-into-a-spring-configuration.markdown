@@ -122,3 +122,5 @@ public class Config extends WebMvcConfigurerAdapter {
 ```
 
 It took us a lot of time debugging and stepping through Spring code before we finally figured out what the issue was, but we could have discovered it in seconds from the java doc. There is a lesson in there for us.
+
+The example code to demonstrate this is available on [GitHub](https://github.com/sdqali/config-constructor-poc).
