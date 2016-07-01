@@ -89,6 +89,8 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The Logstach encoder also provides for a &lt;a href=&#34;https://github.com/logstash/logstash-logback-encoder#custom_field_names&#34;&gt;variety of customizations&lt;/a&gt; to the way the logs are written.&lt;/p&gt;
+
+&lt;p&gt;A sample application with these configurations is available in &lt;a href=&#34;https://github.com/sdqali/json-log&#34;&gt;this repository&lt;/a&gt;.&lt;/p&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
 
 &lt;hr /&gt;
