@@ -97,6 +97,7 @@ $ tail -f /tmp/json-log.json  | jq .
 ```
 The Logstach encoder also provides for a [variety of customizations](https://github.com/logstash/logstash-logback-encoder#custom_field_names) to the way the logs are written.
 
+A sample application with these configurations is available in [this repository](https://github.com/sdqali/json-log).
 
 [^1]: ELK - ElasticSearch, Logstash, Kibana is a toolset for analyzing logs. An introduction to ELK can be found [here](https://www.elastic.co/webinars/introduction-elk-stack).
 [^2]: [jq](https://stedolan.github.io/jq/) is a command line JSON processor. If you work with JSON, jq is a must have tool.
