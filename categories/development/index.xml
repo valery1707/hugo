@@ -5,8 +5,103 @@
     <link>http://sdqali.in/categories/development/</link>
     <description>Recent content in Development on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 28 Jun 2016 23:17:51 -0400</lastBuildDate>
+    <lastBuildDate>Thu, 30 Jun 2016 19:43:07 -0400</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/development/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>JSON logging for Spring applications</title>
+      <link>http://sdqali.in/blog/2016/06/30/json-logging-for-spring-applications/</link>
+      <pubDate>Thu, 30 Jun 2016 19:43:07 -0400</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/06/30/json-logging-for-spring-applications/</guid>
+      <description>&lt;p&gt;If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4d1e9942cfbb3801d59160499ca76d4c:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4d1e9942cfbb3801d59160499ca76d4c:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4d1e9942cfbb3801d59160499ca76d4c:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4d1e9942cfbb3801d59160499ca76d4c:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;. This blog post documents how to format logs as JSON in a Spring application.&lt;/p&gt;
+
+&lt;p&gt;We will be using the &lt;code&gt;logstash-logback-encoder&lt;/code&gt; &lt;a href=&#34;https://github.com/logstash/logstash-logback-encoder&#34;&gt;encoder&lt;/a&gt; from Logstash. This can be added to the application with the following Maven dependency:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;net.logstash.logback&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;logstash-logback-encoder&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;4.7&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The next step is to configure logback to log using the new encoder. This can be done by placing a &lt;code&gt;logback.xml&lt;/code&gt; configuration file in the application&amp;rsquo;s class path - for example in the &lt;code&gt;main/resources&lt;/code&gt; directory.&lt;/p&gt;
+
+&lt;p&gt;If we want the application to log to the console in JSON format, we will use a &lt;code&gt;ConsoleAppender&lt;/code&gt; with the encoder as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;appender&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;consoleAppender&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ch.qos.logback.core.ConsoleAppender&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;encoder&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;net.logstash.logback.encoder.LogstashEncoder&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/appender&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;logger&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jsonLogger&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;additivity=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;false&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;level=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;DEBUG&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;ref=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;consoleAppender&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/logger&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;root&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;level=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;INFO&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;ref=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;consoleAppender&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/root&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If we wanted the application to log to a file with the logs being rotated, we will configure a &lt;code&gt;RollingFileAppender&lt;/code&gt; with the encoder, as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;property&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;LOG_PATH&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/tmp/json-log.json&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;appender&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jsonAppender&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ch.qos.logback.core.rolling.RollingFileAppender&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;File&amp;gt;&lt;/span&gt;${LOG_PATH}&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/File&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;encoder&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;net.logstash.logback.encoder.LogstashEncoder&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;rollingPolicy&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ch.qos.logback.core.rolling.FixedWindowRollingPolicy&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;maxIndex&amp;gt;&lt;/span&gt;1&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/maxIndex&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;fileNamePattern&amp;gt;&lt;/span&gt;${LOG_PATH}.%i&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/fileNamePattern&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/rollingPolicy&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;triggeringPolicy&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;MaxFileSize&amp;gt;&lt;/span&gt;1MB&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/MaxFileSize&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/triggeringPolicy&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/appender&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;logger&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jsonLogger&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;additivity=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;false&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;level=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;DEBUG&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;ref=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jsonAppender&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/logger&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;root&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;level=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;INFO&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;ref=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jsonAppender&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/root&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;With this configuration in place, we can tail the logs to observe the application in a much more readable manner:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ tail -f /tmp/json-log.json  | jq .
+&lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;@timestamp&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;2016-06-30T20:01:59.651-04:00&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;@version&amp;quot;&lt;/span&gt;: 1,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;message&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Mapped \&amp;quot;{[/error],produces=[text/html]}\&amp;quot; onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;logger_name&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;thread_name&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;main&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;level&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;INFO&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;level_value&amp;quot;&lt;/span&gt;: 20000,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;HOSTNAME&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;somehostname&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;@timestamp&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;2016-06-30T20:01:59.677-04:00&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;@version&amp;quot;&lt;/span&gt;: 1,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;message&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;logger_name&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;org.springframework.web.servlet.handler.SimpleUrlHandlerMapping&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;thread_name&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;main&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;level&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;INFO&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;level_value&amp;quot;&lt;/span&gt;: 20000,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;HOSTNAME&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;somehostname&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+...
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The Logstach encoder also provides for a &lt;a href=&#34;https://github.com/logstash/logstash-logback-encoder#custom_field_names&#34;&gt;variety of customizations&lt;/a&gt; to the way the logs are written.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:4d1e9942cfbb3801d59160499ca76d4c:1&#34;&gt;ELK - ElasticSearch, Logstash, Kibana is a toolset for analyzing logs. An introduction to ELK can be found &lt;a href=&#34;https://www.elastic.co/webinars/introduction-elk-stack&#34;&gt;here&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4d1e9942cfbb3801d59160499ca76d4c:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:4d1e9942cfbb3801d59160499ca76d4c:2&#34;&gt;&lt;a href=&#34;https://stedolan.github.io/jq/&#34;&gt;jq&lt;/a&gt; is a command line JSON processor. If you work with JSON, jq is a must have tool.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4d1e9942cfbb3801d59160499ca76d4c:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Injecting dependencies into a Spring @Configuration</title>
@@ -1350,186 +1445,6 @@ The test re-written using &lt;code&gt;asyncDispatch&lt;/code&gt; would be as fol
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The same approach can be employed to test when controllers use Java 8&amp;rsquo;s &lt;code&gt;CompletableFuture&lt;/code&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Running multiple applications in the same Tomcat installation</title>
-      <link>http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/</link>
-      <pubDate>Tue, 09 Jun 2015 01:11:05 -0400</pubDate>
-      
-      <guid>http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/</guid>
-      <description>
-
-&lt;p&gt;This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the &lt;code&gt;CATALINA_HOME&lt;/code&gt; and &lt;code&gt;CATALINA_BASE&lt;/code&gt; environment variables used by Tomcat. I have verified this method against Tomcat versions &lt;code&gt;8.0.x&lt;/code&gt;; other versions should work the same way.&lt;/p&gt;
-
-&lt;h2 id=&#34;a-typical-tomcat-installation:a2ed05b8bb95da785f1e814e64b0e342&#34;&gt;A typical Tomcat installation&lt;/h2&gt;
-
-&lt;p&gt;If we explode the Tomcat 8.0.23 &lt;a href=&#34;http://mirrors.sonic.net/apache/tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23.tar.gz&#34;&gt;tarball&lt;/a&gt;, we get the following directory structure:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ tar apache-tomcat-8.0.23.tar.gz
-
-$ ls apache-tomcat-8.0.23/
-LICENSE		RELEASE-NOTES	bin		lib		temp		work
-NOTICE		RUNNING.txt	conf		logs		webapps
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This distribution, by default runs applications in a single JVM. How does it do this?&lt;/p&gt;
-
-&lt;p&gt;Tomcat control scripts - &lt;code&gt;startup.sh&lt;/code&gt;, &lt;code&gt;shutdown.sh&lt;/code&gt;, &lt;code&gt;catalina.sh&lt;/code&gt; uses the environment variables &lt;code&gt;CATALINA_HOME&lt;/code&gt; and &lt;code&gt;CATALINA_BASE&lt;/code&gt; to locate binaries and configuration files.&lt;/p&gt;
-
-&lt;p&gt;From the documentaion inside &lt;code&gt;catalina.sh&lt;/code&gt; under &lt;code&gt;apache-tomcat-8.0.23/bin/&lt;/code&gt; we can see that:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#   CATALINA_HOME   May point at your Catalina &amp;quot;build&amp;quot; directory.&lt;/span&gt;
-&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#&lt;/span&gt;
-&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#   CATALINA_BASE   (Optional) Base directory for resolving dynamic portions&lt;/span&gt;
-&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#                   of a Catalina installation.  If not present, resolves to&lt;/span&gt;
-&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#                   the same directory that CATALINA_HOME points to.&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This allows us to separate the &lt;code&gt;CATALINA_HOME&lt;/code&gt; and &lt;code&gt;CATALINA_BASE&lt;/code&gt; directories. The Tomcat binaries and scripts need to be inside &lt;code&gt;CATALINA_HOME&lt;/code&gt; and our first application can deploy itself to &lt;code&gt;CATALINA_BASE&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;separating-catalina-home-and-catalina-base:a2ed05b8bb95da785f1e814e64b0e342&#34;&gt;Separating CATALINA_HOME and CATALINA_BASE&lt;/h2&gt;
-
-&lt;p&gt;The &lt;code&gt;app1&lt;/code&gt; directory will have the following directories:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ ls -a app1/
-.	..	bin	conf	logs	temp	webapps	work
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The &lt;code&gt;bin&lt;/code&gt; directory will have the &lt;code&gt;setenv.sh&lt;/code&gt; script used to set additional environment variables for the application.&lt;/p&gt;
-
-&lt;p&gt;The &lt;code&gt;tomcat&lt;/code&gt; directory will have the following directories:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ ls tomcat/
-LICENSE		NOTICE		RELEASE-NOTES	RUNNING.txt	bin		lib
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The &lt;code&gt;bin&lt;/code&gt; directory will have the Tomcat management scripts like &lt;code&gt;startup.sh&lt;/code&gt;, &lt;code&gt;shutdown.sh&lt;/code&gt;, &lt;code&gt;catalina.sh&lt;/code&gt; etc.&lt;/p&gt;
-
-&lt;p&gt;Now we can start &lt;code&gt;app1&lt;/code&gt; by pointing &lt;code&gt;CATALINA_BASE&lt;/code&gt; to &lt;code&gt;app1&lt;/code&gt; and &lt;code&gt;CATALINA_HOME&lt;/code&gt; to &lt;code&gt;tomcat&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span style=&#34;color: #336666&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;CATALINA_HOME&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;/Users/sdqali/src/sandbox/tomcat
-
-$ &lt;span style=&#34;color: #336666&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;CATALINA_BASE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;/Users/sdqali/src/sandbox/app1
-
-$ &lt;span style=&#34;color: #003333&#34;&gt;$CATALINA_HOME&lt;/span&gt;/bin/startup.sh
-
-$ &lt;span style=&#34;color: #003333&#34;&gt;$CATALINA_HOME&lt;/span&gt;/bin/startup.sh
-Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app1
-Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
-Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app1/temp
-Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home
-Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users/sdqali/src/sandbox/tomcat/bin/tomcat-juli.jar
-Tomcat started.
-
-$ curl -s -D - -o /dev/null http://127.0.0.1:8080
-HTTP/1.1 &lt;span style=&#34;color: #FF6600&#34;&gt;200&lt;/span&gt; OK
-Server: Apache-Coyote/1.1
-Content-Type: text/html;&lt;span style=&#34;color: #003333&#34;&gt;charset&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;UTF-8
-Transfer-Encoding: chunked
-Date: Tue, &lt;span style=&#34;color: #FF6600&#34;&gt;09&lt;/span&gt; Jun &lt;span style=&#34;color: #FF6600&#34;&gt;2015&lt;/span&gt; 07:37:43 GMT
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Let&amp;rsquo;s try and deploy a second application &lt;code&gt;app2&lt;/code&gt; running on port &lt;code&gt;9090&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span style=&#34;color: #336666&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;CATALINA_HOME&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;/Users/sdqali/src/sandbox/tomcat
-
-$ &lt;span style=&#34;color: #336666&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;CATALINA_BASE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;/Users/sdqali/src/sandbox/app2
-
-$ &lt;span style=&#34;color: #003333&#34;&gt;$CATALINA_HOME&lt;/span&gt;/bin/startup.sh
-Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app2
-Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
-Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app2/temp
-Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home
-Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users/sdqali/src/sandbox/tomcat/bin/tomcat-juli.jar
-Tomcat started.
-
-$ curl -s -D - -o /dev/null http://127.0.0.1:9090
-HTTP/1.1 &lt;span style=&#34;color: #FF6600&#34;&gt;200&lt;/span&gt; OK
-Server: Apache-Coyote/1.1
-Content-Type: text/html;&lt;span style=&#34;color: #003333&#34;&gt;charset&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;UTF-8
-Transfer-Encoding: chunked
-Date: Tue, &lt;span style=&#34;color: #FF6600&#34;&gt;09&lt;/span&gt; Jun &lt;span style=&#34;color: #FF6600&#34;&gt;2015&lt;/span&gt; 07:41:02 GMT
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&#34;tying-it-all-together:a2ed05b8bb95da785f1e814e64b0e342&#34;&gt;Tying it all together&lt;/h2&gt;
-
-&lt;p&gt;At this point, it is useful to create management scripts that abstract away the environment variables and allows for starting up and shutting down applications individually. The &lt;code&gt;start.sh&lt;/code&gt; script will be as follows.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#!/usr/bin/env sh&lt;/span&gt;
-
-&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# start.sh&lt;/span&gt;
-&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# Script to start a Tomcat application&lt;/span&gt;
-
-show_usage&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Usage: ./start.sh &amp;lt;app-name&amp;gt;&amp;quot;&lt;/span&gt;;
-    &lt;span style=&#34;color: #336666&#34;&gt;exit&lt;/span&gt; 1;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-&lt;span style=&#34;color: #336666&#34;&gt;declare&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;app_name&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;$1&lt;/span&gt;;
-&lt;span style=&#34;color: #555555&#34;&gt;[[&lt;/span&gt; -z &lt;span style=&#34;color: #003333&#34;&gt;$app_name&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;]]&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; show_usage;
-
-
-&lt;span style=&#34;color: #336666&#34;&gt;declare&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;INSTALL_BASE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;/Users/sdqali/src/sandbox
-
-&lt;span style=&#34;color: #336666&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;CATALINA_HOME&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;$INSTALL_BASE&lt;/span&gt;/tomcat
-&lt;span style=&#34;color: #336666&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;CATALINA_BASE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;$INSTALL_BASE&lt;/span&gt;/&lt;span style=&#34;color: #003333&#34;&gt;$app_name&lt;/span&gt;
-
-&lt;span style=&#34;color: #003333&#34;&gt;$CATALINA_HOME&lt;/span&gt;/bin/startup.sh
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Similarly, the &lt;code&gt;stop.sh&lt;/code&gt; script will be:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#!/usr/bin/env sh&lt;/span&gt;
-
-&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# stop.sh&lt;/span&gt;
-&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# Script to stop a Tomcat application&lt;/span&gt;
-
-show_usage&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Usage: ./stop.sh &amp;lt;app-name&amp;gt;&amp;quot;&lt;/span&gt;;
-    &lt;span style=&#34;color: #336666&#34;&gt;exit&lt;/span&gt; 1;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-&lt;span style=&#34;color: #336666&#34;&gt;declare&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;app_name&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;$1&lt;/span&gt;;
-&lt;span style=&#34;color: #555555&#34;&gt;[[&lt;/span&gt; -z &lt;span style=&#34;color: #003333&#34;&gt;$app_name&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;]]&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; show_usage;
-
-
-&lt;span style=&#34;color: #336666&#34;&gt;declare&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;INSTALL_BASE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;/Users/sdqali/src/sandbox
-
-&lt;span style=&#34;color: #336666&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;CATALINA_HOME&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;$INSTALL_BASE&lt;/span&gt;/tomcat
-&lt;span style=&#34;color: #336666&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color: #003333&#34;&gt;CATALINA_BASE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;$INSTALL_BASE&lt;/span&gt;/&lt;span style=&#34;color: #003333&#34;&gt;$app_name&lt;/span&gt;
-
-&lt;span style=&#34;color: #003333&#34;&gt;$CATALINA_HOME&lt;/span&gt;/bin/shutdown.sh
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;We can manage individual applications using these scripts:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ ./management/start.sh app2
-Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app2
-Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
-Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app2/temp
-Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home
-Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users/sdqali/src/sandbox/tomcat/bin/tomcat-juli.jar
-Tomcat started.
-
-$ nc -z  127.0.0.1 9090
-Connection to 127.0.0.1 port &lt;span style=&#34;color: #FF6600&#34;&gt;9090&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;[&lt;/span&gt;tcp/websm&lt;span style=&#34;color: #555555&#34;&gt;]&lt;/span&gt; succeeded!
-
-$ curl -s -D - -o /dev/null http://127.0.0.1:9090
-HTTP/1.1 &lt;span style=&#34;color: #FF6600&#34;&gt;200&lt;/span&gt; OK
-Server: Apache-Coyote/1.1
-Content-Type: text/html;&lt;span style=&#34;color: #003333&#34;&gt;charset&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;UTF-8
-Transfer-Encoding: chunked
-Date: Tue, &lt;span style=&#34;color: #FF6600&#34;&gt;09&lt;/span&gt; Jun &lt;span style=&#34;color: #FF6600&#34;&gt;2015&lt;/span&gt; 08:16:05 GMT
-
-
-$ ./management/stop.sh app2
-Using CATALINA_BASE:   /Users/sdqali/src/sandbox/app2
-Using CATALINA_HOME:   /Users/sdqali/src/sandbox/tomcat
-Using CATALINA_TMPDIR: /Users/sdqali/src/sandbox/app2/temp
-Using JRE_HOME:        /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home
-Using CLASSPATH:       /Users/sdqali/src/sandbox/tomcat/bin/bootstrap.jar:/Users/sdqali/src/sandbox/tomcat/bin/tomcat-juli.jar
-
-$ nc -z  127.0.0.1 9090
-
-$ curl -v http://127.0.0.1:9090
-* Rebuilt URL to: http://127.0.0.1:9090/
-* Hostname was NOT found in DNS cache
-*   Trying 127.0.0.1...
-* connect to 127.0.0.1 port &lt;span style=&#34;color: #FF6600&#34;&gt;9090&lt;/span&gt; failed: Connection refused
-&lt;/pre&gt;&lt;/div&gt;
 </description>
     </item>
     

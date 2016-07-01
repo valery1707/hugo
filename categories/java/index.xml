@@ -5,8 +5,103 @@
     <link>http://sdqali.in/categories/java/</link>
     <description>Recent content in Java on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 28 Jun 2016 23:17:51 -0400</lastBuildDate>
+    <lastBuildDate>Thu, 30 Jun 2016 19:43:07 -0400</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>JSON logging for Spring applications</title>
+      <link>http://sdqali.in/blog/2016/06/30/json-logging-for-spring-applications/</link>
+      <pubDate>Thu, 30 Jun 2016 19:43:07 -0400</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/06/30/json-logging-for-spring-applications/</guid>
+      <description>&lt;p&gt;If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4d1e9942cfbb3801d59160499ca76d4c:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4d1e9942cfbb3801d59160499ca76d4c:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4d1e9942cfbb3801d59160499ca76d4c:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4d1e9942cfbb3801d59160499ca76d4c:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;. This blog post documents how to format logs as JSON in a Spring application.&lt;/p&gt;
+
+&lt;p&gt;We will be using the &lt;code&gt;logstash-logback-encoder&lt;/code&gt; &lt;a href=&#34;https://github.com/logstash/logstash-logback-encoder&#34;&gt;encoder&lt;/a&gt; from Logstash. This can be added to the application with the following Maven dependency:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;net.logstash.logback&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;logstash-logback-encoder&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;4.7&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The next step is to configure logback to log using the new encoder. This can be done by placing a &lt;code&gt;logback.xml&lt;/code&gt; configuration file in the application&amp;rsquo;s class path - for example in the &lt;code&gt;main/resources&lt;/code&gt; directory.&lt;/p&gt;
+
+&lt;p&gt;If we want the application to log to the console in JSON format, we will use a &lt;code&gt;ConsoleAppender&lt;/code&gt; with the encoder as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;appender&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;consoleAppender&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ch.qos.logback.core.ConsoleAppender&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;encoder&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;net.logstash.logback.encoder.LogstashEncoder&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/appender&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;logger&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jsonLogger&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;additivity=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;false&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;level=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;DEBUG&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;ref=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;consoleAppender&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/logger&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;root&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;level=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;INFO&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;ref=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;consoleAppender&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/root&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If we wanted the application to log to a file with the logs being rotated, we will configure a &lt;code&gt;RollingFileAppender&lt;/code&gt; with the encoder, as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;property&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;LOG_PATH&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/tmp/json-log.json&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;appender&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jsonAppender&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ch.qos.logback.core.rolling.RollingFileAppender&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;File&amp;gt;&lt;/span&gt;${LOG_PATH}&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/File&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;encoder&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;net.logstash.logback.encoder.LogstashEncoder&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;rollingPolicy&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ch.qos.logback.core.rolling.FixedWindowRollingPolicy&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;maxIndex&amp;gt;&lt;/span&gt;1&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/maxIndex&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;fileNamePattern&amp;gt;&lt;/span&gt;${LOG_PATH}.%i&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/fileNamePattern&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/rollingPolicy&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;triggeringPolicy&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;MaxFileSize&amp;gt;&lt;/span&gt;1MB&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/MaxFileSize&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/triggeringPolicy&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/appender&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;logger&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jsonLogger&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;additivity=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;false&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;level=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;DEBUG&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;ref=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jsonAppender&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/logger&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;root&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;level=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;INFO&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;ref=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jsonAppender&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/root&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;With this configuration in place, we can tail the logs to observe the application in a much more readable manner:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ tail -f /tmp/json-log.json  | jq .
+&lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;@timestamp&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;2016-06-30T20:01:59.651-04:00&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;@version&amp;quot;&lt;/span&gt;: 1,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;message&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Mapped \&amp;quot;{[/error],produces=[text/html]}\&amp;quot; onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;logger_name&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;thread_name&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;main&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;level&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;INFO&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;level_value&amp;quot;&lt;/span&gt;: 20000,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;HOSTNAME&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;somehostname&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;@timestamp&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;2016-06-30T20:01:59.677-04:00&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;@version&amp;quot;&lt;/span&gt;: 1,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;message&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;logger_name&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;org.springframework.web.servlet.handler.SimpleUrlHandlerMapping&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;thread_name&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;main&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;level&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;INFO&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;level_value&amp;quot;&lt;/span&gt;: 20000,
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;HOSTNAME&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;somehostname&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+...
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The Logstach encoder also provides for a &lt;a href=&#34;https://github.com/logstash/logstash-logback-encoder#custom_field_names&#34;&gt;variety of customizations&lt;/a&gt; to the way the logs are written.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:4d1e9942cfbb3801d59160499ca76d4c:1&#34;&gt;ELK - ElasticSearch, Logstash, Kibana is a toolset for analyzing logs. An introduction to ELK can be found &lt;a href=&#34;https://www.elastic.co/webinars/introduction-elk-stack&#34;&gt;here&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4d1e9942cfbb3801d59160499ca76d4c:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:4d1e9942cfbb3801d59160499ca76d4c:2&#34;&gt;&lt;a href=&#34;https://stedolan.github.io/jq/&#34;&gt;jq&lt;/a&gt; is a command line JSON processor. If you work with JSON, jq is a must have tool.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4d1e9942cfbb3801d59160499ca76d4c:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Injecting dependencies into a Spring @Configuration</title>
