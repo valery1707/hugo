@@ -98,43 +98,45 @@
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             
 
-<p>While working with Locust <sup class="footnote-ref" id="fnref:66b6e5fb09b6083bed97b4d7a2981cc2:1"><a rel="footnote" href="#fn:66b6e5fb09b6083bed97b4d7a2981cc2:1">1</a></sup> recently, we ran into a situation where we had to dynamically override an attribute in a class in the Locust library so as to control what value it got assigned. After a lot of scratching our heads and reading the Python documentation, we came across the <code>property</code> function. We were able to use this to hack together a solution that ensures that every time an attribute is read, it returns the result of executing a method.</p>
+<p>While working with Locust <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> recently, we ran into a situation where we had to dynamically override an attribute in a class in the Locust library so as to control what value it got assigned. After a lot of scratching our heads and reading the Python documentation, we came across the <code>property</code> function. We were able to use this to hack together a solution that ensures that every time an attribute is read, it returns the result of executing a method.</p>
 
 <p>The following example demonstrates a stripped down version of this hack.</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">import</span> <span style="color: #00CCFF; font-weight: bold">random</span>
 
-<span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Foo</span>(<span style="color: #336666">object</span>):
-    bar <span style="color: #555555">=</span> random<span style="color: #555555">.</span>random()
+<pre><code>import random
 
-foo <span style="color: #555555">=</span> Foo()
+class Foo(object):
+    bar = random.random()
 
-<span style="color: #0099FF; font-style: italic"># Prints the value assigned when the Foo object is initialised.</span>
-<span style="color: #006699; font-weight: bold">print</span>(<span style="color: #CC3300">&quot;Before override&quot;</span>)
-<span style="color: #006699; font-weight: bold">print</span>(foo<span style="color: #555555">.</span>bar)
-<span style="color: #006699; font-weight: bold">print</span>(foo<span style="color: #555555">.</span>bar)
+foo = Foo()
 
-<span style="color: #0099FF; font-style: italic"># Override</span>
-Foo<span style="color: #555555">.</span>bar <span style="color: #555555">=</span> <span style="color: #336666">property</span>(<span style="color: #006699; font-weight: bold">lambda</span> <span style="color: #336666">self</span>: random<span style="color: #555555">.</span>random())
+# Prints the value assigned when the Foo object is initialised.
+print(&quot;Before override&quot;)
+print(foo.bar)
+print(foo.bar)
 
-<span style="color: #006699; font-weight: bold">print</span>(<span style="color: #CC3300">&quot;After override&quot;</span>)
-<span style="color: #006699; font-weight: bold">print</span>(foo<span style="color: #555555">.</span>bar)
-<span style="color: #006699; font-weight: bold">print</span>(foo<span style="color: #555555">.</span>bar)
-</pre></div>
+# Override
+Foo.bar = property(lambda self: random.random())
+
+print(&quot;After override&quot;)
+print(foo.bar)
+print(foo.bar)
+</code></pre>
 
 <p>This snippet when executed will output the following:</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>Before override
+
+<pre><code>Before override
 0.0373028550804
 0.0373028550804
 After override
 0.603160033663
 0.501455108419
-</pre></div>
+</code></pre>
 
 <p>It can be seen that before introducing the override, the value of the <code>bar</code> attribute is set when the class is initialised and as expected, it does not change how many ever times the attribute is read. However, after the override, the attribute is assigned a new value every time it is read.</p>
 
-<h2 id="how-does-this-work:66b6e5fb09b6083bed97b4d7a2981cc2">How does this work?</h2>
+<h2 id="how-does-this-work">How does this work?</h2>
 
-<p>The <code>property()</code> <sup class="footnote-ref" id="fnref:66b6e5fb09b6083bed97b4d7a2981cc2:2"><a rel="footnote" href="#fn:66b6e5fb09b6083bed97b4d7a2981cc2:2">2</a></sup> function returns an attribute for any class. It allows the creation of Ruby&rsquo;s <code>attr_accessor</code> <sup class="footnote-ref" id="fnref:66b6e5fb09b6083bed97b4d7a2981cc2:3"><a rel="footnote" href="#fn:66b6e5fb09b6083bed97b4d7a2981cc2:3">3</a></sup> style attributes on classes so that one can write <code>instance.attrib</code> to read an attribute value and <code>instance.attrib=</code> to set an attribute value. What line <code>14</code> in the snippet does is to re-define the <code>bar</code> attribute to be a property whose <code>getter</code> is a <code>lambda</code>. Every time the <code>bar</code> attribute is read, the <code>lambda</code> gets executed.</p>
+<p>The <code>property()</code> <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup> function returns an attribute for any class. It allows the creation of Ruby&rsquo;s <code>attr_accessor</code> <sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup> style attributes on classes so that one can write <code>instance.attrib</code> to read an attribute value and <code>instance.attrib=</code> to set an attribute value. What line <code>14</code> in the snippet does is to re-define the <code>bar</code> attribute to be a property whose <code>getter</code> is a <code>lambda</code>. Every time the <code>bar</code> attribute is read, the <code>lambda</code> gets executed.</p>
 
 <p>A more comprehensive example of this can be found in my <a href="https://github.com/sdqali/python_dojo/blob/master/dynamic_override/dynamic_override.py">Python dojo repository</a> on GitHub.</p>
 <div class="footnotes">
@@ -142,12 +144,12 @@ After override
 <hr />
 
 <ol>
-<li id="fn:66b6e5fb09b6083bed97b4d7a2981cc2:1"><a href="http://locust.io/">Locust</a> - a modern load testing framework.
- <a class="footnote-return" href="#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:1"><sup>[return]</sup></a></li>
-<li id="fn:66b6e5fb09b6083bed97b4d7a2981cc2:2">Python&rsquo;s built-in functions - <a href="http://docs.python.org/2/library/functions.html#property">property</a>.
- <a class="footnote-return" href="#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:2"><sup>[return]</sup></a></li>
-<li id="fn:66b6e5fb09b6083bed97b4d7a2981cc2:3">Ruby&rsquo;s <a href="http://www.ruby-doc.org/core-1.9.3/Module.html#method-i-attr_accessor"><code>attr_accessor</code> method</a>.
- <a class="footnote-return" href="#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:3"><sup>[return]</sup></a></li>
+<li id="fn:1"><a href="http://locust.io/">Locust</a> - a modern load testing framework.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">Python&rsquo;s built-in functions - <a href="http://docs.python.org/2/library/functions.html#property">property</a>.
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3">Ruby&rsquo;s <a href="http://www.ruby-doc.org/core-1.9.3/Module.html#method-i-attr_accessor"><code>attr_accessor</code> method</a>.
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

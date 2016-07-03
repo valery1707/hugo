@@ -104,7 +104,7 @@
 
 <p>What we need is a way to record the number of requests each client is making and reset this number to zero after a predefined time period and decide for each request whether the client making the request has exceeded the limits.</p>
 
-<h3 id="the-test-application:05fdaa963770121a9f6ab535e38c3f13">The test application</h3>
+<h3 id="the-test-application">The test application</h3>
 
 <p>We will create a simple Rails application with a single API endpoint at <code>foo.json</code>. The code needed for this is as follows:</p>
 
@@ -126,11 +126,11 @@
 <span style="color: #006699; font-weight: bold">end</span>
 </pre></div>
 
-<h3 id="storing-the-rate-data:05fdaa963770121a9f6ab535e38c3f13">Storing the rate data</h3>
+<h3 id="storing-the-rate-data">Storing the rate data</h3>
 
-<p>We need a place to store each client&rsquo;s IP address and the number of requests it made. We need to increment this count for each request and reset the count to zero after a time period. Considering these needs, <a href="http://redis.io/">Redis</a> is a great fit for this data store. Redis stores key value pairs and allows expiry time to be specified for each entry. Redis also comes with an <code>INCR</code> <sup class="footnote-ref" id="fnref:05fdaa963770121a9f6ab535e38c3f13:1"><a rel="footnote" href="#fn:05fdaa963770121a9f6ab535e38c3f13:1">1</a></sup> command that ensures that increment operations are atomic. This will be useful to us if we were to run multiple instances of our app behind a load balancer.</p>
+<p>We need a place to store each client&rsquo;s IP address and the number of requests it made. We need to increment this count for each request and reset the count to zero after a time period. Considering these needs, <a href="http://redis.io/">Redis</a> is a great fit for this data store. Redis stores key value pairs and allows expiry time to be specified for each entry. Redis also comes with an <code>INCR</code> <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> command that ensures that increment operations are atomic. This will be useful to us if we were to run multiple instances of our app behind a load balancer.</p>
 
-<p>To setup the application to use Redis, we will need to install the <code>redis</code> <sup class="footnote-ref" id="fnref:05fdaa963770121a9f6ab535e38c3f13:2"><a rel="footnote" href="#fn:05fdaa963770121a9f6ab535e38c3f13:2">2</a></sup> gem. Once we have the gem, we will add a new <code>initializer</code> named <code>throttle.rb</code> which configures our Redis client.</p>
+<p>To setup the application to use Redis, we will need to install the <code>redis</code> <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup> gem. Once we have the gem, we will add a new <code>initializer</code> named <code>throttle.rb</code> which configures our Redis client.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic"># config/initializers/throttle.rb</span>
 
 <span style="color: #336666">require</span> <span style="color: #CC3300">&quot;redis&quot;</span>
@@ -140,15 +140,16 @@ redis_conf  <span style="color: #555555">=</span> <span style="color: #336600">Y
 </pre></div>
 
 <p>This will load the Redis server&rsquo;s host and port from the configuration file located at <code>config/redis.yml</code>. This file will look like this:</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span># config/redis.yml
+
+<pre><code># config/redis.yml
 
 host: localhost
 port: 6379
-</pre></div>
+</code></pre>
 
-<h3 id="using-a-before-filter-for-rate-limiting:05fdaa963770121a9f6ab535e38c3f13">Using a <code>before_filter</code> for rate limiting.</h3>
+<h3 id="using-a-before-filter-for-rate-limiting">Using a <code>before_filter</code> for rate limiting.</h3>
 
-<p>The first step is to log the number of requests each client is making. This can easily be achieved with a <code>before_filter</code> <sup class="footnote-ref" id="fnref:05fdaa963770121a9f6ab535e38c3f13:3"><a rel="footnote" href="#fn:05fdaa963770121a9f6ab535e38c3f13:3">3</a></sup>. Let&rsquo;s add the filter into the <code>ApplicationController</code>.</p>
+<p>The first step is to log the number of requests each client is making. This can easily be achieved with a <code>before_filter</code> <sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>. Let&rsquo;s add the filter into the <code>ApplicationController</code>.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic"># app/controllers/application_controller.rb</span>
 
 <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">ApplicationController</span> <span style="color: #555555">&lt;</span> <span style="color: #336600">ActionController</span><span style="color: #555555">::</span><span style="color: #336600">Base</span>
@@ -175,9 +176,10 @@ port: 6379
 <p>Since this <code>before_filter</code> belongs to the <code>ApplicationController</code>, it will be applied to all requests, unless a specific controller chooses to skip it. So before every request is processed, the filter grabs the client&rsquo;s IP and checks whether there is a count in Redis for this IP. If there is no count key, it creates one. Finally it increments the count.</p>
 
 <p>At this point, the filter just records the requests made, but does not limit requests. Let&rsquo;s go ahead and implement limiting. We need to specify the time window for rate limiting and how many requests should be allowed in that time window. We will allow a client a maximum of <code>60</code> requests in <code>15</code> minutes. The following constants need to be defined in <code>throttle.rb</code>.</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>THROTTLE_TIME_WINDOW = 15 * 60
+
+<pre><code>THROTTLE_TIME_WINDOW = 15 * 60
 THROTTLE_MAX_REQUESTS = 60
-</pre></div>
+</code></pre>
 
 <p>The filter needs to be changed to respond with error messages when the rate limit is exceeded.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic"># app/controllers/application_controller.rb</span>
@@ -210,7 +212,7 @@ THROTTLE_MAX_REQUESTS = 60
 <span style="color: #006699; font-weight: bold">end</span>
 </pre></div>
 
-<p>When the limit is reached, subsequent requests will be responded with an error message and the HTTP status code <code>429</code>. The 429 <sup class="footnote-ref" id="fnref:05fdaa963770121a9f6ab535e38c3f13:4"><a rel="footnote" href="#fn:05fdaa963770121a9f6ab535e38c3f13:4">4</a></sup> status code indicates that the user has sent too many requests in a given amount of time.</p>
+<p>When the limit is reached, subsequent requests will be responded with an error message and the HTTP status code <code>429</code>. The 429 <sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">4</a></sup> status code indicates that the user has sent too many requests in a given amount of time.</p>
 
 <p>Let&rsquo;s go ahead and test this.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>bash$ <span style="color: #006699; font-weight: bold">for</span> i in <span style="color: #555555">{</span>1..100<span style="color: #555555">}</span>
@@ -227,7 +229,7 @@ bash$ less log/development.log | grep <span style="color: #CC3300">&quot;429 Too
 
 <p>As you can see after <code>60</code> requests, all requests get the <code>429</code> response.</p>
 
-<h3 id="improvements:05fdaa963770121a9f6ab535e38c3f13">Improvements</h3>
+<h3 id="improvements">Improvements</h3>
 
 <p>While what we have implemented limits the requests, it does not give the client enough information as to how long it has to wait before making requests again. It would also be helpful if the server tells the client on each request how many total requests it is allowed to make in a window and how many more requests it can perform before limiting kicks in. We will look at this in the next blog post.</p>
 
@@ -237,14 +239,14 @@ bash$ less log/development.log | grep <span style="color: #CC3300">&quot;429 Too
 <hr />
 
 <ol>
-<li id="fn:05fdaa963770121a9f6ab535e38c3f13:1"><a href="http://redis.io/commands/incr">Redis documentation</a> for INCR command.
- <a class="footnote-return" href="#fnref:05fdaa963770121a9f6ab535e38c3f13:1"><sup>[return]</sup></a></li>
-<li id="fn:05fdaa963770121a9f6ab535e38c3f13:2"><a href="https://rubygems.org/gems/redis">redis</a> - A Ruby client that tries to match Redis&rsquo; API one-to-one, while still providing an idiomatic interface. It features thread-safety, client-side sharding, pipelining, and an obsession for performance.
- <a class="footnote-return" href="#fnref:05fdaa963770121a9f6ab535e38c3f13:2"><sup>[return]</sup></a></li>
-<li id="fn:05fdaa963770121a9f6ab535e38c3f13:3">Rails&rsquo; <a href="http://apidock.com/rails/AbstractController/Callbacks/ClassMethods/before_filter">before filter</a>.
- <a class="footnote-return" href="#fnref:05fdaa963770121a9f6ab535e38c3f13:3"><sup>[return]</sup></a></li>
-<li id="fn:05fdaa963770121a9f6ab535e38c3f13:4">IETF: Additional HTTP Status Codes - <a href="https://tools.ietf.org/html/rfc6585#section-4">429 Too Many Requests</a>.
- <a class="footnote-return" href="#fnref:05fdaa963770121a9f6ab535e38c3f13:4"><sup>[return]</sup></a></li>
+<li id="fn:1"><a href="http://redis.io/commands/incr">Redis documentation</a> for INCR command.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2"><a href="https://rubygems.org/gems/redis">redis</a> - A Ruby client that tries to match Redis&rsquo; API one-to-one, while still providing an idiomatic interface. It features thread-safety, client-side sharding, pipelining, and an obsession for performance.
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3">Rails&rsquo; <a href="http://apidock.com/rails/AbstractController/Callbacks/ClassMethods/before_filter">before filter</a>.
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+<li id="fn:4">IETF: Additional HTTP Status Codes - <a href="https://tools.ietf.org/html/rfc6585#section-4">429 Too Many Requests</a>.
+ <a class="footnote-return" href="#fnref:4"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

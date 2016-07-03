@@ -31,7 +31,8 @@
 &lt;/ul&gt;
 
 &lt;p&gt;The analysis of my Wikipedia history showed me some interesting things. For example, when I was reading &lt;a href=&#34;http://en.wikipedia.org/wiki/Michael_J._Arlen&#34;&gt;Michael J. Arlen&amp;rsquo;s&lt;/a&gt; Passage to Ararat, I spent a lot of time on Wikipedia, hopping between pages about Armenian history and culture. This is what the list of Wikipedia pages on that day look like:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;http://en.wikipedia.org/wiki/TRS-80
+
+&lt;pre&gt;&lt;code&gt;http://en.wikipedia.org/wiki/TRS-80
 http://en.wikipedia.org/wiki/Aunt_Sally
 http://en.wikipedia.org/wiki/Pai
 http://en.wikipedia.org/wiki/Pai_(surname)
@@ -57,15 +58,16 @@ http://en.wikipedia.org/wiki/Hayk
 http://en.wikipedia.org/wiki/Ecbatana
 http://en.wikipedia.org/wiki/Goat_meat
 http://en.wikipedia.org/wiki/Kid
-http://en.wikipedia.org/w/index.php?title=Special%3ASearch&amp;amp;search=xenophon
+http://en.wikipedia.org/w/index.php?title=Special%3ASearch&amp;amp;amp;search=xenophon
 http://en.wikipedia.org/wiki/Xenophon
 http://en.wikipedia.org/wiki/International_Mother_Language_Day
 http://en.wikipedia.org/wiki/Debian
 http://en.wikipedia.org/wiki/Language_Movement_Day
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;When I was reading about Data warehousing, this is how the hopping happened:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;http://en.wikipedia.org/wiki/ROLAP
+
+&lt;pre&gt;&lt;code&gt;http://en.wikipedia.org/wiki/ROLAP
 http://en.wikipedia.org/wiki/Dimension_(data_warehouse)
 http://en.wikipedia.org/wiki/Extract,_transform,_load
 http://en.wikipedia.org/wiki/Mondrian_OLAP_server
@@ -84,7 +86,7 @@ http://en.wikipedia.org/wiki/Bill_Inmon
 http://en.wikipedia.org/wiki/Decision_support
 http://en.wikipedia.org/wiki/Heart_of_Midlothian_F.C.
 http://en.wikipedia.org/wiki/The_Heart_of_Midlothian
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;I am still trying to make more sense of the links that I clicked away and the articles I read when I was page hopping.&lt;/p&gt;
 

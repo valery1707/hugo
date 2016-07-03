@@ -104,39 +104,39 @@ This means that when I browse the web, I treat cookies, javascript code and thir
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             
 
-<p>I try to be careful when I use the internet. This is not because I do illegal stuff—I just don&rsquo;t like the idea of random websites tracking me across the web, recording everything I do, and then serving me advertisements. I don&rsquo;t like the idea of technocracies like Facebook collecting and storing data about me, even after I have explicitly quit their colourful walled garden. <sup class="footnote-ref" id="fnref:1c7a415d96b04ab3b1435bc82866f658:1"><a rel="footnote" href="#fn:1c7a415d96b04ab3b1435bc82866f658:1">1</a></sup> I don&rsquo;t like Google tracking what websites I read by pretending to provide a service to the creators of those websites in the form of CDN and Analytics. <sup class="footnote-ref" id="fnref:1c7a415d96b04ab3b1435bc82866f658:2"><a rel="footnote" href="#fn:1c7a415d96b04ab3b1435bc82866f658:2">2</a></sup> I don&rsquo;t want marketing optimisation services to track me and put me in their funnel, unless I explicitly want to.</p>
+<p>I try to be careful when I use the internet. This is not because I do illegal stuff—I just don&rsquo;t like the idea of random websites tracking me across the web, recording everything I do, and then serving me advertisements. I don&rsquo;t like the idea of technocracies like Facebook collecting and storing data about me, even after I have explicitly quit their colourful walled garden. <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> I don&rsquo;t like Google tracking what websites I read by pretending to provide a service to the creators of those websites in the form of CDN and Analytics. <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup> I don&rsquo;t want marketing optimisation services to track me and put me in their funnel, unless I explicitly want to.</p>
 
 <p>This means that when I browse the web, I treat cookies, javascript code and third party content with suspicion. Over the years, my setup has evolved in to something that makes my internet use safe, all the while being useful. These are some of the things I do to ensure that sites are not tracking me.</p>
 
-<h2 id="use-different-browsers-as-sandboxes:1c7a415d96b04ab3b1435bc82866f658">Use different browsers as sandboxes</h2>
+<h2 id="use-different-browsers-as-sandboxes">Use different browsers as sandboxes</h2>
 
-<p>I run at least 5 browsers. I use Firefox as my primary browser to read and access email. I run Safari to access my work email, our Mingle <sup class="footnote-ref" id="fnref:1c7a415d96b04ab3b1435bc82866f658:3"><a rel="footnote" href="#fn:1c7a415d96b04ab3b1435bc82866f658:3">3</a></sup> instance, our in-house knowledge sharing network etc. I run Chromium when I am working on JavaScript and CSS because I find the development tools nothing short of a joy to use. I also have to use Google Chrome from time to time because that is what a lot of our customers use to access our product and sometimes I have to test our systems on Google Chrome. This separation of browsing into sandboxes makes it easy to control your usage patterns on a website. I have my Firefox set up to use DuckDuckGo as the search engine.</p>
+<p>I run at least 5 browsers. I use Firefox as my primary browser to read and access email. I run Safari to access my work email, our Mingle <sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup> instance, our in-house knowledge sharing network etc. I run Chromium when I am working on JavaScript and CSS because I find the development tools nothing short of a joy to use. I also have to use Google Chrome from time to time because that is what a lot of our customers use to access our product and sometimes I have to test our systems on Google Chrome. This separation of browsing into sandboxes makes it easy to control your usage patterns on a website. I have my Firefox set up to use DuckDuckGo as the search engine.</p>
 
-<h2 id="an-aggressive-etc-hosts:1c7a415d96b04ab3b1435bc82866f658">An aggressive /etc/hosts</h2>
+<h2 id="an-aggressive-etc-hosts">An aggressive /etc/hosts</h2>
 
-<p>I have a long (5731 lines) <em>/etc/hosts</em> file. <sup class="footnote-ref" id="fnref:1c7a415d96b04ab3b1435bc82866f658:4"><a rel="footnote" href="#fn:1c7a415d96b04ab3b1435bc82866f658:4">4</a></sup> I use this method to filter out stuff because it is a text file and it is easy to make sense of what it does. I adopted it from <a href="https://github.com/leto/Util">Duke Leto&rsquo;s Util</a> repository. His file blocks a wide variety of website and over time I have added all the domains for social networks, advertising networks and marketing automation sites that I have come across to it. This ensures that when I navigate to a website and it has a bunch of tracking code from Facebook in the form of Like/Share buttons, my system won&rsquo;t even load these resources.</p>
+<p>I have a long (5731 lines) <em>/etc/hosts</em> file. <sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">4</a></sup> I use this method to filter out stuff because it is a text file and it is easy to make sense of what it does. I adopted it from <a href="https://github.com/leto/Util">Duke Leto&rsquo;s Util</a> repository. His file blocks a wide variety of website and over time I have added all the domains for social networks, advertising networks and marketing automation sites that I have come across to it. This ensures that when I navigate to a website and it has a bunch of tracking code from Facebook in the form of Like/Share buttons, my system won&rsquo;t even load these resources.</p>
 
-<h2 id="disable-third-party-cookies:1c7a415d96b04ab3b1435bc82866f658">Disable third party cookies</h2>
+<h2 id="disable-third-party-cookies">Disable third party cookies</h2>
 
-<p>Third party cookies are great for tracking people across websites, often without the their knowledge or permission. My observation is that in my every day use of the web, there is nothing beneficial to me arising from websites&rsquo; use of third party cookies. I block third party cookies on browsers. Most browsers allow third party cookies by default, but make it reasonably easy to block them. <sup class="footnote-ref" id="fnref:1c7a415d96b04ab3b1435bc82866f658:5"><a rel="footnote" href="#fn:1c7a415d96b04ab3b1435bc82866f658:5">5</a></sup></p>
+<p>Third party cookies are great for tracking people across websites, often without the their knowledge or permission. My observation is that in my every day use of the web, there is nothing beneficial to me arising from websites&rsquo; use of third party cookies. I block third party cookies on browsers. Most browsers allow third party cookies by default, but make it reasonably easy to block them. <sup class="footnote-ref" id="fnref:5"><a rel="footnote" href="#fn:5">5</a></sup></p>
 
-<h2 id="ghostery:1c7a415d96b04ab3b1435bc82866f658">Ghostery</h2>
+<h2 id="ghostery">Ghostery</h2>
 
 <p><a href="https://www.ghostery.com/">Ghostery</a> is a browser plugin that blocks a large number of advertising, marketing and banner content on web pages. Ghostery is available for all the major browsers. While setting up Ghostery, one has to be careful to choose settings in such a way that all sites in Ghostery&rsquo;s available list of dodgy websites get blocked, because the default settings allow some sites.</p>
 
-<h2 id="noscript:1c7a415d96b04ab3b1435bc82866f658">NoScript</h2>
+<h2 id="noscript">NoScript</h2>
 
 <p><a href="http://noscript.net/">NoScript</a> is a browser plugin for the Mozilla suite that allows users to verify the content being loaded by webpages and execute them if and only if the user trusts the content. It works really well and allows you to configure exceptions for the websites you absolutely trust. The only flipside of this is that a large percentage of the web is dependent on JavaScript and plugins and when you browse the web with NoScript, it appears way different to you from the one without NoScript. But at this point, I am willing to make that compromise.</p>
 
-<h2 id="self-destructing-cookies:1c7a415d96b04ab3b1435bc82866f658">Self destructing cookies</h2>
+<h2 id="self-destructing-cookies">Self destructing cookies</h2>
 
 <p>Self destructing cookies is a Firefox plugin that destroys cookies and LocalStorage the moment you close a tab associated with a site.  It allows whitelists, so you can configure exceptions for sites you trust. The <a href="https://addons.mozilla.org/en-US/firefox/addon/self-destructing-cookies/">plugin&rsquo;s profile</a> has a more comprehensive story on why you should use it.</p>
 
-<h2 id="tor-bundle:1c7a415d96b04ab3b1435bc82866f658">Tor Bundle</h2>
+<h2 id="tor-bundle">Tor Bundle</h2>
 
-<p>This goes without saying. If you read articles of political nature on the web, please install the Tor bundle <sup class="footnote-ref" id="fnref:1c7a415d96b04ab3b1435bc82866f658:6"><a rel="footnote" href="#fn:1c7a415d96b04ab3b1435bc82866f658:6">6</a></sup> and do your reading there. Tor has a community behind it and actively patches it against vulnerabilities. The project&rsquo;s F.A.Q. <sup class="footnote-ref" id="fnref:1c7a415d96b04ab3b1435bc82866f658:7"><a rel="footnote" href="#fn:1c7a415d96b04ab3b1435bc82866f658:7">7</a></sup> is a good starting point to learn more about Tor and how to use it.</p>
+<p>This goes without saying. If you read articles of political nature on the web, please install the Tor bundle <sup class="footnote-ref" id="fnref:6"><a rel="footnote" href="#fn:6">6</a></sup> and do your reading there. Tor has a community behind it and actively patches it against vulnerabilities. The project&rsquo;s F.A.Q. <sup class="footnote-ref" id="fnref:7"><a rel="footnote" href="#fn:7">7</a></sup> is a good starting point to learn more about Tor and how to use it.</p>
 
-<h2 id="disclaimer:1c7a415d96b04ab3b1435bc82866f658">Disclaimer</h2>
+<h2 id="disclaimer">Disclaimer</h2>
 
 <p>I am in no way claiming that you would be saved from tracking if you use this setup. This is not the perfect setup. I am sure Google knows to some extent I do on the web. I am sure Facebook still has a lot of data about me. However, this is a good starting point.</p>
 <div class="footnotes">
@@ -144,20 +144,20 @@ This means that when I browse the web, I treat cookies, javascript code and thir
 <hr />
 
 <ol>
-<li id="fn:1c7a415d96b04ab3b1435bc82866f658:1">I <a href="/blog/2012/08/11/why-i-am-not-on-facebook/">deleted my Facebook account</a> over two year ago. But it is <a href="http://www.zdnet.com/firm-facebooks-shadow-profiles-are-frightening-dossiers-on-everyone-7000017199/">now known</a> that Facebook keeps a dossier on people, even the ones that does not have an account, simply because they happen to be in the address books of people who give Facebook access to their address, falling for Facebook&rsquo;s cajoling.
- <a class="footnote-return" href="#fnref:1c7a415d96b04ab3b1435bc82866f658:1"><sup>[return]</sup></a></li>
-<li id="fn:1c7a415d96b04ab3b1435bc82866f658:2">Google provides a <a href="https://developers.google.com/speed/libraries/devguide">Content Delivery Network</a> for the popular JavaScript libraries. They also have a free analytics service.
- <a class="footnote-return" href="#fnref:1c7a415d96b04ab3b1435bc82866f658:2"><sup>[return]</sup></a></li>
-<li id="fn:1c7a415d96b04ab3b1435bc82866f658:3">Mingle is the best project management tool out there. You don&rsquo;t have to take my word for it, <a href="http://www.thoughtworks.com/mingle">try it for yourself</a>.
- <a class="footnote-return" href="#fnref:1c7a415d96b04ab3b1435bc82866f658:3"><sup>[return]</sup></a></li>
-<li id="fn:1c7a415d96b04ab3b1435bc82866f658:4">The hosts file is used by the networking stack on a system to map hostnames to IP addresses. This allows a user to block domains by looping them back to 127.0.0.1. Wikipedia, as always have a <a href="https://en.wikipedia.org/wiki/Hosts_%28file%29">good article</a> about it.
- <a class="footnote-return" href="#fnref:1c7a415d96b04ab3b1435bc82866f658:4"><sup>[return]</sup></a></li>
-<li id="fn:1c7a415d96b04ab3b1435bc82866f658:5">CNET - <a href="http://howto.cnet.com/8301-11310_39-20042703-285/disable-third-party-cookies-in-ie-firefox-and-google-chrome/">Disable third-party cookies in IE, Firefox, and Google Chrome</a>.
- <a class="footnote-return" href="#fnref:1c7a415d96b04ab3b1435bc82866f658:5"><sup>[return]</sup></a></li>
-<li id="fn:1c7a415d96b04ab3b1435bc82866f658:6">The Tor Bundle is a fork of Firefox configured to enhance anonymity and prevent tracking. It comes configured to use the <a href="https://www.torproject.org/">Tor network</a>
- <a class="footnote-return" href="#fnref:1c7a415d96b04ab3b1435bc82866f658:6"><sup>[return]</sup></a></li>
-<li id="fn:1c7a415d96b04ab3b1435bc82866f658:7"><a href="https://www.torproject.org/docs/faq.html.en">Tor F.A.Q.</a>, on Tor Project&rsquo;s website.
- <a class="footnote-return" href="#fnref:1c7a415d96b04ab3b1435bc82866f658:7"><sup>[return]</sup></a></li>
+<li id="fn:1">I <a href="/blog/2012/08/11/why-i-am-not-on-facebook/">deleted my Facebook account</a> over two year ago. But it is <a href="http://www.zdnet.com/firm-facebooks-shadow-profiles-are-frightening-dossiers-on-everyone-7000017199/">now known</a> that Facebook keeps a dossier on people, even the ones that does not have an account, simply because they happen to be in the address books of people who give Facebook access to their address, falling for Facebook&rsquo;s cajoling.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">Google provides a <a href="https://developers.google.com/speed/libraries/devguide">Content Delivery Network</a> for the popular JavaScript libraries. They also have a free analytics service.
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3">Mingle is the best project management tool out there. You don&rsquo;t have to take my word for it, <a href="http://www.thoughtworks.com/mingle">try it for yourself</a>.
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+<li id="fn:4">The hosts file is used by the networking stack on a system to map hostnames to IP addresses. This allows a user to block domains by looping them back to 127.0.0.1. Wikipedia, as always have a <a href="https://en.wikipedia.org/wiki/Hosts_%28file%29">good article</a> about it.
+ <a class="footnote-return" href="#fnref:4"><sup>[return]</sup></a></li>
+<li id="fn:5">CNET - <a href="http://howto.cnet.com/8301-11310_39-20042703-285/disable-third-party-cookies-in-ie-firefox-and-google-chrome/">Disable third-party cookies in IE, Firefox, and Google Chrome</a>.
+ <a class="footnote-return" href="#fnref:5"><sup>[return]</sup></a></li>
+<li id="fn:6">The Tor Bundle is a fork of Firefox configured to enhance anonymity and prevent tracking. It comes configured to use the <a href="https://www.torproject.org/">Tor network</a>
+ <a class="footnote-return" href="#fnref:6"><sup>[return]</sup></a></li>
+<li id="fn:7"><a href="https://www.torproject.org/docs/faq.html.en">Tor F.A.Q.</a>, on Tor Project&rsquo;s website.
+ <a class="footnote-return" href="#fnref:7"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

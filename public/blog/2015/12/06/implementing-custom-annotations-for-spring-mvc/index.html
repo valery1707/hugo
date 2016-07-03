@@ -100,9 +100,9 @@
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of <code>@RequestMapping</code> and <code>@ResponseStatus</code> to set the expected request and response <code>Content-Type</code>, the request Method, response status etc. This blog post describes how to compose Spring annotations that produce the same effect as multiple Spring annotations acting together.</p>
 
-<p>Among the new things introduced in Spring 4 was the idea of meta-annotations. <sup class="footnote-ref" id="fnref:b72714563591dcee83238042a831f26c:1"><a rel="footnote" href="#fn:b72714563591dcee83238042a831f26c:1">1</a></sup> Meta annotations are annotations that can act up on other annotations by modifying and overriding attributes of the target annotations.</p>
+<p>Among the new things introduced in Spring 4 was the idea of meta-annotations. <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> Meta annotations are annotations that can act up on other annotations by modifying and overriding attributes of the target annotations.</p>
 
-<p>This allows us to build composed annotations <sup class="footnote-ref" id="fnref:b72714563591dcee83238042a831f26c:2"><a rel="footnote" href="#fn:b72714563591dcee83238042a831f26c:2">2</a></sup> that combine the behavior of multiple annotations. The <code>@AliasFor</code> annotation allows us to override attribute names, thereby adding great flexibility while composing.</p>
+<p>This allows us to build composed annotations <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup> that combine the behavior of multiple annotations. The <code>@AliasFor</code> annotation allows us to override attribute names, thereby adding great flexibility while composing.</p>
 
 <p>This is a common pattern in code bases that use Spring MVC.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>    <span style="color: #9999FF">@RequestMapping</span><span style="color: #555555">(</span>path <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;/register&quot;</span><span style="color: #555555">,</span>
@@ -151,10 +151,10 @@
 <hr />
 
 <ol>
-<li id="fn:b72714563591dcee83238042a831f26c:1">Meta annotations. <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html#beans-meta-annotations">Spring documentation</a>.
- <a class="footnote-return" href="#fnref:b72714563591dcee83238042a831f26c:1"><sup>[return]</sup></a></li>
-<li id="fn:b72714563591dcee83238042a831f26c:2">Composed annotations. <a href="https://github.com/spring-projects/spring-framework/wiki/Spring-Annotation-Programming-Model#composed-annotations">Spring documentation</a>.
- <a class="footnote-return" href="#fnref:b72714563591dcee83238042a831f26c:2"><sup>[return]</sup></a></li>
+<li id="fn:1">Meta annotations. <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html#beans-meta-annotations">Spring documentation</a>.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">Composed annotations. <a href="https://github.com/spring-projects/spring-framework/wiki/Spring-Annotation-Programming-Model#composed-annotations">Spring documentation</a>.
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

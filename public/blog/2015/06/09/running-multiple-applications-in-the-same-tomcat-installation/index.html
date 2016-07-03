@@ -102,7 +102,7 @@
 
 <p>This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the <code>CATALINA_HOME</code> and <code>CATALINA_BASE</code> environment variables used by Tomcat. I have verified this method against Tomcat versions <code>8.0.x</code>; other versions should work the same way.</p>
 
-<h2 id="a-typical-tomcat-installation:a2ed05b8bb95da785f1e814e64b0e342">A typical Tomcat installation</h2>
+<h2 id="a-typical-tomcat-installation">A typical Tomcat installation</h2>
 
 <p>If we explode the Tomcat 8.0.23 <a href="http://mirrors.sonic.net/apache/tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23.tar.gz">tarball</a>, we get the following directory structure:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>$ tar apache-tomcat-8.0.23.tar.gz
@@ -126,7 +126,7 @@ NOTICE		RUNNING.txt	conf		logs		webapps
 
 <p>This allows us to separate the <code>CATALINA_HOME</code> and <code>CATALINA_BASE</code> directories. The Tomcat binaries and scripts need to be inside <code>CATALINA_HOME</code> and our first application can deploy itself to <code>CATALINA_BASE</code>.</p>
 
-<h2 id="separating-catalina-home-and-catalina-base:a2ed05b8bb95da785f1e814e64b0e342">Separating CATALINA_HOME and CATALINA_BASE</h2>
+<h2 id="separating-catalina-home-and-catalina-base">Separating CATALINA_HOME and CATALINA_BASE</h2>
 
 <p>The <code>app1</code> directory will have the following directories:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>$ ls -a app1/
@@ -186,7 +186,7 @@ Transfer-Encoding: chunked
 Date: Tue, <span style="color: #FF6600">09</span> Jun <span style="color: #FF6600">2015</span> 07:41:02 GMT
 </pre></div>
 
-<h2 id="tying-it-all-together:a2ed05b8bb95da785f1e814e64b0e342">Tying it all together</h2>
+<h2 id="tying-it-all-together">Tying it all together</h2>
 
 <p>At this point, it is useful to create management scripts that abstract away the environment variables and allows for starting up and shutting down applications individually. The <code>start.sh</code> script will be as follows.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic">#!/usr/bin/env sh</span>

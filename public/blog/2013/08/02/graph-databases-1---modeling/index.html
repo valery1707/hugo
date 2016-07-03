@@ -100,7 +100,7 @@
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             
 
-<p>I am making my way through the book <em>Graph Databases</em> <sup class="footnote-ref" id="fnref:01e4e56a373905e32c6720fb6ea7fba6:1"><a rel="footnote" href="#fn:01e4e56a373905e32c6720fb6ea7fba6:1">1</a></sup> which is an introductory book to the subject from Neo Technology <sup class="footnote-ref" id="fnref:01e4e56a373905e32c6720fb6ea7fba6:2"><a rel="footnote" href="#fn:01e4e56a373905e32c6720fb6ea7fba6:2">2</a></sup>, creators of Neo4j <sup class="footnote-ref" id="fnref:01e4e56a373905e32c6720fb6ea7fba6:3"><a rel="footnote" href="#fn:01e4e56a373905e32c6720fb6ea7fba6:3">3</a></sup>. At work, we are using Neo4j for a cool new thing we are building, and I see it as a great chance to learn some thing new and interesting. In the past, I have gone through a spiral <sup class="footnote-ref" id="fnref:01e4e56a373905e32c6720fb6ea7fba6:4"><a rel="footnote" href="#fn:01e4e56a373905e32c6720fb6ea7fba6:4">4</a></sup> when it comes to learning stuff and the constant feedback I get is to pick something that one gets to work with everyday and dig deep into it, in order to avoid the frustration and the inevitable spiral.</p>
+<p>I am making my way through the book <em>Graph Databases</em> <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> which is an introductory book to the subject from Neo Technology <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>, creators of Neo4j <sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>. At work, we are using Neo4j for a cool new thing we are building, and I see it as a great chance to learn some thing new and interesting. In the past, I have gone through a spiral <sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">4</a></sup> when it comes to learning stuff and the constant feedback I get is to pick something that one gets to work with everyday and dig deep into it, in order to avoid the frustration and the inevitable spiral.</p>
 
 <p>This is obviously a completely new subject to me and I am enjoying it so far. I am going to write a series of blog posts about my effort to learn Graph Databases and my observations and learnings.</p>
 
@@ -113,15 +113,15 @@
 <li>Relationships sometimes have properties. Eg. : <em>debut</em> is a property of the _OF_NATIONAL<em>TEAM</em> relationship.</li>
 </ul>
 
-<h1 id="example-european-football-players:01e4e56a373905e32c6720fb6ea7fba6">Example - European football players</h1>
+<h1 id="example-european-football-players">Example - European football players</h1>
 
 <p>If we were to model football players to have played for European clubs, a section of the graph will look like this:</p>
 
 <p><img src="/images/graph_zidane.png" alt="Graph: Zidane and teams" /></p>
 
-<h1 id="building-the-graph-with-cypher:01e4e56a373905e32c6720fb6ea7fba6">Building the graph with Cypher</h1>
+<h1 id="building-the-graph-with-cypher">Building the graph with Cypher</h1>
 
-<p>Cypher <sup class="footnote-ref" id="fnref:01e4e56a373905e32c6720fb6ea7fba6:5"><a rel="footnote" href="#fn:01e4e56a373905e32c6720fb6ea7fba6:5">5</a></sup> is Neo4j&rsquo;s query language. It is essentially structured ASCII art that tries to be as close to how relationships are mapped on a graph. The above graph can be created in Neo4j using the following Cypher snippet:</p>
+<p>Cypher <sup class="footnote-ref" id="fnref:5"><a rel="footnote" href="#fn:5">5</a></sup> is Neo4j&rsquo;s query language. It is essentially structured ASCII art that tries to be as close to how relationships are mapped on a graph. The above graph can be created in Neo4j using the following Cypher snippet:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">CREATE</span> (zidane <span style="color: #AA0000; background-color: #FFAAAA">{</span>name: <span style="color: #FFCC33">&quot;Zinadine Zidane&quot;</span>, <span style="color: #006699; font-weight: bold">position</span>: <span style="color: #FFCC33">&quot;Midfielder&quot;</span> <span style="color: #AA0000; background-color: #FFAAAA">}</span>),
 (cannes <span style="color: #AA0000; background-color: #FFAAAA">{</span>name: <span style="color: #FFCC33">&quot;A.S. Cannes&quot;</span>, founded: <span style="color: #FF6600">1902</span><span style="color: #AA0000; background-color: #FFAAAA">}</span>),
 (bordeaux <span style="color: #AA0000; background-color: #FFAAAA">{</span>name: <span style="color: #FFCC33">&quot;F.C.G. de Bordeaux&quot;</span>, founded: <span style="color: #FF6600">1881</span><span style="color: #AA0000; background-color: #FFAAAA">}</span>),
@@ -143,7 +143,7 @@
 
 <p>That is pretty straight forward and easy to grok. We define 8 nodes representing Zidane, the 4 clubs he played for and the 3 countries these clubs play in. Then we define the Relationships between them. Cypher uses the -&gt; to represent a relationship between nodes.</p>
 
-<h1 id="querying-the-graph:01e4e56a373905e32c6720fb6ea7fba6">Querying the graph</h1>
+<h1 id="querying-the-graph">Querying the graph</h1>
 
 <p>Querying the graph we created for interesting things is where the fun really is.</p>
 
@@ -215,7 +215,7 @@
 
 <p>We use <em>DISTINCT</em> to get uniques because Zidane played for Cannes and Bordeaux, both of the French Ligue 1.</p>
 
-<h1 id="summary:01e4e56a373905e32c6720fb6ea7fba6">Summary</h1>
+<h1 id="summary">Summary</h1>
 
 <p>I am still making my way through the book. So far it has looked promising and I have been able to grasp things. I am looking forward to learning more complex querying and will write about it in the subsequent blog posts.</p>
 <div class="footnotes">
@@ -223,16 +223,16 @@
 <hr />
 
 <ol>
-<li id="fn:01e4e56a373905e32c6720fb6ea7fba6:1"><a href="http://graphdatabases.com/">Graph Databases by Ian Robinson, Jim Webber, and Emil Eifrem (O’Reilly). Copyright 2013 Neo Technology, Inc., 978-1-449-35626-2.</a>
- <a class="footnote-return" href="#fnref:01e4e56a373905e32c6720fb6ea7fba6:1"><sup>[return]</sup></a></li>
-<li id="fn:01e4e56a373905e32c6720fb6ea7fba6:2"><a href="http://www.neotechnology.com/">Neo Technology</a>
- <a class="footnote-return" href="#fnref:01e4e56a373905e32c6720fb6ea7fba6:2"><sup>[return]</sup></a></li>
-<li id="fn:01e4e56a373905e32c6720fb6ea7fba6:3"><a href="http://www.neo4j.org/">Neo4j</a>
- <a class="footnote-return" href="#fnref:01e4e56a373905e32c6720fb6ea7fba6:3"><sup>[return]</sup></a></li>
-<li id="fn:01e4e56a373905e32c6720fb6ea7fba6:4"><a href="http://blog.sdqali.in/blog/2012/05/30/the-spiral-of-learning/">The Spiral of Learning</a>
- <a class="footnote-return" href="#fnref:01e4e56a373905e32c6720fb6ea7fba6:4"><sup>[return]</sup></a></li>
-<li id="fn:01e4e56a373905e32c6720fb6ea7fba6:5"><a href="http://docs.neo4j.org/chunked/stable/cypher-introduction.html">What is Cypher?</a>
- <a class="footnote-return" href="#fnref:01e4e56a373905e32c6720fb6ea7fba6:5"><sup>[return]</sup></a></li>
+<li id="fn:1"><a href="http://graphdatabases.com/">Graph Databases by Ian Robinson, Jim Webber, and Emil Eifrem (O’Reilly). Copyright 2013 Neo Technology, Inc., 978-1-449-35626-2.</a>
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2"><a href="http://www.neotechnology.com/">Neo Technology</a>
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3"><a href="http://www.neo4j.org/">Neo4j</a>
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+<li id="fn:4"><a href="http://blog.sdqali.in/blog/2012/05/30/the-spiral-of-learning/">The Spiral of Learning</a>
+ <a class="footnote-return" href="#fnref:4"><sup>[return]</sup></a></li>
+<li id="fn:5"><a href="http://docs.neo4j.org/chunked/stable/cypher-introduction.html">What is Cypher?</a>
+ <a class="footnote-return" href="#fnref:5"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

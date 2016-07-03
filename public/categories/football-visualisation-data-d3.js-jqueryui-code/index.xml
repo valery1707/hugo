@@ -28,7 +28,7 @@ from the dropdown and then choose the sliders to select an era for which you wan
 at the data. For fine adjustment, after clicking on either slider, you
 can use your keyboard to select a time period.&lt;/p&gt;
 
-&lt;h2 id=&#34;interesting-trends:3fbbe562acf8159aac22daec331285f5&#34;&gt;Interesting Trends&lt;/h2&gt;
+&lt;h2 id=&#34;interesting-trends&#34;&gt;Interesting Trends&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Athletic_Bilbao&#34;&gt;Athletic Bilabo&lt;/a&gt; was very dominant in Spain during the first 20 years
@@ -49,7 +49,7 @@ title in the 40 years between 1927 and 1967.&lt;/li&gt;
 invariable went to Merseyside. Liverpool won 13 and Everton won 4.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;motivation:3fbbe562acf8159aac22daec331285f5&#34;&gt;Motivation&lt;/h2&gt;
+&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;
 
 &lt;p&gt;I happened to read this
 &lt;a href=&#34;http://frenchfootballweekly.com/2012/07/13/paris-saint-germain-forget-the-fans-its-all-about-winning/&#34;&gt;brilliant piece&lt;/a&gt;
@@ -70,7 +70,7 @@ Liverpool in the 1970s and 80s, Torino in the 1940s and Borussia
 Mönchengladbach in 1970s. I decided to create the above visualization to
 make sense of this trend.&lt;/p&gt;
 
-&lt;h2 id=&#34;exaplanation:3fbbe562acf8159aac22daec331285f5&#34;&gt;Exaplanation&lt;/h2&gt;
+&lt;h2 id=&#34;exaplanation&#34;&gt;Exaplanation&lt;/h2&gt;
 
 &lt;p&gt;This is a &lt;a href=&#34;http://en.wikipedia.org/wiki/Treemapping&#34;&gt;Treemap&lt;/a&gt;. A treemap
 recursively divides area to in to rectangles, and the area of any node
@@ -78,7 +78,7 @@ is proportional to it&amp;rsquo;s value. This is a treemap of depth &lt;code&gt;
 relationship is essentially &lt;code&gt;Club -&amp;gt; Championship Years&lt;/code&gt;. You can see a
 more comprehensive example of a Treemap visualization with more depth &lt;a href=&#34;http://mbostock.github.com/d3/ex/treemap.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h2 id=&#34;code:3fbbe562acf8159aac22daec331285f5&#34;&gt;Code&lt;/h2&gt;
+&lt;h2 id=&#34;code&#34;&gt;Code&lt;/h2&gt;
 
 &lt;p&gt;All the data was obtained from Wikipedia. I used
 &lt;a href=&#34;http://d3js.org&#34;&gt;d3.js&lt;/a&gt; to create the visualizations, and

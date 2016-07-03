@@ -18,7 +18,7 @@
 
 &lt;p&gt;I have been doing some coding in Python recently. While playing around with some code, I noticed that the way &lt;a href=&#34;http://en.wikipedia.org/wiki/Here_document&#34;&gt;heredocs&lt;/a&gt; are used in Python is different from Ruby.&lt;/p&gt;
 
-&lt;h2 id=&#34;python:1862f2fee684b3ca532b180bcd0276b6&#34;&gt;Python&lt;/h2&gt;
+&lt;h2 id=&#34;python&#34;&gt;Python&lt;/h2&gt;
 
 &lt;p&gt;Consider the following snippet:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# test.py&lt;/span&gt;
@@ -82,7 +82,7 @@ and &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;then&lt;/span&
 &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;ruby:1862f2fee684b3ca532b180bcd0276b6&#34;&gt;Ruby&lt;/h2&gt;
+&lt;h2 id=&#34;ruby&#34;&gt;Ruby&lt;/h2&gt;
 
 &lt;p&gt;I come from the Ruby world, where the heredocs behave in a slightly different way. The equivalent code in Ruby would look like this:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# test.rb&lt;/span&gt;

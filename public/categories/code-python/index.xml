@@ -16,43 +16,45 @@
       <guid>http://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</guid>
       <description>
 
-&lt;p&gt;While working with Locust &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:66b6e5fb09b6083bed97b4d7a2981cc2:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:66b6e5fb09b6083bed97b4d7a2981cc2:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; recently, we ran into a situation where we had to dynamically override an attribute in a class in the Locust library so as to control what value it got assigned. After a lot of scratching our heads and reading the Python documentation, we came across the &lt;code&gt;property&lt;/code&gt; function. We were able to use this to hack together a solution that ensures that every time an attribute is read, it returns the result of executing a method.&lt;/p&gt;
+&lt;p&gt;While working with Locust &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; recently, we ran into a situation where we had to dynamically override an attribute in a class in the Locust library so as to control what value it got assigned. After a lot of scratching our heads and reading the Python documentation, we came across the &lt;code&gt;property&lt;/code&gt; function. We were able to use this to hack together a solution that ensures that every time an attribute is read, it returns the result of executing a method.&lt;/p&gt;
 
 &lt;p&gt;The following example demonstrates a stripped down version of this hack.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #00CCFF; font-weight: bold&#34;&gt;random&lt;/span&gt;
 
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Foo&lt;/span&gt;(&lt;span style=&#34;color: #336666&#34;&gt;object&lt;/span&gt;):
-    bar &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; random&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;random()
+&lt;pre&gt;&lt;code&gt;import random
 
-foo &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; Foo()
+class Foo(object):
+    bar = random.random()
 
-&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# Prints the value assigned when the Foo object is initialised.&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Before override&amp;quot;&lt;/span&gt;)
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;print&lt;/span&gt;(foo&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;bar)
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;print&lt;/span&gt;(foo&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;bar)
+foo = Foo()
 
-&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# Override&lt;/span&gt;
-Foo&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;bar &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #336666&#34;&gt;property&lt;/span&gt;(&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;lambda&lt;/span&gt; &lt;span style=&#34;color: #336666&#34;&gt;self&lt;/span&gt;: random&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;random())
+# Prints the value assigned when the Foo object is initialised.
+print(&amp;quot;Before override&amp;quot;)
+print(foo.bar)
+print(foo.bar)
 
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;After override&amp;quot;&lt;/span&gt;)
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;print&lt;/span&gt;(foo&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;bar)
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;print&lt;/span&gt;(foo&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;bar)
-&lt;/pre&gt;&lt;/div&gt;
+# Override
+Foo.bar = property(lambda self: random.random())
+
+print(&amp;quot;After override&amp;quot;)
+print(foo.bar)
+print(foo.bar)
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;This snippet when executed will output the following:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;Before override
+
+&lt;pre&gt;&lt;code&gt;Before override
 0.0373028550804
 0.0373028550804
 After override
 0.603160033663
 0.501455108419
-&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;It can be seen that before introducing the override, the value of the &lt;code&gt;bar&lt;/code&gt; attribute is set when the class is initialised and as expected, it does not change how many ever times the attribute is read. However, after the override, the attribute is assigned a new value every time it is read.&lt;/p&gt;
 
-&lt;h2 id=&#34;how-does-this-work:66b6e5fb09b6083bed97b4d7a2981cc2&#34;&gt;How does this work?&lt;/h2&gt;
+&lt;h2 id=&#34;how-does-this-work&#34;&gt;How does this work?&lt;/h2&gt;
 
-&lt;p&gt;The &lt;code&gt;property()&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:66b6e5fb09b6083bed97b4d7a2981cc2:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:66b6e5fb09b6083bed97b4d7a2981cc2:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; function returns an attribute for any class. It allows the creation of Ruby&amp;rsquo;s &lt;code&gt;attr_accessor&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:66b6e5fb09b6083bed97b4d7a2981cc2:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:66b6e5fb09b6083bed97b4d7a2981cc2:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; style attributes on classes so that one can write &lt;code&gt;instance.attrib&lt;/code&gt; to read an attribute value and &lt;code&gt;instance.attrib=&lt;/code&gt; to set an attribute value. What line &lt;code&gt;14&lt;/code&gt; in the snippet does is to re-define the &lt;code&gt;bar&lt;/code&gt; attribute to be a property whose &lt;code&gt;getter&lt;/code&gt; is a &lt;code&gt;lambda&lt;/code&gt;. Every time the &lt;code&gt;bar&lt;/code&gt; attribute is read, the &lt;code&gt;lambda&lt;/code&gt; gets executed.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;property()&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; function returns an attribute for any class. It allows the creation of Ruby&amp;rsquo;s &lt;code&gt;attr_accessor&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; style attributes on classes so that one can write &lt;code&gt;instance.attrib&lt;/code&gt; to read an attribute value and &lt;code&gt;instance.attrib=&lt;/code&gt; to set an attribute value. What line &lt;code&gt;14&lt;/code&gt; in the snippet does is to re-define the &lt;code&gt;bar&lt;/code&gt; attribute to be a property whose &lt;code&gt;getter&lt;/code&gt; is a &lt;code&gt;lambda&lt;/code&gt;. Every time the &lt;code&gt;bar&lt;/code&gt; attribute is read, the &lt;code&gt;lambda&lt;/code&gt; gets executed.&lt;/p&gt;
 
 &lt;p&gt;A more comprehensive example of this can be found in my &lt;a href=&#34;https://github.com/sdqali/python_dojo/blob/master/dynamic_override/dynamic_override.py&#34;&gt;Python dojo repository&lt;/a&gt; on GitHub.&lt;/p&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
@@ -60,12 +62,12 @@ After override
 &lt;hr /&gt;
 
 &lt;ol&gt;
-&lt;li id=&#34;fn:66b6e5fb09b6083bed97b4d7a2981cc2:1&#34;&gt;&lt;a href=&#34;http://locust.io/&#34;&gt;Locust&lt;/a&gt; - a modern load testing framework.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:66b6e5fb09b6083bed97b4d7a2981cc2:2&#34;&gt;Python&amp;rsquo;s built-in functions - &lt;a href=&#34;http://docs.python.org/2/library/functions.html#property&#34;&gt;property&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:66b6e5fb09b6083bed97b4d7a2981cc2:3&#34;&gt;Ruby&amp;rsquo;s &lt;a href=&#34;http://www.ruby-doc.org/core-1.9.3/Module.html#method-i-attr_accessor&#34;&gt;&lt;code&gt;attr_accessor&lt;/code&gt; method&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:66b6e5fb09b6083bed97b4d7a2981cc2:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;http://locust.io/&#34;&gt;Locust&lt;/a&gt; - a modern load testing framework.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;Python&amp;rsquo;s built-in functions - &lt;a href=&#34;http://docs.python.org/2/library/functions.html#property&#34;&gt;property&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;Ruby&amp;rsquo;s &lt;a href=&#34;http://www.ruby-doc.org/core-1.9.3/Module.html#method-i-attr_accessor&#34;&gt;&lt;code&gt;attr_accessor&lt;/code&gt; method&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>
@@ -92,7 +94,7 @@ After override
 &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;True&amp;#39;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;The Python bool implementation got formalised in PEP 285 &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:7cccdb5320cc2243dc45bf92318883e6:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:7cccdb5320cc2243dc45bf92318883e6:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; in 2002 by Guido van Rossum. The specification gives a lot of insight into von Rossum&amp;rsquo;s insistence on maintaining backward compatibility and the Python way. It also touches up on another aspect of truthness in Python. In Python, almost all objects can be used to represent truth values. This means an empty list is false and a non-empty list is true.&lt;/p&gt;
+&lt;p&gt;The Python bool implementation got formalised in PEP 285 &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; in 2002 by Guido van Rossum. The specification gives a lot of insight into von Rossum&amp;rsquo;s insistence on maintaining backward compatibility and the Python way. It also touches up on another aspect of truthness in Python. In Python, almost all objects can be used to represent truth values. This means an empty list is false and a non-empty list is true.&lt;/p&gt;
 
 &lt;p&gt;So this&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt; []:
@@ -114,8 +116,8 @@ After override
 &lt;hr /&gt;
 
 &lt;ol&gt;
-&lt;li id=&#34;fn:7cccdb5320cc2243dc45bf92318883e6:1&#34;&gt;&lt;a href=&#34;http://www.python.org/dev/peps/pep-0285/&#34;&gt;Adding a bool type&lt;/a&gt; by Guido van Rossum.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:7cccdb5320cc2243dc45bf92318883e6:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;http://www.python.org/dev/peps/pep-0285/&#34;&gt;Adding a bool type&lt;/a&gt; by Guido van Rossum.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>
@@ -129,7 +131,7 @@ After override
       <guid>http://sdqali.in/blog/2012/07/09/understanding-pythons-with-statement/</guid>
       <description>
 
-&lt;h2 id=&#34;what-is-it:ac4d2c4b2f71b3b47d24799d64503bb3&#34;&gt;What is it?&lt;/h2&gt;
+&lt;h2 id=&#34;what-is-it&#34;&gt;What is it?&lt;/h2&gt;
 
 &lt;p&gt;Python&amp;rsquo;s &lt;code&gt;with&lt;/code&gt; statement provides a very convenient way of dealing with the situation where you have to do a setup and teardown to make something happen. A very good example for this is the situation where you want to gain a handler to a file, read data from the file and the close the file handler.&lt;/p&gt;
 
@@ -152,7 +154,7 @@ data &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#
    data &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #336666&#34;&gt;file&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;read()
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;how-does-it-work:ac4d2c4b2f71b3b47d24799d64503bb3&#34;&gt;How does it work?&lt;/h2&gt;
+&lt;h2 id=&#34;how-does-it-work&#34;&gt;How does it work?&lt;/h2&gt;
 
 &lt;p&gt;While this might look like magic, the way Python handles &lt;code&gt;with&lt;/code&gt; is more clever than magic. The basic idea is that the statement after &lt;code&gt;with&lt;/code&gt; has to evaluate an object that responds to an &lt;code&gt;__enter__()&lt;/code&gt; as well as an &lt;code&gt;__exit__()&lt;/code&gt; function.&lt;/p&gt;
 

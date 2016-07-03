@@ -142,7 +142,7 @@ with open(&quot;/tmp/foo.txt&quot;) as file:
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             
 
-<h2 id="what-is-it:ac4d2c4b2f71b3b47d24799d64503bb3">What is it?</h2>
+<h2 id="what-is-it">What is it?</h2>
 
 <p>Python&rsquo;s <code>with</code> statement provides a very convenient way of dealing with the situation where you have to do a setup and teardown to make something happen. A very good example for this is the situation where you want to gain a handler to a file, read data from the file and the close the file handler.</p>
 
@@ -165,7 +165,7 @@ data <span style="color: #555555">=</span> <span style="color: #336666">file</sp
    data <span style="color: #555555">=</span> <span style="color: #336666">file</span><span style="color: #555555">.</span>read()
 </pre></div>
 
-<h2 id="how-does-it-work:ac4d2c4b2f71b3b47d24799d64503bb3">How does it work?</h2>
+<h2 id="how-does-it-work">How does it work?</h2>
 
 <p>While this might look like magic, the way Python handles <code>with</code> is more clever than magic. The basic idea is that the statement after <code>with</code> has to evaluate an object that responds to an <code>__enter__()</code> as well as an <code>__exit__()</code> function.</p>
 

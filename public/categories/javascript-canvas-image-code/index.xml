@@ -18,7 +18,7 @@
 
 &lt;p&gt;I have been playing around with Canvas objects and images for a side project I am doing. One of the first things I had to figure out for this project was how to fit an image of arbitrary height and width on to a Canvas object of arbitrary, but known dimensions while preserving the aspect ratios of the image. This blog post is an explanation of the solution I came up with for this.&lt;/p&gt;
 
-&lt;h3 id=&#34;the-problem:c1bd9e28bca075d1cce32fa541019ef4&#34;&gt;The problem&lt;/h3&gt;
+&lt;h3 id=&#34;the-problem&#34;&gt;The problem&lt;/h3&gt;
 
 &lt;p&gt;The application has a Canvas object on which it needs to draw arbitrary images. The Canvas&amp;rsquo;s dimensions are set to &lt;strong&gt;450px&lt;/strong&gt; by &lt;strong&gt;300px&lt;/strong&gt;. The image that needs to be drawn will have unknown aspect ratio. The ideal case will be when the image&amp;rsquo;s aspect ratio is &lt;strong&gt;3:2&lt;/strong&gt;, just like the canvas. In this case, there is no need for any adjustments to be made and the image can be drawn like this:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;var&lt;/span&gt; canvas &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #336666&#34;&gt;document&lt;/span&gt;.getElementById(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;canvas&amp;#39;&lt;/span&gt;);

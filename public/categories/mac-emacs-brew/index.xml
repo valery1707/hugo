@@ -27,7 +27,7 @@
 
 &lt;p&gt;Notice the &lt;strong&gt;/usr/local/bin&lt;/strong&gt; in there.&lt;/p&gt;
 
-&lt;h2 id=&#34;update:edc0a2a8bcd338c2e4cd3b014777c98f&#34;&gt;Update&lt;/h2&gt;
+&lt;h2 id=&#34;update&#34;&gt;Update&lt;/h2&gt;
 
 &lt;p&gt;This does not seem to work. A better way to do this is to add the
 following:&lt;/p&gt;

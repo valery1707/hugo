@@ -165,7 +165,7 @@
 <span style="color: #555555">}</span>
 </pre></div>
 
-<p>Spring MVC provides a <code>ResponseBodyAdvice</code> <sup class="footnote-ref" id="fnref:0abddd3b4cf30c5684cc1ab73a7952dc:1"><a rel="footnote" href="#fn:0abddd3b4cf30c5684cc1ab73a7952dc:1">1</a></sup> to customize the response immediately after the execution of a controller method, which is exactly what we want in this situation. The interface expects us to implement two methods.</p>
+<p>Spring MVC provides a <code>ResponseBodyAdvice</code> <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> to customize the response immediately after the execution of a controller method, which is exactly what we want in this situation. The interface expects us to implement two methods.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@ControllerAdvice</span>
 <span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">JsonFilterAdvice</span> <span style="color: #006699; font-weight: bold">implements</span> ResponseBodyAdvice<span style="color: #555555">&lt;</span>List<span style="color: #555555">&gt;</span> <span style="color: #555555">{</span>
     <span style="color: #9999FF">@Override</span>
@@ -226,8 +226,8 @@
 <hr />
 
 <ol>
-<li id="fn:0abddd3b4cf30c5684cc1ab73a7952dc:1"><code>ResponseBodyAdvice</code> is an interface that can be wired with a <code>@ControllerAdvice</code> annotation to customize the response of controller methods. See the documentation <a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/servlet/mvc/method/annotation/ResponseBodyAdvice.html">here</a>.
- <a class="footnote-return" href="#fnref:0abddd3b4cf30c5684cc1ab73a7952dc:1"><sup>[return]</sup></a></li>
+<li id="fn:1"><code>ResponseBodyAdvice</code> is an interface that can be wired with a <code>@ControllerAdvice</code> annotation to customize the response of controller methods. See the documentation <a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/servlet/mvc/method/annotation/ResponseBodyAdvice.html">here</a>.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

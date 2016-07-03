@@ -19,7 +19,7 @@
 &lt;p&gt;Click on the image to see the visualisation:
 &lt;a href=&#34;http://sdqali.in/visualizations/community_shield/index.html&#34;&gt;&lt;img src=&#34;http://sdqali.in/images/community_shield.png&#34; alt=&#34;Community Shield visualisation&#34; title=&#34;Community Shield Visualisation&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;context:1fc2153399389a81a26ea3072b55a83c&#34;&gt;Context&lt;/h2&gt;
+&lt;h2 id=&#34;context&#34;&gt;Context&lt;/h2&gt;
 
 &lt;p&gt;The football season in Europe began this weekend with countries hosting
 their equivalents of the &lt;em&gt;Super Cup&lt;/em&gt;. For those confused as to what a
@@ -56,7 +56,7 @@ table for the ensuing season.&lt;/p&gt;
 
 &lt;p&gt;The visualisation is &lt;a href=&#34;http://sdqali.in/visualizations/community_shield/index.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h2 id=&#34;winners:1fc2153399389a81a26ea3072b55a83c&#34;&gt;Winners&lt;/h2&gt;
+&lt;h2 id=&#34;winners&#34;&gt;Winners&lt;/h2&gt;
 
 &lt;p&gt;If you observe the visualisation, there are a lot of seasons for which
 there are no winners. These seasons fall in to two sets. The first set
@@ -71,7 +71,7 @@ teams to have won the Community Shield are &lt;em&gt;English Professionals XI&lt
 visualisation. This is due to the fact that until early 1990s, a draw in
 a Community Shield match meant that the teams shared the trophy.&lt;/p&gt;
 
-&lt;h2 id=&#34;obervations:1fc2153399389a81a26ea3072b55a83c&#34;&gt;Obervations&lt;/h2&gt;
+&lt;h2 id=&#34;obervations&#34;&gt;Obervations&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Until the 1970s, winners of the Community Shield did not do well in
@@ -94,7 +94,7 @@ finished 6th or better in all seasons since 1970, except for 5 times.&lt;/li&gt;
 
 &lt;p&gt;Looks like winning the Community Shield no longer incur a curse on the winners.&lt;/p&gt;
 
-&lt;h2 id=&#34;code:1fc2153399389a81a26ea3072b55a83c&#34;&gt;Code&lt;/h2&gt;
+&lt;h2 id=&#34;code&#34;&gt;Code&lt;/h2&gt;
 
 &lt;p&gt;The data was pulled from Wikipedia and cleaned up using Excel. The
 visualisation was created using &lt;a href=&#34;http://d3js.org&#34;&gt;d3.js&lt;/a&gt;.&lt;/p&gt;

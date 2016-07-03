@@ -3,8 +3,12 @@
   
   <url>
     <loc>http://sdqali.in/</loc>
-    <lastmod>2016-06-30T19:43:07-04:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2016-07-02T18:42:04-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/</loc>
+    <lastmod>2016-07-02T18:42:04-07:00</lastmod>
   </url>
   
   <url>

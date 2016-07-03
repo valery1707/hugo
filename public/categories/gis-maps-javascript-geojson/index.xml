@@ -18,27 +18,27 @@
 
 &lt;p&gt;I have been playing around with maps a lot these days and have ended up using various tools in the process. This blog post is a way to make a note of these tools for later use.&lt;/p&gt;
 
-&lt;h1 id=&#34;geojson-io:7591cb75a8855983e3f9edf802cbce55&#34;&gt;geojson.io&lt;/h1&gt;
+&lt;h1 id=&#34;geojson-io&#34;&gt;geojson.io&lt;/h1&gt;
 
 &lt;p&gt;Mapbox&amp;rsquo;s &lt;a href=&#34;http://geojson.io/&#34;&gt;geojson.io&lt;/a&gt; is a simple tool for creating, editing and sharing maps. It lets you import map data in various formats and has an editor to modify maps.&lt;/p&gt;
 
-&lt;h1 id=&#34;geojson-topojson:7591cb75a8855983e3f9edf802cbce55&#34;&gt;GeoJSON-TopoJSON&lt;/h1&gt;
+&lt;h1 id=&#34;geojson-topojson&#34;&gt;GeoJSON-TopoJSON&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://github.com/JeffPaine&#34;&gt;Jeff Paine&lt;/a&gt;&amp;rsquo;s &lt;a href=&#34;https://github.com/JeffPaine/geojson-topojson&#34;&gt;GeoJSON-TopoJSON&lt;/a&gt; is a simple tool to convert between the more common GeoJSON format and the TopoJSON format used by libraries like D3.js. It is a simple tool, but it does exactly what it says on the tin.&lt;/p&gt;
 
-&lt;h1 id=&#34;the-distillery:7591cb75a8855983e3f9edf802cbce55&#34;&gt;The Distillery&lt;/h1&gt;
+&lt;h1 id=&#34;the-distillery&#34;&gt;The Distillery&lt;/h1&gt;
 
 &lt;p&gt;The New York Times&amp;rsquo; &lt;a href=&#34;http://shancarter.com/&#34;&gt;Shan Carter&lt;/a&gt; built &lt;a href=&#34;http://shancarter.github.io/distillery/&#34;&gt;The Distillery&lt;/a&gt;, a GUI around TopoJSON. Apart from converting GeoJSON to TopoJSON, it allows you to alter the map&amp;rsquo;s projection.&lt;/p&gt;
 
-&lt;h1 id=&#34;ogr2ogr:7591cb75a8855983e3f9edf802cbce55&#34;&gt;ogr2ogr&lt;/h1&gt;
+&lt;h1 id=&#34;ogr2ogr&#34;&gt;ogr2ogr&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://www.gdal.org/ogr2ogr.html&#34;&gt;ogr2ogr&lt;/a&gt; is a command line utility to convert features data between different file formats.&lt;/p&gt;
 
-&lt;h1 id=&#34;ogre-ogr2ogr-web-client:7591cb75a8855983e3f9edf802cbce55&#34;&gt;Ogre - ogr2ogr web client&lt;/h1&gt;
+&lt;h1 id=&#34;ogre-ogr2ogr-web-client&#34;&gt;Ogre - ogr2ogr web client&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://ogre.adc4gis.com/&#34;&gt;Ogre&lt;/a&gt; is a web UI around ogr2ogr. It lets you do transformations on your map files when you are lazy and don&amp;rsquo;t want to use the command line to run ogr2ogr.&lt;/p&gt;
 
-&lt;h1 id=&#34;merge-geojson-features:7591cb75a8855983e3f9edf802cbce55&#34;&gt;merge-geojson-features&lt;/h1&gt;
+&lt;h1 id=&#34;merge-geojson-features&#34;&gt;merge-geojson-features&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://www.npmjs.org/package/&#34;&gt;merge-geojson-features&lt;/a&gt; is a Node.js module to combine Features defined in different files in to a single FeatureCollection. I use it when I am not in the mood to alter GeoJSON objects from a JavaScript console by hand.&lt;/p&gt;
 </description>
