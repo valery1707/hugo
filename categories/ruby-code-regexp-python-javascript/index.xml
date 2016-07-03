@@ -18,7 +18,7 @@
 
 &lt;p&gt;I will admit that I find regular expressions somewhat hard to parse. While the thinking process needed to write a regular expression is iterative and hence results in the correct expression suitable for the situation, once it is written it lacks readability. I have faced that pain of trying to grok a complex regular expression written years ago. So I was pleasantly surprised when I saw &lt;a href=&#34;https://news.ycombinator.com/item?id=6463144&#34;&gt;this example&lt;/a&gt; from Hacker News user &lt;em&gt;WestCoastJustin&lt;/em&gt;. I found it very easy to understand because of the names he had assigned to each capture group in the expression.&lt;/p&gt;
 
-&lt;h2 id=&#34;ruby:438989d6473c434642cd18cc094f10cf&#34;&gt;Ruby&lt;/h2&gt;
+&lt;h2 id=&#34;ruby&#34;&gt;Ruby&lt;/h2&gt;
 
 &lt;p&gt;Ruby has supported named capture groups since version 1.9. Each match group is named by using &lt;code&gt;?&amp;lt;name&amp;gt;&lt;/code&gt; inside the match group and these matches are made available has a hash and each match can be accessed by using the match group name as the key.&lt;/p&gt;
 

@@ -25,7 +25,7 @@ REST puts a lot of emphasis on resources, their representations and states. Basi
 single resource; the HTTP method (GET, POST, PUT, DELETE) indicates what
 action should be performed on that resource; and the ACCEPT header indicates the format that the resource should be presented in.&lt;/p&gt;
 
-&lt;h2 id=&#34;chrome-and-content-type:81ded0c677aedede844b66006f9428ca&#34;&gt;Chrome and Content-Type&lt;/h2&gt;
+&lt;h2 id=&#34;chrome-and-content-type&#34;&gt;Chrome and Content-Type&lt;/h2&gt;
 
 &lt;p&gt;Having seen this, one would assume that if you have a resource, say a
 &lt;code&gt;User&lt;/code&gt; on your system and there were two representations of that
@@ -41,7 +41,7 @@ Now, the interesting thing here is that the Chrome developers seem to
 have closed the issue without providing any convincing answers or
 indicating whether they would fix this.&lt;/p&gt;
 
-&lt;h2 id=&#34;vary-accept-to-the-rescue:81ded0c677aedede844b66006f9428ca&#34;&gt;Vary: Accept to the rescue?&lt;/h2&gt;
+&lt;h2 id=&#34;vary-accept-to-the-rescue&#34;&gt;Vary: Accept to the rescue?&lt;/h2&gt;
 
 &lt;p&gt;One of the
 &lt;a href=&#34;https://code.google.com/p/chromium/issues/detail?id=108766#c6&#34;&gt;solutions&lt;/a&gt;
@@ -57,7 +57,7 @@ JSON, I was convinced that telling Chrome to
 re-validate the resource was the only way to get around this issue. This
 leads us to another interesting bug in Chrome.&lt;/p&gt;
 
-&lt;h2 id=&#34;chrome-ignores-the-no-cache-directive:81ded0c677aedede844b66006f9428ca&#34;&gt;Chrome ignores the no-cache directive&lt;/h2&gt;
+&lt;h2 id=&#34;chrome-ignores-the-no-cache-directive&#34;&gt;Chrome ignores the no-cache directive&lt;/h2&gt;
 
 &lt;p&gt;Reading the specs lead me to the
 &lt;a href=&#34;http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.4&#34;&gt;Cache-Control&lt;/a&gt;
@@ -82,7 +82,7 @@ will never cache the resource.&lt;/p&gt;
 points that are not cache-able because if you make them cache-able, Google
 Chrome will leave your users staring at naked JSON.&lt;/p&gt;
 
-&lt;h2 id=&#34;possible-solutions:81ded0c677aedede844b66006f9428ca&#34;&gt;Possible solutions&lt;/h2&gt;
+&lt;h2 id=&#34;possible-solutions&#34;&gt;Possible solutions&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;Use different URLs for different representations. In my case, that

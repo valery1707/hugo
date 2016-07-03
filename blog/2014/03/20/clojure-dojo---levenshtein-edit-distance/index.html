@@ -100,13 +100,13 @@
 
 <p>I have been playing around with Clojure and after familiarising myself with the core, I decided to start writing little programs that forces me to choose the right idioms. I am starting off with Levenshtein edit distance of two strings.</p>
 
-<h3 id="levenshtein-edit-distance:d5d4c3a7257ad508bc68cd569fb16682">Levenshtein edit distance</h3>
+<h3 id="levenshtein-edit-distance">Levenshtein edit distance</h3>
 
 <p>Levenshtein edit distance between two string is a way of quantifying how similar or dissimilar they are, lower distance implying higher similarity. The algorithm to calculate Levenshtein distance is fairly simple - the algorithm cares about three operations that can be performed at a particular position in a string to move it towards the other - insertion, deletion and substitution.</p>
 
 <p>This can be recursively solved for two strings <code>A0:AS</code> and <code>B0:BS</code> by comparing <code>AS</code>, <code>B0:BS</code>; <code>A0:AS</code>, <code>BS</code> and <code>AS</code>, <code>BS</code>.</p>
 
-<h3 id="code:d5d4c3a7257ad508bc68cd569fb16682">Code</h3>
+<h3 id="code">Code</h3>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>(<span style="color: #006699; font-weight: bold">ns </span><span style="color: #003333">clojure_dojo.core</span>)
 
 (<span style="color: #006699; font-weight: bold">defn </span><span style="color: #003333">edit-distance</span>
@@ -123,7 +123,7 @@
                  (<span style="color: #CC00FF">edit-distance</span> (<span style="color: #336666">drop </span><span style="color: #FF6600">1</span> <span style="color: #003333">first</span>) (<span style="color: #336666">drop </span><span style="color: #FF6600">1</span> <span style="color: #003333">second</span>))))))
 </pre></div>
 
-<h3 id="test:d5d4c3a7257ad508bc68cd569fb16682">Test</h3>
+<h3 id="test">Test</h3>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>(<span style="color: #006699; font-weight: bold">ns </span><span style="color: #003333">clojure_dojo.t-core</span>
   (<span style="color: #FFCC33">:use</span> <span style="color: #003333">midje.sweet</span>)
   (<span style="color: #FFCC33">:use</span> [<span style="color: #003333">clojure_dojo.core</span>]))
@@ -143,11 +143,11 @@
              (<span style="color: #CC00FF">edit-distance</span> <span style="color: #CC3300">&quot;sittin&quot;</span>, <span style="color: #CC3300">&quot;sitting&quot;</span>) <span style="color: #003333">=&gt;</span> <span style="color: #FF6600">1</span>))
 </pre></div>
 
-<h3 id="the-problem-with-this-approach:d5d4c3a7257ad508bc68cd569fb16682">The problem with this approach</h3>
+<h3 id="the-problem-with-this-approach">The problem with this approach</h3>
 
 <p>This solution looks fine - it passes the tests. However, if we carefully observe the recursion tree, we notice that there are sub-problems that are solved multiple times and this makes this algorithm&rsquo;s order of complexity Θ(3^min(m, n)). This can be observed from the call tree of this recursion.</p>
 
-<h3 id="improvement:d5d4c3a7257ad508bc68cd569fb16682">Improvement</h3>
+<h3 id="improvement">Improvement</h3>
 
 <p>Recursive algorithms of this nature can be improved in two ways - memoization during recursion or applying <a href="https://en.wikipedia.org/wiki/Dynamic_programming">Dynamic Programming</a> in a bottom up manner. The next blog post in this series will deal with how these two approaches can be done in Clojure.</p>
 

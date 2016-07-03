@@ -102,9 +102,9 @@
 
 <p>Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.</p>
 
-<p>Obviously, we need an Upcaster <sup class="footnote-ref" id="fnref:7963631362ccfc0a65724f391287b97d:1"><a rel="footnote" href="#fn:7963631362ccfc0a65724f391287b97d:1">1</a></sup> to take care of this situation. The Upcaster in this scenario will have to upcast this event to something representing the non-existence of this event, regardless of the revision. There are two ways to address this issue - Upcasting to an explicit NoOpEvent and upcasting to an empty list.</p>
+<p>Obviously, we need an Upcaster <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> to take care of this situation. The Upcaster in this scenario will have to upcast this event to something representing the non-existence of this event, regardless of the revision. There are two ways to address this issue - Upcasting to an explicit NoOpEvent and upcasting to an empty list.</p>
 
-<h2 id="upcasting-to-a-noopevent:7963631362ccfc0a65724f391287b97d">Upcasting to a NoOpEvent</h2>
+<h2 id="upcasting-to-a-noopevent">Upcasting to a NoOpEvent</h2>
 
 <p>Given an event <code>ValidationForFirstNameFailedEvent</code>, an upcaster that upcasts to a <code>NoOpEvent</code> can be implemented as follows:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">DeprecateValidationForFirstNameFailedEventUpcaster</span> <span style="color: #006699; font-weight: bold">extends</span> AbstractSingleEntryUpcaster <span style="color: #555555">{</span>
@@ -132,7 +132,7 @@
 
 <p>As expected, this upcaster does not look at the revision of the intermediate representation and simply looks at the type of the event. And it completely discards any fields in the event and returns a simple type of the <code>NoOpEvent</code> class. Note that in this case, we are serializing the event as JSON using Jackson, hence the expected representation type is <code>com.fasterxml.jackson.databind.JsonNode</code>. If we were to use Axon&rsquo;s default XML serialization, the expected representation type will be <code>org.dom4j.Document</code></p>
 
-<h3 id="upcasting-to-an-empty-list:7963631362ccfc0a65724f391287b97d">Upcasting to an empty list</h3>
+<h3 id="upcasting-to-an-empty-list">Upcasting to an empty list</h3>
 
 <p>Upcasting to an empty list can be easily achieved by implementing <code>Upcaster&lt;T&gt;</code> instead of extending <code>AbstractSingleEntryUpcaster</code>.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">ValidationForFirstNameFailedEventToEmptyListUpcaster</span> <span style="color: #006699; font-weight: bold">implements</span> Upcaster<span style="color: #555555">&lt;</span>JsonNode<span style="color: #555555">&gt;</span> <span style="color: #555555">{</span>
@@ -187,8 +187,8 @@ So you achieve the same thing, but explicit always beats implicit in DDD ;-)</p>
 <hr />
 
 <ol>
-<li id="fn:7963631362ccfc0a65724f391287b97d:1">Upcasting is a technique of migrating the schema of events in an event-sourced system to keep up with changes in the business requirements. The Axon documentation has a <a href="http://www.axonframework.org/docs/2.0/repositories-and-event-stores.html#event-upcasting">very good primer</a> on upcasting, specifically in the context of Axon.
- <a class="footnote-return" href="#fnref:7963631362ccfc0a65724f391287b97d:1"><sup>[return]</sup></a></li>
+<li id="fn:1">Upcasting is a technique of migrating the schema of events in an event-sourced system to keep up with changes in the business requirements. The Axon documentation has a <a href="http://www.axonframework.org/docs/2.0/repositories-and-event-stores.html#event-upcasting">very good primer</a> on upcasting, specifically in the context of Axon.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

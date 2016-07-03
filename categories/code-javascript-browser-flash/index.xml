@@ -25,7 +25,7 @@ Flash still allows clipboard access, but in version 10, needs an explicit user i
 
 &lt;p&gt;While this greatly improves the user experience of copying text, I am not sure if hijacking the user&amp;rsquo;s interaction with a button and passing it on to a flash object whose presence the user is not aware of is the right thing to do.&lt;/p&gt;
 
-&lt;h1 id=&#34;an-alternate-approach-to-copying-content:85e6ce2414659e988fa21d7d9c36d345&#34;&gt;An alternate approach to copying content&lt;/h1&gt;
+&lt;h1 id=&#34;an-alternate-approach-to-copying-content&#34;&gt;An alternate approach to copying content&lt;/h1&gt;
 
 &lt;p&gt;I have been thinking about alternate approaches to enabling the copy feature. The approach that I have zeroed in involves programmatically selecting the content that you want the user to copy and presenting this to the user. This is the approach that Google Maps uses.&lt;/p&gt;
 

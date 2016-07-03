@@ -168,7 +168,7 @@ at in.sdqali.springapps.Application.run<span style="color: #555555">(</span>Appl
 <p>What happened? It looks like the <code>run</code> method was called with out any arguments while the test configuration was loaded.</p>
 
 <p>Let‘s try and understand wh
-y this happens. Remember how we annotated the test with <code>@SpringApplicationConfiguration</code>? This annotation is a meta-annotation <sup class="footnote-ref" id="fnref:1944f35ca6adb86a80e399600f75145d:1"><a rel="footnote" href="#fn:1944f35ca6adb86a80e399600f75145d:1">1</a></sup> specified as:</p>
+y this happens. Remember how we annotated the test with <code>@SpringApplicationConfiguration</code>? This annotation is a meta-annotation <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> specified as:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@ContextConfiguration</span><span style="color: #555555">(</span>loader <span style="color: #555555">=</span> SpringApplicationContextLoader<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">)</span>
 <span style="color: #9999FF">@Documented</span>
 <span style="color: #9999FF">@Inherited</span>
@@ -180,10 +180,11 @@ y this happens. Remember how we annotated the test with <code>@SpringApplication
 </pre></div>
 
 <p><code>ContextConfiguration</code> is an annotation that allows tests to specify the information used to load and configure the application context. From the Java doc for this annotation:</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span> * {@code @ContextConfiguration} defines class-level metadata that is used to determine
+
+<pre><code> * {@code @ContextConfiguration} defines class-level metadata that is used to determine
  * how to load and configure an {@link org.springframework.context.ApplicationContext
  * ApplicationContext} for integration tests.
-</pre></div>
+</code></pre>
 
 <p>This brings us to <code>SpringApplicationContextLoader</code>‘s <code>loadContext</code> method and buried deep inside are these line:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>application<span style="color: #555555">.</span><span style="color: #330099">setInitializers</span><span style="color: #555555">(</span>initializers<span style="color: #555555">);</span>
@@ -206,8 +207,8 @@ ConfigurableApplicationContext applicationContext <span style="color: #555555">=
 <hr />
 
 <ol>
-<li id="fn:1944f35ca6adb86a80e399600f75145d:1">Meta annotations. <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html#beans-meta-annotations">Spring documentation</a>. To see how to use meta-annotations to write custom annoations, see <a href="/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/">this blog post</a>.
- <a class="footnote-return" href="#fnref:1944f35ca6adb86a80e399600f75145d:1"><sup>[return]</sup></a></li>
+<li id="fn:1">Meta annotations. <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html#beans-meta-annotations">Spring documentation</a>. To see how to use meta-annotations to write custom annoations, see <a href="/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/">this blog post</a>.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

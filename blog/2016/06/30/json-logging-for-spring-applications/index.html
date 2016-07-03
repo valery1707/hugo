@@ -98,7 +98,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <p>If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack <sup class="footnote-ref" id="fnref:4d1e9942cfbb3801d59160499ca76d4c:1"><a rel="footnote" href="#fn:4d1e9942cfbb3801d59160499ca76d4c:1">1</a></sup>. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq <sup class="footnote-ref" id="fnref:4d1e9942cfbb3801d59160499ca76d4c:2"><a rel="footnote" href="#fn:4d1e9942cfbb3801d59160499ca76d4c:2">2</a></sup>. This blog post documents how to format logs as JSON in a Spring application.</p>
+            <p>If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>. This blog post documents how to format logs as JSON in a Spring application.</p>
 
 <p>We will be using the <code>logstash-logback-encoder</code> <a href="https://github.com/logstash/logstash-logback-encoder">encoder</a> from Logstash. This can be added to the application with the following Maven dependency:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #330099; font-weight: bold">&lt;dependency&gt;</span>
@@ -148,29 +148,30 @@
 </pre></div>
 
 <p>With this configuration in place, we can tail the logs to observe the application in a much more readable manner:</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>$ tail -f /tmp/json-log.json  | jq .
-<span style="color: #555555">{</span>
-  <span style="color: #CC3300">&quot;@timestamp&quot;</span>: <span style="color: #CC3300">&quot;2016-06-30T20:01:59.651-04:00&quot;</span>,
-  <span style="color: #CC3300">&quot;@version&quot;</span>: 1,
-  <span style="color: #CC3300">&quot;message&quot;</span>: <span style="color: #CC3300">&quot;Mapped \&quot;{[/error],produces=[text/html]}\&quot; onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)&quot;</span>,
-  <span style="color: #CC3300">&quot;logger_name&quot;</span>: <span style="color: #CC3300">&quot;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping&quot;</span>,
-  <span style="color: #CC3300">&quot;thread_name&quot;</span>: <span style="color: #CC3300">&quot;main&quot;</span>,
-  <span style="color: #CC3300">&quot;level&quot;</span>: <span style="color: #CC3300">&quot;INFO&quot;</span>,
-  <span style="color: #CC3300">&quot;level_value&quot;</span>: 20000,
-  <span style="color: #CC3300">&quot;HOSTNAME&quot;</span>: <span style="color: #CC3300">&quot;somehostname&quot;</span>
-<span style="color: #555555">}</span>
-<span style="color: #555555">{</span>
-  <span style="color: #CC3300">&quot;@timestamp&quot;</span>: <span style="color: #CC3300">&quot;2016-06-30T20:01:59.677-04:00&quot;</span>,
-  <span style="color: #CC3300">&quot;@version&quot;</span>: 1,
-  <span style="color: #CC3300">&quot;message&quot;</span>: <span style="color: #CC3300">&quot;Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]&quot;</span>,
-  <span style="color: #CC3300">&quot;logger_name&quot;</span>: <span style="color: #CC3300">&quot;org.springframework.web.servlet.handler.SimpleUrlHandlerMapping&quot;</span>,
-  <span style="color: #CC3300">&quot;thread_name&quot;</span>: <span style="color: #CC3300">&quot;main&quot;</span>,
-  <span style="color: #CC3300">&quot;level&quot;</span>: <span style="color: #CC3300">&quot;INFO&quot;</span>,
-  <span style="color: #CC3300">&quot;level_value&quot;</span>: 20000,
-  <span style="color: #CC3300">&quot;HOSTNAME&quot;</span>: <span style="color: #CC3300">&quot;somehostname&quot;</span>
-<span style="color: #555555">}</span>
+
+<pre><code>$ tail -f /tmp/json-log.json  | jq .
+{
+  &quot;@timestamp&quot;: &quot;2016-06-30T20:01:59.651-04:00&quot;,
+  &quot;@version&quot;: 1,
+  &quot;message&quot;: &quot;Mapped \&quot;{[/error],produces=[text/html]}\&quot; onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)&quot;,
+  &quot;logger_name&quot;: &quot;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping&quot;,
+  &quot;thread_name&quot;: &quot;main&quot;,
+  &quot;level&quot;: &quot;INFO&quot;,
+  &quot;level_value&quot;: 20000,
+  &quot;HOSTNAME&quot;: &quot;somehostname&quot;
+}
+{
+  &quot;@timestamp&quot;: &quot;2016-06-30T20:01:59.677-04:00&quot;,
+  &quot;@version&quot;: 1,
+  &quot;message&quot;: &quot;Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]&quot;,
+  &quot;logger_name&quot;: &quot;org.springframework.web.servlet.handler.SimpleUrlHandlerMapping&quot;,
+  &quot;thread_name&quot;: &quot;main&quot;,
+  &quot;level&quot;: &quot;INFO&quot;,
+  &quot;level_value&quot;: 20000,
+  &quot;HOSTNAME&quot;: &quot;somehostname&quot;
+}
 ...
-</pre></div>
+</code></pre>
 
 <p>The Logstach encoder also provides for a <a href="https://github.com/logstash/logstash-logback-encoder#custom_field_names">variety of customizations</a> to the way the logs are written.</p>
 
@@ -180,10 +181,10 @@
 <hr />
 
 <ol>
-<li id="fn:4d1e9942cfbb3801d59160499ca76d4c:1">ELK - ElasticSearch, Logstash, Kibana is a toolset for analyzing logs. An introduction to ELK can be found <a href="https://www.elastic.co/webinars/introduction-elk-stack">here</a>.
- <a class="footnote-return" href="#fnref:4d1e9942cfbb3801d59160499ca76d4c:1"><sup>[return]</sup></a></li>
-<li id="fn:4d1e9942cfbb3801d59160499ca76d4c:2"><a href="https://stedolan.github.io/jq/">jq</a> is a command line JSON processor. If you work with JSON, jq is a must have tool.
- <a class="footnote-return" href="#fnref:4d1e9942cfbb3801d59160499ca76d4c:2"><sup>[return]</sup></a></li>
+<li id="fn:1">ELK - ElasticSearch, Logstash, Kibana is a toolset for analyzing logs. An introduction to ELK can be found <a href="https://www.elastic.co/webinars/introduction-elk-stack">here</a>.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2"><a href="https://stedolan.github.io/jq/">jq</a> is a command line JSON processor. If you work with JSON, jq is a must have tool.
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

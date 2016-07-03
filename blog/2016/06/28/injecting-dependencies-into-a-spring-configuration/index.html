@@ -165,12 +165,13 @@
 </pre></div>
 
 <p>Evidently, the interceptor we wired up is <code>null</code>. After a spending a lot of time on this, we discovered this line on the java doc for <code>@Configuration</code>:</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>@Configuration is meta-annotated with @Component, therefore
+
+<pre><code>@Configuration is meta-annotated with @Component, therefore
 @Configuration classes are candidates for component scanning (typically using
-Spring XML&#39;s &lt;context:component-scan/&gt; element) and therefore may also take
+Spring XML's &lt;context:component-scan/&gt; element) and therefore may also take
 advantage of @Autowired/@Inject
 at the field and method level (but not at the constructor level).
-</pre></div>
+</code></pre>
 
 <p>A simple fix is to inject the interceptor through a setter as follows:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Configuration</span>

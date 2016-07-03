@@ -108,7 +108,7 @@ commit message. I was looking for ways to reduce this and figured out that
 running Emacs in <code>daemon</code> mode and using <code>emacsclient</code> as the
 <code>GIT_EDITOR</code> would solve this.</p>
 
-<h1 id="running-an-emacs-daemon-at-start-up-on-mac-os-x:e2f4fbaa26157ce13f127902af0dd17e">Running an Emacs daemon at start up on Mac OS X</h1>
+<h1 id="running-an-emacs-daemon-at-start-up-on-mac-os-x">Running an Emacs daemon at start up on Mac OS X</h1>
 
 <p>The recommended way of running an application at start up on Mac OS X is
 to use <a href="http://en.wikipedia.org/wiki/Launchd">launchd</a>. Launchd
@@ -143,7 +143,7 @@ Here is the plist file for Emacs at <code>~/Library/LaunchAgents/gnu.emacs.daemo
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>sudo launchctl load -w ~/Library/LaunchAgents/gnu.emacs.daemon.plist
 </pre></div>
 
-<h1 id="using-emacs-client-as-the-editor:e2f4fbaa26157ce13f127902af0dd17e">Using Emacs client as the editor</h1>
+<h1 id="using-emacs-client-as-the-editor">Using Emacs client as the editor</h1>
 
 <p>This is done by adding</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #336666">export</span> <span style="color: #003333">EDITOR</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;/Applications/Emacs.app/Contents/MacOS/bin/emacsclient&quot;</span>

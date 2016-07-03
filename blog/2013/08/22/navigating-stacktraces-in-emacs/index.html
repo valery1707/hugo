@@ -98,11 +98,11 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <p>I had to debug an issue today and that meant dealing with Rails stack traces. I got tired of having to constantly switch between reading the trace in the terminal and the code in Emacs to figure out what was going wrong and get more context around it. I felt that there should be an easier way of doing this. A quick search <sup class="footnote-ref" id="fnref:29e1a25627ff5adc25c49a09c3db5253:1"><a rel="footnote" href="#fn:29e1a25627ff5adc25c49a09c3db5253:1">1</a></sup> did not yield anything. But then I remembered Grep mode <sup class="footnote-ref" id="fnref:29e1a25627ff5adc25c49a09c3db5253:2"><a rel="footnote" href="#fn:29e1a25627ff5adc25c49a09c3db5253:2">2</a></sup> and it occurred to me that hijacking Grep mode&rsquo;s navigation feature would let me navigate the stack trace better. This is the solution I came up with.</p>
+            <p>I had to debug an issue today and that meant dealing with Rails stack traces. I got tired of having to constantly switch between reading the trace in the terminal and the code in Emacs to figure out what was going wrong and get more context around it. I felt that there should be an easier way of doing this. A quick search <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> did not yield anything. But then I remembered Grep mode <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup> and it occurred to me that hijacking Grep mode&rsquo;s navigation feature would let me navigate the stack trace better. This is the solution I came up with.</p>
 
 <ul>
 <li>Open the log in a buffer.</li>
-<li>Replace any leading file paths in the logs with the appropriate path for your local copy of the code. In the following case, I would replace all <code>/opt/thoughtworks/mingle</code> with empty string <sup class="footnote-ref" id="fnref:29e1a25627ff5adc25c49a09c3db5253:3"><a rel="footnote" href="#fn:29e1a25627ff5adc25c49a09c3db5253:3">3</a></sup>.
+<li>Replace any leading file paths in the logs with the appropriate path for your local copy of the code. In the following case, I would replace all <code>/opt/thoughtworks/mingle</code> with empty string <sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>.
 <code>bash
 /opt/thoughtworks/mingle/app/models/foo.rb:46:in 'compare_bar'
 /opt/thoughtworks/mingle/app/controllers/foos_controller.rb:42:in 'validate_bar'
@@ -117,12 +117,12 @@
 <hr />
 
 <ol>
-<li id="fn:29e1a25627ff5adc25c49a09c3db5253:1">I almost wrote &ldquo;quick google&rdquo;, but then remembered that I no longer use Google that much. <a href="http://duckduckgo.com">DuckDuckGo</a> has been my preferred search engine for a while.
- <a class="footnote-return" href="#fnref:29e1a25627ff5adc25c49a09c3db5253:1"><sup>[return]</sup></a></li>
-<li id="fn:29e1a25627ff5adc25c49a09c3db5253:2">Grep mode is an Emacs mode used by the <a href="http://www.emacswiki.org/emacs/GrepMode">Grep</a> command to display the results of a search. It populates the buffer with file paths and line numbers that let the user navigate to lines in the code base.
- <a class="footnote-return" href="#fnref:29e1a25627ff5adc25c49a09c3db5253:2"><sup>[return]</sup></a></li>
-<li id="fn:29e1a25627ff5adc25c49a09c3db5253:3">Typically logs are long and you may want to use <code>replace-string</code> instead of the default <code>query-replace</code> for searching and replacing text. The former replaces strings without asking for confirmation while the latter asks you to confirm each replace operation. The latter has it&rsquo;s use, but this use case calls for the former.
- <a class="footnote-return" href="#fnref:29e1a25627ff5adc25c49a09c3db5253:3"><sup>[return]</sup></a></li>
+<li id="fn:1">I almost wrote &ldquo;quick google&rdquo;, but then remembered that I no longer use Google that much. <a href="http://duckduckgo.com">DuckDuckGo</a> has been my preferred search engine for a while.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">Grep mode is an Emacs mode used by the <a href="http://www.emacswiki.org/emacs/GrepMode">Grep</a> command to display the results of a search. It populates the buffer with file paths and line numbers that let the user navigate to lines in the code base.
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3">Typically logs are long and you may want to use <code>replace-string</code> instead of the default <code>query-replace</code> for searching and replacing text. The former replaces strings without asking for confirmation while the latter asks you to confirm each replace operation. The latter has it&rsquo;s use, but this use case calls for the former.
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

@@ -14,7 +14,7 @@
       <pubDate>Thu, 26 Sep 2013 00:00:00 +0000</pubDate>
       
       <guid>http://sdqali.in/blog/2013/09/26/decomposing-urls-in-python/</guid>
-      <description>&lt;p&gt;Python&amp;rsquo;s &lt;code&gt;urlparse&lt;/code&gt; module breaks down URLs in to components. It supports all the URL schemes specified in RFC 3986 &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:de9260d4e69f6dbd85ec4347c64f2a89:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:de9260d4e69f6dbd85ec4347c64f2a89:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+      <description>&lt;p&gt;Python&amp;rsquo;s &lt;code&gt;urlparse&lt;/code&gt; module breaks down URLs in to components. It supports all the URL schemes specified in RFC 3986 &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;bash linenos:false
 &amp;gt;&amp;gt;&amp;gt; import urlparse
@@ -33,8 +33,8 @@ ParseResult(scheme=&#39;news&#39;, netloc=&#39;&#39;, path=&#39;comp.infosystems
 &lt;hr /&gt;
 
 &lt;ol&gt;
-&lt;li id=&#34;fn:de9260d4e69f6dbd85ec4347c64f2a89:1&#34;&gt;IETF - RFC for &lt;a href=&#34;https://tools.ietf.org/html/rfc3986&#34;&gt;Uniform Resource Identifier (URI): Generic Syntax&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:de9260d4e69f6dbd85ec4347c64f2a89:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:1&#34;&gt;IETF - RFC for &lt;a href=&#34;https://tools.ietf.org/html/rfc3986&#34;&gt;Uniform Resource Identifier (URI): Generic Syntax&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>

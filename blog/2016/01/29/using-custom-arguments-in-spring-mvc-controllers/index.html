@@ -108,7 +108,7 @@ However, there are situations where you want methods to receive a parameter of a
 
 <p>However, there are situations where you want methods to receive a parameter of a particular type that has to resolved from a set of parameters–for example, an API can expect consumers to send meta data about a request in the form of headers and need a custom type to hold this information. Spring provides a convenient way to provide such custom arguments. This blog post explores this feature and how to implement it and test it.</p>
 
-<h2 id="argument-resolvers:9aea8f8b4af2f94f2baa143b388c0ef4">Argument Resolvers</h2>
+<h2 id="argument-resolvers">Argument Resolvers</h2>
 
 <p>Spring uses argument resolvers to determine how to parse a particular argument required by a controller method from HTTP request body, the URL, URL parameters and HTTP headers. For example when a method expects a request header as in the following example, Spring uses a particular resolver named <code>RequestHeaderMethodArgumentResolver</code> to resolve this argument. All argument resolvers implement the <code>HandlerMethodArgumentResolver</code> interface whose contract is:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">interface</span> <span style="color: #00AA88; font-weight: bold">HandlerMethodArgumentResolver</span> <span style="color: #555555">{</span>
@@ -164,7 +164,7 @@ However, there are situations where you want methods to receive a parameter of a
 
 <p>This resolver will try and compute the value for the argument if the arguments type is <code>MetaData</code>. It computes it by extracting all the headers representing the meta data from the request.</p>
 
-<h2 id="using-in-a-controller-method:9aea8f8b4af2f94f2baa143b388c0ef4">Using in a controller method</h2>
+<h2 id="using-in-a-controller-method">Using in a controller method</h2>
 
 <p>This parameter can be accessed in a controller method as follows:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@RestController</span>
@@ -185,7 +185,7 @@ However, there are situations where you want methods to receive a parameter of a
 
 <p>If we were to run this app and make a request with the following headers, we will see that the MetaData instance did not get constructed with the right parameters.</p>
 
-<h2 id="wiring-up-the-custom-resolver:9aea8f8b4af2f94f2baa143b388c0ef4">Wiring up the custom resolver</h2>
+<h2 id="wiring-up-the-custom-resolver">Wiring up the custom resolver</h2>
 
 <p>For this resolver to work, it needs to be added to the chain of resolvers that Spring uses. This can be done by extending <code>WebMvcConfigurerAdapter</code>‘s <code>addArgumentResolvers</code> method as follows:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Configuration</span>
@@ -197,7 +197,7 @@ However, there are situations where you want methods to receive a parameter of a
 <span style="color: #555555">}</span>
 </pre></div>
 
-<h2 id="testing-using-mockmvc:9aea8f8b4af2f94f2baa143b388c0ef4">Testing using MockMvc</h2>
+<h2 id="testing-using-mockmvc">Testing using MockMvc</h2>
 
 <p>In order to test the behavior of a controller in the presence of a custom argument resolver using MockMvc, the resolver need to be added to the list of resolvers that MockMvc is going to use.
  An example test for the above class is as follows:</p>

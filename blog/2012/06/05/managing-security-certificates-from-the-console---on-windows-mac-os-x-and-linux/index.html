@@ -102,25 +102,25 @@
 
 <p>For me the last two weeks or so have involved a lot of wrestling with SSL certificates. One of the things that took some time to figure out was how to piggy-back on the tools provided by different Operating Systems to manage certificates. We did not want to rewrite <a href="https://www.mozilla.org/projects/security/pki/nss/" title="NSS">NSS</a>. Luckily for us, all the major OSes provide tools to manage certificates from the command line.</p>
 
-<h2 id="windows:26a22bff49b5304b87692aa823479996">Windows</h2>
+<h2 id="windows">Windows</h2>
 
 <hr />
 
 <p>Windows provides two ways to deal with certificates from the command line - <a href="http://technet.microsoft.com/en-us/library/cc732443%28WS.10%29.aspx" title="Certutil">Certutil</a> and <a href="http://msdn.microsoft.com/en-us/library/e78byta0.aspx" title="certmgr.exe">certmgr.exe</a>. We decided to go with Certutil because it is present out of the box on Windows 7 and Windows Server 2008, while certmgr.exe is part of the .Net runtime. This blog post will deal with Certutil.</p>
 
-<h3 id="adding-a-certificate:26a22bff49b5304b87692aa823479996">Adding a certificate</h3>
+<h3 id="adding-a-certificate">Adding a certificate</h3>
 
 <p>{% codeblock lang:bash %}certutil.exe -addstore -user root foo.crt{% endcodeblock %}</p>
 
 <p>This will install the <code>foo.crt</code> certificate to the Trusted Root Certification Authorities store for the current user.</p>
 
-<h3 id="view-certificates-in-a-store:26a22bff49b5304b87692aa823479996">View certificates in a store</h3>
+<h3 id="view-certificates-in-a-store">View certificates in a store</h3>
 
 <p>{% codeblock lang:bash %}certutil.exe -viewstore -user root{% endcodeblock %}</p>
 
 <p>This will list all the certificates in the Trusted Root Certification Authorities store for the current user. One drawback is that it throws up a Window to list as opposed to using STDOUT for output.</p>
 
-<h3 id="list-certificates-in-a-store:26a22bff49b5304b87692aa823479996">List certificates in a store</h3>
+<h3 id="list-certificates-in-a-store">List certificates in a store</h3>
 
 <p>{% codeblock lang:bash %}certutil.exe -user -store root{% endcodeblock %}</p>
 
@@ -128,13 +128,13 @@
 
 <p>There are more detailed explanations <a href="http://technet.microsoft.com/en-us/library/cc772898(WS.10).aspx">here</a>.</p>
 
-<h2 id="mac-os-x:26a22bff49b5304b87692aa823479996">Mac OS X</h2>
+<h2 id="mac-os-x">Mac OS X</h2>
 
 <hr />
 
 <p>Mac OS X ships the <a href="https://developer.apple.com/library/mac/#documentation/Darwin/Reference/Manpages/man1/security.1.html">security</a> tool to let the user manage certificates and keychains.</p>
 
-<h3 id="adding-a-certificate-1:26a22bff49b5304b87692aa823479996">Adding a certificate</h3>
+<h3 id="adding-a-certificate-1">Adding a certificate</h3>
 
 <p>{% codeblock lang:bash %}security add-certificate foo.crt
 security add-trusted-cert foo.crt{% endcodeblock %}</p>
@@ -144,31 +144,31 @@ security add-trusted-cert foo.crt{% endcodeblock %}</p>
 
 <p>This will trust the certificate only for SSL interactions.</p>
 
-<h3 id="listing-certificates:26a22bff49b5304b87692aa823479996">Listing certificates</h3>
+<h3 id="listing-certificates">Listing certificates</h3>
 
 <p>{% codeblock lang:bash %}security find-certificates -a -e foo@bar.com{% endcodeblock %}</p>
 
 <p>This would list all the certificates where e-mail address of the issuer <code>foo@bar.com</code>. Other fields that can be used for matching include <code>-c (name)</code>.</p>
 
-<h2 id="linux:26a22bff49b5304b87692aa823479996">Linux</h2>
+<h2 id="linux">Linux</h2>
 
 <hr />
 
 <p>On Linux, the best we could find was <a href="http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html certutil">certutil</a> which is part of Mozilla&rsquo;s NSS project.</p>
 
-<h3 id="adding-a-certificate-2:26a22bff49b5304b87692aa823479996">Adding a certificate</h3>
+<h3 id="adding-a-certificate-2">Adding a certificate</h3>
 
 <p>{% codeblock lang:bash %}certutil -A -d sql:~/.pki/nssdb -t C -n &ldquo;Certificate Common Name&rdquo; -i foo.crt{% endcodeblock %}</p>
 
 <p>This will add <code>foo.crt</code> to the certificate database <code>~/.pki/nssdb</code>. This is where applications like Chromium look for certificates.</p>
 
-<h3 id="listing-certificates-1:26a22bff49b5304b87692aa823479996">Listing certificates</h3>
+<h3 id="listing-certificates-1">Listing certificates</h3>
 
 <p>{% codeblock lang:bash %}certutil -L -d sql:~/.pki/nssdb -n &ldquo;Certificate Common Name&rdquo;{% endcodeblock %}</p>
 
 <p>This will list the certificates in the <code>~/.pki/nssdb</code> with the common name &ldquo;Certificate Common Name&rdquo;.</p>
 
-<h2 id="firefox:26a22bff49b5304b87692aa823479996">Firefox</h2>
+<h2 id="firefox">Firefox</h2>
 
 <hr />
 

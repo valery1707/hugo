@@ -20,17 +20,17 @@
 
 &lt;p&gt;This happened to us recently, and the subsequent debugging/postmortem revealed that there were things about our tools that we simply did not know.&lt;/p&gt;
 
-&lt;h2 id=&#34;a-bit-of-context:0b52393bd02c49630590bed6cdf265c8&#34;&gt;A bit of context&lt;/h2&gt;
+&lt;h2 id=&#34;a-bit-of-context&#34;&gt;A bit of context&lt;/h2&gt;
 
 &lt;p&gt;Ours is a Java code base, but we use Rake for our build scripts. We have been using Ruby 1.8.7 and Rake 0.8.7. We never got around to upgrading the Ruby versions due to a number of reasons including one of our gems breaking on 1.9.3 and more importantly our laziness. Well, laziness will cause you damage in the end and that is what happened to us.&lt;/p&gt;
 
-&lt;h2 id=&#34;what-is-the-issue:0b52393bd02c49630590bed6cdf265c8&#34;&gt;What is the issue ?&lt;/h2&gt;
+&lt;h2 id=&#34;what-is-the-issue&#34;&gt;What is the issue ?&lt;/h2&gt;
 
-&lt;h3 id=&#34;that-step-is-not-running-multiple-times-is-it:0b52393bd02c49630590bed6cdf265c8&#34;&gt;&amp;ldquo;That step is not running multiple times, is it?&amp;rdquo;&lt;/h3&gt;
+&lt;h3 id=&#34;that-step-is-not-running-multiple-times-is-it&#34;&gt;&amp;ldquo;That step is not running multiple times, is it?&amp;rdquo;&lt;/h3&gt;
 
 &lt;p&gt;While debugging our build, our new developer discovered that certain tasks that take up 10 minutes to complete were being executed twice. We soon started trying to figure out where in the chain of Rake task calls did we end up repeating a task. There were none. After some time, we would learn that we did not know enough about Rake and Ruby 1.8.7&lt;/p&gt;
 
-&lt;h3 id=&#34;rake-s-redefining-behavior:0b52393bd02c49630590bed6cdf265c8&#34;&gt;Rake&amp;rsquo;s redefining behavior&lt;/h3&gt;
+&lt;h3 id=&#34;rake-s-redefining-behavior&#34;&gt;Rake&amp;rsquo;s redefining behavior&lt;/h3&gt;
 
 &lt;p&gt;Rake treats redefining a Task as akin to appending actions to the same Task. To see this in action, add the following to a Rakefile:
 {% codeblock lang:ruby %}
@@ -75,7 +75,7 @@ foobar foobar foobar foobar foobar foobar foobar foobar foobar foobar
 &lt;p&gt;Lets take a look at Make&amp;rsquo;s behavior. This is how Make treats redefinitions:
 {% codeblock lang:make %}&lt;/p&gt;
 
-&lt;h1 id=&#34;example-makefile:0b52393bd02c49630590bed6cdf265c8&#34;&gt;Example Makefile&lt;/h1&gt;
+&lt;h1 id=&#34;example-makefile&#34;&gt;Example Makefile&lt;/h1&gt;
 
 &lt;p&gt;foo:
     @echo Foo target
@@ -95,7 +95,7 @@ Redefined foo target
 
 &lt;p&gt;Under normal situations, this behavior should not cause us trouble, as it is unlikely that we would redefine our own Rake tasks. But this combined with the next issue led to some of our build tasks running twice.&lt;/p&gt;
 
-&lt;h3 id=&#34;ruby-1-8-7-s-multiple-require-issue:0b52393bd02c49630590bed6cdf265c8&#34;&gt;Ruby 1.8.7&amp;rsquo;s multiple require issue&lt;/h3&gt;
+&lt;h3 id=&#34;ruby-1-8-7-s-multiple-require-issue&#34;&gt;Ruby 1.8.7&amp;rsquo;s multiple require issue&lt;/h3&gt;
 
 &lt;p&gt;It turns out that in Ruby 1.8.7, whenever a file is &lt;code&gt;require&lt;/code&gt;d multiple times, Ruby decides whether to reload it based on the path of the file provided. So if you have the same file being required twice, but using different paths, the file will be loaded twice. If there are Rake tasks defined in that file, the effect of actions in the Rake task will be multiplied.&lt;/p&gt;
 
@@ -104,7 +104,7 @@ Redefined foo target
 &lt;p&gt;&lt;code&gt;zoo.rb&lt;/code&gt; defines a Rake task &lt;code&gt;print_zoo&lt;/code&gt;:
 {% codeblock lang:ruby%}&lt;/p&gt;
 
-&lt;h1 id=&#34;zoo-rb:0b52393bd02c49630590bed6cdf265c8&#34;&gt;zoo.rb&lt;/h1&gt;
+&lt;h1 id=&#34;zoo-rb&#34;&gt;zoo.rb&lt;/h1&gt;
 
 &lt;p&gt;desc &amp;ldquo;prints zoo&amp;rdquo;
 task :print_zoo do
@@ -139,7 +139,7 @@ zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo
 
 &lt;p&gt;I must note that this issue does not happen on Ruby 1.9.3, where files are being loaded only once. All the code I showed here is available &lt;a href=&#34;https://github.com/sdqali/rake_sandbox&#34;&gt;here&lt;/a&gt;, if you want to take a closer look.&lt;/p&gt;
 
-&lt;h2 id=&#34;learning:0b52393bd02c49630590bed6cdf265c8&#34;&gt;Learning&lt;/h2&gt;
+&lt;h2 id=&#34;learning&#34;&gt;Learning&lt;/h2&gt;
 
 &lt;p&gt;This is not meant to be a criticism of Rake or Ruby. Although Rake&amp;rsquo;s behavior in this scenario looks weird, there are good reasons why Jim chose that behavior. And we should have moved to Ruby 1.9.3 anyway.  Certainly the learning is that we need to have a better understanding of the tools we use daily.&lt;/p&gt;
 </description>

@@ -101,7 +101,8 @@
 <p>Continuing from the last <a href="/blog/2013/10/01/accessing-environment-variables-in-gradle/">blog post</a>, I have been looking at reading user input from a Gradle script. This was a result of Stack Overflow user <em>user672009</em>&rsquo;s <a href="http://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle/19130098#19130098">question</a> about prompting for input from a Gradle script so the one does not have to include passwords in the script while checking in.</p>
 
 <p>Just like the last example, the fact that Gradle scripts are written in a Groovy DSL comes to our help. Groovy&rsquo;s <code>System. console(). readLine</code> can be called from inside Gradle tasks. The same recipe from the last post can be rewritten to prompt for various parameters.</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>signingConfigs {
+
+<pre><code>signingConfigs {
 	release {
 		storeFile file(System.console().readLine(&quot;\n\$ Enter keystore path: &quot;))
 		storePassword System.console().readLine(&quot;\n\$ Enter keystore password: &quot;)
@@ -115,18 +116,18 @@ buildTypes {
 		signingConfig signingConfigs.release
 	}
 }
-</pre></div>
+</code></pre>
 
-<h3 id="this-is-a-bad-idea:189e28200ef3f03936fdb2c2931b4450">This is a bad idea</h3>
+<h3 id="this-is-a-bad-idea">This is a bad idea</h3>
 
-<p>While Gradle allows this kind of prompts, this is a bad pattern for a build script, especially when the script is run remotely, for example on a Continuous Integration <sup class="footnote-ref" id="fnref:189e28200ef3f03936fdb2c2931b4450:1"><a rel="footnote" href="#fn:189e28200ef3f03936fdb2c2931b4450:1">1</a></sup> environment. The correct way to prevent hard coding of parameters like this is to access them from environment variables.</p>
+<p>While Gradle allows this kind of prompts, this is a bad pattern for a build script, especially when the script is run remotely, for example on a Continuous Integration <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> environment. The correct way to prevent hard coding of parameters like this is to access them from environment variables.</p>
 <div class="footnotes">
 
 <hr />
 
 <ol>
-<li id="fn:189e28200ef3f03936fdb2c2931b4450:1">Continuous Integration (CI) is a software development practice where code from different developers, on different components are integrated frequently with the aid of an automated build. Martin Fowler has a <a href="http://www.martinfowler.com/articles/continuousIntegration.html">great article</a> about it.
- <a class="footnote-return" href="#fnref:189e28200ef3f03936fdb2c2931b4450:1"><sup>[return]</sup></a></li>
+<li id="fn:1">Continuous Integration (CI) is a software development practice where code from different developers, on different components are integrated frequently with the aid of an automated build. Martin Fowler has a <a href="http://www.martinfowler.com/articles/continuousIntegration.html">great article</a> about it.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
 </ol>
 </div>
 

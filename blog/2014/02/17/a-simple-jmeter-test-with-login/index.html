@@ -102,22 +102,22 @@
 
 <p>For this example, the application under test is a simple Rails application, with the login form at <code>/login</code> and a <code>POST</code> request to <code>/login</code> does the authentication.</p>
 
-<h3 id="add-a-thread-group:432050f6a9a1f05bac0d71354129b823">Add a Thread Group</h3>
+<h3 id="add-a-thread-group">Add a Thread Group</h3>
 
 <p>A Thread Group defines a pool of users that will execute a particular test case against the server. JMeter makes the number of users, and the ramp-rate configurable. For the purpose of this example, Number of Threads is 2 and the ramp up time period is 1 second. This thread group is also configured to run forever.
 <img src="/images/jmeter/thread_group.png" alt="Thread Group" /></p>
 
-<h3 id="http-request-defaults:432050f6a9a1f05bac0d71354129b823">HTTP Request Defaults</h3>
+<h3 id="http-request-defaults">HTTP Request Defaults</h3>
 
 <p>The net step is to add an HTTP Request Defaults configuration element to the Thread Group. This configuration element sets up the domain or I.P. address of the server, the port and the protocol (HTTP / HTTPS). In this example, Server Name is <code>127.0.0.1</code> and Port is <code>3000</code>.
 <img src="/images/jmeter/request_defaults.png" alt="HTTP Request Defaults" /></p>
 
-<h3 id="http-cookie-manager:432050f6a9a1f05bac0d71354129b823">HTTP Cookie Manager</h3>
+<h3 id="http-cookie-manager">HTTP Cookie Manager</h3>
 
 <p>A cookie manager stores and sends cookies, as a web browser would do if an actual user was hitting the server. For the purposes of this example, the default configurations are enough.
 <img src="/images/jmeter/cookie_manager.png" alt="Cookie Manager" /></p>
 
-<h3 id="implement-normal-page-actions:432050f6a9a1f05bac0d71354129b823">Implement normal page actions</h3>
+<h3 id="implement-normal-page-actions">Implement normal page actions</h3>
 
 <p>From this point, all that remains is to implement HTTP Requests to the end points that are relevant to this test. In this example, we navigate to the Login page at <code>/login</code>, fire a <code>POST</code> request to <code>/login</code> with the appropriate form input values and proceed to the Admin page.</p>
 

@@ -42,7 +42,7 @@ were pretty easy. The
 &lt;a href=&#34;https://addons.mozilla.org/en-US/developers/docs/sdk/latest/&#34;&gt;API&lt;/a&gt; is
 well documented.&lt;/p&gt;
 
-&lt;h2 id=&#34;the-api:eb75f3cd376b68e9a96e1ddceafda970&#34;&gt;The API&lt;/h2&gt;
+&lt;h2 id=&#34;the-api&#34;&gt;The API&lt;/h2&gt;
 
 &lt;p&gt;The bulk of the code is JavaScript. The API is easy to use. The
 following snippet adds a widget to the Addon toolbar at the bottom of
@@ -59,7 +59,7 @@ the Firefox window:&lt;/p&gt;
     };
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;h2 id=&#34;adding-context-menu-entries:eb75f3cd376b68e9a96e1ddceafda970&#34;&gt;Adding context menu entries&lt;/h2&gt;
+&lt;h2 id=&#34;adding-context-menu-entries&#34;&gt;Adding context menu entries&lt;/h2&gt;
 
 &lt;p&gt;While things were pretty smooth overall, I ran in to a weird edge
 case. I wanted a context menu entry that would load the Google cache
@@ -72,7 +72,7 @@ I can use an arrays of &lt;code&gt;Contexts&lt;/code&gt;, I had no success with 
 creating two context menu entries, one attached to the &lt;code&gt;PageContext&lt;/code&gt; and
 one attached to the &lt;code&gt;SelectionContext&lt;/code&gt;.&lt;/p&gt;
 
-&lt;h2 id=&#34;source:eb75f3cd376b68e9a96e1ddceafda970&#34;&gt;Source&lt;/h2&gt;
+&lt;h2 id=&#34;source&#34;&gt;Source&lt;/h2&gt;
 
 &lt;p&gt;I used this
 &lt;a href=&#34;http://www.iconfinder.com/icondetails/7065/128/cache_icon&#34;&gt;beautiful icon&lt;/a&gt;
