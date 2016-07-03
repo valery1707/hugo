@@ -5,8 +5,266 @@
     <link>http://sdqali.in/categories/jwt/</link>
     <description>Recent content in Jwt on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 02 Jul 2016 18:42:04 -0700</lastBuildDate>
+    <lastBuildDate>Sun, 03 Jul 2016 09:22:53 -0700</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/jwt/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>JWT authentication with Spring Web - Part 2</title>
+      <link>http://sdqali.in/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/</link>
+      <pubDate>Sun, 03 Jul 2016 09:22:53 -0700</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/</guid>
+      <description>
+
+&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;previous blog post&lt;/a&gt; in this series, we looked at the basics of JWT. We will move on to building the Spring API that we will use JWT for authentication in this blog post.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-api&#34;&gt;The API&lt;/h2&gt;
+
+&lt;p&gt;The API we will be using in the example gives access to user profiles. It has the following end points:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;GET /profiles/{:username}&lt;/li&gt;
+&lt;li&gt;GET /profiles/details/{:username}&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The profiles that we use for this example were generated using the &lt;a href=&#34;https://randomuser.me/&#34;&gt;Random User Generator&lt;/a&gt; and stored in a JSON file, for convenience for this example. In the real world, you never want to store user information in a file. All the code for this example is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;structure-of-the-user-profile&#34;&gt;Structure of the User Profile&lt;/h2&gt;
+
+&lt;p&gt;For this example, I specifically generated 500 random profiles with only a subset of fields - &lt;code&gt;name&lt;/code&gt;, &lt;code&gt;email&lt;/code&gt;, &lt;code&gt;login&lt;/code&gt; and &lt;code&gt;picture&lt;/code&gt;. With these fields, a profile has the following structure:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;{
+  &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;: {
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;title&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;mr&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;first&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;matt&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;last&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;hahn&amp;quot;&lt;/span&gt;
+  },
+  &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;email&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;matt.hahn@example.com&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;login&amp;quot;&lt;/span&gt;: {
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;username&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;greenostrich307&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;password&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;darkange&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;salt&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;V5xi38lN&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;md5&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;cba0d5fb77ae3e0dbe177b9624df5ceb&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;sha1&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;5f22fdcc79affdef604d89b64b7db599ed454c5e&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;sha256&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;23afb0983e874169669f96cd72b69234aef4cf54a86f89a25e14e91941ac95a2&amp;quot;&lt;/span&gt;
+  },
+  &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;picture&amp;quot;&lt;/span&gt;: {
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;large&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;https://randomuser.me/api/portraits/men/20.jpg&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;medium&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;https://randomuser.me/api/portraits/med/men/20.jpg&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;thumbnail&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;https://randomuser.me/api/portraits/thumb/men/20.jpg&amp;quot;&lt;/span&gt;
+  }
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;At this point, you can see the password and hash in there. As I explained above, you &lt;em&gt;do not&lt;/em&gt; want to do this in a real application. As such, this example focuses on JWT and we are doing this purely for convenience.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-data-models&#34;&gt;The data models&lt;/h2&gt;
+
+&lt;p&gt;The models for representing the data provided from the random user generator are as follows. We will be using the Lombok &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; &lt;code&gt;@Data&lt;/code&gt; annotation to stay away from having to write explicit setters and getters.&lt;/p&gt;
+
+&lt;h3 id=&#34;profile&#34;&gt;Profile&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #00CCFF; font-weight: bold&#34;&gt;lombok.Data&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+&lt;span style=&#34;color: #9999FF&#34;&gt;@Data&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Profile&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; Name name&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; String email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; Login login&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; Picture picture&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&#34;name&#34;&gt;Name&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Data&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Name&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; String title&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; String first&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; String last&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&#34;login&#34;&gt;Login&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Data&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Login&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    String username&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    String password&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    String salt&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    String md5&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    String sha1&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    String sha256&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&#34;picture&#34;&gt;Picture&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Data&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Picture&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; URL large&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; URL medium&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; URL thumbnail&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We will also create two other data models that expose a minimal set of profile information without the credentials.&lt;/p&gt;
+
+&lt;h3 id=&#34;minimalprofile&#34;&gt;MinimalProfile&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Data&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;MinimalProfile&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String username&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; Name name&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; URL thumbnail&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;MinimalProfile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Profile profile&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        name &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; profile&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getName&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+        username &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; profile&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getLogin&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getUsername&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+        thumbnail &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; profile&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getPicture&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getThumbnail&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&#34;detailedprofile&#34;&gt;DetailedProfile&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Data&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;DetailedProfile&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; Picture picture&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; Name name&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String username&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;DetailedProfile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Profile profile&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        name &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; profile&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getName&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+        email &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; profile&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getEmail&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+        picture &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; profile&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getPicture&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+        username &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; profile&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getLogin&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getUsername&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;the-controllers&#34;&gt;The Controllers&lt;/h2&gt;
+
+&lt;p&gt;The code for the API&amp;rsquo;s controller is as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RestController&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;path &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/profile&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ProfileController&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; ProfileService profileService&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@SuppressWarnings&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;unused&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;ProfileController&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;ProfileController&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;ProfileService profileService&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;profileService&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; profileService&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;path &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/{username}&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+            method &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; GET&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+            produces &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; APPLICATION_JSON_VALUE&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; MinimalProfile &lt;span style=&#34;color: #CC00FF&#34;&gt;minimal&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@PathVariable&lt;/span&gt; String username&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; profileService&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;minimal&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;username&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;orElseThrow&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; ProfileNotFoundException&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;username&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;path &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/details/{username}&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+            method &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; GET&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+            produces &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; APPLICATION_JSON_VALUE&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; DetailedProfile &lt;span style=&#34;color: #CC00FF&#34;&gt;details&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@PathVariable&lt;/span&gt; String username&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; profileService&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;detailed&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;username&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;orElseThrow&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; ProfileNotFoundException&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;username&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It delegates querying for profiles to the &lt;code&gt;ProfileService&lt;/code&gt; and throws exceptions if a Profile is not present. Notice the use of Java&amp;rsquo;s &lt;code&gt;Optional&lt;/code&gt; to throw exceptions.&lt;/p&gt;
+
+&lt;h3 id=&#34;the-profileservice&#34;&gt;The ProfileService&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ProfileService&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Profile&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; profiles&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; Path PROFILES_FILE &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; Paths&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getClass&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getResource&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/profiles.json&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;toURI&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;ProfileService&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; IOException&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; URISyntaxException &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        ObjectMapper objectMapper &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; ObjectMapper&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+        profiles &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; objectMapper&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;readValue&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;PROFILES_FILE&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;toFile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(),&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; TypeReference&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Profile&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&amp;gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #555555&#34;&gt;});&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;protected&lt;/span&gt; Optional&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Profile&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String username&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; profiles&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;stream&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt;
+                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;filter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profile &lt;span style=&#34;color: #555555&#34;&gt;-&amp;gt;&lt;/span&gt; profile&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getLogin&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getUsername&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;equals&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;username&lt;span style=&#34;color: #555555&#34;&gt;))&lt;/span&gt;
+                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;findFirst&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Optional&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;MinimalProfile&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;minimal&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String username&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; get&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;username&lt;span style=&#34;color: #555555&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;map&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profile &lt;span style=&#34;color: #555555&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; MinimalProfile&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profile&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Optional&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;DetailedProfile&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;detailed&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String username&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; get&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;username&lt;span style=&#34;color: #555555&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;map&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profile &lt;span style=&#34;color: #555555&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; DetailedProfile&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profile&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&#34;exception-handling&#34;&gt;Exception Handling&lt;/h3&gt;
+
+&lt;p&gt;We will also need to wire up a &lt;code&gt;ControllerAdvice&lt;/code&gt; to handle exceptions appropriately:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@ControllerAdvice&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;GlobalExceptionHandler&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@ResponseStatus&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;NOT_FOUND&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@ExceptionHandler&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;ProfileNotFoundException&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;profileNotFound&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;With this, you should have a profile service up and running.&lt;/p&gt;
+
+&lt;h3 id=&#34;minimal-profile&#34;&gt;Minimal profile&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$ curl -s &amp;quot;http://localhost:8080/profile/yellowfrog347&amp;quot; | jq .
+{
+  &amp;quot;username&amp;quot;: &amp;quot;yellowfrog347&amp;quot;,
+  &amp;quot;name&amp;quot;: {
+    &amp;quot;title&amp;quot;: &amp;quot;ms&amp;quot;,
+    &amp;quot;first&amp;quot;: &amp;quot;sofia&amp;quot;,
+    &amp;quot;last&amp;quot;: &amp;quot;hansen&amp;quot;
+  },
+  &amp;quot;thumbnail&amp;quot;: &amp;quot;https://randomuser.me/api/portraits/thumb/women/71.jpg&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;detailed-profile&#34;&gt;Detailed Profile&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$ curl -s &amp;quot;http://localhost:8080/profile/details/yellowfrog347&amp;quot; | jq .
+{
+  &amp;quot;picture&amp;quot;: {
+    &amp;quot;large&amp;quot;: &amp;quot;https://randomuser.me/api/portraits/women/71.jpg&amp;quot;,
+    &amp;quot;medium&amp;quot;: &amp;quot;https://randomuser.me/api/portraits/med/women/71.jpg&amp;quot;,
+    &amp;quot;thumbnail&amp;quot;: &amp;quot;https://randomuser.me/api/portraits/thumb/women/71.jpg&amp;quot;
+  },
+  &amp;quot;name&amp;quot;: {
+    &amp;quot;title&amp;quot;: &amp;quot;ms&amp;quot;,
+    &amp;quot;first&amp;quot;: &amp;quot;sofia&amp;quot;,
+    &amp;quot;last&amp;quot;: &amp;quot;hansen&amp;quot;
+  },
+  &amp;quot;email&amp;quot;: &amp;quot;sofia.hansen@example.com&amp;quot;,
+  &amp;quot;username&amp;quot;: &amp;quot;yellowfrog347&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The code for the application so far can be found &lt;a href=&#34;https://github.com/sdqali/jwt-demo/tree/4f1da432a51fb8c88fc21a6fad895e03ca3611d9&#34;&gt;here&lt;/a&gt;. In the next blog post of the series, we will wire up Spring Security and build a login feature that issues a JWT after successful login.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://projectlombok.org/index.html&#34;&gt;Project Lombok&lt;/a&gt; is a Java library that helps minimize boiler plate code by replacing them with a set of convenient annotations. I tend to use it when I have to build data objects.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>JWT authentication with Spring Web - Part 1</title>
