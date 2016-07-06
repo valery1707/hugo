@@ -201,7 +201,7 @@ Content-Length: 0
 Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;In the next blog post, the fourth is this series, we will move on to verifying the token presented by the client for subsequent requests. The source code for this example for the progress made from part 1 part3 is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo/tree/09b02336e4b7c746cb4c134dc020243aef827b66&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In the next blog post, the fourth is this series, we will move on to verifying the token presented by the client for subsequent requests. The source code for this example for the progress made from part 1 through part3 is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo/tree/09b02336e4b7c746cb4c134dc020243aef827b66&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
 
 &lt;hr /&gt;
