@@ -22,14 +22,16 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-          {{ range .Data.Pages }}
+          {{ $totalCount := len .Data.Pages }}
+          {{ range $index, $value := .Data.Pages }}
+          {{ $count := sub $totalCount $index }}
           <div class="post-preview">
             <a href='{{ .Permalink }}'>
               <h2 class="post-title">
                 {{ .Title }}
               </h2>
             </a>
-            <p class="post-meta"> {{ .Date.Format "Mon, Jan 2, 2006" }}</p>
+            <p class="post-meta"> {{$count}} - {{ .Date.Format "Mon, Jan 2, 2006" }}</p>
           </div>
           {{ end }}
         </div>
