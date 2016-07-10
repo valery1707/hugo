@@ -245,7 +245,7 @@ The last thing to do is to ensure that we handle exceptions that occur during to
 
 Our entry point, sets the HTTP status to `403`, and sets the response body to a JSON showing the error.
 
-```
+```java
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
@@ -313,4 +313,4 @@ $ curl -s "http://localhost:8080/profile/details/yellowfrog347" --header "Author
 
 ```
 
-In the next blog post, the fifth is this series, we will move on to building the front end with Angular JS and managing authentication from the front end. The source code for this example for the progress made from part 1 through part3 is available on [GitHub](https://github.com/sdqali/jwt-demo/tree/verify_tokens).
+In the next blog post, the fifth is this series, we will move on to building the front end with Angular JS and managing authentication from the front end. The source code for this example for the progress made from part 1 through part 4 is available on [GitHub](https://github.com/sdqali/jwt-demo/tree/verify_tokens).

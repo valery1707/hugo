@@ -213,6 +213,6 @@ Content-Length: 0
 Date: Wed, 06 Jul 2016 06:05:46 GMT
 ```
 
-In the next blog post, the fourth is this series, we will move on to verifying the token presented by the client for subsequent requests. The source code for this example for the progress made from part 1 through part3 is available on [GitHub](https://github.com/sdqali/jwt-demo/tree/09b02336e4b7c746cb4c134dc020243aef827b66).
+In the next blog post, the fourth is this series, we will move on to verifying the token presented by the client for subsequent requests. The source code for this example for the progress made from part 1 through part 3 is available on [GitHub](https://github.com/sdqali/jwt-demo/tree/09b02336e4b7c746cb4c134dc020243aef827b66).
 
 [^1]: jjwt - Java JWT: JSON Web Token for Java and Android, available on [GitHub](https://github.com/jwtk/jjwt).
