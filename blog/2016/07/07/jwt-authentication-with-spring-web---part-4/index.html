@@ -309,27 +309,26 @@
 </pre></div>
 
 <p>Our entry point, sets the HTTP status to <code>403</code>, and sets the response body to a JSON showing the error.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Component</span>
+<span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">JwtAuthenticationEntryPoint</span> <span style="color: #006699; font-weight: bold">implements</span> AuthenticationEntryPoint <span style="color: #555555">{</span>
+    <span style="color: #9999FF">@Override</span>
+    <span style="color: #006699; font-weight: bold">public</span> <span style="color: #007788; font-weight: bold">void</span> <span style="color: #CC00FF">commence</span><span style="color: #555555">(</span>HttpServletRequest httpServletRequest<span style="color: #555555">,</span> HttpServletResponse httpServletResponse<span style="color: #555555">,</span> AuthenticationException e<span style="color: #555555">)</span>
+            <span style="color: #006699; font-weight: bold">throws</span> IOException<span style="color: #555555">,</span> ServletException <span style="color: #555555">{</span>
+        httpServletResponse<span style="color: #555555">.</span><span style="color: #330099">setStatus</span><span style="color: #555555">(</span>SC_FORBIDDEN<span style="color: #555555">);</span>
+        httpServletResponse<span style="color: #555555">.</span><span style="color: #330099">setContentType</span><span style="color: #555555">(</span>MediaType<span style="color: #555555">.</span><span style="color: #330099">APPLICATION_JSON_VALUE</span><span style="color: #555555">);</span>
 
-<pre><code>@Component
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e)
-            throws IOException, ServletException {
-        httpServletResponse.setStatus(SC_FORBIDDEN);
-        httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-        String message;
-        if(e.getCause() != null) {
-            message = e.getCause().getMessage();
-        } else {
-            message = e.getMessage();
-        }
-        byte[] body = new ObjectMapper()
-                .writeValueAsBytes(Collections.singletonMap(&quot;error&quot;, message));
-        httpServletResponse.getOutputStream().write(body);
-    }
-}
-</code></pre>
+        String message<span style="color: #555555">;</span>
+        <span style="color: #006699; font-weight: bold">if</span><span style="color: #555555">(</span>e<span style="color: #555555">.</span><span style="color: #330099">getCause</span><span style="color: #555555">()</span> <span style="color: #555555">!=</span> <span style="color: #006699; font-weight: bold">null</span><span style="color: #555555">)</span> <span style="color: #555555">{</span>
+            message <span style="color: #555555">=</span> e<span style="color: #555555">.</span><span style="color: #330099">getCause</span><span style="color: #555555">().</span><span style="color: #330099">getMessage</span><span style="color: #555555">();</span>
+        <span style="color: #555555">}</span> <span style="color: #006699; font-weight: bold">else</span> <span style="color: #555555">{</span>
+            message <span style="color: #555555">=</span> e<span style="color: #555555">.</span><span style="color: #330099">getMessage</span><span style="color: #555555">();</span>
+        <span style="color: #555555">}</span>
+        <span style="color: #007788; font-weight: bold">byte</span><span style="color: #555555">[]</span> body <span style="color: #555555">=</span> <span style="color: #006699; font-weight: bold">new</span> ObjectMapper<span style="color: #555555">()</span>
+                <span style="color: #555555">.</span><span style="color: #330099">writeValueAsBytes</span><span style="color: #555555">(</span>Collections<span style="color: #555555">.</span><span style="color: #330099">singletonMap</span><span style="color: #555555">(</span><span style="color: #CC3300">&quot;error&quot;</span><span style="color: #555555">,</span> message<span style="color: #555555">));</span>
+        httpServletResponse<span style="color: #555555">.</span><span style="color: #330099">getOutputStream</span><span style="color: #555555">().</span><span style="color: #330099">write</span><span style="color: #555555">(</span>body<span style="color: #555555">);</span>
+    <span style="color: #555555">}</span>
+<span style="color: #555555">}</span>
+</pre></div>
 
 <p>With this configuration in place, we can request a token and make a subsequent request with the received JWT.</p>
 
@@ -375,7 +374,7 @@ $ curl -s &quot;http://localhost:8080/profile/details/yellowfrog347&quot; --head
 
 </code></pre>
 
-<p>In the next blog post, the fifth is this series, we will move on to building the front end with Angular JS and managing authentication from the front end. The source code for this example for the progress made from part 1 through part3 is available on <a href="https://github.com/sdqali/jwt-demo/tree/verify_tokens">GitHub</a>.</p>
+<p>In the next blog post, the fifth is this series, we will move on to building the front end with Angular JS and managing authentication from the front end. The source code for this example for the progress made from part 1 through part 4 is available on <a href="https://github.com/sdqali/jwt-demo/tree/verify_tokens">GitHub</a>.</p>
 
           </div>
         </div>
