@@ -12,7 +12,7 @@ Tags:
 - Spring
 - JWT
 - Spring Security
-date: 2016-07-12T23:05:53-07:00
+date: 2016-07-13T23:05:53-07:00
 image: "images/jwt.jpg"
 draft: true
 title: JWT authentication with Spring Web - Part 5
@@ -20,9 +20,9 @@ title: JWT authentication with Spring Web - Part 5
 In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.
 <!--more-->
 
-We will use the following angular plugins - `angular-resource` for interacting with our APIs, `ngstorage` to access the localStorage to store the JWT and `angular-ui-router` to handle routing and managing UI views.
+We will use the following Angular plugins - `angular-resource` for interacting with our APIs, `ngstorage` to access the localStorage to store the JWT and `angular-ui-router` to handle routing and managing UI views.
 
-For this example, our UI components are under the `src/main/resources/static` directory. We will be loading our dependencies using bower. We will start by creating a `.bowerrc` file at the root of our project.
+For this example, our UI components are under the `src/main/resources/static` directory. We will be loading our dependencies using bower by adding a `.bowerrc` file at the root of our project.
 
 ```json
 {
@@ -63,7 +63,7 @@ The dependencies can be installed using `bower install`. Once we have the depend
         // ...
 ```
 
-We will start by creating our UI template:
+We will start by creating our UI template `index.html`:
 
 ```html
 <!DOCTYPE html>
@@ -143,7 +143,7 @@ We will need two controllers in `app/controller.js` - one for the login page to 
 
 The `LoginController` has two methods - login and logout. The login method uses the `LoginService` to make a request and saves the JWT and user profile returned up on successful login. It also sets the `Authorization` header default to the JWT returned so that every subsequent request uses it to authenticate. The user is then navigated to the home page. Logout is performed by removing the JWT and profile from local storage and clearing the header defaults.
 
-The next step is to create the `app.js` to wire up our application together:
+The next step is to create `app/app.js` to wire up the Angular application together:
 
 ```javascript
 (function(angular) {
@@ -243,3 +243,6 @@ The view for home page - `home.html` renders a user profile:
   </div>
 </div>
 ```
+It a link for signing out. With this code in place, we can start our Spring application and sign in from the browser.
+
+This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API.
