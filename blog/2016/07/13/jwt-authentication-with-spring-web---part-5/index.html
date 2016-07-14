@@ -1,0 +1,375 @@
+<!DOCTYPE html5>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" prefix="og: http://ogp.me/ns#">
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>JWT authentication with Spring Web - Part 5</title>
+
+    
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    
+    <link href="/css/clean-blog.min.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    
+    <link href="/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='/css/fonts.css' rel='stylesheet' type='text/css'>
+
+    
+    
+    
+
+</head>
+
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@sdqali">
+  <meta name="twitter:creator" content="@sdqali">
+  <meta name="twitter:title" content="JWT authentication with Spring Web - Part 5">
+  <meta name="twitter:description" content="In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.
+">
+  <meta name="twitter:image" content="http://sdqali.in/images/jwt.jpg">
+
+  <meta property="og:title" content="JWT authentication with Spring Web - Part 5" />
+  <meta property="og:description" content="In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.
+" itemprop="description"/>
+  <meta property="og:url" content="http://sdqali.in/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/" />
+  <meta property="og:image" content="http://sdqali.in/images/jwt.jpg" />
+  <body>
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Sadique Ali</a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a> </li>
+        <li><a href="/blog/">Blog</a> </li>
+        <li><a href="/about">About</a> </li>
+        <li><a href="/index.xml">Atom Feed</a> </li>
+        <li><a href="https://github.com/sdqali">GitHub</a> </li>
+        <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+        <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      </ul>
+    </div>
+    
+  </div>
+  
+</nav>
+
+
+
+
+    
+    
+    <header class="intro-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="site-heading">
+              <h1> JWT authentication with Spring Web - Part 5</h1>
+              <span class="meta">Wed, Jul 13, 2016</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+
+    
+    <article>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <p>In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.</p>
+
+<p>We will use the following Angular plugins - <code>angular-resource</code> for interacting with our APIs, <code>ngstorage</code> to access the localStorage to store the JWT and <code>angular-ui-router</code> to handle routing and managing UI views.</p>
+
+<p>For this example, our UI components are under the <code>src/main/resources/static</code> directory. We will be loading our dependencies using bower by adding a <code>.bowerrc</code> file at the root of our project.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>{
+  <span style="color: #330099; font-weight: bold">&quot;directory&quot;</span>: <span style="color: #CC3300">&quot;src/main/resources/static/bower_components&quot;</span>,
+  <span style="color: #330099; font-weight: bold">&quot;json&quot;</span>: <span style="color: #CC3300">&quot;bower.json&quot;</span>
+}
+</pre></div>
+
+<p>We will specify the dependencies we need in our <code>bower.json</code>:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>{
+  <span style="color: #330099; font-weight: bold">&quot;name&quot;</span>: <span style="color: #CC3300">&quot;jwt&quot;</span>,
+  <span style="color: #330099; font-weight: bold">&quot;dependencies&quot;</span>: {
+    <span style="color: #330099; font-weight: bold">&quot;angular&quot;</span>: <span style="color: #CC3300">&quot;~1.3.0&quot;</span>,
+    <span style="color: #330099; font-weight: bold">&quot;angular-resource&quot;</span>: <span style="color: #CC3300">&quot;~1.3.0&quot;</span>,
+    <span style="color: #330099; font-weight: bold">&quot;bootstrap-css-only&quot;</span>: <span style="color: #CC3300">&quot;~3.2.0&quot;</span>,
+    <span style="color: #330099; font-weight: bold">&quot;ngstorage&quot;</span>: <span style="color: #CC3300">&quot;0.3.10&quot;</span>,
+    <span style="color: #330099; font-weight: bold">&quot;angular-ui-router&quot;</span>: <span style="color: #CC3300">&quot;1.0.0-beta.1&quot;</span>
+  }
+}
+</pre></div>
+
+<p>The dependencies can be installed using <code>bower install</code>. Once we have the dependencies, we can start by configuring Spring Security to allow access to the UI components:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>        String<span style="color: #555555">[]</span> patterns <span style="color: #555555">=</span> <span style="color: #006699; font-weight: bold">new</span> String<span style="color: #555555">[]</span> <span style="color: #555555">{</span>
+            <span style="color: #CC3300">&quot;/login&quot;</span><span style="color: #555555">,</span>
+            <span style="color: #CC3300">&quot;/bower_components/**/*&quot;</span><span style="color: #555555">,</span>
+            <span style="color: #CC3300">&quot;/app/**/*&quot;</span><span style="color: #555555">,</span>
+            <span style="color: #CC3300">&quot;/index.html&quot;</span><span style="color: #555555">,</span>
+            <span style="color: #CC3300">&quot;/home.html&quot;</span><span style="color: #555555">,</span>
+            <span style="color: #CC3300">&quot;/signin.html&quot;</span>
+        <span style="color: #555555">};</span>
+        http<span style="color: #555555">.</span><span style="color: #330099">authorizeRequests</span><span style="color: #555555">()</span>
+                <span style="color: #555555">.</span><span style="color: #330099">antMatchers</span><span style="color: #555555">(</span>patterns<span style="color: #555555">)</span>
+                <span style="color: #555555">.</span><span style="color: #330099">permitAll</span><span style="color: #555555">()</span>
+        <span style="color: #0099FF; font-style: italic">// ...</span>
+</pre></div>
+
+<p>We will start by creating our UI template <code>index.html</code>:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #009999">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color: #330099; font-weight: bold">html</span> <span style="color: #330099">lang</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;en&quot;</span>&gt;
+  &lt;<span style="color: #330099; font-weight: bold">head</span>&gt;
+    &lt;<span style="color: #330099; font-weight: bold">link</span> <span style="color: #330099">rel</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;stylesheet&quot;</span> <span style="color: #330099">href</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;./bower_components/bootstrap-css-only/css/bootstrap.min.css&quot;</span> /&gt;
+  &lt;/<span style="color: #330099; font-weight: bold">head</span>&gt;
+  &lt;<span style="color: #330099; font-weight: bold">body</span> <span style="color: #330099">ng-app</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;jwtDemo&quot;</span>&gt;
+    &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;container&quot;</span>&gt;
+      &lt;<span style="color: #330099; font-weight: bold">ui-view</span>&gt;&lt;/<span style="color: #330099; font-weight: bold">ui-view</span>&gt;
+    &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+    &lt;<span style="color: #330099; font-weight: bold">script</span> <span style="color: #330099">type</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;text/javascript&quot;</span> <span style="color: #330099">src</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;./bower_components/angular/angular.min.js&quot;</span>&gt;&lt;/<span style="color: #330099; font-weight: bold">script</span>&gt;
+    &lt;<span style="color: #330099; font-weight: bold">script</span> <span style="color: #330099">type</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;text/javascript&quot;</span> <span style="color: #330099">src</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;./bower_components/angular-resource/angular-resource.min.js&quot;</span>&gt;&lt;/<span style="color: #330099; font-weight: bold">script</span>&gt;
+    &lt;<span style="color: #330099; font-weight: bold">script</span> <span style="color: #330099">type</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;text/javascript&quot;</span> <span style="color: #330099">src</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;./bower_components/ngstorage/ngStorage.min.js&quot;</span>&gt;&lt;/<span style="color: #330099; font-weight: bold">script</span>&gt;
+    &lt;<span style="color: #330099; font-weight: bold">script</span> <span style="color: #330099">type</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;text/javascript&quot;</span> <span style="color: #330099">src</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;./bower_components/angular-ui-router/release/angular-ui-router.min.js&quot;</span>&gt;&lt;/<span style="color: #330099; font-weight: bold">script</span>&gt;
+    &lt;<span style="color: #330099; font-weight: bold">script</span> <span style="color: #330099">type</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;text/javascript&quot;</span> <span style="color: #330099">src</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;./app/app.js&quot;</span>&gt;&lt;/<span style="color: #330099; font-weight: bold">script</span>&gt;
+    &lt;<span style="color: #330099; font-weight: bold">script</span> <span style="color: #330099">type</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;text/javascript&quot;</span> <span style="color: #330099">src</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;./app/controllers.js&quot;</span>&gt;&lt;/<span style="color: #330099; font-weight: bold">script</span>&gt;
+    &lt;<span style="color: #330099; font-weight: bold">script</span> <span style="color: #330099">type</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;text/javascript&quot;</span> <span style="color: #330099">src</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;./app/services.js&quot;</span>&gt;&lt;/<span style="color: #330099; font-weight: bold">script</span>&gt;
+  &lt;/<span style="color: #330099; font-weight: bold">body</span>&gt;
+&lt;/<span style="color: #330099; font-weight: bold">html</span>&gt;
+</pre></div>
+
+<p>For this example, we will have one Angular service in <code>app/services.js</code> that performs login:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>(<span style="color: #006699; font-weight: bold">function</span>(angular) {
+  <span style="color: #006699; font-weight: bold">var</span> LoginFactory <span style="color: #555555">=</span> <span style="color: #006699; font-weight: bold">function</span>($resource) {
+    <span style="color: #006699; font-weight: bold">return</span> $resource(<span style="color: #CC3300">&#39;/login&#39;</span>, {}, {
+      login<span style="color: #555555">:</span> {
+        method<span style="color: #555555">:</span> <span style="color: #CC3300">&#39;POST&#39;</span>
+      }
+    });
+  };
+
+  LoginFactory.$inject <span style="color: #555555">=</span> [<span style="color: #CC3300">&#39;$resource&#39;</span>];
+  angular.module(<span style="color: #CC3300">&#39;jwtDemo.services&#39;</span>).factory(<span style="color: #CC3300">&#39;Login&#39;</span>, LoginFactory);
+}(angular));
+</pre></div>
+
+<p>We will need two controllers in <code>app/controller.js</code> - one for the login page to manage login and one for the profile page:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>(<span style="color: #006699; font-weight: bold">function</span>(angular) {
+  <span style="color: #006699; font-weight: bold">var</span> LoginController <span style="color: #555555">=</span> <span style="color: #006699; font-weight: bold">function</span>($scope, $localStorage, $http, $location, Login) {
+    $scope.login <span style="color: #555555">=</span> <span style="color: #006699; font-weight: bold">function</span>(username, password) {
+      <span style="color: #006699; font-weight: bold">new</span> Login({username<span style="color: #555555">:</span> username, password<span style="color: #555555">:</span> password})
+          .$login(<span style="color: #006699; font-weight: bold">function</span> (profile, headers) {
+            $localStorage.user <span style="color: #555555">=</span> profile;
+            $localStorage.token <span style="color: #555555">=</span> headers().token;
+            $http.defaults.headers.common.Authorization <span style="color: #555555">=</span> <span style="color: #CC3300">&#39;Bearer &#39;</span> <span style="color: #555555">+</span> headers().token;
+            $location.path(<span style="color: #CC3300">&quot;/&quot;</span>);
+          }, <span style="color: #006699; font-weight: bold">function</span> (error) {
+            console.log(error);
+          });
+    };
+
+    $scope.logout <span style="color: #555555">=</span> <span style="color: #006699; font-weight: bold">function</span> () {
+      <span style="color: #006699; font-weight: bold">delete</span> $localStorage.user;
+      <span style="color: #006699; font-weight: bold">delete</span> $localStorage.token;
+      $http.defaults.headers.common <span style="color: #555555">=</span> {};
+    }
+
+    $scope.logout();
+  };
+
+  LoginController.$inject <span style="color: #555555">=</span> [<span style="color: #CC3300">&#39;$scope&#39;</span>, <span style="color: #CC3300">&#39;$localStorage&#39;</span>, <span style="color: #CC3300">&#39;$http&#39;</span>, <span style="color: #CC3300">&#39;$location&#39;</span>,<span style="color: #CC3300">&#39;Login&#39;</span>];
+  angular.module(<span style="color: #CC3300">&quot;jwtDemo.controllers&quot;</span>).controller(<span style="color: #CC3300">&quot;LoginController&quot;</span>, LoginController);
+
+
+  <span style="color: #006699; font-weight: bold">var</span> ProfileController <span style="color: #555555">=</span> <span style="color: #006699; font-weight: bold">function</span> ($scope, $localStorage) {
+    $scope.profile <span style="color: #555555">=</span> $localStorage.user;
+  };
+  ProfileController.inject <span style="color: #555555">=</span> [<span style="color: #CC3300">&#39;$scope&#39;</span>, <span style="color: #CC3300">&#39;$localStorage&#39;</span>];
+  angular.module(<span style="color: #CC3300">&quot;jwtDemo.controllers&quot;</span>).controller(<span style="color: #CC3300">&quot;ProfileController&quot;</span>, ProfileController);
+}(angular));
+</pre></div>
+
+<p>The <code>LoginController</code> has two methods - login and logout. The login method uses the <code>LoginService</code> to make a request and saves the JWT and user profile returned up on successful login. It also sets the <code>Authorization</code> header default to the JWT returned so that every subsequent request uses it to authenticate. The user is then navigated to the home page. Logout is performed by removing the JWT and profile from local storage and clearing the header defaults.</p>
+
+<p>The next step is to create <code>app/app.js</code> to wire up the Angular application together:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>(<span style="color: #006699; font-weight: bold">function</span>(angular) {
+  angular.module(<span style="color: #CC3300">&quot;jwtDemo.controllers&quot;</span>, []);
+  angular.module(<span style="color: #CC3300">&quot;jwtDemo.services&quot;</span>, []);
+  angular.module(<span style="color: #CC3300">&quot;jwtDemo&quot;</span>, [<span style="color: #CC3300">&quot;ui.router&quot;</span>, <span style="color: #CC3300">&quot;ngResource&quot;</span>, <span style="color: #CC3300">&quot;ngStorage&quot;</span>, <span style="color: #CC3300">&quot;jwtDemo.controllers&quot;</span>, <span style="color: #CC3300">&quot;jwtDemo.services&quot;</span>])
+      .config(<span style="color: #006699; font-weight: bold">function</span> ($stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise(<span style="color: #CC3300">&quot;/&quot;</span>);
+
+        $stateProvider
+            .state(<span style="color: #CC3300">&#39;home&#39;</span>, {
+              url<span style="color: #555555">:</span> <span style="color: #CC3300">&#39;/&#39;</span>,
+              templateUrl<span style="color: #555555">:</span> <span style="color: #CC3300">&#39;home.html&#39;</span>,
+              controller<span style="color: #555555">:</span> <span style="color: #CC3300">&#39;ProfileController&#39;</span>
+            })
+            .state(<span style="color: #CC3300">&#39;signin&#39;</span>, {
+              url<span style="color: #555555">:</span> <span style="color: #CC3300">&#39;/signin&#39;</span>,
+              templateUrl<span style="color: #555555">:</span> <span style="color: #CC3300">&#39;signin.html&#39;</span>,
+              controller<span style="color: #555555">:</span> <span style="color: #CC3300">&#39;LoginController&#39;</span>
+            })
+            .state(<span style="color: #CC3300">&#39;signout&#39;</span>, {
+              url<span style="color: #555555">:</span> <span style="color: #CC3300">&#39;/signout&#39;</span>,
+              templateUrl<span style="color: #555555">:</span> <span style="color: #CC3300">&#39;signin.html&#39;</span>,
+              controller<span style="color: #555555">:</span> <span style="color: #CC3300">&#39;LoginController&#39;</span>
+            });
+      })
+      .run(<span style="color: #006699; font-weight: bold">function</span> ($localStorage, $http, $location, $rootScope) {
+        <span style="color: #006699; font-weight: bold">if</span> ($localStorage.user) {
+          $http.defaults.headers.common.Authorization <span style="color: #555555">=</span> <span style="color: #CC3300">&#39;Bearer &#39;</span> <span style="color: #555555">+</span> $localStorage.token;
+        }
+
+        $rootScope.$on(<span style="color: #CC3300">&#39;$locationChangeStart&#39;</span>, <span style="color: #006699; font-weight: bold">function</span> (event, next, current) {
+          <span style="color: #006699; font-weight: bold">if</span> ($location.path() <span style="color: #555555">!==</span> <span style="color: #CC3300">&quot;/signin&quot;</span> <span style="color: #555555">&amp;&amp;</span> <span style="color: #555555">!</span>$localStorage.user) {
+            $location.path(<span style="color: #CC3300">&#39;/signin&#39;</span>);
+          } <span style="color: #006699; font-weight: bold">else</span> <span style="color: #006699; font-weight: bold">if</span> ($location.path() <span style="color: #555555">===</span> <span style="color: #CC3300">&quot;/signin&quot;</span> <span style="color: #555555">&amp;&amp;</span> $localStorage.user) {
+            $location.path(<span style="color: #CC3300">&#39;/&#39;</span>);
+          }
+        });
+      });
+}(angular));
+</pre></div>
+
+<p>We start by wiring together our services and controllers to the main module. We use the state provider to map front end URLs to templates. The home page will use the <code>home.html</code> template and the sign in and sign out URLs will use the <code>sigin.html</code> template.</p>
+
+<p>It also configures a listener that observes for URL changes made by the user and redirects them to the sign in page, unless they are already authenticated. If there is already a token in local storage when the application loads, that signifies that the user has already logged in a different tab and the authorization header default is set.</p>
+
+<p>The two views we have are simple - <code>signin.html</code> has a sign form:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>&lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;row&quot;</span>&gt;
+  &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&#39;col-md-3&#39;</span>&gt;&lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+  &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;col-md-6&quot;</span>&gt;
+    &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;login-box well&quot;</span>&gt;
+      &lt;<span style="color: #330099; font-weight: bold">form</span> <span style="color: #330099">role</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;form&quot;</span> <span style="color: #330099">ng-submit</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;login(username, password)&quot;</span>&gt;
+        &lt;<span style="color: #330099; font-weight: bold">legend</span>&gt;Sign In&lt;/<span style="color: #330099; font-weight: bold">legend</span>&gt;
+        &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;form-group&quot;</span>&gt;
+          &lt;<span style="color: #330099; font-weight: bold">label</span> <span style="color: #330099">for</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;username-email&quot;</span>&gt;Username&lt;/<span style="color: #330099; font-weight: bold">label</span>&gt;
+          &lt;<span style="color: #330099; font-weight: bold">input</span> <span style="color: #330099">ng-model</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;username&quot;</span> <span style="color: #330099">value</span><span style="color: #555555">=</span><span style="color: #CC3300">&#39;&#39;</span> <span style="color: #330099">id</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;username-email&quot;</span> <span style="color: #330099">placeholder</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;Username&quot;</span> <span style="color: #330099">type</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;text&quot;</span>
+                 <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;form-control&quot;</span> /&gt;
+        &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+        &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;form-group&quot;</span>&gt;
+          &lt;<span style="color: #330099; font-weight: bold">label</span> <span style="color: #330099">for</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;password&quot;</span>&gt;Password&lt;/<span style="color: #330099; font-weight: bold">label</span>&gt;
+          &lt;<span style="color: #330099; font-weight: bold">input</span> <span style="color: #330099">ng-model</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;password&quot;</span> <span style="color: #330099">id</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;password&quot;</span> <span style="color: #330099">value</span><span style="color: #555555">=</span><span style="color: #CC3300">&#39;&#39;</span> <span style="color: #330099">placeholder</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;Password&quot;</span> <span style="color: #330099">type</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;password&quot;</span>
+                 <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;form-control&quot;</span> /&gt;
+        &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+        &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;form-group&quot;</span>&gt;
+          &lt;<span style="color: #330099; font-weight: bold">input</span> <span style="color: #330099">type</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;submit&quot;</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;btn btn-default btn-login-submit btn-block m-t-md&quot;</span> <span style="color: #330099">value</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;Login&quot;</span> /&gt;
+        &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+      &lt;/<span style="color: #330099; font-weight: bold">form</span>&gt;
+    &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+  &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+  &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&#39;col-md-3&#39;</span>&gt;&lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+&lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+</pre></div>
+
+<p>The view for home page - <code>home.html</code> renders a user profile:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>&lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;row&quot;</span>&gt;
+  &lt;<span style="color: #330099; font-weight: bold">h1</span>&gt;Welcome, {{profile.name.first}}&lt;/<span style="color: #330099; font-weight: bold">h1</span>&gt;
+  &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;col-lg-3 col-sm-6&quot;</span>&gt;
+    &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;card hovercard&quot;</span>&gt;
+      &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;cardheader&quot;</span>&gt;
+      &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+      &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;avatar&quot;</span>&gt;
+        &lt;<span style="color: #330099; font-weight: bold">img</span> <span style="color: #330099">alt</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;&quot;</span> <span style="color: #330099">src</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;{{profile.thumbnail}}&quot;</span>&gt;
+      &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+      &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;info&quot;</span>&gt;
+        &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;title&quot;</span>&gt;
+          {{profile.username}}
+        &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+        &lt;<span style="color: #330099; font-weight: bold">div</span> <span style="color: #330099">class</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;desc&quot;</span>&gt;{{profile.name.first}} {{profile.name.last}}&lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+      &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+      &lt;<span style="color: #330099; font-weight: bold">div</span>&gt;
+        &lt;<span style="color: #330099; font-weight: bold">a</span> <span style="color: #330099">href</span><span style="color: #555555">=</span><span style="color: #CC3300">&quot;/#/signout&quot;</span>&gt;Sign Out&lt;/<span style="color: #330099; font-weight: bold">a</span>&gt;
+      &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+    &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+  &lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+&lt;/<span style="color: #330099; font-weight: bold">div</span>&gt;
+</pre></div>
+
+<p>It a link for signing out. With this code in place, we can start our Spring application and sign in from the browser.</p>
+
+<p>This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center">
+          <li>
+            <a href="https://twitter.com/sdqali">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="https://linkedin.com/in/sdqali">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/sdqali">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="/index.xml">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+        </ul>
+        <p class="copyright text-muted">&copy; All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/js/jquery.js"></script>
+
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<script src="/js/clean-blog.min.js"></script>
+
+  </body>
+</html>
