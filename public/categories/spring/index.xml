@@ -5,8 +5,229 @@
     <link>http://sdqali.in/categories/spring/</link>
     <description>Recent content in Spring on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 07 Jul 2016 23:47:53 -0700</lastBuildDate>
+    <lastBuildDate>Wed, 13 Jul 2016 23:05:53 -0700</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/spring/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>JWT authentication with Spring Web - Part 5</title>
+      <link>http://sdqali.in/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/</link>
+      <pubDate>Wed, 13 Jul 2016 23:05:53 -0700</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/</guid>
+      <description>&lt;p&gt;In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.&lt;/p&gt;
+
+&lt;p&gt;We will use the following Angular plugins - &lt;code&gt;angular-resource&lt;/code&gt; for interacting with our APIs, &lt;code&gt;ngstorage&lt;/code&gt; to access the localStorage to store the JWT and &lt;code&gt;angular-ui-router&lt;/code&gt; to handle routing and managing UI views.&lt;/p&gt;
+
+&lt;p&gt;For this example, our UI components are under the &lt;code&gt;src/main/resources/static&lt;/code&gt; directory. We will be loading our dependencies using bower by adding a &lt;code&gt;.bowerrc&lt;/code&gt; file at the root of our project.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;{
+  &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;directory&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;src/main/resources/static/bower_components&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;json&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;bower.json&amp;quot;&lt;/span&gt;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We will specify the dependencies we need in our &lt;code&gt;bower.json&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;{
+  &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jwt&amp;quot;&lt;/span&gt;,
+  &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;dependencies&amp;quot;&lt;/span&gt;: {
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;angular&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;~1.3.0&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;angular-resource&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;~1.3.0&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;bootstrap-css-only&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;~3.2.0&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;ngstorage&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;0.3.10&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;angular-ui-router&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;1.0.0-beta.1&amp;quot;&lt;/span&gt;
+  }
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The dependencies can be installed using &lt;code&gt;bower install&lt;/code&gt;. Once we have the dependencies, we can start by configuring Spring Security to allow access to the UI components:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;        String&lt;span style=&#34;color: #555555&#34;&gt;[]&lt;/span&gt; patterns &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; String&lt;span style=&#34;color: #555555&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+            &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/login&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+            &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/bower_components/**/*&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+            &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/app/**/*&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+            &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/index.html&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+            &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/home.html&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+            &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/signin.html&amp;quot;&lt;/span&gt;
+        &lt;span style=&#34;color: #555555&#34;&gt;};&lt;/span&gt;
+        http&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;authorizeRequests&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt;
+                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;antMatchers&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;patterns&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;permitAll&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt;
+        &lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;// ...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We will start by creating our UI template &lt;code&gt;index.html&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #009999&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+&amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;html&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;lang&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;en&amp;quot;&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;head&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;link&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;rel&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;stylesheet&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;href&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;./bower_components/bootstrap-css-only/css/bootstrap.min.css&amp;quot;&lt;/span&gt; /&amp;gt;
+  &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;head&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;body&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;ng-app&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jwtDemo&amp;quot;&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;container&amp;quot;&lt;/span&gt;&amp;gt;
+      &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;ui-view&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;ui-view&lt;/span&gt;&amp;gt;
+    &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;./bower_components/angular/angular.min.js&amp;quot;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;./bower_components/angular-resource/angular-resource.min.js&amp;quot;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;./bower_components/ngstorage/ngStorage.min.js&amp;quot;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;./bower_components/angular-ui-router/release/angular-ui-router.min.js&amp;quot;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;./app/app.js&amp;quot;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;./app/controllers.js&amp;quot;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;./app/services.js&amp;quot;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;script&lt;/span&gt;&amp;gt;
+  &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;body&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;html&lt;/span&gt;&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For this example, we will have one Angular service in &lt;code&gt;app/services.js&lt;/code&gt; that performs login:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;(&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt;(angular) {
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;var&lt;/span&gt; LoginFactory &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt;($resource) {
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; $resource(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;/login&amp;#39;&lt;/span&gt;, {}, {
+      login&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; {
+        method&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;
+      }
+    });
+  };
+
+  LoginFactory.$inject &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;$resource&amp;#39;&lt;/span&gt;];
+  angular.module(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;jwtDemo.services&amp;#39;&lt;/span&gt;).factory(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;Login&amp;#39;&lt;/span&gt;, LoginFactory);
+}(angular));
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We will need two controllers in &lt;code&gt;app/controller.js&lt;/code&gt; - one for the login page to manage login and one for the profile page:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;(&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt;(angular) {
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;var&lt;/span&gt; LoginController &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt;($scope, $localStorage, $http, $location, Login) {
+    $scope.login &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt;(username, password) {
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; Login({username&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; username, password&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; password})
+          .$login(&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt; (profile, headers) {
+            $localStorage.user &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; profile;
+            $localStorage.token &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; headers().token;
+            $http.defaults.headers.common.Authorization &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;Bearer &amp;#39;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;+&lt;/span&gt; headers().token;
+            $location.path(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;);
+          }, &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt; (error) {
+            console.log(error);
+          });
+    };
+
+    $scope.logout &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt; () {
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;delete&lt;/span&gt; $localStorage.user;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;delete&lt;/span&gt; $localStorage.token;
+      $http.defaults.headers.common &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; {};
+    }
+
+    $scope.logout();
+  };
+
+  LoginController.$inject &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;$scope&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;$localStorage&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;$http&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;$location&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;Login&amp;#39;&lt;/span&gt;];
+  angular.module(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jwtDemo.controllers&amp;quot;&lt;/span&gt;).controller(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;LoginController&amp;quot;&lt;/span&gt;, LoginController);
+
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;var&lt;/span&gt; ProfileController &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt; ($scope, $localStorage) {
+    $scope.profile &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; $localStorage.user;
+  };
+  ProfileController.inject &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;$scope&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;$localStorage&amp;#39;&lt;/span&gt;];
+  angular.module(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jwtDemo.controllers&amp;quot;&lt;/span&gt;).controller(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ProfileController&amp;quot;&lt;/span&gt;, ProfileController);
+}(angular));
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;LoginController&lt;/code&gt; has two methods - login and logout. The login method uses the &lt;code&gt;LoginService&lt;/code&gt; to make a request and saves the JWT and user profile returned up on successful login. It also sets the &lt;code&gt;Authorization&lt;/code&gt; header default to the JWT returned so that every subsequent request uses it to authenticate. The user is then navigated to the home page. Logout is performed by removing the JWT and profile from local storage and clearing the header defaults.&lt;/p&gt;
+
+&lt;p&gt;The next step is to create &lt;code&gt;app/app.js&lt;/code&gt; to wire up the Angular application together:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;(&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt;(angular) {
+  angular.module(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jwtDemo.controllers&amp;quot;&lt;/span&gt;, []);
+  angular.module(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jwtDemo.services&amp;quot;&lt;/span&gt;, []);
+  angular.module(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jwtDemo&amp;quot;&lt;/span&gt;, [&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ui.router&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ngResource&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ngStorage&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jwtDemo.controllers&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;jwtDemo.services&amp;quot;&lt;/span&gt;])
+      .config(&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt; ($stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;);
+
+        $stateProvider
+            .state(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;home&amp;#39;&lt;/span&gt;, {
+              url&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;,
+              templateUrl&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;home.html&amp;#39;&lt;/span&gt;,
+              controller&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;ProfileController&amp;#39;&lt;/span&gt;
+            })
+            .state(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;signin&amp;#39;&lt;/span&gt;, {
+              url&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;/signin&amp;#39;&lt;/span&gt;,
+              templateUrl&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;signin.html&amp;#39;&lt;/span&gt;,
+              controller&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;LoginController&amp;#39;&lt;/span&gt;
+            })
+            .state(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;signout&amp;#39;&lt;/span&gt;, {
+              url&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;/signout&amp;#39;&lt;/span&gt;,
+              templateUrl&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;signin.html&amp;#39;&lt;/span&gt;,
+              controller&lt;span style=&#34;color: #555555&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;LoginController&amp;#39;&lt;/span&gt;
+            });
+      })
+      .run(&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt; ($localStorage, $http, $location, $rootScope) {
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt; ($localStorage.user) {
+          $http.defaults.headers.common.Authorization &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;Bearer &amp;#39;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;+&lt;/span&gt; $localStorage.token;
+        }
+
+        $rootScope.$on(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;$locationChangeStart&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt; (event, next, current) {
+          &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt; ($location.path() &lt;span style=&#34;color: #555555&#34;&gt;!==&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/signin&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;!&lt;/span&gt;$localStorage.user) {
+            $location.path(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;/signin&amp;#39;&lt;/span&gt;);
+          } &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt; ($location.path() &lt;span style=&#34;color: #555555&#34;&gt;===&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/signin&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; $localStorage.user) {
+            $location.path(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;);
+          }
+        });
+      });
+}(angular));
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We start by wiring together our services and controllers to the main module. We use the state provider to map front end URLs to templates. The home page will use the &lt;code&gt;home.html&lt;/code&gt; template and the sign in and sign out URLs will use the &lt;code&gt;sigin.html&lt;/code&gt; template.&lt;/p&gt;
+
+&lt;p&gt;It also configures a listener that observes for URL changes made by the user and redirects them to the sign in page, unless they are already authenticated. If there is already a token in local storage when the application loads, that signifies that the user has already logged in a different tab and the authorization header default is set.&lt;/p&gt;
+
+&lt;p&gt;The two views we have are simple - &lt;code&gt;signin.html&lt;/code&gt; has a sign form:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;row&amp;quot;&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;col-md-3&amp;#39;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;col-md-6&amp;quot;&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;login-box well&amp;quot;&lt;/span&gt;&amp;gt;
+      &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;form&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;role&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;form&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;ng-submit&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;login(username, password)&amp;quot;&lt;/span&gt;&amp;gt;
+        &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;legend&lt;/span&gt;&amp;gt;Sign In&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;legend&lt;/span&gt;&amp;gt;
+        &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;form-group&amp;quot;&lt;/span&gt;&amp;gt;
+          &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;label&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;for&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;username-email&amp;quot;&lt;/span&gt;&amp;gt;Username&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;label&lt;/span&gt;&amp;gt;
+          &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;input&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;ng-model&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;username&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;username-email&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;placeholder&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Username&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;text&amp;quot;&lt;/span&gt;
+                 &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;form-control&amp;quot;&lt;/span&gt; /&amp;gt;
+        &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+        &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;form-group&amp;quot;&lt;/span&gt;&amp;gt;
+          &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;label&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;for&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;password&amp;quot;&lt;/span&gt;&amp;gt;Password&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;label&lt;/span&gt;&amp;gt;
+          &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;input&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;ng-model&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;password&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;password&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;placeholder&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Password&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;password&amp;quot;&lt;/span&gt;
+                 &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;form-control&amp;quot;&lt;/span&gt; /&amp;gt;
+        &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+        &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;form-group&amp;quot;&lt;/span&gt;&amp;gt;
+          &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;input&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;btn btn-default btn-login-submit btn-block m-t-md&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Login&amp;quot;&lt;/span&gt; /&amp;gt;
+        &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+      &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;form&lt;/span&gt;&amp;gt;
+    &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+  &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;col-md-3&amp;#39;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The view for home page - &lt;code&gt;home.html&lt;/code&gt; renders a user profile:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;row&amp;quot;&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;h1&lt;/span&gt;&amp;gt;Welcome, {{profile.name.first}}&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;h1&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;col-lg-3 col-sm-6&amp;quot;&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;card hovercard&amp;quot;&lt;/span&gt;&amp;gt;
+      &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;cardheader&amp;quot;&lt;/span&gt;&amp;gt;
+      &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+      &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;avatar&amp;quot;&lt;/span&gt;&amp;gt;
+        &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;img&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;alt&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;{{profile.thumbnail}}&amp;quot;&lt;/span&gt;&amp;gt;
+      &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+      &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;info&amp;quot;&lt;/span&gt;&amp;gt;
+        &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;title&amp;quot;&lt;/span&gt;&amp;gt;
+          {{profile.username}}
+        &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+        &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;desc&amp;quot;&lt;/span&gt;&amp;gt;{{profile.name.first}} {{profile.name.last}}&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+      &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+      &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+        &amp;lt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color: #330099&#34;&gt;href&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/#/signout&amp;quot;&lt;/span&gt;&amp;gt;Sign Out&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;a&lt;/span&gt;&amp;gt;
+      &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+    &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+  &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It a link for signing out. With this code in place, we can start our Spring application and sign in from the browser.&lt;/p&gt;
+
+&lt;p&gt;This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>JWT authentication with Spring Web - Part 4</title>
