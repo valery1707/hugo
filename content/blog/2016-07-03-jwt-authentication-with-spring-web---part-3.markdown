@@ -19,6 +19,14 @@ title: JWT authentication with Spring Web - Part 3
 In the [previous blog post](/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/), we built the Spring API that responds with Profile information. Continuing on the path to building authentication with JWT, in this blog post, we will create a login mechanism that issues a JWT when the user presents the correct credentials.
 
 <!--more-->
+These are the blog posts in this series:
+
+* [Part 1](/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/) - Discussion of JWT and implementation
+* [Part 2](/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/) - A Spring User Profiles API
+* [Part 3](/blog/2016/07/05/jwt-authentication-with-spring-web---part-3/) - Issuing a token from the server
+* [Part 4](/blog/2016/07/07/jwt-authentication-with-spring-web---part-4/) - Verifying the token sent back by the client
+* [Part 5](/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/) - Securing the front end
+
 Our fist step is to configure Spring Security to allow access to the login end point we will be building. This can be done as follows:
 
 ```java

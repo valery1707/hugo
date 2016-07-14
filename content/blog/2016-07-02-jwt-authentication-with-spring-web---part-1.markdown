@@ -20,14 +20,13 @@ image: "images/spring-security.png"
 JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.
 
 <!--more-->
+These are the blog posts in this series:
 
-This series will have the following structure:
-
-* Part 1 - Discussion of JWT and implementation.
-* Part 2 - A Spring User Profiles API
-* Part 3 - Issuing a token from the server
-* Part 4 - Verifying the token sent back by the client
-* Part 5 - Securing the front end
+* [Part 1](/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/) - Discussion of JWT and implementation
+* [Part 2](/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/) - A Spring User Profiles API
+* [Part 3](/blog/2016/07/05/jwt-authentication-with-spring-web---part-3/) - Issuing a token from the server
+* [Part 4](/blog/2016/07/07/jwt-authentication-with-spring-web---part-4/) - Verifying the token sent back by the client
+* [Part 5](/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/) - Securing the front end
 
 ## What is JWT?
 The official JWT [website](https://jwt.io/) defines JWT as:
