@@ -31,3 +31,7 @@ img {
 .intro-header {
     margin-bottom: 0px;
 }
+
+li a {
+    text-decoration: underline;
+}
