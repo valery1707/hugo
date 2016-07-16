@@ -35,3 +35,8 @@ img {
 li a {
     text-decoration: underline;
 }
+
+p.comments {
+    font-size: 90%;
+    font-style: italic;
+}
