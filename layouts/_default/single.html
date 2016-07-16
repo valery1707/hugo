@@ -1,16 +1,20 @@
 <!DOCTYPE html5>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" prefix="og: http://ogp.me/ns#">
   {{ partial "head.html" . }}
+  {{ $previewText := .Description }}
+  {{ if eq .Description "" }}
+  {{ $previewText := .Summary }}
+  {{ end }}
   <!--Twitter Summary Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@sdqali">
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="{{ .Title }}">
-  <meta name="twitter:description" content="{{ .Summary }}">
+  <meta name="twitter:description" content="{{ $previewText }}">
   <meta name="twitter:image" content="{{ .Site.BaseURL }}/{{ .Params.image }}">
 
   <meta property="og:title" content="{{ .Title }}" />
-  <meta property="og:description" content="{{ .Summary }}" itemprop="description"/>
+  <meta property="og:description" content="{{ $previewText }}" itemprop="description"/>
   <meta property="og:url" content="{{ .Permalink }}" />
   <meta property="og:image" content="{{ .Site.BaseURL }}/{{ .Params.image }}" />
   <body>
