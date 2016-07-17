@@ -83,6 +83,19 @@
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
           <div class="post-preview">
+            <a href='http://sdqali.in/blog/2016/07/16/controlling-redis-auto-configuration-for-spring-boot-session/'>
+              <h2 class="post-title">
+                Controlling Redis auto-configuration for Spring Boot Session
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              <p>If you have been using Spring Boot, chances are that you are using the Spring Session library to handle sessions. Spring Session has the ability to persist the sessions to various data stores, including Redis. The default behaviors of Spring Boot when combined with Spring Session is to start using Redis as the session store the moment <code>spring-session-data-redis</code> is detected in the class path, thereby making it hard to conditionally turn Redis support ON and OFF. This blog post explores why this is the default behavior and presents a solution to control this behavior.</p>
+
+            </p>
+            <p class="post-meta">Posted on Sat, Jul 16, 2016</p>
+          </div>
+          
+          <div class="post-preview">
             <a href='http://sdqali.in/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/'>
               <h2 class="post-title">
                 JWT authentication with Spring Web - Part 5
@@ -197,19 +210,6 @@
 
             </p>
             <p class="post-meta">Posted on Sun, Jun 5, 2016</p>
-          </div>
-          
-          <div class="post-preview">
-            <a href='http://sdqali.in/blog/2016/04/24/deprecating-domain-events-in-axon/'>
-              <h2 class="post-title">
-                Deprecating domain events in Axon
-              </h2>
-            </a>
-            <p class="post-subtitle">
-              <p>Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.</p>
-
-            </p>
-            <p class="post-meta">Posted on Sun, Apr 24, 2016</p>
           </div>
           
           
