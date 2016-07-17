@@ -5,8 +5,227 @@
     <link>http://sdqali.in/categories/java/</link>
     <description>Recent content in Java on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 13 Jul 2016 23:05:53 -0700</lastBuildDate>
+    <lastBuildDate>Sat, 16 Jul 2016 15:42:05 -0700</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Controlling Redis auto-configuration for Spring Boot Session</title>
+      <link>http://sdqali.in/blog/2016/07/16/controlling-redis-auto-configuration-for-spring-boot-session/</link>
+      <pubDate>Sat, 16 Jul 2016 15:42:05 -0700</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/07/16/controlling-redis-auto-configuration-for-spring-boot-session/</guid>
+      <description>
+
+&lt;p&gt;If you have been using Spring Boot, chances are that you are using the Spring Session library to handle sessions. Spring Session has the ability to persist the sessions to various data stores, including Redis. The default behaviors of Spring Boot when combined with Spring Session is to start using Redis as the session store the moment &lt;code&gt;spring-session-data-redis&lt;/code&gt; is detected in the class path, thereby making it hard to conditionally turn Redis support ON and OFF. This blog post explores why this is the default behavior and presents a solution to control this behavior.&lt;/p&gt;
+
+&lt;h3 id=&#34;the-application&#34;&gt;The application&lt;/h3&gt;
+
+&lt;p&gt;The application we will be using to demonstrate this behavior is a Spring Boot 1.3.6 application with a single controller.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RestController&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/hello&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;HelloController&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;method &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; GET&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+      path &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+      produces &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; APPLICATION_JSON_VALUE&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Map&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;hello&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;singletonMap&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;message&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;hello&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The application also has Spring Security configured to allow authentication for a single user named &lt;code&gt;user&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@EnableWebSecurity&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;SecurityConfig&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; WebSecurityConfigurerAdapter &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;configure&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HttpSecurity http&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    http
+        &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;authorizeRequests&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt;
+        &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;antMatchers&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/hello/**&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;hasRole&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;USER&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+        &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;and&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt;
+        &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;httpBasic&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;configureGlobal&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;AuthenticationManagerBuilder auth&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    auth
+        &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;inMemoryAuthentication&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt;
+        &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;withUser&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;user&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;password&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;password&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;roles&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;USER&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Bean&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; HeaderHttpSessionStrategy &lt;span style=&#34;color: #CC00FF&#34;&gt;sessionStrategy&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; HeaderHttpSessionStrategy&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This forces clients to authenticate for access to resources under &lt;code&gt;/hello&lt;/code&gt; and configures an in memory user &lt;code&gt;user&lt;/code&gt; with password &lt;code&gt;password&lt;/code&gt;. In this example, we will also be using &lt;code&gt;HeaderHttpSessionStrategy&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; to pass the session value between client and server using the &lt;code&gt;x-auth-token&lt;/code&gt; header instead of a Cookie.&lt;/p&gt;
+
+&lt;h3 id=&#34;the-issue&#34;&gt;The issue&lt;/h3&gt;
+
+&lt;p&gt;This is an issue only when using Spring Boot 1.3 or greater. If we are to follow the instructions provided at the &lt;a href=&#34;http://docs.spring.io/spring-session/docs/1.2.1.RELEASE/reference/html5/guides/boot.html&#34;&gt;official documentation&lt;/a&gt; from Spring Session &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;, we end up with the following configuration.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@EnableRedisHttpSession&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;RedisSessionConfig&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;With this in place, authentication works as we expect. The application allows the user to obtain a session and authenticates correctly when presented with the session token.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ curl -i -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://localhost:8080/hello&amp;quot;&lt;/span&gt; -uuser:password  | grep &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;x-auth-token&amp;quot;&lt;/span&gt;
+x-auth-token: c0fbb47d-d19f-44b1-a8d7-44e4837f403d
+$ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://localhost:8080/hello&amp;quot;&lt;/span&gt; --header &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;x-auth-token: c0fbb47d-d19f-44b1-a8d7-44e4837f403d&amp;quot;&lt;/span&gt; | jq .
+&lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;message&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;hello&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We can monitor the interactions the application performs with Redis by running Redis monitor:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ redis-cli monitor
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This is great. Now, let&amp;rsquo;s attempt to modify our configuration to use Redis only in some environments and use the in-memory session store in others. We start by making &lt;code&gt;RedisSessionConfig&lt;/code&gt; conditional on the value of the property &lt;code&gt;use.redis.session.store&lt;/code&gt; being &lt;code&gt;true&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@ConditionalOnProperty&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;use.redis.session.store&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; havingValue &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;true&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@EnableRedisHttpSession&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;RedisSessionConfig&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We will create a new configuration that sets up the in-memory session store if &lt;code&gt;use.redis.session.store&lt;/code&gt; is false or missing.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@EnableSpringHttpSession&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@ConditionalOnProperty&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;use.redis.session.store&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; havingValue &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;false&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; matchIfMissing &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;MapSessionConfig&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Bean&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; SessionRepository &lt;span style=&#34;color: #CC00FF&#34;&gt;sessionRepository&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; MapSessionRepository&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Let&amp;rsquo;s set the property to &lt;code&gt;false&lt;/code&gt; so that we do not have to depend on Redis in the local environment.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;use.redis.session.store=false
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With this in place, we expect that there are no interactions with Redis server. If we were to start the server, we will get the following error:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+Caused by: java.net.ConnectException: Connection refused
+    at java.net.PlainSocketImpl.socketConnect(Native Method) ~[na:1.8.0_45]
+    at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:345) ~[na:1.8.0_45]
+    at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206) ~[na:1.8.0_45]
+    at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188) ~[na:1.8.0_45]
+    at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392) ~[na:1.8.0_45]
+    at java.net.Socket.connect(Socket.java:589) ~[na:1.8.0_45]
+    at redis.clients.jedis.Connection.connect(Connection.java:158) ~[jedis-2.7.3.jar:na]
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It appears that the application is trying to make connections to Redis, even though we configured it not to. What is going on? It looks like some where along the chain, some configuration with the annotation &lt;code&gt;@EnableSpringHttpSession&lt;/code&gt; is being loaded. Why could that happen?&lt;/p&gt;
+
+&lt;h3 id=&#34;spring-boot-autoconfig&#34;&gt;Spring Boot Autoconfig&lt;/h3&gt;
+
+&lt;p&gt;Like a lot of Spring Boot applications, we are using the &lt;code&gt;@SpringBootApplication&lt;/code&gt; annotation in our application. This is a meta-annotation &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; that takes the following form:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Target&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;ElementType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;TYPE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@Retention&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;RetentionPolicy&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;RUNTIME&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@Documented&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@Inherited&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@EnableAutoConfiguration&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@ComponentScan&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;@EnableAutoConfiguration&lt;/code&gt; annotation is interesting because it wires up most of the default configuration that makes Spring Boot great for development. The annotation itself and the supporting mechanism that automatically loads configurations are present in the &lt;code&gt;org.springframework.boot:spring-boot-autoconfigure&lt;/code&gt; library. One of these configurations is &lt;code&gt;SessionAutoConfiguration&lt;/code&gt; which was introduced in Spring Boot &lt;code&gt;1.3.0&lt;/code&gt;. It has the following code in version &lt;code&gt;1.3.6&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@ConditionalOnClass&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Session&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@AutoConfigureAfter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;RedisAutoConfiguration&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;SessionAutoConfiguration&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@EnableConfigurationProperties&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@ConditionalOnClass&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;RedisConnectionFactory&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@ConditionalOnWebApplication&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@ConditionalOnMissingBean&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;RedisHttpSessionConfiguration&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@EnableRedisHttpSession&lt;/span&gt;
+    &lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;SessionRedisHttpConfiguration&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+
+        &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; ServerProperties serverProperties&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+        &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; RedisOperationsSessionRepository sessionRepository&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+        &lt;span style=&#34;color: #9999FF&#34;&gt;@PostConstruct&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;applyConfigurationProperties&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+            Integer timeout &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;serverProperties&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getTimeout&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+            &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;timeout &lt;span style=&#34;color: #555555&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+                &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;sessionRepository&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setDefaultMaxInactiveInterval&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;timeout&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+            &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+        &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+        &lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
+        &lt;span style=&#34;color: #9999FF&#34;&gt;@ConditionalOnMissingBean&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;value &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; ServerProperties&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; search &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; SearchStrategy&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;CURRENT&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+        &lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;// Just in case user switches off ServerPropertiesAutoConfiguration&lt;/span&gt;
+        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ServerPropertiesConfiguration&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+
+            &lt;span style=&#34;color: #9999FF&#34;&gt;@Bean&lt;/span&gt;
+            &lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;// Use the same bean name as the default one for any old webapp&lt;/span&gt;
+            &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; ServerProperties &lt;span style=&#34;color: #CC00FF&#34;&gt;serverProperties&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+                &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; ServerProperties&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+            &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+        &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And this is where things get interesting. We can clearly see that &lt;code&gt;SessionRedisHttpConfiguration&lt;/code&gt; is annotated with &lt;code&gt;@EnableRedisHttpSession&lt;/code&gt;. This class will be applied by Spring the moment it&amp;rsquo;s parent class &lt;code&gt;SessionAutoConfiguration&lt;/code&gt; is applied. The third annotation on the parent class &lt;code&gt;@AutoConfigureAfter(RedisAutoConfiguration.class)&lt;/code&gt; instructs Spring to apply this configuration after &lt;code&gt;RedisAutoConfiguration&lt;/code&gt;. This configuration has the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@ConditionalOnClass&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;({&lt;/span&gt; JedisConnection&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; RedisOperations&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Jedis&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;})&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@EnableConfigurationProperties&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;RedisAutoConfiguration&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;// ...&lt;/span&gt;
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;// ...&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This configuration will be applied if and only if the classes &lt;code&gt;JedisConnection&lt;/code&gt;, &lt;code&gt;RedisOperations&lt;/code&gt; and &lt;code&gt;Jedis&lt;/code&gt; are present in the class path and by adding &lt;code&gt;spring-session-data-redis&lt;/code&gt; as a dependency, we are causing exactly that to happen.&lt;/p&gt;
+
+&lt;h3 id=&#34;a-solution&#34;&gt;A solution&lt;/h3&gt;
+
+&lt;p&gt;We can prevent this from occurring by configuring our application to not attempt to apply this auto configuration class. This can be done by specifying this class to be excluded from the application.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@SpringBootApplication&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;exclude &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;SessionAutoConfiguration&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;})&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;RedisSessionApplication&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;[]&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+        SpringApplication&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;RedisSessionApplication&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;With this is place, if we run the application, it will no longer encounter the connection error previously saw. Authentication works as before, except that it now uses the in-memory session store.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ curl -i -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://localhost:8080/hello&amp;quot;&lt;/span&gt; -uuser:password  | grep &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;x-auth-token&amp;quot;&lt;/span&gt;
+x-auth-token: d0962e39-6423-46b3-b815-8979950e063a
+$ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://localhost:8080/hello&amp;quot;&lt;/span&gt; --header &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;x-auth-token: d0962e39-6423-46b3-b815-8979950e063a&amp;quot;&lt;/span&gt; | jq .
+&lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;message&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;hello&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;HeaderHttpSessionStrategy allows the use of a header to transmit the session between client and server. The default header is &lt;code&gt;x-auth-token&lt;/code&gt;, but this can be configured. See the documentation &lt;a href=&#34;http://docs.spring.io/spring-session/docs/current/api/org/springframework/session/web/http/HeaderHttpSessionStrategy.html&#34;&gt;here&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;This example uses the default configurations for Redis connection to localhost on port 6379.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;Meta annotations are annotations that can act up on other annotations by modifying and overriding their attributes. For a discussion on how to implement custom annotations using meta annotations, please refer to &lt;a href=&#34;http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/&#34;&gt;this blog post&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>JWT authentication with Spring Web - Part 5</title>
@@ -2055,128 +2274,6 @@ Apache Camel &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a 
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li id=&#34;fn:3&#34;&gt;See the previous blog post to see how &lt;code&gt;SpringApplicationContextLoader&lt;/code&gt; executes the application without arguments.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Integration testing challenges for non-web Spring applications</title>
-      <link>http://sdqali.in/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/</link>
-      <pubDate>Thu, 10 Dec 2015 21:45:59 -0500</pubDate>
-      
-      <guid>http://sdqali.in/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/</guid>
-      <description>&lt;p&gt;We are building a command line data loader application at work that uses Spring. One of the things that I took us more time that it should have to figure out was how to write an integration test that invokes the command line application with the right command line arguments. This blog post describes this scenario and a potential solution to this problem.&lt;/p&gt;
-
-&lt;p&gt;Let&amp;rsquo;s consider a simple command line application implemented using Spring Boot&amp;rsquo;s &lt;code&gt;CommandLineRunner&lt;/code&gt;. The main application class is fairly simple.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@EnableAutoConfiguration&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@ComponentScan&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Application&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; CommandLineRunner &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
-    DataService dataService&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;[]&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        SpringApplication&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Application&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;...&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        dataService&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;perform&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;args&lt;span style=&#34;color: #555555&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #FF6600&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;]);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;In addition to this, there is a configuration class &lt;code&gt;AppConfiguration&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;AppConfiguration&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Bean&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; DataService &lt;span style=&#34;color: #CC00FF&#34;&gt;dataService&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; DataService&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The &lt;code&gt;DataService&lt;/code&gt; simply prints the argument it receives.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;DataService&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;perform&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String arg&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        System&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;println&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;arg&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;If we were to attempt writing an integration test for this application, it would look like this:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RunWith&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SpringJUnit4ClassRunner&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@SpringApplicationConfiguration&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;classes &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;Application&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;})&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ApplicationIntegrationTest&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; Application application&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Rule&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; OutputCapture outputCapture &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; OutputCapture&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Test&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;shouldGenerateResultFiles&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        application&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;sampleOutPut&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-        assertTrue&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;outputCapture&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;toString&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;contains&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;sampleOutput&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;That test is straightforward—it loads the Spring context with all the beans, runs the application with parameters and expects the parameter to be printed to the console.&lt;/p&gt;
-
-&lt;p&gt;Except, it does not work. If we were to execute the above test, we will get the following error:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;...
-Caused by: java.lang.ArrayIndexOutOfBoundsException: 0
-at in.sdqali.springapps.Application.run&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Application.java:24&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; ~&lt;span style=&#34;color: #555555&#34;&gt;[&lt;/span&gt;main/:na&lt;span style=&#34;color: #555555&#34;&gt;]&lt;/span&gt;
-...
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;What happened? It looks like the &lt;code&gt;run&lt;/code&gt; method was called with out any arguments while the test configuration was loaded.&lt;/p&gt;
-
-&lt;p&gt;Let‘s try and understand wh
-y this happens. Remember how we annotated the test with &lt;code&gt;@SpringApplicationConfiguration&lt;/code&gt;? This annotation is a meta-annotation &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; specified as:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@ContextConfiguration&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;loader &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; SpringApplicationContextLoader&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@Documented&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@Inherited&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@Retention&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;RetentionPolicy&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;RUNTIME&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@Target&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;ElementType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;TYPE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #9999FF&#34;&gt;@interface&lt;/span&gt; SpringApplicationConfiguration &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;...&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code&gt;ContextConfiguration&lt;/code&gt; is an annotation that allows tests to specify the information used to load and configure the application context. From the Java doc for this annotation:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt; * {@code @ContextConfiguration} defines class-level metadata that is used to determine
- * how to load and configure an {@link org.springframework.context.ApplicationContext
- * ApplicationContext} for integration tests.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This brings us to &lt;code&gt;SpringApplicationContextLoader&lt;/code&gt;‘s &lt;code&gt;loadContext&lt;/code&gt; method and buried deep inside are these line:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;application&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setInitializers&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;initializers&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-ConfigurableApplicationContext applicationContext &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; application&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; applicationContext&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;So, regardless of how many arguments our command line application was supposed to take, this loader always call the application without any arguments.&lt;/p&gt;
-
-&lt;p&gt;There are two solutions I have been able to think of for this problem:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Override the&lt;code&gt;SpringApplicationContextLoader&lt;/code&gt; and pass the necessary arguments in &lt;code&gt;application.run()&lt;/code&gt;. This is definitely not an elegant or easy solution.&lt;/li&gt;
-&lt;li&gt;Use an environment variable instead of the command line argument as the input to the service. This will allow us to inject this variable using the &lt;code&gt;@IntegrationTest&lt;/code&gt; annotation.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;My next blog post will discuss the second approach.&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:1&#34;&gt;Meta annotations. &lt;a href=&#34;http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html#beans-meta-annotations&#34;&gt;Spring documentation&lt;/a&gt;. To see how to use meta-annotations to write custom annoations, see &lt;a href=&#34;http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/&#34;&gt;this blog post&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 </description>
