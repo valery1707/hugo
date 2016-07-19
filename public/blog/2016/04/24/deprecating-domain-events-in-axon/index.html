@@ -28,19 +28,17 @@
 </head>
 
   
-  
-  
-  
-  
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@sdqali">
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Deprecating domain events in Axon">
-  <meta name="twitter:description" content="">
+  <meta name="twitter:description" content="Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.
+">
   <meta name="twitter:image" content="http://sdqali.in/images/axon.png">
 
   <meta property="og:title" content="Deprecating domain events in Axon" />
-  <meta property="og:description" content="" itemprop="description"/>
+  <meta property="og:description" content="Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.
+" itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2016/04/24/deprecating-domain-events-in-axon/" />
   <meta property="og:image" content="http://sdqali.in/images/axon.png" />
   <body>
