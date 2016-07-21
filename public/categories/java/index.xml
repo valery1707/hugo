@@ -452,7 +452,7 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
 &amp;lt;/&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;div&lt;/span&gt;&amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;It a link for signing out. With this code in place, we can start our Spring application and sign in from the browser.&lt;/p&gt;
+&lt;p&gt;It also has a link for signing out. With this code in place, we can start our Spring application and sign in from the browser.&lt;/p&gt;
 
 &lt;p&gt;This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API. The code for the complete example is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 </description>
