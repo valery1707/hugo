@@ -249,6 +249,6 @@ The view for home page - `home.html` renders a user profile:
   </div>
 </div>
 ```
-It a link for signing out. With this code in place, we can start our Spring application and sign in from the browser.
+It also has a link for signing out. With this code in place, we can start our Spring application and sign in from the browser.
 
 This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API. The code for the complete example is available on [GitHub](https://github.com/sdqali/jwt-demo).
