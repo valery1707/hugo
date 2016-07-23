@@ -7,7 +7,13 @@ var client = new Keen({
 var uri = parseUri(window.location.href);
 var referrer = parseUri(document.referrer);
 var uaParser = new UAParser();
-if(uri.host !== "localhost") {
+var doSendData = true;
+
+if(window.localStorage && localStorage.getItem("localAnalyticsFlag") === "486a8f2d6a5b44f791e729c9e3717a4a") {
+  doSendData = false;
+}
+
+if(uri.host !== "localhost" && doSendData === true) {
   client.addEvent("pagehit", {
     "url" : {
       "source" : uri.source,
