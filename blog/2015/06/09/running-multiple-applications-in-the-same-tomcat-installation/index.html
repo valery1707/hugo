@@ -33,11 +33,13 @@
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Running multiple applications in the same Tomcat installation">
   <meta name="twitter:description" content="This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the CATALINA_HOME and CATALINA_BASE environment variables used by Tomcat. I have verified this method against Tomcat versions 8.0.x; other versions should work the same way.
+
 ">
   <meta name="twitter:image" content="http://sdqali.in/images/1280px-Tomcat-logo.svg.png">
 
   <meta property="og:title" content="Running multiple applications in the same Tomcat installation" />
   <meta property="og:description" content="This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the CATALINA_HOME and CATALINA_BASE environment variables used by Tomcat. I have verified this method against Tomcat versions 8.0.x; other versions should work the same way.
+
 " itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/" />
   <meta property="og:image" content="http://sdqali.in/images/1280px-Tomcat-logo.svg.png" />
@@ -97,9 +99,9 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            
+            <p>This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the <code>CATALINA_HOME</code> and <code>CATALINA_BASE</code> environment variables used by Tomcat. I have verified this method against Tomcat versions <code>8.0.x</code>; other versions should work the same way.</p>
 
-<p>This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the <code>CATALINA_HOME</code> and <code>CATALINA_BASE</code> environment variables used by Tomcat. I have verified this method against Tomcat versions <code>8.0.x</code>; other versions should work the same way.</p>
+<p></p>
 
 <h2 id="a-typical-tomcat-installation">A typical Tomcat installation</h2>
 
@@ -268,7 +270,6 @@ $ curl -v http://127.0.0.1:9090
 *   Trying 127.0.0.1...
 * connect to 127.0.0.1 port <span style="color: #FF6600">9090</span> failed: Connection refused
 </pre></div>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

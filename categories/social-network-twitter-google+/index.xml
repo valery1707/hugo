@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Social Network Twitter Google&#43; on Sadique Ali</title>
-    <link>http://sdqali.in/categories/social-network-twitter-google&#43;/</link>
-    <description>Recent content in Social Network Twitter Google&#43; on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/social-network-twitter-google&#43;/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 17 Jul 2012 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/social-network-twitter-google&#43;/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -27,6 +26,8 @@ URL that redirects to my page. While it is mildly frustrating, I have
 been thinking why both Twitter and Google+ replace every URL users share
 on their network and replace it with their own URLs that does a redirect
 to the original content being shared.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;I think I finally understand why. Data about user&amp;rsquo;s sharing content is
 of huge interest to a lot of people, most importantly marketers. URL
@@ -78,8 +79,7 @@ don&amp;rsquo;t have a Facebook account.&lt;/p&gt;
 &lt;p&gt;In a nutshell, social networks that are about sharing hides knowledge
 about the content people share behind a system that only they have
 access to and can potentially make a lot of money from that data. Pretty
-clever of them, if you ask me.&lt;/p&gt;
-</description>
+clever of them, if you ask me.&lt;/p&gt;</description>
     </item>
     
   </channel>

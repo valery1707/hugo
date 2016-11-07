@@ -33,11 +33,13 @@
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Programmable exit codes for Spring command line applications">
   <meta name="twitter:description" content="Spring&rsquo;s CommandLineRunner provides a great mechanism to build command line applications. While this convenience is great, applications that use CommandLineRunner require extra effort in some areas like integration testing. Exit codes are such an area - applications that use command line runners always report their exit code as 0 even if there are exceptions thrown. This blog post explains a way to get to programmable exit codes for such applications.
+
 ">
   <meta name="twitter:image" content="http://sdqali.in/images/spring-by-pivotal.png">
 
   <meta property="og:title" content="Programmable exit codes for Spring command line applications" />
   <meta property="og:description" content="Spring&rsquo;s CommandLineRunner provides a great mechanism to build command line applications. While this convenience is great, applications that use CommandLineRunner require extra effort in some areas like integration testing. Exit codes are such an area - applications that use command line runners always report their exit code as 0 even if there are exceptions thrown. This blog post explains a way to get to programmable exit codes for such applications.
+
 " itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/" />
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
@@ -98,6 +100,8 @@
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>Spring&rsquo;s <code>CommandLineRunner</code> provides a great mechanism to build command line applications. While this convenience is great, applications that use <code>CommandLineRunner</code> require extra effort in some areas like integration testing. Exit codes are such an area - applications that use command line runners always report their exit code as <code>0</code> even if there are exceptions thrown. This blog post explains a way to get to programmable exit codes for such applications.</p>
+
+<p></p>
 
 <p>The following example demonstrates this problem. Here we have a simple implementation of <code>CommandLineRunner</code> that simply throws a <code>RuntimeException</code> when started.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Component</span>
@@ -178,7 +182,6 @@ $ echo $?
  <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
 </ol>
 </div>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

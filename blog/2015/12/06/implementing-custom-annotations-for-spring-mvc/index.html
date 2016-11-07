@@ -33,12 +33,14 @@
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Implementing custom annotations for Spring MVC">
   <meta name="twitter:description" content="I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of @RequestMapping and @ResponseStatus to set the expected request and response Content-Type, the request Method, response status etc. This blog post describes how to compose Spring annotations that produce the same effect as multiple Spring annotations acting together.
-">
+
+Among the new things introduced in Spring 4 was the idea of meta-annotations. 1 Meta annotations are annotations that can act up on other annotations by modifying and overriding attributes of the target annotations.">
   <meta name="twitter:image" content="http://sdqali.in/images/spring-by-pivotal.png">
 
   <meta property="og:title" content="Implementing custom annotations for Spring MVC" />
   <meta property="og:description" content="I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of @RequestMapping and @ResponseStatus to set the expected request and response Content-Type, the request Method, response status etc. This blog post describes how to compose Spring annotations that produce the same effect as multiple Spring annotations acting together.
-" itemprop="description"/>
+
+Among the new things introduced in Spring 4 was the idea of meta-annotations. 1 Meta annotations are annotations that can act up on other annotations by modifying and overriding attributes of the target annotations." itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/" />
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
   <body>
@@ -97,9 +99,9 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <p>I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of <code>@RequestMapping</code> and <code>@ResponseStatus</code> to set the expected request and response <code>Content-Type</code>, the request Method, response status etc. This blog post describes how to compose Spring annotations that produce the same effect as multiple Spring annotations acting together.</p>
+            <p>I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of <code>@RequestMapping</code> and <code>@ResponseStatus</code> to set the expected request and response <code>Content-Type</code>, the request Method, response status etc. This blog post describes how to compose Spring annotations that produce the same effect as multiple Spring annotations acting together.
 
-<p>Among the new things introduced in Spring 4 was the idea of meta-annotations. <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> Meta annotations are annotations that can act up on other annotations by modifying and overriding attributes of the target annotations.</p>
+Among the new things introduced in Spring 4 was the idea of meta-annotations. <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> Meta annotations are annotations that can act up on other annotations by modifying and overriding attributes of the target annotations.</p>
 
 <p>This allows us to build composed annotations <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup> that combine the behavior of multiple annotations. The <code>@AliasFor</code> annotation allows us to override attribute names, thereby adding great flexibility while composing.</p>
 
@@ -156,7 +158,6 @@
  <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
 </ol>
 </div>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

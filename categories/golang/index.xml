@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Golang on Sadique Ali</title>
-    <link>http://sdqali.in/categories/golang/</link>
-    <description>Recent content in Golang on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/golang/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 14 Dec 2015 21:47:06 -0500</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/golang/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -14,9 +13,9 @@
       <pubDate>Mon, 14 Dec 2015 21:47:06 -0500</pubDate>
       
       <guid>http://sdqali.in/blog/2015/12/14/thoughts-on-open-graph-tags/</guid>
-      <description>
+      <description>&lt;p&gt;The Open Graph protocol was designed by Facebook to help content creators generate a richer preview of links to their content when they get posted in to Facebook. It was originally proposed as a simple mark up that can be adopted in platforms beyond Facebook. The Open Graph Protocol Design Decisions presentation &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; does a very good job of enumerating the motivation and design decisions made for Open Graph. I have lately been reading and experimenting with these tags and I notice a fair bit of differences when it comes to how these tags are used by different platforms.&lt;/p&gt;
 
-&lt;p&gt;The Open Graph protocol was designed by Facebook to help content creators generate a richer preview of links to their content when they get posted in to Facebook. It was originally proposed as a simple mark up that can be adopted in platforms beyond Facebook. The Open Graph Protocol Design Decisions presentation &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; does a very good job of enumerating the motivation and design decisions made for Open Graph. I have lately been reading and experimenting with these tags and I notice a fair bit of differences when it comes to how these tags are used by different platforms.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;This is by no means an exhaustive list–these are applications I use frequently use and hence encounter the usage of Open Graph tags in. I am deliberately scoping this discussion to a sub set of tags including the following which are the most common tags I have encountered:&lt;/p&gt;
 
@@ -73,8 +72,7 @@ og:image
 &lt;li id=&#34;fn:4&#34;&gt;See &lt;code&gt;article:author&lt;/code&gt; &lt;a href=&#34;http://ogp.me/#type_article&#34;&gt;spec&lt;/a&gt; and &lt;code&gt;book:author&lt;/code&gt; &lt;a href=&#34;http://ogp.me/#type_book&#34;&gt;spec&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
   </channel>

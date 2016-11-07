@@ -33,11 +33,13 @@
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Deprecating domain events in Axon">
   <meta name="twitter:description" content="Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.
+
 ">
   <meta name="twitter:image" content="http://sdqali.in/images/axon.png">
 
   <meta property="og:title" content="Deprecating domain events in Axon" />
   <meta property="og:description" content="Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.
+
 " itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2016/04/24/deprecating-domain-events-in-axon/" />
   <meta property="og:image" content="http://sdqali.in/images/axon.png" />
@@ -97,9 +99,9 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            
+            <p>Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.</p>
 
-<p>Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.</p>
+<p></p>
 
 <p>Obviously, we need an Upcaster <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> to take care of this situation. The Upcaster in this scenario will have to upcast this event to something representing the non-existence of this event, regardless of the revision. There are two ways to address this issue - Upcasting to an explicit NoOpEvent and upcasting to an empty list.</p>
 
@@ -190,7 +192,6 @@ So you achieve the same thing, but explicit always beats implicit in DDD ;-)</p>
  <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
 </ol>
 </div>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

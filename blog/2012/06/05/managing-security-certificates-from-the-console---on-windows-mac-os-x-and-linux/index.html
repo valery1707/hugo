@@ -33,11 +33,13 @@
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Managing security certificates from the console - on Windows, Mac OS X and Linux">
   <meta name="twitter:description" content="For me the last two weeks or so have involved a lot of wrestling with SSL certificates. One of the things that took some time to figure out was how to piggy-back on the tools provided by different Operating Systems to manage certificates. We did not want to rewrite NSS. Luckily for us, all the major OSes provide tools to manage certificates from the command line.
+
 ">
   <meta name="twitter:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]">
 
   <meta property="og:title" content="Managing security certificates from the console - on Windows, Mac OS X and Linux" />
   <meta property="og:description" content="For me the last two weeks or so have involved a lot of wrestling with SSL certificates. One of the things that took some time to figure out was how to piggy-back on the tools provided by different Operating Systems to manage certificates. We did not want to rewrite NSS. Luckily for us, all the major OSes provide tools to manage certificates from the command line.
+
 " itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2012/06/05/managing-security-certificates-from-the-console---on-windows-mac-os-x-and-linux/" />
   <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
@@ -97,9 +99,9 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            
+            <p>For me the last two weeks or so have involved a lot of wrestling with SSL certificates. One of the things that took some time to figure out was how to piggy-back on the tools provided by different Operating Systems to manage certificates. We did not want to rewrite <a href="https://www.mozilla.org/projects/security/pki/nss/" title="NSS">NSS</a>. Luckily for us, all the major OSes provide tools to manage certificates from the command line.</p>
 
-<p>For me the last two weeks or so have involved a lot of wrestling with SSL certificates. One of the things that took some time to figure out was how to piggy-back on the tools provided by different Operating Systems to manage certificates. We did not want to rewrite <a href="https://www.mozilla.org/projects/security/pki/nss/" title="NSS">NSS</a>. Luckily for us, all the major OSes provide tools to manage certificates from the command line.</p>
+<p></p>
 
 <h2 id="windows">Windows</h2>
 
@@ -181,7 +183,6 @@ security add-trusted-cert foo.crt{% endcodeblock %}</p>
 </ol>
 
 <p>While copying the database is not as clean a solution as using certutil, we decided to go with the second option because there is no guarantee that certutil will be present on the user&rsquo;s box, especially if they are running Windows or Mac OS X. And we had a fairly high control over the Firefox profiles.</p>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

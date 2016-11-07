@@ -32,12 +32,14 @@
   <meta name="twitter:site" content="@sdqali">
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Navigating Stacktraces in Emacs">
-  <meta name="twitter:description" content="I had to debug an issue today and that meant dealing with Rails stack traces. I got tired of having to constantly switch between reading the trace in the terminal and the code in Emacs to figure out what was going wrong and get more context around it. I felt that there should be an easier way of doing this. A quick search [^1] did not yield anything. But then I remembered Grep mode [^2] and it occurred to me that hijacking Grep mode&rsquo;s navigation feature would let me navigate the stack trace better. This is the solution I came up with.
+  <meta name="twitter:description" content="I had to debug an issue today and that meant dealing with Rails stack traces. I got tired of having to constantly switch between reading the trace in the terminal and the code in Emacs to figure out what was going wrong and get more context around it. I felt that there should be an easier way of doing this. A quick search 1 did not yield anything. But then I remembered Grep mode 2 and it occurred to me that hijacking Grep mode&rsquo;s navigation feature would let me navigate the stack trace better. This is the solution I came up with.
+
 ">
   <meta name="twitter:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]">
 
   <meta property="og:title" content="Navigating Stacktraces in Emacs" />
-  <meta property="og:description" content="I had to debug an issue today and that meant dealing with Rails stack traces. I got tired of having to constantly switch between reading the trace in the terminal and the code in Emacs to figure out what was going wrong and get more context around it. I felt that there should be an easier way of doing this. A quick search [^1] did not yield anything. But then I remembered Grep mode [^2] and it occurred to me that hijacking Grep mode&rsquo;s navigation feature would let me navigate the stack trace better. This is the solution I came up with.
+  <meta property="og:description" content="I had to debug an issue today and that meant dealing with Rails stack traces. I got tired of having to constantly switch between reading the trace in the terminal and the code in Emacs to figure out what was going wrong and get more context around it. I felt that there should be an easier way of doing this. A quick search 1 did not yield anything. But then I remembered Grep mode 2 and it occurred to me that hijacking Grep mode&rsquo;s navigation feature would let me navigate the stack trace better. This is the solution I came up with.
+
 " itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2013/08/22/navigating-stacktraces-in-emacs/" />
   <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
@@ -99,6 +101,8 @@
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>I had to debug an issue today and that meant dealing with Rails stack traces. I got tired of having to constantly switch between reading the trace in the terminal and the code in Emacs to figure out what was going wrong and get more context around it. I felt that there should be an easier way of doing this. A quick search <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> did not yield anything. But then I remembered Grep mode <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup> and it occurred to me that hijacking Grep mode&rsquo;s navigation feature would let me navigate the stack trace better. This is the solution I came up with.</p>
 
+<p></p>
+
 <ul>
 <li>Open the log in a buffer.</li>
 <li>Replace any leading file paths in the logs with the appropriate path for your local copy of the code. In the following case, I would replace all <code>/opt/thoughtworks/mingle</code> with empty string <sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>.
@@ -124,7 +128,6 @@
  <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
 </ol>
 </div>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

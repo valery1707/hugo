@@ -1,12 +1,315 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blogs on Sadique Ali</title>
-    <link>http://sdqali.in/blog/</link>
-    <description>Recent content in Blogs on Sadique Ali</description>
+    <title>Blog-rsses on Sadique Ali</title>
+    <link>http://sdqali.in/blog/index.xml</link>
+    <description>Recent content in Blog-rsses on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 20 Jul 2016 21:57:01 -0400</lastBuildDate>
+    <lastBuildDate>Fri, 04 Nov 2016 22:34:53 -0700</lastBuildDate>
     <atom:link href="http://sdqali.in/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>A very basic introduction to deploying a Java application using Kubernetes</title>
+      <link>http://sdqali.in/blog/2016/11/04/a-very-basic-introduction-to-deploying-a-java-application-using-kubernetes/</link>
+      <pubDate>Fri, 04 Nov 2016 22:34:53 -0700</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/11/04/a-very-basic-introduction-to-deploying-a-java-application-using-kubernetes/</guid>
+      <description>
+
+&lt;p&gt;I have been playing around with Kubernetes and Docker lately. To borrow the description of Kubernetes from their website,&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications.&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;One of the first things I did was to try and see what it would take to go from an application to deploying it. I started with a simple Java application and had to set up the development environment. These are my notes from this process. This assumes that you have docker installed on your development environment.&lt;/p&gt;
+
+&lt;h2 id=&#34;install-minikube&#34;&gt;Install minikube&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/kubernetes/minikube&#34;&gt;Minikube&lt;/a&gt; is a tool that makes it easy to run Kubernetes for local development. To run minikube, you need to have a virtualizer installed - in my case I already had VirtualBox installed. Instructions for installing minikube is available &lt;a href=&#34;https://github.com/kubernetes/minikube/releases&#34;&gt;here&lt;/a&gt;. In my case, this is what I did:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.12.2/minikube-darwin-amd64
+&amp;gt; chmod +x minikube
+&amp;gt; sudo mv minikube /usr/local/bin/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;install-kubectl&#34;&gt;Install kubectl&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://kubernetes.io/docs/user-guide/kubectl-overview/&#34;&gt;Kubectl&lt;/a&gt; is a command line application that executes commands against Kubernets clusters. Instructions for installing kubectl are available &lt;a href=&#34;http://kubernetes.io/docs/getting-started-guides/minikube/#install-kubectl&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; curl -Lo kubectl http://storage.googleapis.com/kubernetes-release/release/v1.3.0/bin/darwin/amd64/kubectl
+&amp;gt; chmod +x kubectl
+&amp;gt; sudo mv kubectl /usr/local/bin/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;set-up-a-docker-repository&#34;&gt;Set up a Docker repository&lt;/h2&gt;
+
+&lt;p&gt;Kubernetes pulls container images from publicly available registries. But because we are building an application that we will not be publishing to public docker registries, we need to create a local registry. There is a great write up on how to set up a local docker registry at &lt;a href=&#34;http://thenewstack.io/tutorial-configuring-ultimate-development-environment-kubernetes/&#34;&gt;Newstack&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;start-minikube-with-the-registry&#34;&gt;Start minikube with the registry&lt;/h2&gt;
+
+&lt;p&gt;Now that we have a local docker registry, we can go ahead and tell minikube to consume images from this registry. However, if you have started a minikube cluster previously, the registry override will not be available to it unless it is deleted.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; docker-machine ip registry
+192.168.99.100
+&amp;gt; minikube stop
+&amp;gt; minikube delete
+&amp;gt; minikube start --vm-driver=&amp;quot;virtualbox&amp;quot; --insecure-registry=192.168.99.100:80
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;create-a-container-image-for-the-application&#34;&gt;Create a container image for the application&lt;/h2&gt;
+
+&lt;p&gt;The application in this case is a simple Spring Boot application that has exactly one controller.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RestController&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;HelloController&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/hello&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Map &lt;span style=&#34;color: #CC00FF&#34;&gt;hello&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; singletonMap&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;message&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;hello&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In order to create a docker container from this application, we will use the &lt;a href=&#34;https://github.com/spotify/docker-maven-plugin&#34;&gt;Maven Docker Plugin&lt;/a&gt;. We will need to set a prefix for our docker image. This can be done with this maven property:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;docker.image.prefix&amp;gt;sadiqueio&amp;lt;/docker.image.prefix&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Th plugin expects a &lt;code&gt;Dockerfile&lt;/code&gt; to be present in the &lt;code&gt;src/main/docker&lt;/code&gt; directory. Our &lt;code&gt;Dockerfile&lt;/code&gt; will look like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FROM frolvlad/alpine-oraclejdk8:slim
+ADD hello-world-0.0.1-SNAPSHOT.jar app.jar
+RUN sh -c &#39;touch /app.jar&#39;
+ENTRYPOINT [&amp;quot;java&amp;quot;,&amp;quot;-jar&amp;quot;,&amp;quot;/app.jar&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With this in place, we can generate a docker image. We need to ensure that we are looking at the dev docker host.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; eval $(docker-machine env dev)
+&amp;gt; mvn package docker:build
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;tag-and-push-the-image-to-local-registry&#34;&gt;Tag and push the image to local registry&lt;/h2&gt;
+
+&lt;p&gt;The generated image &lt;code&gt;sadiqueio/hello-world&lt;/code&gt; need to be published to the local registry we created.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; docker tag sadiqueio/hello-world 192.168.99.100:80/hello-world
+&amp;gt; docker push 192.168.99.100:80/hello-world
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;define-and-create-a-service&#34;&gt;Define and create a service&lt;/h2&gt;
+
+&lt;p&gt;We will define a Kubernetes service object for this application &lt;code&gt;hello-world-service.yaml&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world
+  labels:
+    app: hello-world
+    tier: backend
+spec:
+  type: NodePort
+  ports:
+    # the port that this service should serve on
+  - port: 8080
+  selector:
+    app: hello-world
+    tier: backend
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The service can be created using:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; kubectl create -f hello-world-service.yaml
+You have exposed your service on an external port on all nodes in your
+cluster.  If you want to expose this service to the external internet, you may
+need to set up firewall rules for the service port(s) (tcp:30194) to serve traffic.
+
+See http://releases.k8s.io/release-1.3/docs/user-guide/services-firewalls.md for more details.
+service &amp;quot;hello-world&amp;quot; created
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Make a note of the port assigned to this service. We will use this port later to access our application.&lt;/p&gt;
+
+&lt;h2 id=&#34;define-and-create-a-deployment&#34;&gt;Define and create a deployment&lt;/h2&gt;
+
+&lt;p&gt;The next step is to define and create a deployment for our application. This is where we specify the image we previously created and published to the registry.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-world
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hello-world
+        tier: backend
+    spec:
+      containers:
+      - name: hello-world
+        image: 192.168.99.100:80/hello-world
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        - name: GET_HOSTS_FROM
+          value: dns
+        ports:
+        - containerPort: 8080
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; kubectl create -f hello-world-deployment.yaml
+deployment &amp;quot;hello-world&amp;quot; created
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ensure-that-the-deployment-is-successful&#34;&gt;Ensure that the deployment is successful&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; kubectl get services
+NAME          CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+hello-world   10.0.0.252   &amp;lt;none&amp;gt;        8080/TCP   4m
+&amp;gt; kubectl get deployments
+NAME          DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+hello-world   1         1         1            1           4m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;access-the-service&#34;&gt;Access the service&lt;/h2&gt;
+
+&lt;p&gt;We already know the port assigned to our service. Because we specified &lt;code&gt;type: NodePort&lt;/code&gt;, the IP address we need to use is that of the Kubernetes cluster. This IP address can be found using the minikube command.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; minikube ip
+192.168.99.102
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now that we have both pieces of information, we can test that our application is up.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; curl  -s http://192.168.99.102:30194/hello | jq .
+{
+  &amp;quot;message&amp;quot;: &amp;quot;hello&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That is it. We have deployed our hello world application using Kubernetes.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Handling Deserialization errors in Spring Redis Sessions</title>
+      <link>http://sdqali.in/blog/2016/11/02/handling-deserialization-errors-in-spring-redis-sessions/</link>
+      <pubDate>Wed, 02 Nov 2016 13:10:33 -0700</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/11/02/handling-deserialization-errors-in-spring-redis-sessions/</guid>
+      <description>&lt;p&gt;One of the challenges of using storing spring sessions in Redis is that the objects that gets stored as part of a session often undergoes changes as the application evolves and these changes cause de-serialization exceptions to be thrown after a deployment when a session created before the deployment is presented to the application. This blog post discusses a method to work around this issue.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;the-issue&#34;&gt;The issue&lt;/h2&gt;
+
+&lt;p&gt;Consider an application that uses a custom authentication service to validate credentials presented by a client. To achieve this, we will wire up a custom authentication provider which creates an object &lt;code&gt;Customer&lt;/code&gt; as the authenticated user in session.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Customer&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; User &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;Customer&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String name&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;singletonList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; SimpleGrantedAuthority&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;USER&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)));&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Things work great, but after a while the team decides to store the logged in user&amp;rsquo;s email address in the session. To achieve this, we change the &lt;code&gt;Customer&lt;/code&gt; type to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Customer&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; User &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; String email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;Customer&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String name&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; String email&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;singletonList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; SimpleGrantedAuthority&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;USER&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)));&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;email&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color: #CC00FF&#34;&gt;getEmail&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;setEmail&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String email&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;email&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;When this code is deployed and a user tries to access a protected resource by presenting a session created before the deployment, an exception is thrown.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;org.springframework.data.redis.serializer.SerializationException: Cannot deserialize; nested exception is org.springframework.core.serializer.support.SerializationFailedException: Failed to deserialize payload. Is the byte array a result of corresponding serialization for DefaultDeserializer?; nested exception is java.io.InvalidClassException: in.sdqali.spring.vo.Customer; local class incompatible: stream classdesc serialVersionUID = 5161850915957547690, local class serialVersionUID = 1045726772100761661
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This happens because the serialized object in the session and the current structure of the session differ.&lt;/p&gt;
+
+&lt;h2 id=&#34;solutions&#34;&gt;Solutions&lt;/h2&gt;
+
+&lt;p&gt;This issue was raised on the Spring Session issue tracker &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; and there were a lot of work-arounds discussed. Of the work arounds, wrapping the session repository offers the least disruption to the end user.
+This approach ensures that every time a de-serialization error is thrown while trying to read an object from the session, that object is deleted, preventing subsequent errors.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;SafeDeserializationRepository&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; ExpiringSession&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; SessionRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; SessionRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; RedisTemplate&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Object&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String BOUNDED_HASH_KEY_PREFIX &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;spring:session:sessions:&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; Logger logger &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; getLogger&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SafeDeserializationRepository&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;SafeDeserializationRepository&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SessionRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+                                       RedisTemplate&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Object&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;delegate&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;redisTemplate&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; S &lt;span style=&#34;color: #CC00FF&#34;&gt;createSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;createSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;save&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;S session&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    delegate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;save&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;session&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; S &lt;span style=&#34;color: #CC00FF&#34;&gt;getSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String id&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;try&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;id&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;catch&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SerializationException e&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+      logger&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;info&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Deleting non-deserializable session with key {}&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; id&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+      redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;delete&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;BOUNDED_HASH_KEY_PREFIX &lt;span style=&#34;color: #555555&#34;&gt;+&lt;/span&gt; id&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;delete&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String id&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    delegate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;delete&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;id&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;However, it is not easy to wire up this repository in the configuration. Since Spring Redis Session is auto configured, the only way to override beans for Redis Session is to extend &lt;code&gt;RedisHttpSessionConfiguration&lt;/code&gt; and specify beans. Ideally, we want to override the method &lt;code&gt;RedisHttpSessionConfiguration#sessionRepository&lt;/code&gt;. This would mean that &lt;code&gt;SafeDeserializationRepository&lt;/code&gt; inherits from &lt;code&gt;RedisOperationsSessionRepository&lt;/code&gt;. That does not sound too complicated till you realize that &lt;code&gt;RedisOperationsSessionRepository#getSession(java.lang.String)&lt;/code&gt; returns &lt;code&gt;RedisSession&lt;/code&gt; which is a final class declared inside &lt;code&gt;RedisOperationsSessionRepository&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;On closer look, the repository is hooked in to &lt;code&gt;SessionRepositoryFilter&lt;/code&gt; and it is indeed possible to override the &lt;code&gt;SpringHttpSessionConfiguration#springSessionRepositoryFilter&lt;/code&gt; method to create a new filter that takes our &lt;code&gt;SafeDeserializationRepository&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;RedisSessionConfig&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; RedisHttpSessionConfiguration &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
+  RedisTemplate&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Object&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Bean&lt;/span&gt;
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; ExpiringSession&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; SessionRepositoryFilter&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; ExpiringSession&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;springSessionRepositoryFilter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SessionRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; sessionRepository&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;springSessionRepositoryFilter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; SafeDeserializationRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;sessionRepository&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://github.com/spring-projects/spring-session/issues/280&#34;&gt;SerializationFailedException after re-deploying with changed session object #280&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+    </item>
     
     <item>
       <title>CSRF Protection with Spring Security and Angular JS</title>
@@ -14,11 +317,9 @@
       <pubDate>Wed, 20 Jul 2016 21:57:01 -0400</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/20/csrf-protection-with-spring-security-and-angular-js/</guid>
-      <description>
+      <description>&lt;p&gt;Both Spring Security and Angular JS provide support for CSRF protection. However, getting these to work together to provide protection from CSRF requires some non-obvious configuration. This blog post explains how to add CSRF protection to an application that uses Spring Security with an Angular JS front end.
 
-&lt;p&gt;Both Spring Security and Angular JS provide support for CSRF protection. However, getting these to work together to provide protection from CSRF requires some non-obvious configuration. This blog post explains how to add CSRF protection to an application that uses Spring Security with an Angular JS front end.&lt;/p&gt;
-
-&lt;p&gt;Cross-Site Request Forgery (CSRF) &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; is an attack that forces an end user to execute unwanted actions on a web application in which they&amp;rsquo;re currently authenticated. This blog post implements the CSRF token part of the protection described by OWASP. The application still needs to have protection to enforce the right Origin for requests.&lt;/p&gt;
+Cross-Site Request Forgery (CSRF) &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; is an attack that forces an end user to execute unwanted actions on a web application in which they&amp;rsquo;re currently authenticated. This blog post implements the CSRF token part of the protection described by OWASP. The application still needs to have protection to enforce the right Origin for requests.&lt;/p&gt;
 
 &lt;h3 id=&#34;front-end&#34;&gt;Front end&lt;/h3&gt;
 
@@ -543,8 +844,7 @@ Date: Thu, &lt;span style=&#34;color: #FF6600&#34;&gt;21&lt;/span&gt; Jul &lt;sp
 &lt;li id=&#34;fn:2&#34;&gt;See section &lt;em&gt;Cross Site Request Forgery (XSRF) Protection&lt;/em&gt; in &lt;a href=&#34;https://docs.angularjs.org/api/ng/service/$http&#34;&gt;the official documentation&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -553,9 +853,8 @@ Date: Thu, &lt;span style=&#34;color: #FF6600&#34;&gt;21&lt;/span&gt; Jul &lt;sp
       <pubDate>Sat, 16 Jul 2016 15:42:05 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/16/controlling-redis-auto-configuration-for-spring-boot-session/</guid>
-      <description>
-
-&lt;p&gt;If you have been using Spring Boot, chances are that you are using the Spring Session library to handle sessions. Spring Session has the ability to persist the sessions to various data stores, including Redis. The default behaviors of Spring Boot when combined with Spring Session is to start using Redis as the session store the moment &lt;code&gt;spring-session-data-redis&lt;/code&gt; is detected in the class path, thereby making it hard to conditionally turn Redis support ON and OFF. This blog post explores why this is the default behavior and presents a solution to control this behavior.&lt;/p&gt;
+      <description>&lt;p&gt;If you have been using Spring Boot, chances are that you are using the Spring Session library to handle sessions. Spring Session has the ability to persist the sessions to various data stores, including Redis. The default behaviors of Spring Boot when combined with Spring Session is to start using Redis as the session store the moment &lt;code&gt;spring-session-data-redis&lt;/code&gt; is detected in the class path, thereby making it hard to conditionally turn Redis support ON and OFF. This blog post explores why this is the default behavior and presents a solution to control this behavior.
+&lt;/p&gt;
 
 &lt;h3 id=&#34;the-application&#34;&gt;The application&lt;/h3&gt;
 
@@ -762,8 +1061,7 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
 &lt;li id=&#34;fn:3&#34;&gt;Meta annotations are annotations that can act up on other annotations by modifying and overriding their attributes. For a discussion on how to implement custom annotations using meta annotations, please refer to &lt;a href=&#34;http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/&#34;&gt;this blog post&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -772,9 +1070,9 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
       <pubDate>Wed, 13 Jul 2016 23:05:53 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/</guid>
-      <description>&lt;p&gt;In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.&lt;/p&gt;
+      <description>&lt;p&gt;In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.
 
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -993,8 +1291,7 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
 
 &lt;p&gt;It also has a link for signing out. With this code in place, we can start our Spring application and sign in from the browser.&lt;/p&gt;
 
-&lt;p&gt;This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API. The code for the complete example is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-</description>
+&lt;p&gt;This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API. The code for the complete example is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1003,9 +1300,9 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
       <pubDate>Thu, 07 Jul 2016 23:47:53 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/07/jwt-authentication-with-spring-web---part-4/</guid>
-      <description>&lt;p&gt;In parts 1 through 3 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates. In this blog post, we will add the capability to verify the JWT presented by the client for subsequent requests.&lt;/p&gt;
+      <description>&lt;p&gt;In parts 1 through 3 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates. In this blog post, we will add the capability to verify the JWT presented by the client for subsequent requests.
 
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -1290,8 +1587,7 @@ $ curl -s &amp;quot;http://localhost:8080/profile/details/yellowfrog347&amp;quot
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;In the next blog post, the fifth is this series, we will move on to building the front end with Angular JS and managing authentication from the front end. The source code for this example for the progress made from part 1 through part 4 is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo/tree/verify_tokens&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-</description>
+&lt;p&gt;In the next blog post, the fifth is this series, we will move on to building the front end with Angular JS and managing authentication from the front end. The source code for this example for the progress made from part 1 through part 4 is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo/tree/verify_tokens&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1302,7 +1598,8 @@ $ curl -s &amp;quot;http://localhost:8080/profile/details/yellowfrog347&amp;quot
       <guid>http://sdqali.in/blog/2016/07/05/jwt-authentication-with-spring-web---part-3/</guid>
       <description>&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/&#34;&gt;previous blog post&lt;/a&gt;, we built the Spring API that responds with Profile information. Continuing on the path to building authentication with JWT, in this blog post, we will create a login mechanism that issues a JWT when the user presents the correct credentials.&lt;/p&gt;
 
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+&lt;p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -1506,8 +1803,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:1&#34;&gt;jjwt - Java JWT: JSON Web Token for Java and Android, available on &lt;a href=&#34;https://github.com/jwtk/jjwt&#34;&gt;GitHub&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -1516,11 +1812,10 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       <pubDate>Sun, 03 Jul 2016 09:22:53 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/</guid>
-      <description>
+      <description>&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;previous blog post&lt;/a&gt; in this series, we looked at the basics of JWT. We will move on to building the Spring API that we will use JWT for authentication in this blog post.&lt;/p&gt;
 
-&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;previous blog post&lt;/a&gt; in this series, we looked at the basics of JWT. We will move on to building the Spring API that we will use JWT for authentication in this blog post.&lt;/p&gt;
-
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+&lt;p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -1774,8 +2069,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://projectlombok.org/index.html&#34;&gt;Project Lombok&lt;/a&gt; is a Java library that helps minimize boiler plate code by replacing them with a set of convenient annotations. I tend to use it when I have to build data objects.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -1784,11 +2078,10 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       <pubDate>Sat, 02 Jul 2016 18:42:04 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/</guid>
-      <description>
+      <description>&lt;p&gt;JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.&lt;/p&gt;
 
-&lt;p&gt;JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.&lt;/p&gt;
-
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+&lt;p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -1865,8 +2158,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:1&#34;&gt;A detailed explanation of the differences between JWS and JWE can be found &lt;a href=&#34;https://securedb.co/community/jwt-vs-jws-vs-jwe/&#34;&gt;here&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -1876,6 +2168,8 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       
       <guid>http://sdqali.in/blog/2016/06/30/json-logging-for-spring-applications/</guid>
       <description>&lt;p&gt;If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;. This blog post documents how to format logs as JSON in a Spring application.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;We will be using the &lt;code&gt;logstash-logback-encoder&lt;/code&gt; &lt;a href=&#34;https://github.com/logstash/logstash-logback-encoder&#34;&gt;encoder&lt;/a&gt; from Logstash. This can be added to the application with the following Maven dependency:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
@@ -1963,8 +2257,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:2&#34;&gt;&lt;a href=&#34;https://stedolan.github.io/jq/&#34;&gt;jq&lt;/a&gt; is a command line JSON processor. If you work with JSON, jq is a must have tool.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -1974,6 +2267,8 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       
       <guid>http://sdqali.in/blog/2016/06/28/injecting-dependencies-into-a-spring-configuration/</guid>
       <description>&lt;p&gt;This is one of those blog posts about things I wish I had known before I spent a lot of time figuring out when something was not working as expected. Recently, we have been trying to extend a &lt;code&gt;WebMvcConfigurerAdapter&lt;/code&gt; to wire up an HTTP request interceptor. And things did not work as we expected it to and we learned that our understanding of how Spring behaved under this situation was wrong. This is a write up to refer back to if and when we encounter this issue again.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;Spring&amp;rsquo;s &lt;code&gt;@Configuration&lt;/code&gt; annotation allows us to create a class that provides a set of beans. Because we wanted to wire up interceptors when the application started, it felt reasonable to annotate the extended &lt;code&gt;WebMvcConfigurerAdapter&lt;/code&gt; adaptor as a &lt;code&gt;@Configuration&lt;/code&gt;.&lt;/p&gt;
 
@@ -2072,8 +2367,7 @@ at the field and method level (but not at the constructor level).
 
 &lt;p&gt;It took us a lot of time debugging and stepping through Spring code before we finally figured out what the issue was, but we could have discovered it in seconds from the java doc. There is a lesson in there for us.&lt;/p&gt;
 
-&lt;p&gt;The example code to demonstrate this is available on &lt;a href=&#34;https://github.com/sdqali/config-constructor-poc&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-</description>
+&lt;p&gt;The example code to demonstrate this is available on &lt;a href=&#34;https://github.com/sdqali/config-constructor-poc&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -2084,7 +2378,8 @@ at the field and method level (but not at the constructor level).
       <guid>http://sdqali.in/blog/2016/06/08/filtering-responses-in-spring-mvc/</guid>
       <description>&lt;p&gt;Yesterday my colleague &lt;a href=&#34;https://twitter.com/imdhmd&#34;&gt;Imdad&lt;/a&gt; asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.&lt;/p&gt;
 
-&lt;p&gt;For the purposes of this blog post, the response of the end point will be a collection of repositories, taken from the GitHub API for the end point &lt;code&gt;https://api.github.com/users/rails/repos&lt;/code&gt;. This has the following structure.&lt;/p&gt;
+&lt;p&gt;
+For the purposes of this blog post, the response of the end point will be a collection of repositories, taken from the GitHub API for the end point &lt;code&gt;https://api.github.com/users/rails/repos&lt;/code&gt;. This has the following structure.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;[
   {
     &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;id&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #FF6600&#34;&gt;20544&lt;/span&gt;,
@@ -2213,8 +2508,7 @@ at the field and method level (but not at the constructor level).
 &lt;li id=&#34;fn:1&#34;&gt;&lt;code&gt;ResponseBodyAdvice&lt;/code&gt; is an interface that can be wired with a &lt;code&gt;@ControllerAdvice&lt;/code&gt; annotation to customize the response of controller methods. See the documentation &lt;a href=&#34;http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/servlet/mvc/method/annotation/ResponseBodyAdvice.html&#34;&gt;here&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -2224,6 +2518,8 @@ at the field and method level (but not at the constructor level).
       
       <guid>http://sdqali.in/blog/2016/06/05/on-inverness/</guid>
       <description>&lt;p&gt;Two weeks ago, I was in the Scottish Highlands - soaking in the beauty of the city of Inverness, hiking through the South Loch Ness trail and traveling across the Black Isle. It was a wonderful trip - one that I wish was longer. This was a trip that invoked so many memories in me - among other things, of a man whose voice was part of growing up. A voice that traveled from the BBC Studios in the United Kingdom halfway across the globe and into a radio set in South Malabar.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;You see, as far as I can remember, I have always wanted to go to Inverness. That may sound crazy, but the name Inverness had been irreversibly etched in my mind when I was a small kid.&lt;/p&gt;
 
@@ -2249,8 +2545,7 @@ at the field and method level (but not at the constructor level).
 &lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/James_Alexander_Gordon&#34;&gt;James Alexander Gordon&lt;/a&gt; was a legendary BBC broadcaster responsible for reading the results of football. He read results for nearly 40 years from 1974 to 2013. Gordon had a very distinctive style. Gordon explains his style in &lt;a href=&#34;https://www.youtube.com/watch?v=OcNmtpTsIfM&#34;&gt;this video&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -2259,9 +2554,9 @@ at the field and method level (but not at the constructor level).
       <pubDate>Sun, 24 Apr 2016 18:35:43 -0500</pubDate>
       
       <guid>http://sdqali.in/blog/2016/04/24/deprecating-domain-events-in-axon/</guid>
-      <description>
+      <description>&lt;p&gt;Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.&lt;/p&gt;
 
-&lt;p&gt;Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;Obviously, we need an Upcaster &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; to take care of this situation. The Upcaster in this scenario will have to upcast this event to something representing the non-existence of this event, regardless of the revision. There are two ways to address this issue - Upcasting to an explicit NoOpEvent and upcasting to an empty list.&lt;/p&gt;
 
@@ -2351,8 +2646,7 @@ So you achieve the same thing, but explicit always beats implicit in DDD ;-)&lt;
 &lt;li id=&#34;fn:1&#34;&gt;Upcasting is a technique of migrating the schema of events in an event-sourced system to keep up with changes in the business requirements. The Axon documentation has a &lt;a href=&#34;http://www.axonframework.org/docs/2.0/repositories-and-event-stores.html#event-upcasting&#34;&gt;very good primer&lt;/a&gt; on upcasting, specifically in the context of Axon.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -2362,6 +2656,8 @@ So you achieve the same thing, but explicit always beats implicit in DDD ;-)&lt;
       
       <guid>http://sdqali.in/blog/2016/04/19/programmable-exit-codes-for-spring-command-line-applications---2/</guid>
       <description>&lt;p&gt;In the last &lt;a href=&#34;http://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/&#34;&gt;blog post&lt;/a&gt;, we took a look at how to implement programmable exit codes for spring command line applications by using exceptions that implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt;. This time, we will take a look at how to achieve the same without having to depend on an exception.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;This approach depends on the command line runner implementing the &lt;code&gt;ExitCodeGenerator&lt;/code&gt;. This does require the usage of &lt;code&gt;System.exit&lt;/code&gt;, but instead of it being invoked from different command line runners, it will be used in a single place as follows:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Application&lt;/span&gt;  &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
@@ -2393,242 +2689,7 @@ $ &lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#
 45
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;This allows us to delegate how the application should exit to the command line runners themselves, without having to throw exceptions.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Programmable exit codes for Spring command line applications</title>
-      <link>http://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/</link>
-      <pubDate>Sun, 17 Apr 2016 23:36:48 -0400</pubDate>
-      
-      <guid>http://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/</guid>
-      <description>&lt;p&gt;Spring&amp;rsquo;s &lt;code&gt;CommandLineRunner&lt;/code&gt; provides a great mechanism to build command line applications. While this convenience is great, applications that use &lt;code&gt;CommandLineRunner&lt;/code&gt; require extra effort in some areas like integration testing. Exit codes are such an area - applications that use command line runners always report their exit code as &lt;code&gt;0&lt;/code&gt; even if there are exceptions thrown. This blog post explains a way to get to programmable exit codes for such applications.&lt;/p&gt;
-
-&lt;p&gt;The following example demonstrates this problem. Here we have a simple implementation of &lt;code&gt;CommandLineRunner&lt;/code&gt; that simply throws a &lt;code&gt;RuntimeException&lt;/code&gt; when started.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@Profile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;exception&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;WillThrow&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; CommandLineRunner &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;...&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; RuntimeException&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;This should kill the application&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;When this application runs, we will see that the exit code is &lt;code&gt;0&lt;/code&gt;, as expected.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ java -Dspring.profiles.active=exception -jar build/libs/exit-code-demo-1.0-SNAPSHOT.jar &amp;gt;&amp;gt; /dev/null 2&amp;amp;&amp;gt;1
-$ echo $?
-0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;A simple way to propagate the right exit code is to use &lt;code&gt;java.lang.System#exit&lt;/code&gt; and specify an error code. The following snippet shows this:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@Profile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;exit&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;WillExit&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; CommandLineRunner &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;...&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        System&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;exit&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #FF6600&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;When run:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ java -Dspring.profiles.active=exit -jar build/libs/exit-code-demo-1.0-SNAPSHOT.jar &amp;gt;&amp;gt; /dev/null 2&amp;amp;&amp;gt;1
-$ echo $?
-3
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This looks straightforward and easy. However, exiting the application from within the &lt;code&gt;CommandLineRunner&lt;/code&gt; makes integration testing of this application difficult. Our tests will simply stop execution at that point without giving us the opportunity to assert anything.&lt;/p&gt;
-
-&lt;p&gt;At work, while looking for a solution to this, we stumbled across Spring&amp;rsquo;s &lt;code&gt;ExitCodeGenerator&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. It is an interface whose implementations Spring uses to look up what exit code to use. There are at least two ways to make use of &lt;code&gt;ExitCodeGenerator&lt;/code&gt; - one involves making the application&amp;rsquo;s Exceptions implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt; and the other involves making the command line runners themselves implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt;. We will look at the first approach here.&lt;/p&gt;
-
-&lt;p&gt;Our new command line runner will be as:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@Profile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;exception&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;WillThrow&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; CommandLineRunner&lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;...&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; ExceptionWithExitCode&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Hello&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;And the exception will resemble:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ExceptionWithExitCode&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; RuntimeException &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; ExitCodeGenerator &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;ExceptionWithExitCode&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String message&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;message&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;getExitCode&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;13&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;When the application runs:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ java -Dspring.profiles.active=exception -jar build/libs/exit-code-demo-1.0-SNAPSHOT.jar &amp;gt;&amp;gt; /dev/null 2&amp;amp;&amp;gt;1
-$ echo $?
-13
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Obviously, this is a rather simple example, but you can see how &lt;code&gt;ExitCodeGenerator&lt;/code&gt; allows us to have programmable exit codes. This allows us to have tests for our applications, while giving us the flexibility to control the exit code.&lt;/p&gt;
-
-&lt;p&gt;We will take a look at the second approach of using &lt;code&gt;ExitCodeGenerator&lt;/code&gt; in another blog post.&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:1&#34;&gt;&lt;code&gt;ExitCodeGenerator&lt;/code&gt; is an &amp;ldquo;Interface used to generate an &amp;lsquo;exit code&amp;rsquo; from a running command line SpringApplication.&amp;rdquo;. You can find the JavaDocs &lt;a href=&#34;http://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/ExitCodeGenerator.html&#34;&gt;here&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Using custom arguments in Spring MVC controllers</title>
-      <link>http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/</link>
-      <pubDate>Fri, 29 Jan 2016 17:41:49 -0800</pubDate>
-      
-      <guid>http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/</guid>
-      <description>
-
-&lt;p&gt;Most of the Spring controllers in the real world accept a lot of different types of parameters - Path variables, URL parameters, request headers, request body and sometimes even the entire HTTP Request object. This provides a flexible mechanism to create APIs. Spring is really good at parsing these parameters in to Java types as long as there is an ObjectMapper (like Jackson) configured to take care of the de-serialization.&lt;/p&gt;
-
-&lt;p&gt;However, there are situations where you want methods to receive a parameter of a particular type that has to resolved from a set of parameters–for example, an API can expect consumers to send meta data about a request in the form of headers and need a custom type to hold this information. Spring provides a convenient way to provide such custom arguments. This blog post explores this feature and how to implement it and test it.&lt;/p&gt;
-
-&lt;h2 id=&#34;argument-resolvers&#34;&gt;Argument Resolvers&lt;/h2&gt;
-
-&lt;p&gt;Spring uses argument resolvers to determine how to parse a particular argument required by a controller method from HTTP request body, the URL, URL parameters and HTTP headers. For example when a method expects a request header as in the following example, Spring uses a particular resolver named &lt;code&gt;RequestHeaderMethodArgumentResolver&lt;/code&gt; to resolve this argument. All argument resolvers implement the &lt;code&gt;HandlerMethodArgumentResolver&lt;/code&gt; interface whose contract is:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;HandlerMethodArgumentResolver&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;supportsParameter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MethodParameter parameter&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    Object &lt;span style=&#34;color: #CC00FF&#34;&gt;resolveArgument&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MethodParameter parameter&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ModelAndViewContainer mavContainer&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
-            NativeWebRequest webRequest&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; WebDataBinderFactory binderFactory&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The &lt;code&gt;supportsParameter&lt;/code&gt; method determines if this resolver is capable of parsing a given parameter and &lt;code&gt;resolveArgument&lt;/code&gt; specifies how it‘s value should be computed. Notice how this method has the web &lt;code&gt;NativeWebRequest&lt;/code&gt; argument passed to it to allow the look up of request parameters like body, url and headers.&lt;/p&gt;
-
-&lt;p&gt;For this example, the MetaData that we are interested in can be represented as a type:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;MetaData&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@JsonProperty&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;data&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; Map&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; map  &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;MetaData&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;MetaData&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Map&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; map&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;map&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; map&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color: #CC00FF&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String key&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; map&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;key&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;An argument resolver to compute this from the incoming request can be written as follows:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;MetaDataResolver&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; HandlerMethodArgumentResolver &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String TRANSACTION_ID &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;TRANSACTION-ID&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String ACCESS_KEY &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ACCESS-KEY&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; metaDataHeaderNames &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; Arrays&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;asList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;TRANSACTION_ID&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ACCESS_KEY&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;supportsParameter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MethodParameter parameter&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; parameter&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getParameterType&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;equals&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MetaData&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Object &lt;span style=&#34;color: #CC00FF&#34;&gt;resolveArgument&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MethodParameter parameter&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ModelAndViewContainer mavContainer&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; NativeWebRequest webRequest&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; WebDataBinderFactory binderFactory&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        HashMap&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; map &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-        metaDataHeaderNames&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;forEach&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name &lt;span style=&#34;color: #555555&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-            &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;webRequest&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getHeader&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-                map&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; webRequest&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getHeader&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
-            &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-        &lt;span style=&#34;color: #555555&#34;&gt;});&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; MetaData&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;map&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This resolver will try and compute the value for the argument if the arguments type is &lt;code&gt;MetaData&lt;/code&gt;. It computes it by extracting all the headers representing the meta data from the request.&lt;/p&gt;
-
-&lt;h2 id=&#34;using-in-a-controller-method&#34;&gt;Using in a controller method&lt;/h2&gt;
-
-&lt;p&gt;This parameter can be accessed in a controller method as follows:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RestController&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/profiles&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ProfileController&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
-    ProfileService profileService&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;path &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
-    method &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; RequestMethod&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;POST&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Map&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;create&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RequestBody&lt;/span&gt; Profile profile&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; MetaData metaData&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        profileService&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;create&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profile&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; metaData&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-        System&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;printf&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;metaData&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;toString&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;singletonMap&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;message&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;success&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;If we were to run this app and make a request with the following headers, we will see that the MetaData instance did not get constructed with the right parameters.&lt;/p&gt;
-
-&lt;h2 id=&#34;wiring-up-the-custom-resolver&#34;&gt;Wiring up the custom resolver&lt;/h2&gt;
-
-&lt;p&gt;For this resolver to work, it needs to be added to the chain of resolvers that Spring uses. This can be done by extending &lt;code&gt;WebMvcConfigurerAdapter&lt;/code&gt;‘s &lt;code&gt;addArgumentResolvers&lt;/code&gt; method as follows:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Config&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; WebMvcConfigurerAdapter &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;addArgumentResolvers&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;HandlerMethodArgumentResolver&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; argumentResolvers&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        argumentResolvers&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;add&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; MetaDataResolver&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&#34;testing-using-mockmvc&#34;&gt;Testing using MockMvc&lt;/h2&gt;
-
-&lt;p&gt;In order to test the behavior of a controller in the presence of a custom argument resolver using MockMvc, the resolver need to be added to the list of resolvers that MockMvc is going to use.
- An example test for the above class is as follows:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RunWith&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MockitoJUnitRunner&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ProfileControllerTest&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; TestCase &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; ProfileController profileController&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; MockMvc mockMvc&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; ObjectMapper objectMapper&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Mock&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; ProfileService profileService&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Before&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;setUp&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        objectMapper &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; ObjectMapper&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
-        profileController &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; ProfileController&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profileService&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-        mockMvc &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; MockMvcBuilders
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;standaloneSetup&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profileController&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setCustomArgumentResolvers&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; MetaDataResolver&lt;span style=&#34;color: #555555&#34;&gt;())&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;build&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Test&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;shouldCreateAProfile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        Profile profile &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; Profile&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;foo&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;foo@bar.com&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-        MetaData metaData &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; MetaData&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;singletonMap&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;TRANSACTION-ID&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;foo&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
-
-        mockMvc&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;perform&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;post&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/profiles/&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;content&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;objectMapper&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;writeValueAsBytes&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profile&lt;span style=&#34;color: #555555&#34;&gt;))&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;contentType&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MediaType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;APPLICATION_JSON&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;header&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;TRANSACTION-ID&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;foo&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;))&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;andExpect&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;status&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;isOk&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
-        Mockito&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;verify&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profileService&lt;span style=&#34;color: #555555&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;create&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;eq&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profile&lt;span style=&#34;color: #555555&#34;&gt;),&lt;/span&gt; eq&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;metaData&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This test is self-explanatory–we wire up the argument resolver, make a request with one of the meta data headers and expect the profile service to be invoked with the right parameters.&lt;/p&gt;
-</description>
+&lt;p&gt;This allows us to delegate how the application should exit to the command line runners themselves, without having to throw exceptions.&lt;/p&gt;</description>
     </item>
     
   </channel>

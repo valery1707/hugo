@@ -32,13 +32,11 @@
   <meta name="twitter:site" content="@sdqali">
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Filtering responses in Spring MVC">
-  <meta name="twitter:description" content="Yesterday my colleague Imdad asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.
-">
+  <meta name="twitter:description" content="Yesterday my colleague Imdad asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.">
   <meta name="twitter:image" content="http://sdqali.in/images/spring-by-pivotal.png">
 
   <meta property="og:title" content="Filtering responses in Spring MVC" />
-  <meta property="og:description" content="Yesterday my colleague Imdad asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.
-" itemprop="description"/>
+  <meta property="og:description" content="Yesterday my colleague Imdad asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions." itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2016/06/08/filtering-responses-in-spring-mvc/" />
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
   <body>
@@ -99,7 +97,8 @@
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>Yesterday my colleague <a href="https://twitter.com/imdhmd">Imdad</a> asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.</p>
 
-<p>For the purposes of this blog post, the response of the end point will be a collection of repositories, taken from the GitHub API for the end point <code>https://api.github.com/users/rails/repos</code>. This has the following structure.</p>
+<p>
+For the purposes of this blog post, the response of the end point will be a collection of repositories, taken from the GitHub API for the end point <code>https://api.github.com/users/rails/repos</code>. This has the following structure.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>[
   {
     <span style="color: #330099; font-weight: bold">&quot;id&quot;</span>: <span style="color: #FF6600">20544</span>,
@@ -229,7 +228,6 @@
  <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
 </ol>
 </div>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

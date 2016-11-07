@@ -33,14 +33,12 @@
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Authentication for Apache Camel HTTP components">
   <meta name="twitter:description" content="My team at work has been lately working on a data transformer that pushes information from an external system in to platform. For historical reasons the information is passed to us in the form of flat files. We have been working on a data transformer that reads information from the file and posts it into an HTTP end point.
-Apache Camel [^1] makes a natural choice as the base for implementing such a data transformer. The presence of ready to use components that can read files and post information to HTTP end points and the availability of a nice D.S.L. [^2] makes implementation easy and straightforward. One of the things we had to spend time figuring out was how to ensure that we authenticate correctly against our target HTTP end point. This blog post takes a look at various methods we explored.
-">
+Apache Camel 1 makes a natural choice as the base for implementing such a data transformer. The presence of ready to use components that can read files and post information to HTTP end points and the availability of a nice D.S.L. 2 makes implementation easy and straightforward. One of the things we had to spend time figuring out was how to ensure that we authenticate correctly against our target HTTP end point. This blog post takes a look at various methods we explored.">
   <meta name="twitter:image" content="http://sdqali.in/images/apache-camel.png">
 
   <meta property="og:title" content="Authentication for Apache Camel HTTP components" />
   <meta property="og:description" content="My team at work has been lately working on a data transformer that pushes information from an external system in to platform. For historical reasons the information is passed to us in the form of flat files. We have been working on a data transformer that reads information from the file and posts it into an HTTP end point.
-Apache Camel [^1] makes a natural choice as the base for implementing such a data transformer. The presence of ready to use components that can read files and post information to HTTP end points and the availability of a nice D.S.L. [^2] makes implementation easy and straightforward. One of the things we had to spend time figuring out was how to ensure that we authenticate correctly against our target HTTP end point. This blog post takes a look at various methods we explored.
-" itemprop="description"/>
+Apache Camel 1 makes a natural choice as the base for implementing such a data transformer. The presence of ready to use components that can read files and post information to HTTP end points and the availability of a nice D.S.L. 2 makes implementation easy and straightforward. One of the things we had to spend time figuring out was how to ensure that we authenticate correctly against our target HTTP end point. This blog post takes a look at various methods we explored." itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/" />
   <meta property="og:image" content="http://sdqali.in/images/apache-camel.png" />
   <body>
@@ -99,12 +97,11 @@ Apache Camel [^1] makes a natural choice as the base for implementing such a dat
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            
-
-<p>My team at work has been lately working on a data transformer that pushes information from an external system in to platform. For historical reasons the information is passed to us in the form of flat files. We have been working on a data transformer that reads information from the file and posts it into an HTTP end point.
+            <p>My team at work has been lately working on a data transformer that pushes information from an external system in to platform. For historical reasons the information is passed to us in the form of flat files. We have been working on a data transformer that reads information from the file and posts it into an HTTP end point.
 Apache Camel <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> makes a natural choice as the base for implementing such a data transformer. The presence of ready to use components that can read files and post information to HTTP end points and the availability of a nice D.S.L. <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup> makes implementation easy and straightforward. One of the things we had to spend time figuring out was how to ensure that we authenticate correctly against our target HTTP end point. This blog post takes a look at various methods we explored.</p>
 
-<p>Camel&rsquo;s HTTP component allows http resources to be added as Camel end points. These end points can be consuming information from routes or producing information which are then passed on to routes. For example, the following route takes information from the <code>direct:start</code> end point, tokenizes it into lines and sends each line into an HTTP url.</p>
+<p>
+Camel&rsquo;s HTTP component allows http resources to be added as Camel end points. These end points can be consuming information from routes or producing information which are then passed on to routes. For example, the following route takes information from the <code>direct:start</code> end point, tokenizes it into lines and sends each line into an HTTP url.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">FileToApiRoute</span> <span style="color: #006699; font-weight: bold">extends</span> RouteBuilder <span style="color: #555555">{</span>
 
     <span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">static</span> <span style="color: #006699; font-weight: bold">final</span> String UTF_8 <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;UTF-8&quot;</span><span style="color: #555555">;</span>
@@ -214,7 +211,6 @@ Apache Camel <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:
  <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
 </ol>
 </div>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

@@ -1,0 +1,354 @@
+<!DOCTYPE html5>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" prefix="og: http://ogp.me/ns#">
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>A very basic introduction to deploying a Java application using Kubernetes</title>
+
+    
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    
+    <link href="/css/clean-blog.min.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+
+    
+    <link href="/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='/css/fonts.css' rel='stylesheet' type='text/css'>
+
+    
+    
+    
+
+</head>
+
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@sdqali">
+  <meta name="twitter:creator" content="@sdqali">
+  <meta name="twitter:title" content="A very basic introduction to deploying a Java application using Kubernetes">
+  <meta name="twitter:description" content="I have been playing around with Kubernetes and Docker lately. To borrow the description of Kubernetes from their website,
+ &ldquo;Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications.&rdquo;
+ One of the first things I did was to try and see what it would take to go from an application to deploying it. I started with a simple Java application and had to set up the development environment.">
+  <meta name="twitter:image" content="http://sdqali.in/img/KubernetesLogo.png">
+
+  <meta property="og:title" content="A very basic introduction to deploying a Java application using Kubernetes" />
+  <meta property="og:description" content="I have been playing around with Kubernetes and Docker lately. To borrow the description of Kubernetes from their website,
+ &ldquo;Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications.&rdquo;
+ One of the first things I did was to try and see what it would take to go from an application to deploying it. I started with a simple Java application and had to set up the development environment." itemprop="description"/>
+  <meta property="og:url" content="http://sdqali.in/blog/2016/11/04/a-very-basic-introduction-to-deploying-a-java-application-using-kubernetes/" />
+  <meta property="og:image" content="http://sdqali.in/img/KubernetesLogo.png" />
+  <body>
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Sadique Ali</a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a> </li>
+        <li><a href="/blog/">Blog</a> </li>
+        <li><a href="/about">About</a> </li>
+        <li><a href="/index.xml">Atom Feed</a> </li>
+        <li><a href="https://github.com/sdqali">GitHub</a> </li>
+        <li><a href="https://twitter.com/sdqali">Twitter</a> </li>
+        <li><a href="https://www.linkedin.com/in/sdqali">LinkedIn</a> </li>
+      </ul>
+    </div>
+    
+  </div>
+  
+</nav>
+
+
+
+
+    
+    
+    <header class="intro-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="site-heading">
+              <h1> A very basic introduction to deploying a Java application using Kubernetes</h1>
+              <span class="meta">Fri, Nov 4, 2016</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+
+    
+    <article>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+
+<p>I have been playing around with Kubernetes and Docker lately. To borrow the description of Kubernetes from their website,</p>
+
+<blockquote>
+<p>&ldquo;Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications.&rdquo;</p>
+</blockquote>
+
+<p>One of the first things I did was to try and see what it would take to go from an application to deploying it. I started with a simple Java application and had to set up the development environment. These are my notes from this process. This assumes that you have docker installed on your development environment.</p>
+
+<h2 id="install-minikube">Install minikube</h2>
+
+<p><a href="https://github.com/kubernetes/minikube">Minikube</a> is a tool that makes it easy to run Kubernetes for local development. To run minikube, you need to have a virtualizer installed - in my case I already had VirtualBox installed. Instructions for installing minikube is available <a href="https://github.com/kubernetes/minikube/releases">here</a>. In my case, this is what I did:</p>
+
+<pre><code>&gt; curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.12.2/minikube-darwin-amd64
+&gt; chmod +x minikube
+&gt; sudo mv minikube /usr/local/bin/
+</code></pre>
+
+<h2 id="install-kubectl">Install kubectl</h2>
+
+<p><a href="http://kubernetes.io/docs/user-guide/kubectl-overview/">Kubectl</a> is a command line application that executes commands against Kubernets clusters. Instructions for installing kubectl are available <a href="http://kubernetes.io/docs/getting-started-guides/minikube/#install-kubectl">here</a>.</p>
+
+<pre><code>&gt; curl -Lo kubectl http://storage.googleapis.com/kubernetes-release/release/v1.3.0/bin/darwin/amd64/kubectl
+&gt; chmod +x kubectl
+&gt; sudo mv kubectl /usr/local/bin/
+</code></pre>
+
+<h2 id="set-up-a-docker-repository">Set up a Docker repository</h2>
+
+<p>Kubernetes pulls container images from publicly available registries. But because we are building an application that we will not be publishing to public docker registries, we need to create a local registry. There is a great write up on how to set up a local docker registry at <a href="http://thenewstack.io/tutorial-configuring-ultimate-development-environment-kubernetes/">Newstack</a>.</p>
+
+<h2 id="start-minikube-with-the-registry">Start minikube with the registry</h2>
+
+<p>Now that we have a local docker registry, we can go ahead and tell minikube to consume images from this registry. However, if you have started a minikube cluster previously, the registry override will not be available to it unless it is deleted.</p>
+
+<pre><code>&gt; docker-machine ip registry
+192.168.99.100
+&gt; minikube stop
+&gt; minikube delete
+&gt; minikube start --vm-driver=&quot;virtualbox&quot; --insecure-registry=192.168.99.100:80
+</code></pre>
+
+<h2 id="create-a-container-image-for-the-application">Create a container image for the application</h2>
+
+<p>The application in this case is a simple Spring Boot application that has exactly one controller.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@RestController</span>
+<span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">HelloController</span> <span style="color: #555555">{</span>
+  <span style="color: #9999FF">@RequestMapping</span><span style="color: #555555">(</span><span style="color: #CC3300">&quot;/hello&quot;</span><span style="color: #555555">)</span>
+  <span style="color: #006699; font-weight: bold">public</span> Map <span style="color: #CC00FF">hello</span><span style="color: #555555">()</span> <span style="color: #555555">{</span>
+    <span style="color: #006699; font-weight: bold">return</span> singletonMap<span style="color: #555555">(</span><span style="color: #CC3300">&quot;message&quot;</span><span style="color: #555555">,</span> <span style="color: #CC3300">&quot;hello&quot;</span><span style="color: #555555">);</span>
+  <span style="color: #555555">}</span>
+<span style="color: #555555">}</span>
+</pre></div>
+
+<p>In order to create a docker container from this application, we will use the <a href="https://github.com/spotify/docker-maven-plugin">Maven Docker Plugin</a>. We will need to set a prefix for our docker image. This can be done with this maven property:</p>
+
+<pre><code>&lt;docker.image.prefix&gt;sadiqueio&lt;/docker.image.prefix&gt;
+</code></pre>
+
+<p>Th plugin expects a <code>Dockerfile</code> to be present in the <code>src/main/docker</code> directory. Our <code>Dockerfile</code> will look like this:</p>
+
+<pre><code>FROM frolvlad/alpine-oraclejdk8:slim
+ADD hello-world-0.0.1-SNAPSHOT.jar app.jar
+RUN sh -c 'touch /app.jar'
+ENTRYPOINT [&quot;java&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]
+</code></pre>
+
+<p>With this in place, we can generate a docker image. We need to ensure that we are looking at the dev docker host.</p>
+
+<pre><code>&gt; eval $(docker-machine env dev)
+&gt; mvn package docker:build
+</code></pre>
+
+<h2 id="tag-and-push-the-image-to-local-registry">Tag and push the image to local registry</h2>
+
+<p>The generated image <code>sadiqueio/hello-world</code> need to be published to the local registry we created.</p>
+
+<pre><code>&gt; docker tag sadiqueio/hello-world 192.168.99.100:80/hello-world
+&gt; docker push 192.168.99.100:80/hello-world
+</code></pre>
+
+<h2 id="define-and-create-a-service">Define and create a service</h2>
+
+<p>We will define a Kubernetes service object for this application <code>hello-world-service.yaml</code>:</p>
+
+<pre><code>apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world
+  labels:
+    app: hello-world
+    tier: backend
+spec:
+  type: NodePort
+  ports:
+    # the port that this service should serve on
+  - port: 8080
+  selector:
+    app: hello-world
+    tier: backend
+</code></pre>
+
+<p>The service can be created using:</p>
+
+<pre><code>&gt; kubectl create -f hello-world-service.yaml
+You have exposed your service on an external port on all nodes in your
+cluster.  If you want to expose this service to the external internet, you may
+need to set up firewall rules for the service port(s) (tcp:30194) to serve traffic.
+
+See http://releases.k8s.io/release-1.3/docs/user-guide/services-firewalls.md for more details.
+service &quot;hello-world&quot; created
+</code></pre>
+
+<p>Make a note of the port assigned to this service. We will use this port later to access our application.</p>
+
+<h2 id="define-and-create-a-deployment">Define and create a deployment</h2>
+
+<p>The next step is to define and create a deployment for our application. This is where we specify the image we previously created and published to the registry.</p>
+
+<pre><code>apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-world
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hello-world
+        tier: backend
+    spec:
+      containers:
+      - name: hello-world
+        image: 192.168.99.100:80/hello-world
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        - name: GET_HOSTS_FROM
+          value: dns
+        ports:
+        - containerPort: 8080
+</code></pre>
+
+<pre><code>&gt; kubectl create -f hello-world-deployment.yaml
+deployment &quot;hello-world&quot; created
+</code></pre>
+
+<h2 id="ensure-that-the-deployment-is-successful">Ensure that the deployment is successful</h2>
+
+<pre><code>&gt; kubectl get services
+NAME          CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+hello-world   10.0.0.252   &lt;none&gt;        8080/TCP   4m
+&gt; kubectl get deployments
+NAME          DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+hello-world   1         1         1            1           4m
+</code></pre>
+
+<h2 id="access-the-service">Access the service</h2>
+
+<p>We already know the port assigned to our service. Because we specified <code>type: NodePort</code>, the IP address we need to use is that of the Kubernetes cluster. This IP address can be found using the minikube command.</p>
+
+<pre><code>&gt; minikube ip
+192.168.99.102
+</code></pre>
+
+<p>Now that we have both pieces of information, we can test that our application is up.</p>
+
+<pre><code>&gt; curl  -s http://192.168.99.102:30194/hello | jq .
+{
+  &quot;message&quot;: &quot;hello&quot;
+}
+</code></pre>
+
+<p>That is it. We have deployed our hello world application using Kubernetes.</p>
+
+            <p class="comments">
+  If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
+</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center">
+          <li>
+            <a href="https://twitter.com/sdqali">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="https://linkedin.com/in/sdqali">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/sdqali">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="/index.xml">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+        </ul>
+        <p class="copyright text-muted">&copy; All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/js/jquery.js"></script>
+
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<script src="/js/clean-blog.min.js"></script>
+
+<script src="/js/keen.min.3.3.0.js" type="text/javascript"></script>
+<script src="/js/parseuri.js" type="text/javascript"></script>
+<script src="/js/ua-parser.min.js" type="text/javascript
+"></script>
+ <script src="/js/Math.uuid.js" type="text/javascript"></script>
+<script src="/js/analytics.js" type="text/javascript"></script>
+
+
+  </body>
+</html>

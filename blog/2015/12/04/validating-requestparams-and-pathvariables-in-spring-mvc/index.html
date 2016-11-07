@@ -33,11 +33,13 @@
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Validating RequestParams and PathVariables in Spring MVC">
   <meta name="twitter:description" content="Spring MVC provides a convenient way to validate inputs to API end points through the use of JSR-303 annotations. While this mechanism works great for end points that consume a RequestBody (as is the case with most POST and PUT requests), it is not easy to achieve the same effect for end points that consume primitives in the form of path variables or request parameters (as is the case with most GET requests).
+
 ">
   <meta name="twitter:image" content="http://sdqali.in/images/spring-by-pivotal.png">
 
   <meta property="og:title" content="Validating RequestParams and PathVariables in Spring MVC" />
   <meta property="og:description" content="Spring MVC provides a convenient way to validate inputs to API end points through the use of JSR-303 annotations. While this mechanism works great for end points that consume a RequestBody (as is the case with most POST and PUT requests), it is not easy to achieve the same effect for end points that consume primitives in the form of path variables or request parameters (as is the case with most GET requests).
+
 " itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/" />
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
@@ -98,6 +100,8 @@
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>Spring MVC provides a convenient way to validate inputs to API end points through the use of <code>JSR-303</code> annotations. While this mechanism works great for end points that consume a <code>RequestBody</code> (as is the case with most <code>POST</code> and <code>PUT</code> requests), it is not easy to achieve the same effect for end points that consume primitives in the form of path variables or request parameters (as is the case with most <code>GET</code> requests).</p>
+
+<p></p>
 
 <p>Let&rsquo;s take a look at how to validate RequestBody inputs using JSR-303.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>    <span style="color: #9999FF">@RequestMapping</span><span style="color: #555555">(</span>method <span style="color: #555555">=</span> RequestMethod<span style="color: #555555">.</span><span style="color: #330099">POST</span><span style="color: #555555">,</span>
@@ -185,7 +189,6 @@
     <span style="color: #555555">}</span>
 <span style="color: #555555">}</span>
 </pre></div>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

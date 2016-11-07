@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Social Network Twitter on Sadique Ali</title>
-    <link>http://sdqali.in/categories/social-network-twitter/</link>
-    <description>Recent content in Social Network Twitter on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/social-network-twitter/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 23 Aug 2012 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/social-network-twitter/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -28,7 +27,8 @@ ugly URLs like
 &lt;em&gt;&lt;a href=&#34;http://example.com/reports.php?start=2001&amp;amp;end=2010&amp;amp;item=Foo%20bar&#34;&gt;http://example.com/reports.php?start=2001&amp;amp;end=2010&amp;amp;item=Foo%20bar&lt;/a&gt;&lt;/em&gt; and
 they wanted to make it easier on the eyes of people. The second reason
 was the limit on the number of characters allowed in a post by micro blogging services
-like Twitter and Identi.ca.&lt;/p&gt;
+like Twitter and Identi.ca.
+&lt;/p&gt;
 
 &lt;p&gt;Once they became popular, people started using it everywhere, even in places like Facebook posts where there were
 no limit on the number of characters in a post or comment. People also
@@ -66,8 +66,7 @@ with the original URL as the text.&lt;/p&gt;
 
 &lt;p&gt;So content creators, please stop running your own URL shortening
 services and contributing to the redirect hell. The web will be a better
-place for it.&lt;/p&gt;
-</description>
+place for it.&lt;/p&gt;</description>
     </item>
     
   </channel>

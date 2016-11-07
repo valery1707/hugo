@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Code Javascript Firefox Plugin on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-javascript-firefox-plugin/</link>
-    <description>Recent content in Code Javascript Firefox Plugin on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/code-javascript-firefox-plugin/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 29 Nov 2012 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/code-javascript-firefox-plugin/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -14,9 +13,7 @@
       <pubDate>Thu, 29 Nov 2012 00:00:00 +0000</pubDate>
       
       <guid>http://sdqali.in/blog/2012/11/29/my-first-firefox-plugin-getcache---view-cached-version-of-the-current-page/</guid>
-      <description>
-
-&lt;p&gt;I released my &lt;a href=&#34;https://addons.mozilla.org/en-US/firefox/addon/getcache-ff/&#34;&gt;first Firefox plugin&lt;/a&gt; today. It
+      <description>&lt;p&gt;I released my &lt;a href=&#34;https://addons.mozilla.org/en-US/firefox/addon/getcache-ff/&#34;&gt;first Firefox plugin&lt;/a&gt; today. It
 is awaiting review, but if you are adventurous, you can install it right
 now. Go on, try it.&lt;/p&gt;
 
@@ -26,6 +23,8 @@ that does exactly what GetCache does, but I decided to go ahead and write it
 for fun. And of course, the fact that I could publish it without having
 to sign up with my Credit Card information was enticing.&lt;/p&gt;
 
+&lt;p&gt;&lt;/p&gt;
+
 &lt;p&gt;There are three approaches to write a Firefox plugin:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -34,6 +33,8 @@ to sign up with my Credit Card information was enticing.&lt;/p&gt;
 HTML, CSS and JavaScript.&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Extensions/Bootstrapped_extensions&#34;&gt;Bootstrapped extensions&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;!--more--&gt;
 
 &lt;p&gt;I decided to go the Jetpack because the development process and
 technologies were similar to Chrome plugins. And I had no prior
@@ -78,8 +79,7 @@ one attached to the &lt;code&gt;SelectionContext&lt;/code&gt;.&lt;/p&gt;
 &lt;a href=&#34;http://www.iconfinder.com/icondetails/7065/128/cache_icon&#34;&gt;beautiful icon&lt;/a&gt;
 by Sergio Sanchez Lopez. Since it comes with a GPL license, the plugin
 is also licensed under GPL.
-I have put the source code on &lt;a href=&#34;https://github.com/sdqali/getcache-ff&#34;&gt;Github&lt;/a&gt;.&lt;/p&gt;
-</description>
+I have put the source code on &lt;a href=&#34;https://github.com/sdqali/getcache-ff&#34;&gt;Github&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
   </channel>

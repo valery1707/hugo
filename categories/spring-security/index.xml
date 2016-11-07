@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Spring Security on Sadique Ali</title>
-    <link>http://sdqali.in/categories/spring-security/</link>
-    <description>Recent content in Spring Security on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/spring-security/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 13 Jul 2016 23:05:53 -0700</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/spring-security/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -14,9 +13,9 @@
       <pubDate>Wed, 13 Jul 2016 23:05:53 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/</guid>
-      <description>&lt;p&gt;In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.&lt;/p&gt;
+      <description>&lt;p&gt;In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.
 
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -235,8 +234,7 @@
 
 &lt;p&gt;It also has a link for signing out. With this code in place, we can start our Spring application and sign in from the browser.&lt;/p&gt;
 
-&lt;p&gt;This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API. The code for the complete example is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-</description>
+&lt;p&gt;This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API. The code for the complete example is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -245,9 +243,9 @@
       <pubDate>Thu, 07 Jul 2016 23:47:53 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/07/jwt-authentication-with-spring-web---part-4/</guid>
-      <description>&lt;p&gt;In parts 1 through 3 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates. In this blog post, we will add the capability to verify the JWT presented by the client for subsequent requests.&lt;/p&gt;
+      <description>&lt;p&gt;In parts 1 through 3 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates. In this blog post, we will add the capability to verify the JWT presented by the client for subsequent requests.
 
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -532,8 +530,7 @@ $ curl -s &amp;quot;http://localhost:8080/profile/details/yellowfrog347&amp;quot
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;In the next blog post, the fifth is this series, we will move on to building the front end with Angular JS and managing authentication from the front end. The source code for this example for the progress made from part 1 through part 4 is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo/tree/verify_tokens&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-</description>
+&lt;p&gt;In the next blog post, the fifth is this series, we will move on to building the front end with Angular JS and managing authentication from the front end. The source code for this example for the progress made from part 1 through part 4 is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo/tree/verify_tokens&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -544,7 +541,8 @@ $ curl -s &amp;quot;http://localhost:8080/profile/details/yellowfrog347&amp;quot
       <guid>http://sdqali.in/blog/2016/07/05/jwt-authentication-with-spring-web---part-3/</guid>
       <description>&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/&#34;&gt;previous blog post&lt;/a&gt;, we built the Spring API that responds with Profile information. Continuing on the path to building authentication with JWT, in this blog post, we will create a login mechanism that issues a JWT when the user presents the correct credentials.&lt;/p&gt;
 
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+&lt;p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -748,8 +746,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:1&#34;&gt;jjwt - Java JWT: JSON Web Token for Java and Android, available on &lt;a href=&#34;https://github.com/jwtk/jjwt&#34;&gt;GitHub&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -758,11 +755,10 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       <pubDate>Sun, 03 Jul 2016 09:22:53 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/</guid>
-      <description>
+      <description>&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;previous blog post&lt;/a&gt; in this series, we looked at the basics of JWT. We will move on to building the Spring API that we will use JWT for authentication in this blog post.&lt;/p&gt;
 
-&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;previous blog post&lt;/a&gt; in this series, we looked at the basics of JWT. We will move on to building the Spring API that we will use JWT for authentication in this blog post.&lt;/p&gt;
-
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+&lt;p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -1016,8 +1012,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://projectlombok.org/index.html&#34;&gt;Project Lombok&lt;/a&gt; is a Java library that helps minimize boiler plate code by replacing them with a set of convenient annotations. I tend to use it when I have to build data objects.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -1026,11 +1021,10 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       <pubDate>Sat, 02 Jul 2016 18:42:04 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/</guid>
-      <description>
+      <description>&lt;p&gt;JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.&lt;/p&gt;
 
-&lt;p&gt;JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.&lt;/p&gt;
-
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+&lt;p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -1107,8 +1101,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:1&#34;&gt;A detailed explanation of the differences between JWS and JWE can be found &lt;a href=&#34;https://securedb.co/community/jwt-vs-jws-vs-jwe/&#34;&gt;here&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
   </channel>

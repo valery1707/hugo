@@ -1,7 +1,7 @@
 <!DOCTYPE html5>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" prefix="og: http://ogp.me/ns#">
   <head>
-	<meta name="generator" content="Hugo 0.16" />
+	<meta name="generator" content="Hugo 0.17" />
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -83,14 +83,41 @@
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
           <div class="post-preview">
+            <a href='http://sdqali.in/blog/2016/11/04/a-very-basic-introduction-to-deploying-a-java-application-using-kubernetes/'>
+              <h2 class="post-title">
+                A very basic introduction to deploying a Java application using Kubernetes
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              I have been playing around with Kubernetes and Docker lately. To borrow the description of Kubernetes from their website,
+ &ldquo;Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications.&rdquo;
+ One of the first things I did was to try and see what it would take to go from an application to deploying it. I started with a simple Java application and had to set up the development environment.
+            </p>
+            <p class="post-meta">Posted on Fri, Nov 4, 2016</p>
+          </div>
+          
+          <div class="post-preview">
+            <a href='http://sdqali.in/blog/2016/11/02/handling-deserialization-errors-in-spring-redis-sessions/'>
+              <h2 class="post-title">
+                Handling Deserialization errors in Spring Redis Sessions
+              </h2>
+            </a>
+            <p class="post-subtitle">
+              <p>One of the challenges of using storing spring sessions in Redis is that the objects that gets stored as part of a session often undergoes changes as the application evolves and these changes cause de-serialization exceptions to be thrown after a deployment when a session created before the deployment is presented to the application. This blog post discusses a method to work around this issue.</p>
+
+<p></p>
+            </p>
+            <p class="post-meta">Posted on Wed, Nov 2, 2016</p>
+          </div>
+          
+          <div class="post-preview">
             <a href='http://sdqali.in/blog/2016/07/20/csrf-protection-with-spring-security-and-angular-js/'>
               <h2 class="post-title">
                 CSRF Protection with Spring Security and Angular JS
               </h2>
             </a>
             <p class="post-subtitle">
-              <p>Both Spring Security and Angular JS provide support for CSRF protection. However, getting these to work together to provide protection from CSRF requires some non-obvious configuration. This blog post explains how to add CSRF protection to an application that uses Spring Security with an Angular JS front end.</p>
-
+              
             </p>
             <p class="post-meta">Posted on Wed, Jul 20, 2016</p>
           </div>
@@ -102,8 +129,8 @@
               </h2>
             </a>
             <p class="post-subtitle">
-              <p>If you have been using Spring Boot, chances are that you are using the Spring Session library to handle sessions. Spring Session has the ability to persist the sessions to various data stores, including Redis. The default behaviors of Spring Boot when combined with Spring Session is to start using Redis as the session store the moment <code>spring-session-data-redis</code> is detected in the class path, thereby making it hard to conditionally turn Redis support ON and OFF. This blog post explores why this is the default behavior and presents a solution to control this behavior.</p>
-
+              <p>If you have been using Spring Boot, chances are that you are using the Spring Session library to handle sessions. Spring Session has the ability to persist the sessions to various data stores, including Redis. The default behaviors of Spring Boot when combined with Spring Session is to start using Redis as the session store the moment <code>spring-session-data-redis</code> is detected in the class path, thereby making it hard to conditionally turn Redis support ON and OFF. This blog post explores why this is the default behavior and presents a solution to control this behavior.
+</p>
             </p>
             <p class="post-meta">Posted on Sat, Jul 16, 2016</p>
           </div>
@@ -115,8 +142,9 @@
               </h2>
             </a>
             <p class="post-subtitle">
-              <p>In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.</p>
+              <p>In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.
 
+These are the blog posts in this series:</p>
             </p>
             <p class="post-meta">Posted on Wed, Jul 13, 2016</p>
           </div>
@@ -128,8 +156,9 @@
               </h2>
             </a>
             <p class="post-subtitle">
-              <p>In parts 1 through 3 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates. In this blog post, we will add the capability to verify the JWT presented by the client for subsequent requests.</p>
+              <p>In parts 1 through 3 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates. In this blog post, we will add the capability to verify the JWT presented by the client for subsequent requests.
 
+These are the blog posts in this series:</p>
             </p>
             <p class="post-meta">Posted on Thu, Jul 7, 2016</p>
           </div>
@@ -142,7 +171,6 @@
             </a>
             <p class="post-subtitle">
               <p>In the <a href="/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/">previous blog post</a>, we built the Spring API that responds with Profile information. Continuing on the path to building authentication with JWT, in this blog post, we will create a login mechanism that issues a JWT when the user presents the correct credentials.</p>
-
             </p>
             <p class="post-meta">Posted on Tue, Jul 5, 2016</p>
           </div>
@@ -155,7 +183,6 @@
             </a>
             <p class="post-subtitle">
               <p>In the <a href="/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/">previous blog post</a> in this series, we looked at the basics of JWT. We will move on to building the Spring API that we will use JWT for authentication in this blog post.</p>
-
             </p>
             <p class="post-meta">Posted on Sun, Jul 3, 2016</p>
           </div>
@@ -168,7 +195,6 @@
             </a>
             <p class="post-subtitle">
               <p>JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.</p>
-
             </p>
             <p class="post-meta">Posted on Sat, Jul 2, 2016</p>
           </div>
@@ -180,36 +206,11 @@
               </h2>
             </a>
             <p class="post-subtitle">
-              <p>If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack [^1]. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq [^2]. This blog post documents how to format logs as JSON in a Spring application.</p>
+              <p>If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>. This blog post documents how to format logs as JSON in a Spring application.</p>
 
+<p></p>
             </p>
             <p class="post-meta">Posted on Thu, Jun 30, 2016</p>
-          </div>
-          
-          <div class="post-preview">
-            <a href='http://sdqali.in/blog/2016/06/28/injecting-dependencies-into-a-spring-configuration/'>
-              <h2 class="post-title">
-                Injecting dependencies into a Spring @Configuration
-              </h2>
-            </a>
-            <p class="post-subtitle">
-              <p>This is one of those blog posts about things I wish I had known before I spent a lot of time figuring out when something was not working as expected. Recently, we have been trying to extend a <code>WebMvcConfigurerAdapter</code> to wire up an HTTP request interceptor. And things did not work as we expected it to and we learned that our understanding of how Spring behaved under this situation was wrong. This is a write up to refer back to if and when we encounter this issue again.</p>
-
-            </p>
-            <p class="post-meta">Posted on Tue, Jun 28, 2016</p>
-          </div>
-          
-          <div class="post-preview">
-            <a href='http://sdqali.in/blog/2016/06/08/filtering-responses-in-spring-mvc/'>
-              <h2 class="post-title">
-                Filtering responses in Spring MVC
-              </h2>
-            </a>
-            <p class="post-subtitle">
-              <p>Yesterday my colleague <a href="https://twitter.com/imdhmd">Imdad</a> asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.</p>
-
-            </p>
-            <p class="post-meta">Posted on Wed, Jun 8, 2016</p>
           </div>
           
           

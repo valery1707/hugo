@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Internet on Sadique Ali</title>
-    <link>http://sdqali.in/categories/internet/</link>
-    <description>Recent content in Internet on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/internet/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 15 Oct 2013 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/internet/index.xml" rel="self" type="application/rss+xml" />
     
     <item>

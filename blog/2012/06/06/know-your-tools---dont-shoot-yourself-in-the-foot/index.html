@@ -35,6 +35,7 @@
   <meta name="twitter:description" content="Imagine this - Your build is taking forever. You put in a lot of effort and restructure it. Things improve a lot, but it is far from where you would like it to be. You try hard to identify things that could improve the build time, but fail. You blame the platforms you use, you blame Ruby and you even blame the relative position of the Moon to Venus. Slowly you learn to accept the slow build as a part of your life. Months later a new developer joins the team and proves that there is a bug in the build scripts that causes certain tasks to be run twice.
 
 This happened to us recently, and the subsequent debugging/postmortem revealed that there were things about our tools that we simply did not know.
+
 ">
   <meta name="twitter:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]">
 
@@ -42,6 +43,7 @@ This happened to us recently, and the subsequent debugging/postmortem revealed t
   <meta property="og:description" content="Imagine this - Your build is taking forever. You put in a lot of effort and restructure it. Things improve a lot, but it is far from where you would like it to be. You try hard to identify things that could improve the build time, but fail. You blame the platforms you use, you blame Ruby and you even blame the relative position of the Moon to Venus. Slowly you learn to accept the slow build as a part of your life. Months later a new developer joins the team and proves that there is a bug in the build scripts that causes certain tasks to be run twice.
 
 This happened to us recently, and the subsequent debugging/postmortem revealed that there were things about our tools that we simply did not know.
+
 " itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2012/06/06/know-your-tools---dont-shoot-yourself-in-the-foot/" />
   <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
@@ -101,11 +103,11 @@ This happened to us recently, and the subsequent debugging/postmortem revealed t
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            
-
-<p>Imagine this - Your build is taking forever. You put in a lot of effort and restructure it. Things improve a lot, but it is far from where you would like it to be. You try hard to identify things that could improve the build time, but fail. You blame the platforms you use, you blame Ruby and you even blame the relative position of the Moon to Venus. Slowly you learn to accept the slow build as a part of your life. Months later a new developer joins the team and proves that there is a bug in the build scripts that causes certain tasks to be run twice.</p>
+            <p>Imagine this - Your build is taking forever. You put in a lot of effort and restructure it. Things improve a lot, but it is far from where you would like it to be. You try hard to identify things that could improve the build time, but fail. You blame the platforms you use, you blame Ruby and you even blame the relative position of the Moon to Venus. Slowly you learn to accept the slow build as a part of your life. Months later a new developer joins the team and proves that there is a bug in the build scripts that causes certain tasks to be run twice.</p>
 
 <p>This happened to us recently, and the subsequent debugging/postmortem revealed that there were things about our tools that we simply did not know.</p>
+
+<p></p>
 
 <h2 id="a-bit-of-context">A bit of context</h2>
 
@@ -229,7 +231,6 @@ zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo
 <h2 id="learning">Learning</h2>
 
 <p>This is not meant to be a criticism of Rake or Ruby. Although Rake&rsquo;s behavior in this scenario looks weird, there are good reasons why Jim chose that behavior. And we should have moved to Ruby 1.9.3 anyway.  Certainly the learning is that we need to have a better understanding of the tools we use daily.</p>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

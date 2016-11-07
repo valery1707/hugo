@@ -33,11 +33,13 @@
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Testing async responses using MockMvc">
   <meta name="twitter:description" content="There are times when a Spring MVC end point performs asynchronous operations. Testing these end points using MockMvc can be tricky because of the asynchronous nature in which the result of the operation is eventually returned. This blog post describes how to write tests in such scenarios.
+
 ">
   <meta name="twitter:image" content="http://sdqali.in/images/spring-by-pivotal.png">
 
   <meta property="og:title" content="Testing async responses using MockMvc" />
   <meta property="og:description" content="There are times when a Spring MVC end point performs asynchronous operations. Testing these end points using MockMvc can be tricky because of the asynchronous nature in which the result of the operation is eventually returned. This blog post describes how to write tests in such scenarios.
+
 " itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2015/11/24/testing-async-responses-using-mockmvc/" />
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
@@ -98,6 +100,8 @@
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>There are times when a Spring MVC end point performs asynchronous operations. Testing these end points using MockMvc can be tricky because of the asynchronous nature in which the result of the operation is eventually returned. This blog post describes how to write tests in such scenarios.</p>
+
+<p></p>
 
 <p>Let&rsquo;s take a look at the following example. In this example, we have a simple end point that responds with a JSON object when invoked.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@RestController</span>
@@ -199,7 +203,6 @@ The test re-written using <code>asyncDispatch</code> would be as follows:</p>
 </pre></div>
 
 <p>The same approach can be employed to test when controllers use Java 8&rsquo;s <code>CompletableFuture</code>.</p>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

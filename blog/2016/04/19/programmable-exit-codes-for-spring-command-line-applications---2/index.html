@@ -33,11 +33,13 @@
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Programmable exit codes for spring command line applications - 2">
   <meta name="twitter:description" content="In the last blog post, we took a look at how to implement programmable exit codes for spring command line applications by using exceptions that implement ExitCodeGenerator. This time, we will take a look at how to achieve the same without having to depend on an exception.
+
 ">
   <meta name="twitter:image" content="http://sdqali.in/images/spring-by-pivotal.png">
 
   <meta property="og:title" content="Programmable exit codes for spring command line applications - 2" />
   <meta property="og:description" content="In the last blog post, we took a look at how to implement programmable exit codes for spring command line applications by using exceptions that implement ExitCodeGenerator. This time, we will take a look at how to achieve the same without having to depend on an exception.
+
 " itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2016/04/19/programmable-exit-codes-for-spring-command-line-applications---2/" />
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
@@ -99,6 +101,8 @@
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>In the last <a href="/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/">blog post</a>, we took a look at how to implement programmable exit codes for spring command line applications by using exceptions that implement <code>ExitCodeGenerator</code>. This time, we will take a look at how to achieve the same without having to depend on an exception.</p>
 
+<p></p>
+
 <p>This approach depends on the command line runner implementing the <code>ExitCodeGenerator</code>. This does require the usage of <code>System.exit</code>, but instead of it being invoked from different command line runners, it will be used in a single place as follows:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Application</span>  <span style="color: #555555">{</span>
     <span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">static</span> <span style="color: #007788; font-weight: bold">void</span> <span style="color: #CC00FF">main</span><span style="color: #555555">(</span>String<span style="color: #555555">[]</span> args<span style="color: #555555">)</span> <span style="color: #555555">{</span>
@@ -130,7 +134,6 @@ $ <span style="color: #336666">echo</span> <span style="color: #003333">$?</span
 </pre></div>
 
 <p>This allows us to delegate how the application should exit to the command line runners themselves, without having to throw exceptions.</p>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

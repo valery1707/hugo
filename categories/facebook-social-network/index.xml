@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Facebook Social Network on Sadique Ali</title>
-    <link>http://sdqali.in/categories/facebook-social-network/</link>
-    <description>Recent content in Facebook Social Network on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/facebook-social-network/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 11 Aug 2012 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/facebook-social-network/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -14,9 +13,7 @@
       <pubDate>Sat, 11 Aug 2012 00:00:00 +0000</pubDate>
       
       <guid>http://sdqali.in/blog/2012/08/11/why-i-am-not-on-facebook/</guid>
-      <description>
-
-&lt;p&gt;Yesterday a colleague of mine asked me if I was on Facebook. He
+      <description>&lt;p&gt;Yesterday a colleague of mine asked me if I was on Facebook. He
 was genuinely surprised by my reply that I was not and he wanted to know
  why. For the next 20 minutes or so, I explained to him why I quit
  Facebook and does not want anything to do with it.&lt;/p&gt;
@@ -31,6 +28,8 @@ was genuinely surprised by my reply that I was not and he wanted to know
 &lt;li&gt;The social pressure to &amp;lsquo;friend&amp;rsquo; someone&lt;/li&gt;
 &lt;li&gt;Low signal to noise ratio&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;narcissism&#34;&gt;Narcissism&lt;/h2&gt;
 
@@ -131,8 +130,7 @@ part of it looks:&lt;/p&gt;
 &lt;p&gt;The current incarnation is adapted from
 &lt;a href=&#34;http://nonzen.in/2012/06/17/etchosts.html&#34;&gt;Sajith Sasidharan&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;There. That is my Facebook story.&lt;/p&gt;
-</description>
+&lt;p&gt;There. That is my Facebook story.&lt;/p&gt;</description>
     </item>
     
   </channel>

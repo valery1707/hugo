@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Code Ssl Certificates Console on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-ssl-certificates-console/</link>
-    <description>Recent content in Code Ssl Certificates Console on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/code-ssl-certificates-console/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 05 Jun 2012 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/code-ssl-certificates-console/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -14,9 +13,9 @@
       <pubDate>Tue, 05 Jun 2012 00:00:00 +0000</pubDate>
       
       <guid>http://sdqali.in/blog/2012/06/05/managing-security-certificates-from-the-console---on-windows-mac-os-x-and-linux/</guid>
-      <description>
+      <description>&lt;p&gt;For me the last two weeks or so have involved a lot of wrestling with SSL certificates. One of the things that took some time to figure out was how to piggy-back on the tools provided by different Operating Systems to manage certificates. We did not want to rewrite &lt;a href=&#34;https://www.mozilla.org/projects/security/pki/nss/&#34; title=&#34;NSS&#34;&gt;NSS&lt;/a&gt;. Luckily for us, all the major OSes provide tools to manage certificates from the command line.&lt;/p&gt;
 
-&lt;p&gt;For me the last two weeks or so have involved a lot of wrestling with SSL certificates. One of the things that took some time to figure out was how to piggy-back on the tools provided by different Operating Systems to manage certificates. We did not want to rewrite &lt;a href=&#34;https://www.mozilla.org/projects/security/pki/nss/&#34; title=&#34;NSS&#34;&gt;NSS&lt;/a&gt;. Luckily for us, all the major OSes provide tools to manage certificates from the command line.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;windows&#34;&gt;Windows&lt;/h2&gt;
 
@@ -97,8 +96,7 @@ security add-trusted-cert foo.crt{% endcodeblock %}&lt;/p&gt;
 &lt;li&gt;Import this database to the profiles we wish to run Firefox on.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;While copying the database is not as clean a solution as using certutil, we decided to go with the second option because there is no guarantee that certutil will be present on the user&amp;rsquo;s box, especially if they are running Windows or Mac OS X. And we had a fairly high control over the Firefox profiles.&lt;/p&gt;
-</description>
+&lt;p&gt;While copying the database is not as clean a solution as using certutil, we decided to go with the second option because there is no guarantee that certutil will be present on the user&amp;rsquo;s box, especially if they are running Windows or Mac OS X. And we had a fairly high control over the Firefox profiles.&lt;/p&gt;</description>
     </item>
     
   </channel>

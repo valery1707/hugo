@@ -33,12 +33,14 @@
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="Integration testing Spring command line applications">
   <meta name="twitter:description" content="In the last blog post, I wrote about the challenges of writing an integration test for a Spring command line application. One of the solutions for this issue discussed in the blog post was to use the @IntegrationTest annotations to inject Java system properties and use that to run the application instead of the normal command line arguments. This blog post describes how to perform this.
-">
+
+The first step is to rewrite our test to use the @IntegrationTest annotations. This will result in a test that looks as follows:">
   <meta name="twitter:image" content="http://sdqali.in/images/spring-by-pivotal.png">
 
   <meta property="og:title" content="Integration testing Spring command line applications" />
   <meta property="og:description" content="In the last blog post, I wrote about the challenges of writing an integration test for a Spring command line application. One of the solutions for this issue discussed in the blog post was to use the @IntegrationTest annotations to inject Java system properties and use that to run the application instead of the normal command line arguments. This blog post describes how to perform this.
-" itemprop="description"/>
+
+The first step is to rewrite our test to use the @IntegrationTest annotations. This will result in a test that looks as follows:" itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2015/12/11/integration-testing-spring-command-line-applications/" />
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
   <body>
@@ -97,9 +99,9 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <p>In the <a href="/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/">last blog post</a>, I wrote about the challenges of writing an integration test for a Spring command line application. One of the solutions for this issue discussed in the blog post was to use the <code>@IntegrationTest</code> annotations to inject Java system properties and use that to run the application instead of the normal command line arguments. This blog post describes how to perform this.</p>
+            <p>In the <a href="/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/">last blog post</a>, I wrote about the challenges of writing an integration test for a Spring command line application. One of the solutions for this issue discussed in the blog post was to use the <code>@IntegrationTest</code> annotations to inject Java system properties and use that to run the application instead of the normal command line arguments. This blog post describes how to perform this.
 
-<p>The first step is to rewrite our test to use the <code>@IntegrationTest</code> annotations. This will result in a test that looks as follows:</p>
+The first step is to rewrite our test to use the <code>@IntegrationTest</code> annotations. This will result in a test that looks as follows:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@RunWith</span><span style="color: #555555">(</span>SpringJUnit4ClassRunner<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">)</span>
 <span style="color: #9999FF">@SpringApplicationConfiguration</span><span style="color: #555555">(</span>classes <span style="color: #555555">=</span> <span style="color: #555555">{</span>Application<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">})</span>
 <span style="color: #9999FF">@IntegrationTest</span><span style="color: #555555">(</span>value <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;input:expectedOutput&quot;</span><span style="color: #555555">)</span>
@@ -187,7 +189,6 @@
  <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
 </ol>
 </div>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

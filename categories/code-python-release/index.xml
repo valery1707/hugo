@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Code Python Release on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-python-release/</link>
-    <description>Recent content in Code Python Release on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/code-python-release/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 25 Jun 2012 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/code-python-release/index.xml" rel="self" type="application/rss+xml" />
     
     <item>

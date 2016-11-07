@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Camel on Sadique Ali</title>
-    <link>http://sdqali.in/categories/camel/</link>
-    <description>Recent content in Camel on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/camel/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 16 Dec 2015 01:07:01 -0500</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/camel/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -14,12 +13,11 @@
       <pubDate>Wed, 16 Dec 2015 01:07:01 -0500</pubDate>
       
       <guid>http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/</guid>
-      <description>
-
-&lt;p&gt;My team at work has been lately working on a data transformer that pushes information from an external system in to platform. For historical reasons the information is passed to us in the form of flat files. We have been working on a data transformer that reads information from the file and posts it into an HTTP end point.
+      <description>&lt;p&gt;My team at work has been lately working on a data transformer that pushes information from an external system in to platform. For historical reasons the information is passed to us in the form of flat files. We have been working on a data transformer that reads information from the file and posts it into an HTTP end point.
 Apache Camel &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; makes a natural choice as the base for implementing such a data transformer. The presence of ready to use components that can read files and post information to HTTP end points and the availability of a nice D.S.L. &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; makes implementation easy and straightforward. One of the things we had to spend time figuring out was how to ensure that we authenticate correctly against our target HTTP end point. This blog post takes a look at various methods we explored.&lt;/p&gt;
 
-&lt;p&gt;Camel&amp;rsquo;s HTTP component allows http resources to be added as Camel end points. These end points can be consuming information from routes or producing information which are then passed on to routes. For example, the following route takes information from the &lt;code&gt;direct:start&lt;/code&gt; end point, tokenizes it into lines and sends each line into an HTTP url.&lt;/p&gt;
+&lt;p&gt;
+Camel&amp;rsquo;s HTTP component allows http resources to be added as Camel end points. These end points can be consuming information from routes or producing information which are then passed on to routes. For example, the following route takes information from the &lt;code&gt;direct:start&lt;/code&gt; end point, tokenizes it into lines and sends each line into an HTTP url.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;FileToApiRoute&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; RouteBuilder &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
 
     &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String UTF_8 &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;UTF-8&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
@@ -128,8 +126,7 @@ Apache Camel &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a 
 &lt;li id=&#34;fn:3&#34;&gt;Stripping of these parameters is done inside &lt;code&gt;org.apache.camel.component.http.HttpComponent&lt;/code&gt;‘s &lt;code&gt;createHttpClientConfigurer&lt;/code&gt; &lt;a href=&#34;https://github.com/apache/camel/blob/f7f0b18f6924fe0b01f32a25ed1e38e29b1bf8e5/components/camel-http/src/main/java/org/apache/camel/component/http/HttpComponent.java#L66&#34;&gt;method&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
   </channel>

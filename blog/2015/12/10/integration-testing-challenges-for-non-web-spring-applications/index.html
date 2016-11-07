@@ -97,7 +97,8 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <p>We are building a command line data loader application at work that uses Spring. One of the things that I took us more time that it should have to figure out was how to write an integration test that invokes the command line application with the right command line arguments. This blog post describes this scenario and a potential solution to this problem.</p>
+            <p>We are building a command line data loader application at work that uses Spring. One of the things that I took us more time that it should have to figure out was how to write an integration test that invokes the command line application with the right command line arguments. This blog post describes this scenario and a potential solution to this problem.
+</p>
 
 <p>Let&rsquo;s consider a simple command line application implemented using Spring Boot&rsquo;s <code>CommandLineRunner</code>. The main application class is fairly simple.</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Configuration</span>
@@ -210,7 +211,6 @@ ConfigurableApplicationContext applicationContext <span style="color: #555555">=
  <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
 </ol>
 </div>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

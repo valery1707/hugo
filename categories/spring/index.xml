@@ -1,12 +1,128 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Spring on Sadique Ali</title>
-    <link>http://sdqali.in/categories/spring/</link>
-    <description>Recent content in Spring on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/spring/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 16 Jul 2016 15:42:05 -0700</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/spring/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Handling Deserialization errors in Spring Redis Sessions</title>
+      <link>http://sdqali.in/blog/2016/11/02/handling-deserialization-errors-in-spring-redis-sessions/</link>
+      <pubDate>Wed, 02 Nov 2016 13:10:33 -0700</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/11/02/handling-deserialization-errors-in-spring-redis-sessions/</guid>
+      <description>&lt;p&gt;One of the challenges of using storing spring sessions in Redis is that the objects that gets stored as part of a session often undergoes changes as the application evolves and these changes cause de-serialization exceptions to be thrown after a deployment when a session created before the deployment is presented to the application. This blog post discusses a method to work around this issue.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;the-issue&#34;&gt;The issue&lt;/h2&gt;
+
+&lt;p&gt;Consider an application that uses a custom authentication service to validate credentials presented by a client. To achieve this, we will wire up a custom authentication provider which creates an object &lt;code&gt;Customer&lt;/code&gt; as the authenticated user in session.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Customer&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; User &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;Customer&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String name&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;singletonList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; SimpleGrantedAuthority&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;USER&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)));&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Things work great, but after a while the team decides to store the logged in user&amp;rsquo;s email address in the session. To achieve this, we change the &lt;code&gt;Customer&lt;/code&gt; type to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Customer&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; User &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; String email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;Customer&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String name&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; String email&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;singletonList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; SimpleGrantedAuthority&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;USER&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)));&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;email&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color: #CC00FF&#34;&gt;getEmail&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;setEmail&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String email&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;email&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;When this code is deployed and a user tries to access a protected resource by presenting a session created before the deployment, an exception is thrown.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;org.springframework.data.redis.serializer.SerializationException: Cannot deserialize; nested exception is org.springframework.core.serializer.support.SerializationFailedException: Failed to deserialize payload. Is the byte array a result of corresponding serialization for DefaultDeserializer?; nested exception is java.io.InvalidClassException: in.sdqali.spring.vo.Customer; local class incompatible: stream classdesc serialVersionUID = 5161850915957547690, local class serialVersionUID = 1045726772100761661
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This happens because the serialized object in the session and the current structure of the session differ.&lt;/p&gt;
+
+&lt;h2 id=&#34;solutions&#34;&gt;Solutions&lt;/h2&gt;
+
+&lt;p&gt;This issue was raised on the Spring Session issue tracker &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; and there were a lot of work-arounds discussed. Of the work arounds, wrapping the session repository offers the least disruption to the end user.
+This approach ensures that every time a de-serialization error is thrown while trying to read an object from the session, that object is deleted, preventing subsequent errors.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;SafeDeserializationRepository&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; ExpiringSession&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; SessionRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; SessionRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; RedisTemplate&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Object&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String BOUNDED_HASH_KEY_PREFIX &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;spring:session:sessions:&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; Logger logger &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; getLogger&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SafeDeserializationRepository&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;SafeDeserializationRepository&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SessionRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+                                       RedisTemplate&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Object&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;delegate&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;redisTemplate&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; S &lt;span style=&#34;color: #CC00FF&#34;&gt;createSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;createSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;save&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;S session&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    delegate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;save&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;session&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; S &lt;span style=&#34;color: #CC00FF&#34;&gt;getSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String id&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;try&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;id&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;catch&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SerializationException e&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+      logger&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;info&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Deleting non-deserializable session with key {}&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; id&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+      redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;delete&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;BOUNDED_HASH_KEY_PREFIX &lt;span style=&#34;color: #555555&#34;&gt;+&lt;/span&gt; id&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;delete&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String id&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    delegate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;delete&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;id&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;However, it is not easy to wire up this repository in the configuration. Since Spring Redis Session is auto configured, the only way to override beans for Redis Session is to extend &lt;code&gt;RedisHttpSessionConfiguration&lt;/code&gt; and specify beans. Ideally, we want to override the method &lt;code&gt;RedisHttpSessionConfiguration#sessionRepository&lt;/code&gt;. This would mean that &lt;code&gt;SafeDeserializationRepository&lt;/code&gt; inherits from &lt;code&gt;RedisOperationsSessionRepository&lt;/code&gt;. That does not sound too complicated till you realize that &lt;code&gt;RedisOperationsSessionRepository#getSession(java.lang.String)&lt;/code&gt; returns &lt;code&gt;RedisSession&lt;/code&gt; which is a final class declared inside &lt;code&gt;RedisOperationsSessionRepository&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;On closer look, the repository is hooked in to &lt;code&gt;SessionRepositoryFilter&lt;/code&gt; and it is indeed possible to override the &lt;code&gt;SpringHttpSessionConfiguration#springSessionRepositoryFilter&lt;/code&gt; method to create a new filter that takes our &lt;code&gt;SafeDeserializationRepository&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;RedisSessionConfig&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; RedisHttpSessionConfiguration &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
+  RedisTemplate&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Object&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Bean&lt;/span&gt;
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; ExpiringSession&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; SessionRepositoryFilter&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; ExpiringSession&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;springSessionRepositoryFilter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SessionRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; sessionRepository&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;springSessionRepositoryFilter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; SafeDeserializationRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;sessionRepository&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://github.com/spring-projects/spring-session/issues/280&#34;&gt;SerializationFailedException after re-deploying with changed session object #280&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+    </item>
     
     <item>
       <title>Controlling Redis auto-configuration for Spring Boot Session</title>
@@ -14,9 +130,8 @@
       <pubDate>Sat, 16 Jul 2016 15:42:05 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/16/controlling-redis-auto-configuration-for-spring-boot-session/</guid>
-      <description>
-
-&lt;p&gt;If you have been using Spring Boot, chances are that you are using the Spring Session library to handle sessions. Spring Session has the ability to persist the sessions to various data stores, including Redis. The default behaviors of Spring Boot when combined with Spring Session is to start using Redis as the session store the moment &lt;code&gt;spring-session-data-redis&lt;/code&gt; is detected in the class path, thereby making it hard to conditionally turn Redis support ON and OFF. This blog post explores why this is the default behavior and presents a solution to control this behavior.&lt;/p&gt;
+      <description>&lt;p&gt;If you have been using Spring Boot, chances are that you are using the Spring Session library to handle sessions. Spring Session has the ability to persist the sessions to various data stores, including Redis. The default behaviors of Spring Boot when combined with Spring Session is to start using Redis as the session store the moment &lt;code&gt;spring-session-data-redis&lt;/code&gt; is detected in the class path, thereby making it hard to conditionally turn Redis support ON and OFF. This blog post explores why this is the default behavior and presents a solution to control this behavior.
+&lt;/p&gt;
 
 &lt;h3 id=&#34;the-application&#34;&gt;The application&lt;/h3&gt;
 
@@ -223,8 +338,7 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
 &lt;li id=&#34;fn:3&#34;&gt;Meta annotations are annotations that can act up on other annotations by modifying and overriding their attributes. For a discussion on how to implement custom annotations using meta annotations, please refer to &lt;a href=&#34;http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/&#34;&gt;this blog post&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -233,9 +347,9 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
       <pubDate>Wed, 13 Jul 2016 23:05:53 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/</guid>
-      <description>&lt;p&gt;In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.&lt;/p&gt;
+      <description>&lt;p&gt;In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.
 
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -454,8 +568,7 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
 
 &lt;p&gt;It also has a link for signing out. With this code in place, we can start our Spring application and sign in from the browser.&lt;/p&gt;
 
-&lt;p&gt;This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API. The code for the complete example is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-</description>
+&lt;p&gt;This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API. The code for the complete example is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -464,9 +577,9 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
       <pubDate>Thu, 07 Jul 2016 23:47:53 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/07/jwt-authentication-with-spring-web---part-4/</guid>
-      <description>&lt;p&gt;In parts 1 through 3 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates. In this blog post, we will add the capability to verify the JWT presented by the client for subsequent requests.&lt;/p&gt;
+      <description>&lt;p&gt;In parts 1 through 3 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates. In this blog post, we will add the capability to verify the JWT presented by the client for subsequent requests.
 
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -751,8 +864,7 @@ $ curl -s &amp;quot;http://localhost:8080/profile/details/yellowfrog347&amp;quot
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;In the next blog post, the fifth is this series, we will move on to building the front end with Angular JS and managing authentication from the front end. The source code for this example for the progress made from part 1 through part 4 is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo/tree/verify_tokens&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-</description>
+&lt;p&gt;In the next blog post, the fifth is this series, we will move on to building the front end with Angular JS and managing authentication from the front end. The source code for this example for the progress made from part 1 through part 4 is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo/tree/verify_tokens&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -763,7 +875,8 @@ $ curl -s &amp;quot;http://localhost:8080/profile/details/yellowfrog347&amp;quot
       <guid>http://sdqali.in/blog/2016/07/05/jwt-authentication-with-spring-web---part-3/</guid>
       <description>&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/&#34;&gt;previous blog post&lt;/a&gt;, we built the Spring API that responds with Profile information. Continuing on the path to building authentication with JWT, in this blog post, we will create a login mechanism that issues a JWT when the user presents the correct credentials.&lt;/p&gt;
 
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+&lt;p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -967,8 +1080,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:1&#34;&gt;jjwt - Java JWT: JSON Web Token for Java and Android, available on &lt;a href=&#34;https://github.com/jwtk/jjwt&#34;&gt;GitHub&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -977,11 +1089,10 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       <pubDate>Sun, 03 Jul 2016 09:22:53 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/</guid>
-      <description>
+      <description>&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;previous blog post&lt;/a&gt; in this series, we looked at the basics of JWT. We will move on to building the Spring API that we will use JWT for authentication in this blog post.&lt;/p&gt;
 
-&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;previous blog post&lt;/a&gt; in this series, we looked at the basics of JWT. We will move on to building the Spring API that we will use JWT for authentication in this blog post.&lt;/p&gt;
-
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+&lt;p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -1235,8 +1346,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://projectlombok.org/index.html&#34;&gt;Project Lombok&lt;/a&gt; is a Java library that helps minimize boiler plate code by replacing them with a set of convenient annotations. I tend to use it when I have to build data objects.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -1245,11 +1355,10 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       <pubDate>Sat, 02 Jul 2016 18:42:04 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/</guid>
-      <description>
+      <description>&lt;p&gt;JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.&lt;/p&gt;
 
-&lt;p&gt;JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.&lt;/p&gt;
-
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+&lt;p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -1326,8 +1435,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:1&#34;&gt;A detailed explanation of the differences between JWS and JWE can be found &lt;a href=&#34;https://securedb.co/community/jwt-vs-jws-vs-jwe/&#34;&gt;here&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -1337,6 +1445,8 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       
       <guid>http://sdqali.in/blog/2016/06/30/json-logging-for-spring-applications/</guid>
       <description>&lt;p&gt;If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;. This blog post documents how to format logs as JSON in a Spring application.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;We will be using the &lt;code&gt;logstash-logback-encoder&lt;/code&gt; &lt;a href=&#34;https://github.com/logstash/logstash-logback-encoder&#34;&gt;encoder&lt;/a&gt; from Logstash. This can be added to the application with the following Maven dependency:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
@@ -1424,8 +1534,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:2&#34;&gt;&lt;a href=&#34;https://stedolan.github.io/jq/&#34;&gt;jq&lt;/a&gt; is a command line JSON processor. If you work with JSON, jq is a must have tool.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
   </channel>

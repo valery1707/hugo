@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Code Rest Http Chrome Caching Content Type on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-rest-http-chrome-caching-content-type/</link>
-    <description>Recent content in Code Rest Http Chrome Caching Content Type on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/code-rest-http-chrome-caching-content-type/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 27 Nov 2012 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/code-rest-http-chrome-caching-content-type/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -14,9 +13,7 @@
       <pubDate>Tue, 27 Nov 2012 00:00:00 +0000</pubDate>
       
       <guid>http://sdqali.in/blog/2012/11/27/on-rest-content-type-google-chrome-and-caching/</guid>
-      <description>
-
-&lt;p&gt;Representational State Transfer (REST) is a style of software
+      <description>&lt;p&gt;Representational State Transfer (REST) is a style of software
 architecture for distributed systems that has replaced technologies like
 &lt;a href=&#34;http://en.wikipedia.org/wiki/SOAP&#34;&gt;SOAP&lt;/a&gt; as the predominant Web service
 design model. Originally proposed by Roy Fielding in his &lt;a href=&#34;http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm&#34;&gt;Doctorate
@@ -34,9 +31,9 @@ an AJAX call to fetch the JSON representation and renders it. While this
 sounds simple enough, Google Chrome, one of the world&amp;rsquo;s most popular
 browsers
 &lt;a href=&#34;https://code.google.com/p/chromium/issues/detail?id=108766&#34;&gt;totally breaks this&lt;/a&gt;. A
-good example of this weird behaviour can be seen &lt;a href=&#34;http://chrome-json-bug.heroku.com/docs&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+good example of this weird behaviour can be seen &lt;a href=&#34;http://chrome-json-bug.heroku.com/docs&#34;&gt;here&lt;/a&gt;.
 
-&lt;p&gt;I ran in to this issue while playing around with &lt;a href=&#34;http://expressjs.com/&#34;&gt;Express JS&lt;/a&gt;.
+I ran in to this issue while playing around with &lt;a href=&#34;http://expressjs.com/&#34;&gt;Express JS&lt;/a&gt;.
 Now, the interesting thing here is that the Chrome developers seem to
 have closed the issue without providing any convincing answers or
 indicating whether they would fix this.&lt;/p&gt;
@@ -91,8 +88,7 @@ URLs for the same resource. This somewhat violates the REST principle.&lt;/p&gt;
 
 &lt;li&gt;&lt;p&gt;Do not cache JSON end points at all. While this would work well for my
 small app, this is not an effective solution in the general case.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+&lt;/ul&gt;</description>
     </item>
     
   </channel>

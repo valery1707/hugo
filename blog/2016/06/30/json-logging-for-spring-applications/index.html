@@ -32,12 +32,14 @@
   <meta name="twitter:site" content="@sdqali">
   <meta name="twitter:creator" content="@sdqali">
   <meta name="twitter:title" content="JSON logging for Spring applications">
-  <meta name="twitter:description" content="If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack [^1]. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq [^2]. This blog post documents how to format logs as JSON in a Spring application.
+  <meta name="twitter:description" content="If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack 1. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq 2. This blog post documents how to format logs as JSON in a Spring application.
+
 ">
   <meta name="twitter:image" content="http://sdqali.in/images/spring-by-pivotal.png">
 
   <meta property="og:title" content="JSON logging for Spring applications" />
-  <meta property="og:description" content="If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack [^1]. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq [^2]. This blog post documents how to format logs as JSON in a Spring application.
+  <meta property="og:description" content="If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack 1. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq 2. This blog post documents how to format logs as JSON in a Spring application.
+
 " itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2016/06/30/json-logging-for-spring-applications/" />
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
@@ -98,6 +100,8 @@
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>. This blog post documents how to format logs as JSON in a Spring application.</p>
+
+<p></p>
 
 <p>We will be using the <code>logstash-logback-encoder</code> <a href="https://github.com/logstash/logstash-logback-encoder">encoder</a> from Logstash. This can be added to the application with the following Maven dependency:</p>
 <div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #330099; font-weight: bold">&lt;dependency&gt;</span>
@@ -186,7 +190,6 @@
  <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
 </ol>
 </div>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

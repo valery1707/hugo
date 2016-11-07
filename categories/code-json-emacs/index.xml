@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Code Json Emacs on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-json-emacs/</link>
-    <description>Recent content in Code Json Emacs on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/code-json-emacs/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 31 Jul 2013 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/code-json-emacs/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -15,6 +14,8 @@
       
       <guid>http://sdqali.in/blog/2013/07/31/validating-json-in-emacs/</guid>
       <description>&lt;p&gt;At work, I have to deal with Amazon CloudFormation &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; templates a fair bit. These templates are JSON files. More and more members of our team are moving away from TextMate to Emacs which makes me really happy. We would like to validate these CloudFormation templates in Emacs. Today we set this up and I hope this turns out to be of help to some one else trying to do the same.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Grab jsonlint. It is a command line utility that validates JSON. There seems to be two flavors of jsonlint available. A pure JavaScript implementation &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; that runs on the Node.js runtime and a native Mac OS X &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; version. We use the Node.js version.&lt;/li&gt;
@@ -48,8 +49,7 @@
 &lt;li id=&#34;fn:4&#34;&gt;&lt;a href=&#34;http://marmalade-repo.org/packages/flymake-json&#34;&gt;A flymake handler for json using jsonlint&lt;/a&gt;
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:4&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
   </channel>

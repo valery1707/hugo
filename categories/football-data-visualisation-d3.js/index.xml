@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Football Data Visualisation D3.Js on Sadique Ali</title>
-    <link>http://sdqali.in/categories/football-data-visualisation-d3/index.js/</link>
-    <description>Recent content in Football Data Visualisation D3.Js on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/football-data-visualisation-d3.js/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 15 Aug 2012 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/football-data-visualisation-d3.js/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -14,9 +13,7 @@
       <pubDate>Wed, 15 Aug 2012 00:00:00 +0000</pubDate>
       
       <guid>http://sdqali.in/blog/2012/08/15/curse-of-the-community-shield/</guid>
-      <description>
-
-&lt;p&gt;Click on the image to see the visualisation:
+      <description>&lt;p&gt;Click on the image to see the visualisation:
 &lt;a href=&#34;http://sdqali.in/visualizations/community_shield/index.html&#34;&gt;&lt;img src=&#34;http://sdqali.in/images/community_shield.png&#34; alt=&#34;Community Shield visualisation&#34; title=&#34;Community Shield Visualisation&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;context&#34;&gt;Context&lt;/h2&gt;
@@ -42,6 +39,8 @@ and
 &lt;a href=&#34;http://www.guardian.co.uk/football/2005/jan/26/theknowledge.sport&#34;&gt;blog posts&lt;/a&gt;. And
 what would be complete on the Internet without a &lt;a href=&#34;http://9gag.com/gag/5030472&#34;&gt;dinosaur thinking
 aloud&lt;/a&gt; about it?&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;A Community Shield win has the
 potential to positively influence how a football team performs in the
@@ -101,8 +100,7 @@ visualisation was created using &lt;a href=&#34;http://d3js.org&#34;&gt;d3.js&lt
 
 &lt;p&gt;As always, the code and data used for this project is available on
 &lt;a href=&#34;https://github.com/sdqali/community_shield&#34;&gt;Github&lt;/a&gt;. I would greatly appreciate
-feedback on this.&lt;/p&gt;
-</description>
+feedback on this.&lt;/p&gt;</description>
     </item>
     
   </channel>

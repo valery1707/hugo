@@ -35,6 +35,7 @@
   <meta name="twitter:description" content="Most of the Spring controllers in the real world accept a lot of different types of parameters - Path variables, URL parameters, request headers, request body and sometimes even the entire HTTP Request object. This provides a flexible mechanism to create APIs. Spring is really good at parsing these parameters in to Java types as long as there is an ObjectMapper (like Jackson) configured to take care of the de-serialization.
 
 However, there are situations where you want methods to receive a parameter of a particular type that has to resolved from a set of parameters–for example, an API can expect consumers to send meta data about a request in the form of headers and need a custom type to hold this information. Spring provides a convenient way to provide such custom arguments. This blog post explores this feature and how to implement it and test it.
+
 ">
   <meta name="twitter:image" content="http://sdqali.in/images/spring-by-pivotal.png">
 
@@ -42,6 +43,7 @@ However, there are situations where you want methods to receive a parameter of a
   <meta property="og:description" content="Most of the Spring controllers in the real world accept a lot of different types of parameters - Path variables, URL parameters, request headers, request body and sometimes even the entire HTTP Request object. This provides a flexible mechanism to create APIs. Spring is really good at parsing these parameters in to Java types as long as there is an ObjectMapper (like Jackson) configured to take care of the de-serialization.
 
 However, there are situations where you want methods to receive a parameter of a particular type that has to resolved from a set of parameters–for example, an API can expect consumers to send meta data about a request in the form of headers and need a custom type to hold this information. Spring provides a convenient way to provide such custom arguments. This blog post explores this feature and how to implement it and test it.
+
 " itemprop="description"/>
   <meta property="og:url" content="http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/" />
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
@@ -101,11 +103,11 @@ However, there are situations where you want methods to receive a parameter of a
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            
-
-<p>Most of the Spring controllers in the real world accept a lot of different types of parameters - Path variables, URL parameters, request headers, request body and sometimes even the entire HTTP Request object. This provides a flexible mechanism to create APIs. Spring is really good at parsing these parameters in to Java types as long as there is an ObjectMapper (like Jackson) configured to take care of the de-serialization.</p>
+            <p>Most of the Spring controllers in the real world accept a lot of different types of parameters - Path variables, URL parameters, request headers, request body and sometimes even the entire HTTP Request object. This provides a flexible mechanism to create APIs. Spring is really good at parsing these parameters in to Java types as long as there is an ObjectMapper (like Jackson) configured to take care of the de-serialization.</p>
 
 <p>However, there are situations where you want methods to receive a parameter of a particular type that has to resolved from a set of parameters–for example, an API can expect consumers to send meta data about a request in the form of headers and need a custom type to hold this information. Spring provides a convenient way to provide such custom arguments. This blog post explores this feature and how to implement it and test it.</p>
+
+<p></p>
 
 <h2 id="argument-resolvers">Argument Resolvers</h2>
 
@@ -236,7 +238,6 @@ However, there are situations where you want methods to receive a parameter of a
 </pre></div>
 
 <p>This test is self-explanatory–we wire up the argument resolver, make a request with one of the meta data headers and expect the profile service to be invoked with the right parameters.</p>
-
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>

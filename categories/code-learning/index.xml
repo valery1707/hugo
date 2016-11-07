@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Code Learning on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-learning/</link>
-    <description>Recent content in Code Learning on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/code-learning/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 30 May 2012 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/code-learning/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -15,6 +14,8 @@
       
       <guid>http://sdqali.in/blog/2012/05/30/the-spiral-of-learning/</guid>
       <description>&lt;p&gt;An hour ago, I was staring at a problem on the &lt;a href=&#34;http://www.4clojure.com/&#34; title=&#34;4clojure&#34;&gt;4clojure&lt;/a&gt; website. Last weekend, I found myself wandering through Zed Shaw&amp;rsquo;s &lt;a href=&#34;http://c.learncodethehardway.org/&#34; title=&#34;Learn C The Hard Way&#34;&gt;Learn C the Hard Way&lt;/a&gt;. Three days before that, I was taking a stab at figuring what kind of visualizations would make sense if you want to come up with the mother of all comparison&amp;rsquo;s between two of football&amp;rsquo;s greatest ever players. Four days before that, I was looking at some classifiers. Five weeks ago, I was totally lost in &lt;a href=&#34;http://learnyousomeerlang.com/&#34; title=&#34;Learn You Some Erlang For Great Good&#34;&gt;Learn You Some Erlang&lt;/a&gt;, and three weeks before that I was trying to make sense of all the hype around Node.js.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;This is a pattern that I have experienced throughout the last three years of my life. The technologies and tools might have been different, but the experience and the pain that leaves me in have been consistent and consistently high, respectively. I would pick up something, throw all my energy at it and would learn some stuff. And then, the day when I don&amp;rsquo;t have the energy or enthusiasm for anything comes up. I would sit there jumping between Wikipedia pages. This loss of interest would be temporary, and the following day I would have all the energy and enthusiasm in the world. And then the bad thing happens - I don&amp;rsquo;t go and pick up what I left mid-way. I would get fascinated by something totally new or something I had left halfway through two weeks ago.&lt;/p&gt;
 
@@ -34,8 +35,7 @@
 
 &lt;p&gt;I have come to realize that I am not the only one going through this. I have seen a lot of others struggling with the same spiral. From talking to people about this, one possible solution seems to be to put in a strong effort to come back to what you love most.&lt;/p&gt;
 
-&lt;p&gt;In my case, I am not even sure what that is. If my life depended on picking something, I would pick football. May be I should try and do football visualizations or start writing about the areas of football that interest me the most - how football acts as a mirror for the society where it gets played. I am going to try this for some time and see how that turns out. As you can see, I just signed up for one more thing.&lt;/p&gt;
-</description>
+&lt;p&gt;In my case, I am not even sure what that is. If my life depended on picking something, I would pick football. May be I should try and do football visualizations or start writing about the areas of football that interest me the most - how football acts as a mirror for the society where it gets played. I am going to try this for some time and see how that turns out. As you can see, I just signed up for one more thing.&lt;/p&gt;</description>
     </item>
     
   </channel>

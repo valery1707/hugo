@@ -1,12 +1,128 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Development on Sadique Ali</title>
-    <link>http://sdqali.in/categories/development/</link>
-    <description>Recent content in Development on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/development/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 20 Jul 2016 21:57:01 -0400</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/development/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Handling Deserialization errors in Spring Redis Sessions</title>
+      <link>http://sdqali.in/blog/2016/11/02/handling-deserialization-errors-in-spring-redis-sessions/</link>
+      <pubDate>Wed, 02 Nov 2016 13:10:33 -0700</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/11/02/handling-deserialization-errors-in-spring-redis-sessions/</guid>
+      <description>&lt;p&gt;One of the challenges of using storing spring sessions in Redis is that the objects that gets stored as part of a session often undergoes changes as the application evolves and these changes cause de-serialization exceptions to be thrown after a deployment when a session created before the deployment is presented to the application. This blog post discusses a method to work around this issue.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;the-issue&#34;&gt;The issue&lt;/h2&gt;
+
+&lt;p&gt;Consider an application that uses a custom authentication service to validate credentials presented by a client. To achieve this, we will wire up a custom authentication provider which creates an object &lt;code&gt;Customer&lt;/code&gt; as the authenticated user in session.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Customer&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; User &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;Customer&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String name&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;singletonList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; SimpleGrantedAuthority&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;USER&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)));&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Things work great, but after a while the team decides to store the logged in user&amp;rsquo;s email address in the session. To achieve this, we change the &lt;code&gt;Customer&lt;/code&gt; type to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Customer&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; User &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; String email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;Customer&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String name&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; String email&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;singletonList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; SimpleGrantedAuthority&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;USER&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)));&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;email&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color: #CC00FF&#34;&gt;getEmail&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;setEmail&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String email&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;email&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; email&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;When this code is deployed and a user tries to access a protected resource by presenting a session created before the deployment, an exception is thrown.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;org.springframework.data.redis.serializer.SerializationException: Cannot deserialize; nested exception is org.springframework.core.serializer.support.SerializationFailedException: Failed to deserialize payload. Is the byte array a result of corresponding serialization for DefaultDeserializer?; nested exception is java.io.InvalidClassException: in.sdqali.spring.vo.Customer; local class incompatible: stream classdesc serialVersionUID = 5161850915957547690, local class serialVersionUID = 1045726772100761661
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This happens because the serialized object in the session and the current structure of the session differ.&lt;/p&gt;
+
+&lt;h2 id=&#34;solutions&#34;&gt;Solutions&lt;/h2&gt;
+
+&lt;p&gt;This issue was raised on the Spring Session issue tracker &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; and there were a lot of work-arounds discussed. Of the work arounds, wrapping the session repository offers the least disruption to the end user.
+This approach ensures that every time a de-serialization error is thrown while trying to read an object from the session, that object is deleted, preventing subsequent errors.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;SafeDeserializationRepository&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; ExpiringSession&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; SessionRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; SessionRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; RedisTemplate&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Object&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String BOUNDED_HASH_KEY_PREFIX &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;spring:session:sessions:&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; Logger logger &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; getLogger&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SafeDeserializationRepository&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;SafeDeserializationRepository&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SessionRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
+                                       RedisTemplate&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Object&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;delegate&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;redisTemplate&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; S &lt;span style=&#34;color: #CC00FF&#34;&gt;createSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;createSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;save&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;S session&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    delegate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;save&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;session&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; S &lt;span style=&#34;color: #CC00FF&#34;&gt;getSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String id&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;try&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; delegate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getSession&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;id&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;catch&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SerializationException e&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+      logger&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;info&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Deleting non-deserializable session with key {}&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; id&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+      redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;delete&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;BOUNDED_HASH_KEY_PREFIX &lt;span style=&#34;color: #555555&#34;&gt;+&lt;/span&gt; id&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;delete&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String id&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    delegate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;delete&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;id&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;However, it is not easy to wire up this repository in the configuration. Since Spring Redis Session is auto configured, the only way to override beans for Redis Session is to extend &lt;code&gt;RedisHttpSessionConfiguration&lt;/code&gt; and specify beans. Ideally, we want to override the method &lt;code&gt;RedisHttpSessionConfiguration#sessionRepository&lt;/code&gt;. This would mean that &lt;code&gt;SafeDeserializationRepository&lt;/code&gt; inherits from &lt;code&gt;RedisOperationsSessionRepository&lt;/code&gt;. That does not sound too complicated till you realize that &lt;code&gt;RedisOperationsSessionRepository#getSession(java.lang.String)&lt;/code&gt; returns &lt;code&gt;RedisSession&lt;/code&gt; which is a final class declared inside &lt;code&gt;RedisOperationsSessionRepository&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;On closer look, the repository is hooked in to &lt;code&gt;SessionRepositoryFilter&lt;/code&gt; and it is indeed possible to override the &lt;code&gt;SpringHttpSessionConfiguration#springSessionRepositoryFilter&lt;/code&gt; method to create a new filter that takes our &lt;code&gt;SafeDeserializationRepository&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;RedisSessionConfig&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; RedisHttpSessionConfiguration &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
+  RedisTemplate&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;Object&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Bean&lt;/span&gt;
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; ExpiringSession&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; SessionRepositoryFilter&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; ExpiringSession&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;springSessionRepositoryFilter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;SessionRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;S&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; sessionRepository&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;springSessionRepositoryFilter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; SafeDeserializationRepository&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&amp;gt;(&lt;/span&gt;sessionRepository&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; redisTemplate&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://github.com/spring-projects/spring-session/issues/280&#34;&gt;SerializationFailedException after re-deploying with changed session object #280&lt;/a&gt;.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+    </item>
     
     <item>
       <title>CSRF Protection with Spring Security and Angular JS</title>
@@ -14,11 +130,9 @@
       <pubDate>Wed, 20 Jul 2016 21:57:01 -0400</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/20/csrf-protection-with-spring-security-and-angular-js/</guid>
-      <description>
+      <description>&lt;p&gt;Both Spring Security and Angular JS provide support for CSRF protection. However, getting these to work together to provide protection from CSRF requires some non-obvious configuration. This blog post explains how to add CSRF protection to an application that uses Spring Security with an Angular JS front end.
 
-&lt;p&gt;Both Spring Security and Angular JS provide support for CSRF protection. However, getting these to work together to provide protection from CSRF requires some non-obvious configuration. This blog post explains how to add CSRF protection to an application that uses Spring Security with an Angular JS front end.&lt;/p&gt;
-
-&lt;p&gt;Cross-Site Request Forgery (CSRF) &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; is an attack that forces an end user to execute unwanted actions on a web application in which they&amp;rsquo;re currently authenticated. This blog post implements the CSRF token part of the protection described by OWASP. The application still needs to have protection to enforce the right Origin for requests.&lt;/p&gt;
+Cross-Site Request Forgery (CSRF) &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; is an attack that forces an end user to execute unwanted actions on a web application in which they&amp;rsquo;re currently authenticated. This blog post implements the CSRF token part of the protection described by OWASP. The application still needs to have protection to enforce the right Origin for requests.&lt;/p&gt;
 
 &lt;h3 id=&#34;front-end&#34;&gt;Front end&lt;/h3&gt;
 
@@ -543,8 +657,7 @@ Date: Thu, &lt;span style=&#34;color: #FF6600&#34;&gt;21&lt;/span&gt; Jul &lt;sp
 &lt;li id=&#34;fn:2&#34;&gt;See section &lt;em&gt;Cross Site Request Forgery (XSRF) Protection&lt;/em&gt; in &lt;a href=&#34;https://docs.angularjs.org/api/ng/service/$http&#34;&gt;the official documentation&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -553,9 +666,8 @@ Date: Thu, &lt;span style=&#34;color: #FF6600&#34;&gt;21&lt;/span&gt; Jul &lt;sp
       <pubDate>Sat, 16 Jul 2016 15:42:05 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/16/controlling-redis-auto-configuration-for-spring-boot-session/</guid>
-      <description>
-
-&lt;p&gt;If you have been using Spring Boot, chances are that you are using the Spring Session library to handle sessions. Spring Session has the ability to persist the sessions to various data stores, including Redis. The default behaviors of Spring Boot when combined with Spring Session is to start using Redis as the session store the moment &lt;code&gt;spring-session-data-redis&lt;/code&gt; is detected in the class path, thereby making it hard to conditionally turn Redis support ON and OFF. This blog post explores why this is the default behavior and presents a solution to control this behavior.&lt;/p&gt;
+      <description>&lt;p&gt;If you have been using Spring Boot, chances are that you are using the Spring Session library to handle sessions. Spring Session has the ability to persist the sessions to various data stores, including Redis. The default behaviors of Spring Boot when combined with Spring Session is to start using Redis as the session store the moment &lt;code&gt;spring-session-data-redis&lt;/code&gt; is detected in the class path, thereby making it hard to conditionally turn Redis support ON and OFF. This blog post explores why this is the default behavior and presents a solution to control this behavior.
+&lt;/p&gt;
 
 &lt;h3 id=&#34;the-application&#34;&gt;The application&lt;/h3&gt;
 
@@ -762,8 +874,7 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
 &lt;li id=&#34;fn:3&#34;&gt;Meta annotations are annotations that can act up on other annotations by modifying and overriding their attributes. For a discussion on how to implement custom annotations using meta annotations, please refer to &lt;a href=&#34;http://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/&#34;&gt;this blog post&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -772,9 +883,9 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
       <pubDate>Wed, 13 Jul 2016 23:05:53 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/</guid>
-      <description>&lt;p&gt;In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.&lt;/p&gt;
+      <description>&lt;p&gt;In parts 1 through 4 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates and verify the JWT presented by the client for subsequent requests. In this blog post - the last in the series, we will build a simple Angular JS application with authentication that uses this API as the backend.
 
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -993,8 +1104,7 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
 
 &lt;p&gt;It also has a link for signing out. With this code in place, we can start our Spring application and sign in from the browser.&lt;/p&gt;
 
-&lt;p&gt;This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API. The code for the complete example is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-</description>
+&lt;p&gt;This is the last of this series of blog posts on JWT and Spring. We built an API capable of authenticating with JWTs and a front end capable of authenticating against this API. The code for the complete example is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1003,9 +1113,9 @@ $ curl -s -X GET &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://loc
       <pubDate>Thu, 07 Jul 2016 23:47:53 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/07/jwt-authentication-with-spring-web---part-4/</guid>
-      <description>&lt;p&gt;In parts 1 through 3 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates. In this blog post, we will add the capability to verify the JWT presented by the client for subsequent requests.&lt;/p&gt;
+      <description>&lt;p&gt;In parts 1 through 3 of this series, we built a Spring API that can issue a JWT when a user successfully authenticates. In this blog post, we will add the capability to verify the JWT presented by the client for subsequent requests.
 
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -1290,8 +1400,7 @@ $ curl -s &amp;quot;http://localhost:8080/profile/details/yellowfrog347&amp;quot
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;In the next blog post, the fifth is this series, we will move on to building the front end with Angular JS and managing authentication from the front end. The source code for this example for the progress made from part 1 through part 4 is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo/tree/verify_tokens&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-</description>
+&lt;p&gt;In the next blog post, the fifth is this series, we will move on to building the front end with Angular JS and managing authentication from the front end. The source code for this example for the progress made from part 1 through part 4 is available on &lt;a href=&#34;https://github.com/sdqali/jwt-demo/tree/verify_tokens&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1302,7 +1411,8 @@ $ curl -s &amp;quot;http://localhost:8080/profile/details/yellowfrog347&amp;quot
       <guid>http://sdqali.in/blog/2016/07/05/jwt-authentication-with-spring-web---part-3/</guid>
       <description>&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/&#34;&gt;previous blog post&lt;/a&gt;, we built the Spring API that responds with Profile information. Continuing on the path to building authentication with JWT, in this blog post, we will create a login mechanism that issues a JWT when the user presents the correct credentials.&lt;/p&gt;
 
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+&lt;p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -1506,8 +1616,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:1&#34;&gt;jjwt - Java JWT: JSON Web Token for Java and Android, available on &lt;a href=&#34;https://github.com/jwtk/jjwt&#34;&gt;GitHub&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -1516,11 +1625,10 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       <pubDate>Sun, 03 Jul 2016 09:22:53 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/</guid>
-      <description>
+      <description>&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;previous blog post&lt;/a&gt; in this series, we looked at the basics of JWT. We will move on to building the Spring API that we will use JWT for authentication in this blog post.&lt;/p&gt;
 
-&lt;p&gt;In the &lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;previous blog post&lt;/a&gt; in this series, we looked at the basics of JWT. We will move on to building the Spring API that we will use JWT for authentication in this blog post.&lt;/p&gt;
-
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+&lt;p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -1774,8 +1882,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://projectlombok.org/index.html&#34;&gt;Project Lombok&lt;/a&gt; is a Java library that helps minimize boiler plate code by replacing them with a set of convenient annotations. I tend to use it when I have to build data objects.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -1784,11 +1891,10 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       <pubDate>Sat, 02 Jul 2016 18:42:04 -0700</pubDate>
       
       <guid>http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/</guid>
-      <description>
+      <description>&lt;p&gt;JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.&lt;/p&gt;
 
-&lt;p&gt;JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.&lt;/p&gt;
-
-&lt;p&gt;These are the blog posts in this series:&lt;/p&gt;
+&lt;p&gt;
+These are the blog posts in this series:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/&#34;&gt;Part 1&lt;/a&gt; - Discussion of JWT and implementation&lt;/li&gt;
@@ -1865,8 +1971,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:1&#34;&gt;A detailed explanation of the differences between JWS and JWE can be found &lt;a href=&#34;https://securedb.co/community/jwt-vs-jws-vs-jwe/&#34;&gt;here&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -1876,6 +1981,8 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       
       <guid>http://sdqali.in/blog/2016/06/30/json-logging-for-spring-applications/</guid>
       <description>&lt;p&gt;If you have an application that writes logs, there are many reasons to make it write the log in JSON format. It makes it easier to search and analyze them when using tools such as the ELK Stack &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. JSON formatted logs make it easier to look at them when looking at how the app is behaving in real time using tools like jq &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;. This blog post documents how to format logs as JSON in a Spring application.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;We will be using the &lt;code&gt;logstash-logback-encoder&lt;/code&gt; &lt;a href=&#34;https://github.com/logstash/logstash-logback-encoder&#34;&gt;encoder&lt;/a&gt; from Logstash. This can be added to the application with the following Maven dependency:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
@@ -1963,8 +2070,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
 &lt;li id=&#34;fn:2&#34;&gt;&lt;a href=&#34;https://stedolan.github.io/jq/&#34;&gt;jq&lt;/a&gt; is a command line JSON processor. If you work with JSON, jq is a must have tool.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -1974,6 +2080,8 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
       
       <guid>http://sdqali.in/blog/2016/06/28/injecting-dependencies-into-a-spring-configuration/</guid>
       <description>&lt;p&gt;This is one of those blog posts about things I wish I had known before I spent a lot of time figuring out when something was not working as expected. Recently, we have been trying to extend a &lt;code&gt;WebMvcConfigurerAdapter&lt;/code&gt; to wire up an HTTP request interceptor. And things did not work as we expected it to and we learned that our understanding of how Spring behaved under this situation was wrong. This is a write up to refer back to if and when we encounter this issue again.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;Spring&amp;rsquo;s &lt;code&gt;@Configuration&lt;/code&gt; annotation allows us to create a class that provides a set of beans. Because we wanted to wire up interceptors when the application started, it felt reasonable to annotate the extended &lt;code&gt;WebMvcConfigurerAdapter&lt;/code&gt; adaptor as a &lt;code&gt;@Configuration&lt;/code&gt;.&lt;/p&gt;
 
@@ -2072,8 +2180,7 @@ at the field and method level (but not at the constructor level).
 
 &lt;p&gt;It took us a lot of time debugging and stepping through Spring code before we finally figured out what the issue was, but we could have discovered it in seconds from the java doc. There is a lesson in there for us.&lt;/p&gt;
 
-&lt;p&gt;The example code to demonstrate this is available on &lt;a href=&#34;https://github.com/sdqali/config-constructor-poc&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-</description>
+&lt;p&gt;The example code to demonstrate this is available on &lt;a href=&#34;https://github.com/sdqali/config-constructor-poc&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -2084,7 +2191,8 @@ at the field and method level (but not at the constructor level).
       <guid>http://sdqali.in/blog/2016/06/08/filtering-responses-in-spring-mvc/</guid>
       <description>&lt;p&gt;Yesterday my colleague &lt;a href=&#34;https://twitter.com/imdhmd&#34;&gt;Imdad&lt;/a&gt; asked if there was a mechanism to add filtering to a Spring MVC end point that responded with JSON. We both started looking at it and this blog post explores a way to do it, albeit for a specific type of responses that was relevant to our discussions.&lt;/p&gt;
 
-&lt;p&gt;For the purposes of this blog post, the response of the end point will be a collection of repositories, taken from the GitHub API for the end point &lt;code&gt;https://api.github.com/users/rails/repos&lt;/code&gt;. This has the following structure.&lt;/p&gt;
+&lt;p&gt;
+For the purposes of this blog post, the response of the end point will be a collection of repositories, taken from the GitHub API for the end point &lt;code&gt;https://api.github.com/users/rails/repos&lt;/code&gt;. This has the following structure.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;[
   {
     &lt;span style=&#34;color: #330099; font-weight: bold&#34;&gt;&amp;quot;id&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #FF6600&#34;&gt;20544&lt;/span&gt;,
@@ -2213,8 +2321,7 @@ at the field and method level (but not at the constructor level).
 &lt;li id=&#34;fn:1&#34;&gt;&lt;code&gt;ResponseBodyAdvice&lt;/code&gt; is an interface that can be wired with a &lt;code&gt;@ControllerAdvice&lt;/code&gt; annotation to customize the response of controller methods. See the documentation &lt;a href=&#34;http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/servlet/mvc/method/annotation/ResponseBodyAdvice.html&#34;&gt;here&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -2223,9 +2330,9 @@ at the field and method level (but not at the constructor level).
       <pubDate>Sun, 24 Apr 2016 18:35:43 -0500</pubDate>
       
       <guid>http://sdqali.in/blog/2016/04/24/deprecating-domain-events-in-axon/</guid>
-      <description>
+      <description>&lt;p&gt;Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.&lt;/p&gt;
 
-&lt;p&gt;Recently at work, we had to deprecate a domain event. This event used to represent an error scenario. However, the business had since decided that this is no longer a valid error scenario. Removing the Java class is not straight forward - since there are events of this type stored in the event store, every time the aggregate associated with this event is loaded, Axon will throw errors trying to de-serialize them.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;Obviously, we need an Upcaster &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; to take care of this situation. The Upcaster in this scenario will have to upcast this event to something representing the non-existence of this event, regardless of the revision. There are two ways to address this issue - Upcasting to an explicit NoOpEvent and upcasting to an empty list.&lt;/p&gt;
 
@@ -2315,8 +2422,7 @@ So you achieve the same thing, but explicit always beats implicit in DDD ;-)&lt;
 &lt;li id=&#34;fn:1&#34;&gt;Upcasting is a technique of migrating the schema of events in an event-sourced system to keep up with changes in the business requirements. The Axon documentation has a &lt;a href=&#34;http://www.axonframework.org/docs/2.0/repositories-and-event-stores.html#event-upcasting&#34;&gt;very good primer&lt;/a&gt; on upcasting, specifically in the context of Axon.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -2326,6 +2432,8 @@ So you achieve the same thing, but explicit always beats implicit in DDD ;-)&lt;
       
       <guid>http://sdqali.in/blog/2016/04/19/programmable-exit-codes-for-spring-command-line-applications---2/</guid>
       <description>&lt;p&gt;In the last &lt;a href=&#34;http://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/&#34;&gt;blog post&lt;/a&gt;, we took a look at how to implement programmable exit codes for spring command line applications by using exceptions that implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt;. This time, we will take a look at how to achieve the same without having to depend on an exception.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;This approach depends on the command line runner implementing the &lt;code&gt;ExitCodeGenerator&lt;/code&gt;. This does require the usage of &lt;code&gt;System.exit&lt;/code&gt;, but instead of it being invoked from different command line runners, it will be used in a single place as follows:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Application&lt;/span&gt;  &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
@@ -2357,8 +2465,7 @@ $ &lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#
 45
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;This allows us to delegate how the application should exit to the command line runners themselves, without having to throw exceptions.&lt;/p&gt;
-</description>
+&lt;p&gt;This allows us to delegate how the application should exit to the command line runners themselves, without having to throw exceptions.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -2368,6 +2475,8 @@ $ &lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#
       
       <guid>http://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/</guid>
       <description>&lt;p&gt;Spring&amp;rsquo;s &lt;code&gt;CommandLineRunner&lt;/code&gt; provides a great mechanism to build command line applications. While this convenience is great, applications that use &lt;code&gt;CommandLineRunner&lt;/code&gt; require extra effort in some areas like integration testing. Exit codes are such an area - applications that use command line runners always report their exit code as &lt;code&gt;0&lt;/code&gt; even if there are exceptions thrown. This blog post explains a way to get to programmable exit codes for such applications.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;p&gt;The following example demonstrates this problem. Here we have a simple implementation of &lt;code&gt;CommandLineRunner&lt;/code&gt; that simply throws a &lt;code&gt;RuntimeException&lt;/code&gt; when started.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
@@ -2447,8 +2556,7 @@ $ echo $?
 &lt;li id=&#34;fn:1&#34;&gt;&lt;code&gt;ExitCodeGenerator&lt;/code&gt; is an &amp;ldquo;Interface used to generate an &amp;lsquo;exit code&amp;rsquo; from a running command line SpringApplication.&amp;rdquo;. You can find the JavaDocs &lt;a href=&#34;http://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/ExitCodeGenerator.html&#34;&gt;here&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -2457,11 +2565,11 @@ $ echo $?
       <pubDate>Fri, 29 Jan 2016 17:41:49 -0800</pubDate>
       
       <guid>http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/</guid>
-      <description>
-
-&lt;p&gt;Most of the Spring controllers in the real world accept a lot of different types of parameters - Path variables, URL parameters, request headers, request body and sometimes even the entire HTTP Request object. This provides a flexible mechanism to create APIs. Spring is really good at parsing these parameters in to Java types as long as there is an ObjectMapper (like Jackson) configured to take care of the de-serialization.&lt;/p&gt;
+      <description>&lt;p&gt;Most of the Spring controllers in the real world accept a lot of different types of parameters - Path variables, URL parameters, request headers, request body and sometimes even the entire HTTP Request object. This provides a flexible mechanism to create APIs. Spring is really good at parsing these parameters in to Java types as long as there is an ObjectMapper (like Jackson) configured to take care of the de-serialization.&lt;/p&gt;
 
 &lt;p&gt;However, there are situations where you want methods to receive a parameter of a particular type that has to resolved from a set of parameters–for example, an API can expect consumers to send meta data about a request in the form of headers and need a custom type to hold this information. Spring provides a convenient way to provide such custom arguments. This blog post explores this feature and how to implement it and test it.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;argument-resolvers&#34;&gt;Argument Resolvers&lt;/h2&gt;
 
@@ -2591,132 +2699,7 @@ $ echo $?
 &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;This test is self-explanatory–we wire up the argument resolver, make a request with one of the meta data headers and expect the profile service to be invoked with the right parameters.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Authentication for Apache Camel HTTP components</title>
-      <link>http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/</link>
-      <pubDate>Wed, 16 Dec 2015 01:07:01 -0500</pubDate>
-      
-      <guid>http://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/</guid>
-      <description>
-
-&lt;p&gt;My team at work has been lately working on a data transformer that pushes information from an external system in to platform. For historical reasons the information is passed to us in the form of flat files. We have been working on a data transformer that reads information from the file and posts it into an HTTP end point.
-Apache Camel &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; makes a natural choice as the base for implementing such a data transformer. The presence of ready to use components that can read files and post information to HTTP end points and the availability of a nice D.S.L. &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; makes implementation easy and straightforward. One of the things we had to spend time figuring out was how to ensure that we authenticate correctly against our target HTTP end point. This blog post takes a look at various methods we explored.&lt;/p&gt;
-
-&lt;p&gt;Camel&amp;rsquo;s HTTP component allows http resources to be added as Camel end points. These end points can be consuming information from routes or producing information which are then passed on to routes. For example, the following route takes information from the &lt;code&gt;direct:start&lt;/code&gt; end point, tokenizes it into lines and sends each line into an HTTP url.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;FileToApiRoute&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; RouteBuilder &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String UTF_8 &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;UTF-8&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String CONTENT_TYPE &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Content-Type&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String APPLICATION_JSON &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;application/json&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String TARGET &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://localhost:8080/ingest&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;configure&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        from&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;direct:start&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;marshal&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;UTF_8&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;split&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;body&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;tokenize&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;())&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;streaming&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setHeader&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;CONTENT_TYPE&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; simple&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;APPLICATION_JSON&lt;span style=&#34;color: #555555&#34;&gt;))&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;to&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;TARGET&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Once this route has been registered, it can be used to send data by placing information on the &lt;code&gt;direct:start&lt;/code&gt; end point. The following service does it by passing the contents of a file to a &lt;code&gt;ProducerTemplate&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;DataStreamService&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; ProducerTemplate producerTemplate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;DataStreamService&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;ProducerTemplate producerTemplate&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;producerTemplate&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; producerTemplate&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;stream&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        producerTemplate&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;sendBody&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;direct:start&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
-                ExchangePattern&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;InOnly&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
-                &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; File&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;src/main/resources/yelp.business.json&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Our challenge is to ensure that this continue to work when the HTTP end point in question requires authentication. For the purposes of this blog post, we will be restricting our discussion to Basic Authentication. There are three ways to do this authentication–through Camel authentication query parameters, through the use of the &lt;code&gt;Authorization&lt;/code&gt; header and by overriding the &lt;code&gt;HttpConfiguration&lt;/code&gt; in the current Camel context.&lt;/p&gt;
-
-&lt;h3 id=&#34;camel-authentication-query-parameters&#34;&gt;Camel authentication query parameters&lt;/h3&gt;
-
-&lt;p&gt;Camel allows consumers to specify authentication parameters in the http end point. For example, three parameters required for Basic Authentication are &lt;code&gt;authMethod&lt;/code&gt;, &lt;code&gt;authUsername&lt;/code&gt; and &lt;code&gt;authPassword&lt;/code&gt;. The route rewritten with these parameters will be as follows:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String TARGET_WITH_AUTH &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http://localhost:8080/ingest&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;+&lt;/span&gt;
-            &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;?authMethod=Basic&amp;amp;authUsername=test&amp;amp;authPassword=test&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;configure&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        from&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;direct:start&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;marshal&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;UTF_8&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;split&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;body&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;tokenize&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;())&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;streaming&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setHeader&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;CONTENT_TYPE&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; simple&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;APPLICATION_JSON&lt;span style=&#34;color: #555555&#34;&gt;))&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;to&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;TARGET_WITH_AUTH&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;It is odd to be adding authentication parameters to a URL, but here the URL has multiple purposes–this is a URL to which information is going to be sent to, it also represents a logical end point. These three parameters (and other authentication parameters) get stripped from the HTTP URL before Camel makes the HTTP request. &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; This still will cause issues in odd cases where the HTTP A.P.I. you are integrating with expects these parameters to be sent.&lt;/p&gt;
-
-&lt;h3 id=&#34;setting-authorization-headers&#34;&gt;Setting Authorization headers&lt;/h3&gt;
-
-&lt;p&gt;Camel allows the addition of headers to messages that it processes and if the message ultimately gets routed to a Camel HTTP end point, these headers get converted to HTTP headers. This allows us to use authentication by setting the &lt;code&gt;Authorization&lt;/code&gt; header. This example demonstrates this:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;configure&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        from&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;direct:start&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;marshal&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;UTF_8&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;split&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;body&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;tokenize&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;())&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;streaming&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setHeader&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;CONTENT_TYPE&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; simple&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;APPLICATION_JSON&lt;span style=&#34;color: #555555&#34;&gt;))&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setHeader&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Authorization&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; simple&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Basic dGVzdDp0ZXN0&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;))&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;to&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;TARGET&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3 id=&#34;overriding-httpconfiguration&#34;&gt;Overriding HttpConfiguration&lt;/h3&gt;
-
-&lt;p&gt;Camel provides a mechanism to override it‘s Context‘s configuration before the context gets created. In the following example, we get a reference to the &lt;code&gt;HttpComponent&lt;/code&gt; and set a new &lt;code&gt;HttpConfiguration&lt;/code&gt; with the right authentication. This allows us to separate the authentication configurations from the route definitions. However, if your Camel context is responsible for talking to different HTTP end points with different authentication mechanisms or parameters, this will not solve the issue.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;    &lt;span style=&#34;color: #9999FF&#34;&gt;@Bean&lt;/span&gt;
-    CamelContextConfiguration &lt;span style=&#34;color: #CC00FF&#34;&gt;contextConfiguration&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; camelContext &lt;span style=&#34;color: #555555&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-            HttpComponent http &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HttpComponent&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; camelContext&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getComponent&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;http&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-            http&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setHttpConfiguration&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;httpConfiguration&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
-        &lt;span style=&#34;color: #555555&#34;&gt;};&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; HttpConfiguration &lt;span style=&#34;color: #CC00FF&#34;&gt;httpConfiguration&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        HttpConfiguration httpConfiguration &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; HttpConfiguration&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
-        httpConfiguration&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setAuthMethod&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;authScheme&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-        httpConfiguration&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setAuthUsername&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;authUsername&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-        httpConfiguration&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setAuthPassword&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;authPassword&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; httpConfiguration&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;In the end, the method you choose will depend on the unique constraints of the systems you are integrating with.&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:1&#34;&gt;&lt;a href=&#34;https://camel.apache.org/&#34;&gt;Apache Camel&lt;/a&gt; is a Java integration framework.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:2&#34;&gt;Camel&amp;rsquo;s Domain Specific Language in Java allows integration routes to be defined as fluent specifications.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:3&#34;&gt;Stripping of these parameters is done inside &lt;code&gt;org.apache.camel.component.http.HttpComponent&lt;/code&gt;‘s &lt;code&gt;createHttpClientConfigurer&lt;/code&gt; &lt;a href=&#34;https://github.com/apache/camel/blob/f7f0b18f6924fe0b01f32a25ed1e38e29b1bf8e5/components/camel-http/src/main/java/org/apache/camel/component/http/HttpComponent.java#L66&#34;&gt;method&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-</description>
+&lt;p&gt;This test is self-explanatory–we wire up the argument resolver, make a request with one of the meta data headers and expect the profile service to be invoked with the right parameters.&lt;/p&gt;</description>
     </item>
     
   </channel>

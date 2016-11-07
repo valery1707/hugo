@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Code Python on Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-python/</link>
-    <description>Recent content in Code Python on Sadique Ali</description>
+    <title>Sadique Ali</title>
+    <link>http://sdqali.in/categories/code-python/index.xml</link>
+    <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 07 Oct 2013 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://sdqali.in/categories/code-python/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -129,9 +128,7 @@ After override
       <pubDate>Mon, 09 Jul 2012 00:00:00 +0000</pubDate>
       
       <guid>http://sdqali.in/blog/2012/07/09/understanding-pythons-with-statement/</guid>
-      <description>
-
-&lt;h2 id=&#34;what-is-it&#34;&gt;What is it?&lt;/h2&gt;
+      <description>&lt;h2 id=&#34;what-is-it&#34;&gt;What is it?&lt;/h2&gt;
 
 &lt;p&gt;Python&amp;rsquo;s &lt;code&gt;with&lt;/code&gt; statement provides a very convenient way of dealing with the situation where you have to do a setup and teardown to make something happen. A very good example for this is the situation where you want to gain a handler to a file, read data from the file and the close the file handler.&lt;/p&gt;
 
@@ -153,6 +150,8 @@ data &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;with&lt;/span&gt; &lt;span style=&#34;color: #336666&#34;&gt;open&lt;/span&gt;(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/tmp/foo.txt&amp;quot;&lt;/span&gt;) &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;as&lt;/span&gt; &lt;span style=&#34;color: #336666&#34;&gt;file&lt;/span&gt;:
    data &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #336666&#34;&gt;file&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;read()
 &lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;how-does-it-work&#34;&gt;How does it work?&lt;/h2&gt;
 
@@ -239,8 +238,7 @@ ZeroDivisionError: integer division or modulo by zero
 
 &lt;p&gt;Thus, Python&amp;rsquo;s &lt;code&gt;with&lt;/code&gt; is a nifty construct that makes code a little less verbose and makes cleaning up during exceptions a bit easier.&lt;/p&gt;
 
-&lt;p&gt;I have put the code examples given here on &lt;a href=&#34;https://github.com/sdqali/python_dojo/tree/master/with&#34;&gt;Github&lt;/a&gt;.&lt;/p&gt;
-</description>
+&lt;p&gt;I have put the code examples given here on &lt;a href=&#34;https://github.com/sdqali/python_dojo/tree/master/with&#34;&gt;Github&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     
     <item>
