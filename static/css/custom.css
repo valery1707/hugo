@@ -40,3 +40,7 @@ p.comments {
     font-size: 90%;
     font-style: italic;
 }
+
+p {
+    line-height: 1.8em;
+}
