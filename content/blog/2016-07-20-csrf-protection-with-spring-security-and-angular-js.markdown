@@ -10,6 +10,7 @@ title: CSRF Protection with Spring Security and Angular JS
 ---
 Both Spring Security and Angular JS provide support for CSRF protection. However, getting these to work together to provide protection from CSRF requires some non-obvious configuration. This blog post explains how to add CSRF protection to an application that uses Spring Security with an Angular JS front end.
 <!--more-->
+
 Cross-Site Request Forgery (CSRF) [^1] is an attack that forces an end user to execute unwanted actions on a web application in which they're currently authenticated. This blog post implements the CSRF token part of the protection described by OWASP. The application still needs to have protection to enforce the right Origin for requests.
 
 ### Front end
