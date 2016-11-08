@@ -131,8 +131,9 @@ This approach ensures that every time a de-serialization error is thrown while t
       
       <guid>http://sdqali.in/blog/2016/07/20/csrf-protection-with-spring-security-and-angular-js/</guid>
       <description>&lt;p&gt;Both Spring Security and Angular JS provide support for CSRF protection. However, getting these to work together to provide protection from CSRF requires some non-obvious configuration. This blog post explains how to add CSRF protection to an application that uses Spring Security with an Angular JS front end.
+&lt;/p&gt;
 
-Cross-Site Request Forgery (CSRF) &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; is an attack that forces an end user to execute unwanted actions on a web application in which they&amp;rsquo;re currently authenticated. This blog post implements the CSRF token part of the protection described by OWASP. The application still needs to have protection to enforce the right Origin for requests.&lt;/p&gt;
+&lt;p&gt;Cross-Site Request Forgery (CSRF) &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; is an attack that forces an end user to execute unwanted actions on a web application in which they&amp;rsquo;re currently authenticated. This blog post implements the CSRF token part of the protection described by OWASP. The application still needs to have protection to enforce the right Origin for requests.&lt;/p&gt;
 
 &lt;h3 id=&#34;front-end&#34;&gt;Front end&lt;/h3&gt;
 
