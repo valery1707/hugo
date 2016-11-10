@@ -27,6 +27,31 @@
 
 </head>
 
+  <meta name="description" content="Representational State Transfer (REST) is a style of software
+architecture for distributed systems that has replaced technologies like
+SOAP as the predominant Web service
+design model. Originally proposed by Roy Fielding in his Doctorate
+dissertation,
+REST puts a lot of emphasis on resources, their representations and states. Basically a URL indicates a
+single resource; the HTTP method (GET, POST, PUT, DELETE) indicates what
+action should be performed on that resource; and the ACCEPT header indicates the format that the resource should be presented in.
+
+Chrome and Content-Type
+
+Having seen this, one would assume that if you have a resource, say a
+User on your system and there were two representations of that
+resource - HTML and JSON. Let&rsquo;s assume that the HTML representation does
+an AJAX call to fetch the JSON representation and renders it. While this
+sounds simple enough, Google Chrome, one of the world&rsquo;s most popular
+browsers
+totally breaks this. A
+good example of this weird behaviour can be seen here.
+
+I ran in to this issue while playing around with Express JS.
+Now, the interesting thing here is that the Chrome developers seem to
+have closed the issue without providing any convincing answers or
+indicating whether they would fix this." />
+
   
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@sdqali">

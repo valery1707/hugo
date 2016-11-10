@@ -27,6 +27,31 @@
 
 </head>
 
+  <meta name="description" content="What is it?
+
+Python&rsquo;s with statement provides a very convenient way of dealing with the situation where you have to do a setup and teardown to make something happen. A very good example for this is the situation where you want to gain a handler to a file, read data from the file and the close the file handler.
+
+Without the with statement, one would write something along the lines of:
+file = open(&quot;/tmp/foo.txt&quot;)
+data = file.read()
+file.close()
+
+
+There are two annoying things here. First, you end up forgetting to close the file handler. The second is how to handle exceptions that may occur once the file handler has been obtained. One could write something like this to get around this:
+file = open(&quot;/tmp/foo.txt&quot;)
+try:
+    data = file.read()
+finally:
+    file.close()
+
+
+While this works well, it is unnecessarily verbose. This is where with is useful. The good thing about with apart from the better syntax is that it is very good handling exceptions. The above code would look like this, when using with:
+with open(&quot;/tmp/foo.txt&quot;) as file:
+   data = file.read()
+
+
+" />
+
   
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@sdqali">
