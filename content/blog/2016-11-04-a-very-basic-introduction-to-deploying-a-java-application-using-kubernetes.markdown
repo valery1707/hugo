@@ -4,6 +4,12 @@ Categories:
 - Docker
 - Kubernetes
 Description: ""
+keywords:
+- Java
+- Docker
+- Kubernetes
+- Spring
+- Spring Boot
 Tags:
 - Java
 - Docker
