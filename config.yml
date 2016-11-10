@@ -13,3 +13,4 @@ params:
   googleAnalytics: "UA-86967633-1"
 PygmentsCodeFences: true
 pygmentsstyle: "manni"
+enableRobotsTXT: true
