@@ -2,6 +2,6 @@
 Description = ""
 Tags = ["Development"]
 Categories = ["Development"]
-keywords: [""]
+keywords = [""]
 image = ""
 +++
