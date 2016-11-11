@@ -19,5 +19,15 @@
 </description>
     </item>
     
+    <item>
+      <title>About</title>
+      <link>http://sdqali.in/talks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://sdqali.in/talks/</guid>
+      <description>&lt;p&gt;Once in a while I garner enough courage, go stand in front of a crowd and talk about things that I like and/or have worked on. These are the &lt;a href=&#34;http://sdqali.in/categories/talk&#34;&gt;remnants&lt;/a&gt; of some of those incidents.&lt;/p&gt;
+</description>
+    </item>
+    
   </channel>
 </rss>
