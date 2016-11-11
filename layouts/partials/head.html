@@ -3,10 +3,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="{{ .Site.Params.description }}">
+    <meta content="{{ delimit .Site.Params.keywords ", " }}" name="keywords">
+    <meta name="author" content="Sadique Ali">
 
-    <title>{{ .Title }}</title>
+    {{ $isHomePage := eq .Title .Site.Title }}
+    {{ if eq $isHomePage true }}
+      {{ $.Scratch.Set "title" .Title }}
+    {{else}}
+      {{ $.Scratch.Set "title" (print .Title " - " .Site.Title) }}
+    {{ end }}
+    {{ $title := $.Scratch.Get "title"}}
+
+    <title>{{ $title }}</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">

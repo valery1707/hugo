@@ -10,6 +10,11 @@ permalinks:
 metadataformat: "yaml"
 params:
   description: "A blog about the Code I write and the Technologies I use. And other things that interest me."
+  keywords:
+    - Programming
+    - Software Development
+    - Java Development
+    - Coding
   googleAnalytics: "UA-86967633-1"
 PygmentsCodeFences: true
 pygmentsstyle: "manni"
