@@ -1,0 +1,35 @@
+<!DOCTYPE html5>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" prefix="og: http://ogp.me/ns#">
+  {{ partial "head.html" . }}
+  <body>
+    {{ partial "header.html.snippet" . }}
+
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="site-heading">
+              <h1> {{ .Site.Title }}</h1>
+              <hr class="small">
+              <span class="subheading">Thoughts on Code, etc.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <p>The page you are looking for does not exist. The archives are <a href="/blog">here</a>.</p>
+        </div>
+      </div>
+    </div>
+
+    {{ partial "footer.html.snippet" .}}
+  </body>
+</html>
