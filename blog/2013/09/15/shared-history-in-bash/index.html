@@ -5,10 +5,16 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="A blog about the Code I write and the Technologies I use. And other things that interest me.">
     <meta name="author" content="">
 
-    <title>Shared history in Bash</title>
+    
+    
+      
+    
+    
+
+    <title>Shared history in Bash - Sadique Ali</title>
 
     
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -29,6 +35,7 @@
 
   <meta name="description" content="One of the features that I miss most in Bash is the shared history between terminals that Zsh supports. I was hunting down a solution for this and came across this Stack Overflow answer 1 by user lesmana. This code snippet does the trick:
 HISTSIZE=9000 HISTFILESIZE=$HISTSIZE HISTCONTROL=ignorespace:ignoredups history() { _bash_history_sync builtin history &quot;$@&quot; } _bash_history_sync() { builtin history -a #1 HISTFILESIZE=$HISTSIZE #2 builtin history -c #3 builtin history -r #4 } PROMPT_COMMAND=&quot;_bash_history_sync;$PROMPT_COMMAND&quot;  This is very hacky—This setting overrides the shell prompt to sync history every time the prompt is loaded." />
+  <meta content="" name="keywords">
 
   
   <meta name="twitter:card" content="summary_large_image">
