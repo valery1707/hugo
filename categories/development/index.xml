@@ -8,6 +8,282 @@
     <atom:link href="http://sdqali.in/categories/development/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Setting up a secure etcd cluster behind a proxy</title>
+      <link>http://sdqali.in/blog/2016/11/11/setting-up-a-secure-etcd-cluster-behind-a-proxy/</link>
+      <pubDate>Fri, 11 Nov 2016 13:07:32 -0800</pubDate>
+      
+      <guid>http://sdqali.in/blog/2016/11/11/setting-up-a-secure-etcd-cluster-behind-a-proxy/</guid>
+      <description>&lt;p&gt;This is a blog post that explains how to set up a highly available etcd cluster behind a proxy and securing the communication between a client and the proxy, between the proxy and the individual member in the cluster and between members in the cluster.
+&lt;/p&gt;
+
+&lt;p&gt;CoreOS&amp;rsquo;s etcd is&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;hellip; a distributed key value store that provides a reliable way to store data across a cluster of machines. It’s open-source and available on GitHub. etcd gracefully handles leader elections during network partitions and will tolerate machine failure, including the leader.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;It&amp;rsquo;s highly available distributed nature makes it a great choice for storing application configuration. Kubernetes, for example uses etcd to store all it&amp;rsquo;s API objects.&lt;/p&gt;
+
+&lt;p&gt;The proxy mode in etcd allows etcd to run as a transparent proxy for a cluster. This makes it possible to expose only the proxy to the clients and abstract away discovery and leader election away from the client. The client needs to know only about the proxy.&lt;/p&gt;
+
+&lt;p&gt;Communications to an etcd cluster and between members in a cluster can be secured through a PKI setup. Since an etcd proxy is in effect an etcd node that does not participate in leader election, communication between a client and a proxy can also be secured with similar infrastructure.&lt;/p&gt;
+
+&lt;p&gt;In this example, we will set up a cluster of 3 etcd nodes. We will use a key pair for the nodes and proxy to communicate between each other and another key pair for clients to communicate with the proxy.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/etcd-secure-cluster-proxy.svg&#34; alt=&#34;Secure Etcd Cluster with Proxy&#34; title=&#34;Secure Etcd Cluster with Proxy&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;generating-keys&#34;&gt;Generating Keys&lt;/h2&gt;
+
+&lt;p&gt;This section borrows heavily from Kelsey Hightower&amp;rsquo;s &lt;a href=&#34;https://github.com/kelseyhightower/kubernetes-the-hard-way&#34;&gt;Kubernetes the Hard Way tutorial&lt;/a&gt;. For the purposes of this blog post, we are going to assume that we will be running the three nodes and the proxy on a local machine. There will be changes that need to be made to the key configurations if these are deployed elsewhere. The instructions also assume that you are on OS X. Please make the necessary adjustments if you are on Linux.&lt;/p&gt;
+
+&lt;h3 id=&#34;install-cloudflare-pki-toolkit&#34;&gt;Install CloudFlare PKI toolkit&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# Install the csffl utility&lt;/span&gt;
+wget https://pkg.cfssl.org/R1.2/cfssl_darwin-amd64
+chmod +x cfssl_darwin-amd64
+sudo mv cfssl_darwin-amd64 /usr/local/bin/cfssl
+
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# Install cfssljson utility&lt;/span&gt;
+wget https://pkg.cfssl.org/R1.2/cfssljson_darwin-amd64
+chmod +x cfssljson_darwin-amd64
+sudo mv cfssljson_darwin-amd64 /usr/local/bin/cfssljson
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&#34;create-ca-key-and-certificate&#34;&gt;Create CA key and certificate&lt;/h3&gt;
+
+&lt;p&gt;The first step will be to create a Certificate Authority configuration.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;{&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  &amp;quot;signing&amp;quot;: {&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;default&amp;quot;: {&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;expiry&amp;quot;: &amp;quot;8760h&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    },&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;profiles&amp;quot;: {&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;etcd-node&amp;quot;: {&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;        &amp;quot;usages&amp;quot;: [&amp;quot;signing&amp;quot;, &amp;quot;key encipherment&amp;quot;, &amp;quot;server auth&amp;quot;, &amp;quot;client auth&amp;quot;],&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;        &amp;quot;expiry&amp;quot;: &amp;quot;8760h&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      },&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;etcd-proxy&amp;quot;: {&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;        &amp;quot;usages&amp;quot;: [&amp;quot;signing&amp;quot;, &amp;quot;key encipherment&amp;quot;, &amp;quot;server auth&amp;quot;, &amp;quot;client auth&amp;quot;],&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;        &amp;quot;expiry&amp;quot;: &amp;quot;8760h&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      }&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    }&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  }&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;}&amp;#39;&lt;/span&gt; &amp;gt; ca-config.json
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Here we are specifying two different profiles - one for the node key and one for the proxy key. We will then create a configuration for certificate signing request (CSR) for the CA key and certificate.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;{&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  &amp;quot;CN&amp;quot;: &amp;quot;Etcd&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  &amp;quot;key&amp;quot;: {&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;size&amp;quot;: 2048&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  },&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  &amp;quot;names&amp;quot;: [&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    {&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;C&amp;quot;: &amp;quot;US&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;L&amp;quot;: &amp;quot;San Francisco&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;O&amp;quot;: &amp;quot;Infra&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;OU&amp;quot;: &amp;quot;CA&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;ST&amp;quot;: &amp;quot;California&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    }&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  ]&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;}&amp;#39;&lt;/span&gt; &amp;gt; ca-csr.json
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Finally, we will generate the certificate and key.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This will generate the three files: &lt;code&gt;ca-key.pem&lt;/code&gt; - private key for the CA, &lt;code&gt;ca.pem&lt;/code&gt; - certificate for the CA and &lt;code&gt;ca.csr&lt;/code&gt; - certificate signing request for the CA.&lt;/p&gt;
+
+&lt;h3 id=&#34;create-node-certificate-and-key&#34;&gt;Create Node certificate and key&lt;/h3&gt;
+
+&lt;p&gt;Once we have the CA certificate and key in place, we can generate the TLS key for securing the communications between nodes and proxy. We will start by creating a configuration for this certificate. Since we are running everything locally, the hosts allowed to authenticate with this certificate include only &lt;code&gt;localhost&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;{&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  &amp;quot;CN&amp;quot;: &amp;quot;etcd-node&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  &amp;quot;hosts&amp;quot;: [&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;localhost&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;0.0.0.0&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;127.0.0.1&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  ],&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  &amp;quot;key&amp;quot;: {&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;size&amp;quot;: 2048&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  },&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  &amp;quot;names&amp;quot;: [&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    {&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;C&amp;quot;: &amp;quot;US&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;L&amp;quot;: &amp;quot;San Francisco&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;O&amp;quot;: &amp;quot;Infra&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;OU&amp;quot;: &amp;quot;Cluster&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;ST&amp;quot;: &amp;quot;California&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    }&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  ]&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;}&amp;#39;&lt;/span&gt; &amp;gt; etcd-node-csr.json
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we can generate the node certificate and key&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;cfssl gencert &lt;span style=&#34;color: #CC3300; font-weight: bold&#34;&gt;\&lt;/span&gt;
+  -ca&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;ca.pem &lt;span style=&#34;color: #CC3300; font-weight: bold&#34;&gt;\&lt;/span&gt;
+  -ca-key&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;ca-key.pem &lt;span style=&#34;color: #CC3300; font-weight: bold&#34;&gt;\&lt;/span&gt;
+  -config&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;ca-config.json &lt;span style=&#34;color: #CC3300; font-weight: bold&#34;&gt;\&lt;/span&gt;
+  -profile&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;etcd-node &lt;span style=&#34;color: #CC3300; font-weight: bold&#34;&gt;\&lt;/span&gt;
+  etcd-node-csr.json | cfssljson -bare etcd-node
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This will create three files: &lt;code&gt;etcd-node.pem&lt;/code&gt;- the node certificate, &lt;code&gt;etcd-node-key.pem&lt;/code&gt; the key for this certificate and &lt;code&gt;etcd-node.csr&lt;/code&gt; - the certificate signing request.&lt;/p&gt;
+
+&lt;h3 id=&#34;create-proxy-certificate-and-key&#34;&gt;Create Proxy certificate and key&lt;/h3&gt;
+
+&lt;p&gt;We can now generate the TLS key for securing the communications between the client and the proxy. We will start by creating a configuration for this certificate. Since our client and proxy are running locally, the hosts allowed to authenticate with this certificate include only &lt;code&gt;localhost&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;{&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  &amp;quot;CN&amp;quot;: &amp;quot;etcd-proxy&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  &amp;quot;hosts&amp;quot;: [&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;localhost&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;0.0.0.0&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;127.0.0.1&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  ],&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  &amp;quot;key&amp;quot;: {&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    &amp;quot;size&amp;quot;: 2048&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  },&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  &amp;quot;names&amp;quot;: [&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    {&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;C&amp;quot;: &amp;quot;US&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;L&amp;quot;: &amp;quot;San Francisco&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;O&amp;quot;: &amp;quot;Infra&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;OU&amp;quot;: &amp;quot;Cluster&amp;quot;,&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;      &amp;quot;ST&amp;quot;: &amp;quot;California&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    }&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;  ]&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;}&amp;#39;&lt;/span&gt; &amp;gt; etcd-proxy-csr.json
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we can generate the proxy certificate and key&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;cfssl gencert &lt;span style=&#34;color: #CC3300; font-weight: bold&#34;&gt;\&lt;/span&gt;
+  -ca&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;ca.pem &lt;span style=&#34;color: #CC3300; font-weight: bold&#34;&gt;\&lt;/span&gt;
+  -ca-key&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;ca-key.pem &lt;span style=&#34;color: #CC3300; font-weight: bold&#34;&gt;\&lt;/span&gt;
+  -config&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;ca-config.json &lt;span style=&#34;color: #CC3300; font-weight: bold&#34;&gt;\&lt;/span&gt;
+  -profile&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;etcd-proxy &lt;span style=&#34;color: #CC3300; font-weight: bold&#34;&gt;\&lt;/span&gt;
+  etcd-proxy-csr.json | cfssljson -bare etcd-proxy
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This will create three files: &lt;code&gt;etcd-proxy.pem&lt;/code&gt;- the proxy certificate, &lt;code&gt;etcd-proxy-key.pem&lt;/code&gt; the key for this certificate and &lt;code&gt;etcd-proxy.csr&lt;/code&gt; - the certificate signing request.&lt;/p&gt;
+
+&lt;h2 id=&#34;running-the-nodes-securely&#34;&gt;Running the nodes securely&lt;/h2&gt;
+
+&lt;p&gt;Now that we have the certificates and keys, we will start the three nodes that form our etcd cluster. We will create three shell scripts that does this for us. In each of these, we will pass the appropriate parameters to etcd so that it uses the node certificate and key.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#script for node1&lt;/span&gt;
+&lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;#!/usr/bin/env sh&lt;/span&gt;
+
+&lt;span style=&#34;color: #CC3300&#34;&gt;etcd \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--name=&amp;#39;&lt;/span&gt;node1&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--listen-client-urls=&amp;#39;&lt;/span&gt;https://localhost:1179&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--advertise-client-urls=&amp;#39;&lt;/span&gt;https://localhost:1179&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--listen-peer-urls=&amp;#39;&lt;/span&gt;https://localhost:1180&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--initial-advertise-peer-urls=&amp;#39;&lt;/span&gt;https://localhost:1180&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--initial-cluster=&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;node1&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://localhost:1180,node2&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://localhost:1280,node3&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://localhost:1380&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--initial-cluster-token=&amp;#39;&lt;/span&gt;etcd-cluster-token&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--initial-cluster-state=&amp;#39;&lt;/span&gt;new&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--cert-file=./etcd-node.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--key-file=./etcd-node-key.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--peer-cert-file=./etcd-node.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--peer-key-file=./etcd-node-key.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--trusted-ca-file=./ca.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--peer-trusted-ca-file=./ca.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--data-dir=./nodes/node1 \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--peer-client-cert-auth=&amp;#39;&lt;/span&gt;true&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;&lt;/span&gt; &amp;gt; start-node1.sh
+
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;# script for node2&lt;/span&gt;
+&lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;#!/usr/bin/env sh&lt;/span&gt;
+
+&lt;span style=&#34;color: #CC3300&#34;&gt;etcd \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--name=&amp;#39;&lt;/span&gt;node2&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--listen-client-urls=&amp;#39;&lt;/span&gt;https://localhost:1279&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--advertise-client-urls=&amp;#39;&lt;/span&gt;https://localhost:1279&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--listen-peer-urls=&amp;#39;&lt;/span&gt;https://localhost:1280&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--initial-advertise-peer-urls=&amp;#39;&lt;/span&gt;https://localhost:1280&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--initial-cluster=&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;node1&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://localhost:1180,node2&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://localhost:1280,node3&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://localhost:1380&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--initial-cluster-token=&amp;#39;&lt;/span&gt;etcd-cluster-token&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--initial-cluster-state=&amp;#39;&lt;/span&gt;new&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--cert-file=./etcd-node.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--key-file=./etcd-node-key.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--peer-cert-file=./etcd-node.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--peer-key-file=./etcd-node-key.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--trusted-ca-file=./ca.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--peer-trusted-ca-file=./ca.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--data-dir=./nodes/node2 \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--peer-client-cert-auth=&amp;#39;&lt;/span&gt;true&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;&lt;/span&gt; &amp;gt; start-node2.sh
+
+&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;#script for node3&lt;/span&gt;
+&lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;#!/usr/bin/env sh&lt;/span&gt;
+
+&lt;span style=&#34;color: #CC3300&#34;&gt;etcd \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--name=&amp;#39;&lt;/span&gt;node3&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--listen-client-urls=&amp;#39;&lt;/span&gt;https://localhost:1379&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--advertise-client-urls=&amp;#39;&lt;/span&gt;https://localhost:1379&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--listen-peer-urls=&amp;#39;&lt;/span&gt;https://localhost:1380&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--initial-advertise-peer-urls=&amp;#39;&lt;/span&gt;https://localhost:1380&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--initial-cluster=&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;node1&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://localhost:1180,node2&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://localhost:1280,node3&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://localhost:1380&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--initial-cluster-token=&amp;#39;&lt;/span&gt;etcd-cluster-token&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--initial-cluster-state=&amp;#39;&lt;/span&gt;new&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--cert-file=./etcd-node.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--key-file=./etcd-node-key.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--peer-cert-file=./etcd-node.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--peer-key-file=./etcd-node-key.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--trusted-ca-file=./ca.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--peer-trusted-ca-file=./ca.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--data-dir=./nodes/node3 \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;--peer-client-cert-auth=&amp;#39;&lt;/span&gt;true&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;&lt;/span&gt; &amp;gt; start-node3.sh
+
+chmod +x ./start-node1.sh ./start-node2.sh ./start-node3.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once these scripts are executed, we have an etcd cluster of three nodes. We can test that this cluster is started correctly with the right security using &lt;code&gt;etcdctl&lt;/code&gt; client. For this purpose, we will be using the node certificate and key temporarily. We will also be assuming that we know what the individual nodes are. It is important to note that in our final configuration, the client will not have access to this certificate and key. It will have access only to the proxy key and there is no guarantee that the client knows what the individual nodes are.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ etcdctl --cert-file&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;./etcd-node.pem  --key-file&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;./etcd-node-key.pem --ca-file&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;./ca.pem --endpoints&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://0.0.0.0:1179,https://0.0.0.0:1279,https://0.0.0.0:1379 cluster-health
+member 5a68dbeefb870ed1 is healthy: got healthy result from https://localhost:1179
+member 772c76fe731a3914 is healthy: got healthy result from https://localhost:1379
+member aa3bff8d4d84db66 is healthy: got healthy result from https://localhost:1279
+cluster is healthy
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;configuring-the-secure-proxy&#34;&gt;Configuring the secure proxy&lt;/h2&gt;
+
+&lt;p&gt;Once we have the cluster running, we can run the proxy. To secure it, we will tell etcd to use the etcd-node key for communicating with the nodes and to use the etcd-proxy certificate to accept connection from clients.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;#!/usr/bin/env sh&lt;/span&gt;
+
+&lt;span style=&#34;color: #CC3300&#34;&gt;etcd \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;    --name=&amp;#39;&lt;/span&gt;proxy&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;     --proxy=on \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;     --listen-client-urls https://localhost:2379 \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;     --initial-cluster &amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;node1&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://localhost:1180,node2&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://localhost:1280,node3&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://localhost:1380&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;     --peer-cert-file=./etcd-node.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;     --peer-key-file=./etcd-node-key.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;     --peer-trusted-ca-file=./ca.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;     --peer-client-cert-auth=&amp;#39;&lt;/span&gt;true&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39; \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;     --ca-file=./ca.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;     --cert-file=./etcd-proxy.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;     --key-file=./etcd-proxy-key.pem \&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;     --data-dir=./nodes/proxy&lt;/span&gt;
+&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;&lt;/span&gt; &amp;gt; start-proxy.sh
+
+chmod +x start-proxy.sh
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once we have the proxy running with these parameters, we can test that the cluster and the proxy is configured correctly. This time, we will be using only the proxy certificate and the proxy end point.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ etcdctl --cert-file&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;./etcd-proxy.pem  --key-file&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;./etcd-proxy-key.pem --ca-file&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;./ca.pem --endpoints&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;https://0.0.0.0:2379 cluster-health
+member 5a68dbeefb870ed1 is healthy: got healthy result from https://localhost:1179
+member 772c76fe731a3914 is healthy: got healthy result from https://localhost:1379
+member aa3bff8d4d84db66 is healthy: got healthy result from https://localhost:1279
+cluster is healthy
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This set up gives us a secure etcd cluster with a secure proxy in front of it. Communications between client and proxy, proxy and nodes and among nodes are all secured.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Handling Deserialization errors in Spring Redis Sessions</title>
       <link>http://sdqali.in/blog/2016/11/02/handling-deserialization-errors-in-spring-redis-sessions/</link>
       <pubDate>Wed, 02 Nov 2016 13:10:33 -0700</pubDate>
@@ -2558,149 +2834,6 @@ $ echo $?
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>Using custom arguments in Spring MVC controllers</title>
-      <link>http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/</link>
-      <pubDate>Fri, 29 Jan 2016 17:41:49 -0800</pubDate>
-      
-      <guid>http://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/</guid>
-      <description>&lt;p&gt;Most of the Spring controllers in the real world accept a lot of different types of parameters - Path variables, URL parameters, request headers, request body and sometimes even the entire HTTP Request object. This provides a flexible mechanism to create APIs. Spring is really good at parsing these parameters in to Java types as long as there is an ObjectMapper (like Jackson) configured to take care of the de-serialization.&lt;/p&gt;
-
-&lt;p&gt;However, there are situations where you want methods to receive a parameter of a particular type that has to resolved from a set of parameters–for example, an API can expect consumers to send meta data about a request in the form of headers and need a custom type to hold this information. Spring provides a convenient way to provide such custom arguments. This blog post explores this feature and how to implement it and test it.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;argument-resolvers&#34;&gt;Argument Resolvers&lt;/h2&gt;
-
-&lt;p&gt;Spring uses argument resolvers to determine how to parse a particular argument required by a controller method from HTTP request body, the URL, URL parameters and HTTP headers. For example when a method expects a request header as in the following example, Spring uses a particular resolver named &lt;code&gt;RequestHeaderMethodArgumentResolver&lt;/code&gt; to resolve this argument. All argument resolvers implement the &lt;code&gt;HandlerMethodArgumentResolver&lt;/code&gt; interface whose contract is:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;HandlerMethodArgumentResolver&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;supportsParameter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MethodParameter parameter&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    Object &lt;span style=&#34;color: #CC00FF&#34;&gt;resolveArgument&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MethodParameter parameter&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ModelAndViewContainer mavContainer&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
-            NativeWebRequest webRequest&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; WebDataBinderFactory binderFactory&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The &lt;code&gt;supportsParameter&lt;/code&gt; method determines if this resolver is capable of parsing a given parameter and &lt;code&gt;resolveArgument&lt;/code&gt; specifies how it‘s value should be computed. Notice how this method has the web &lt;code&gt;NativeWebRequest&lt;/code&gt; argument passed to it to allow the look up of request parameters like body, url and headers.&lt;/p&gt;
-
-&lt;p&gt;For this example, the MetaData that we are interested in can be represented as a type:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;MetaData&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@JsonProperty&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;data&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; Map&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; map  &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;MetaData&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;MetaData&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Map&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; map&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;map&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; map&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color: #CC00FF&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String key&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; map&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;key&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;An argument resolver to compute this from the incoming request can be written as follows:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;MetaDataResolver&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; HandlerMethodArgumentResolver &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String TRANSACTION_ID &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;TRANSACTION-ID&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; String ACCESS_KEY &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;ACCESS-KEY&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; metaDataHeaderNames &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; Arrays&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;asList&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;TRANSACTION_ID&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ACCESS_KEY&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;supportsParameter&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MethodParameter parameter&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; parameter&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getParameterType&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;equals&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MetaData&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Object &lt;span style=&#34;color: #CC00FF&#34;&gt;resolveArgument&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MethodParameter parameter&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ModelAndViewContainer mavContainer&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; NativeWebRequest webRequest&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; WebDataBinderFactory binderFactory&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        HashMap&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; map &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-        metaDataHeaderNames&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;forEach&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name &lt;span style=&#34;color: #555555&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-            &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;webRequest&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getHeader&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-                map&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; webRequest&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getHeader&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;name&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
-            &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-        &lt;span style=&#34;color: #555555&#34;&gt;});&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; MetaData&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;map&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This resolver will try and compute the value for the argument if the arguments type is &lt;code&gt;MetaData&lt;/code&gt;. It computes it by extracting all the headers representing the meta data from the request.&lt;/p&gt;
-
-&lt;h2 id=&#34;using-in-a-controller-method&#34;&gt;Using in a controller method&lt;/h2&gt;
-
-&lt;p&gt;This parameter can be accessed in a controller method as follows:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RestController&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/profiles&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ProfileController&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Autowired&lt;/span&gt;
-    ProfileService profileService&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;path &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
-    method &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; RequestMethod&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;POST&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Map&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; String&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;create&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RequestBody&lt;/span&gt; Profile profile&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; MetaData metaData&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        profileService&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;create&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profile&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; metaData&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-        System&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;out&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;printf&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;metaData&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;toString&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;singletonMap&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;message&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;success&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;If we were to run this app and make a request with the following headers, we will see that the MetaData instance did not get constructed with the right parameters.&lt;/p&gt;
-
-&lt;h2 id=&#34;wiring-up-the-custom-resolver&#34;&gt;Wiring up the custom resolver&lt;/h2&gt;
-
-&lt;p&gt;For this resolver to work, it needs to be added to the chain of resolvers that Spring uses. This can be done by extending &lt;code&gt;WebMvcConfigurerAdapter&lt;/code&gt;‘s &lt;code&gt;addArgumentResolvers&lt;/code&gt; method as follows:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;Config&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; WebMvcConfigurerAdapter &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;addArgumentResolvers&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;List&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;&lt;/span&gt;HandlerMethodArgumentResolver&lt;span style=&#34;color: #555555&#34;&gt;&amp;gt;&lt;/span&gt; argumentResolvers&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        argumentResolvers&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;add&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; MetaDataResolver&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&#34;testing-using-mockmvc&#34;&gt;Testing using MockMvc&lt;/h2&gt;
-
-&lt;p&gt;In order to test the behavior of a controller in the presence of a custom argument resolver using MockMvc, the resolver need to be added to the list of resolvers that MockMvc is going to use.
- An example test for the above class is as follows:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RunWith&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MockitoJUnitRunner&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ProfileControllerTest&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; TestCase &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; ProfileController profileController&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; MockMvc mockMvc&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; ObjectMapper objectMapper&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Mock&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; ProfileService profileService&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Before&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;setUp&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        objectMapper &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; ObjectMapper&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
-        profileController &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; ProfileController&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profileService&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-        mockMvc &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; MockMvcBuilders
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;standaloneSetup&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profileController&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setCustomArgumentResolvers&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; MetaDataResolver&lt;span style=&#34;color: #555555&#34;&gt;())&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;build&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@Test&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;shouldCreateAProfile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        Profile profile &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; Profile&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;foo&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;foo@bar.com&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-        MetaData metaData &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; MetaData&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;singletonMap&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;TRANSACTION-ID&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;foo&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
-
-        mockMvc&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;perform&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;post&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/profiles/&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;content&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;objectMapper&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;writeValueAsBytes&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profile&lt;span style=&#34;color: #555555&#34;&gt;))&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;contentType&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;MediaType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;APPLICATION_JSON&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;header&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;TRANSACTION-ID&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;foo&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;))&lt;/span&gt;
-                &lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;andExpect&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;status&lt;span style=&#34;color: #555555&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;isOk&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;());&lt;/span&gt;
-        Mockito&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;verify&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profileService&lt;span style=&#34;color: #555555&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;create&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;eq&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;profile&lt;span style=&#34;color: #555555&#34;&gt;),&lt;/span&gt; eq&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;metaData&lt;span style=&#34;color: #555555&#34;&gt;));&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This test is self-explanatory–we wire up the argument resolver, make a request with one of the meta data headers and expect the profile service to be invoked with the right parameters.&lt;/p&gt;</description>
     </item>
     
   </channel>
