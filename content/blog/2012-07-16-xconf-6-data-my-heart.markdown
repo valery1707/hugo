@@ -5,7 +5,13 @@ layout: post
 title: "XConf 6 - Data, My Heart!"
 date: 2012-07-16
 comments: true
-categories: talk visualisation d3.js javascript data deck.js
+categories:
+- talk
+- visualisation
+- d3.js
+- javascript
+- data
+- deck.js
 ---
 
 Last Saturday,  Srijayanth Sridhar ([@craftybones](https://twitter.com/craftybones)) and I gave a talk at XConf, ThoughtWorks India's internal conference series.

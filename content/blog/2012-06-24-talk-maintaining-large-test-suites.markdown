@@ -1,11 +1,15 @@
 ---
-image:
-  feature: /images/threaded-blue-on-black-cropped.jpg
+image: "/images/threaded-blue-on-black-cropped.jpg"
 layout: post
 title: "VodQA NCR: Maintaining Large Test Suites"
 date: 2012-06-24
 comments: true
-categories: talk test automation twist cucumber
+Categories:
+- talk
+- test
+- automation
+- twist
+- cucumber
 ---
 [Srijayanth Sridhar](https://twitter.com/craftybones) and I did a talk yesterday at [vodQA NCR](http://www.thoughtworks.com/events/the-testing-spirit).
 

@@ -5,7 +5,11 @@ layout: post
 title: "D3.js Workshop"
 date: 2012-08-01
 comments: true
-categories: talk code d3.js visualisation
+categories:
+- talk
+- code
+- d3.js
+- visualisation
 ---
 I did a [d3.js](http://d3js.org) workshop at ThoughtWorks Bangalore yesterday (31st
 July, 2012). I split the workshop in to two parts. The first was a basic
