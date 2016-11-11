@@ -12,7 +12,7 @@ Tags:
 - Secure
 - Development
 date: 2016-11-11T13:07:32-08:00
-image: "images/etcd-offset-color.svg"
+image: "images/etcd2-0.png"
 keywords:
 - Etcd
 - Cluster
