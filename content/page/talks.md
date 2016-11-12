@@ -1,6 +1,6 @@
 ---
 type: page
-title: "About"
+title: "Talks"
 comments: true
 url: /talks/
 ---
