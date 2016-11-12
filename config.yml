@@ -5,6 +5,7 @@ contentdir: "content"
 publishdir: "public"
 indexes:
     category: "categories"
+    category: "tags"
 permalinks:
     blog: /blog/:year/:month/:day/:title/
 metadataformat: "yaml"
