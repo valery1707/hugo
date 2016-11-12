@@ -43,7 +43,8 @@
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
   <body>
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
+     id="site-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
   <div class="container-fluid">
     
     <div class="navbar-header page-scroll">
@@ -78,7 +79,8 @@
 
     
     
-    <header class="intro-header">
+    <header class="intro-header" id="header"
+            itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -94,7 +96,9 @@
 
     
     <article>
-      <div class="container">
+      <div class="container" id="main-page"
+         itemprop="mainContentOfPage"
+         itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>We are building a command line data loader application at work that uses Spring. One of the things that I took us more time that it should have to figure out was how to write an integration test that invokes the command line application with the right command line arguments. This blog post describes this scenario and a potential solution to this problem.
@@ -223,7 +227,7 @@ ConfigurableApplicationContext applicationContext <span style="color: #555555">=
     <hr>
 
     
-<footer>
+<footer id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

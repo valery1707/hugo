@@ -46,7 +46,8 @@
   <meta property="og:image" content="http://sdqali.in/img/redis-spring-boot.png" />
   <body>
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
+     id="site-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
   <div class="container-fluid">
     
     <div class="navbar-header page-scroll">
@@ -81,7 +82,8 @@
 
     
     
-    <header class="intro-header">
+    <header class="intro-header" id="header"
+            itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -97,7 +99,9 @@
 
     
     <article>
-      <div class="container">
+      <div class="container" id="main-page"
+         itemprop="mainContentOfPage"
+         itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>One of the challenges of using storing spring sessions in Redis is that the objects that gets stored as part of a session often undergoes changes as the application evolves and these changes cause de-serialization exceptions to be thrown after a deployment when a session created before the deployment is presented to the application. This blog post discusses a method to work around this issue.</p>
@@ -221,7 +225,7 @@ This approach ensures that every time a de-serialization error is thrown while t
     <hr>
 
     
-<footer>
+<footer id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

@@ -40,7 +40,8 @@
   <meta property="og:image" content="http://sdqali.in/images/spring-security.png" />
   <body>
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
+     id="site-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
   <div class="container-fluid">
     
     <div class="navbar-header page-scroll">
@@ -75,7 +76,8 @@
 
     
     
-    <header class="intro-header">
+    <header class="intro-header" id="header"
+            itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -91,7 +93,9 @@
 
     
     <article>
-      <div class="container">
+      <div class="container" id="main-page"
+         itemprop="mainContentOfPage"
+         itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>In the <a href="/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/">previous blog post</a>, we built the Spring API that responds with Profile information. Continuing on the path to building authentication with JWT, in this blog post, we will create a login mechanism that issues a JWT when the user presents the correct credentials.</p>
@@ -314,7 +318,7 @@ Date: Wed, 06 Jul 2016 06:05:46 GMT
     <hr>
 
     
-<footer>
+<footer id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

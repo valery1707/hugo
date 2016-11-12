@@ -46,7 +46,8 @@
   <meta property="og:image" content="http://sdqali.in/images/1280px-Tomcat-logo.svg.png" />
   <body>
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
+     id="site-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
   <div class="container-fluid">
     
     <div class="navbar-header page-scroll">
@@ -81,7 +82,8 @@
 
     
     
-    <header class="intro-header">
+    <header class="intro-header" id="header"
+            itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -97,7 +99,9 @@
 
     
     <article>
-      <div class="container">
+      <div class="container" id="main-page"
+         itemprop="mainContentOfPage"
+         itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the <code>CATALINA_HOME</code> and <code>CATALINA_BASE</code> environment variables used by Tomcat. I have verified this method against Tomcat versions <code>8.0.x</code>; other versions should work the same way.</p>
@@ -283,7 +287,7 @@ $ curl -v http://127.0.0.1:9090
     <hr>
 
     
-<footer>
+<footer id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

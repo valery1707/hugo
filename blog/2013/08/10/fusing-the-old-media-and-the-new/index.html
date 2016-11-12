@@ -64,7 +64,8 @@ In other words, make it clear that it is possible to do great journalism in an I
   <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
   <body>
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
+     id="site-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
   <div class="container-fluid">
     
     <div class="navbar-header page-scroll">
@@ -99,7 +100,8 @@ In other words, make it clear that it is possible to do great journalism in an I
 
     
     
-    <header class="intro-header">
+    <header class="intro-header" id="header"
+            itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -115,7 +117,9 @@ In other words, make it clear that it is possible to do great journalism in an I
 
     
     <article>
-      <div class="container">
+      <div class="container" id="main-page"
+         itemprop="mainContentOfPage"
+         itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>From Kara Swisher&rsquo;s well written <a href="http://allthingsd.com/20130807/dear-jeff-bezos-heres-what-i-saw-as-an-analog-nobody-in-the-mailroom-of-the-washington-post/?mod=thisweek">open letter to Jeff Bezos</a> in the light of the latter&rsquo;s announcement that he has bought the Washington Post:</p>
@@ -141,7 +145,7 @@ In other words, make it clear that it is possible to do great journalism in an I
     <hr>
 
     
-<footer>
+<footer id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

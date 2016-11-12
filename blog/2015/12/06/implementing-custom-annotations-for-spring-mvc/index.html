@@ -46,7 +46,8 @@ Among the new things introduced in Spring 4 was the idea of meta-annotations. 1 
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
   <body>
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
+     id="site-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
   <div class="container-fluid">
     
     <div class="navbar-header page-scroll">
@@ -81,7 +82,8 @@ Among the new things introduced in Spring 4 was the idea of meta-annotations. 1 
 
     
     
-    <header class="intro-header">
+    <header class="intro-header" id="header"
+            itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -97,7 +99,9 @@ Among the new things introduced in Spring 4 was the idea of meta-annotations. 1 
 
     
     <article>
-      <div class="container">
+      <div class="container" id="main-page"
+         itemprop="mainContentOfPage"
+         itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of <code>@RequestMapping</code> and <code>@ResponseStatus</code> to set the expected request and response <code>Content-Type</code>, the request Method, response status etc. This blog post describes how to compose Spring annotations that produce the same effect as multiple Spring annotations acting together.
@@ -171,7 +175,7 @@ Among the new things introduced in Spring 4 was the idea of meta-annotations. <s
     <hr>
 
     
-<footer>
+<footer id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

@@ -46,7 +46,8 @@ The first step is to rewrite our test to use the @IntegrationTest annotations. T
   <meta property="og:image" content="http://sdqali.in/images/spring-by-pivotal.png" />
   <body>
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
+     id="site-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
   <div class="container-fluid">
     
     <div class="navbar-header page-scroll">
@@ -81,7 +82,8 @@ The first step is to rewrite our test to use the @IntegrationTest annotations. T
 
     
     
-    <header class="intro-header">
+    <header class="intro-header" id="header"
+            itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -97,7 +99,9 @@ The first step is to rewrite our test to use the @IntegrationTest annotations. T
 
     
     <article>
-      <div class="container">
+      <div class="container" id="main-page"
+         itemprop="mainContentOfPage"
+         itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>In the <a href="/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/">last blog post</a>, I wrote about the challenges of writing an integration test for a Spring command line application. One of the solutions for this issue discussed in the blog post was to use the <code>@IntegrationTest</code> annotations to inject Java system properties and use that to run the application instead of the normal command line arguments. This blog post describes how to perform this.
@@ -202,7 +206,7 @@ The first step is to rewrite our test to use the <code>@IntegrationTest</code> a
     <hr>
 
     
-<footer>
+<footer id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

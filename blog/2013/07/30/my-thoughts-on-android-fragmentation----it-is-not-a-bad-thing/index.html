@@ -64,7 +64,8 @@ For consumers, extreme fragmentation means that they can get exactly the phone t
   <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
   <body>
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
+     id="site-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
   <div class="container-fluid">
     
     <div class="navbar-header page-scroll">
@@ -99,7 +100,8 @@ For consumers, extreme fragmentation means that they can get exactly the phone t
 
     
     
-    <header class="intro-header">
+    <header class="intro-header" id="header"
+            itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -115,7 +117,9 @@ For consumers, extreme fragmentation means that they can get exactly the phone t
 
     
     <article>
-      <div class="container">
+      <div class="container" id="main-page"
+         itemprop="mainContentOfPage"
+         itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>OpenSignal released the July 2013 edition <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> of their State of Android report. Among many things like the dominance of Samsung, HTC&rsquo;s faltering performance and Motorola&rsquo;s struggle, it points out that the Android device landscape is more fragmented than ever. Out of <em>682000</em> devices surveyed for the report, <em>11868</em> distinct devices were seen. This has met with cries of anguish from Developers and the usual suspects <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>.</p>
@@ -169,7 +173,7 @@ Are you a programmer in the valley and can afford pretty much any smart device y
     <hr>
 
     
-<footer>
+<footer id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

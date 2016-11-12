@@ -46,7 +46,8 @@
   <meta property="og:image" content="http://sdqali.in/images/ogp.png" />
   <body>
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
+     id="site-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
   <div class="container-fluid">
     
     <div class="navbar-header page-scroll">
@@ -81,7 +82,8 @@
 
     
     
-    <header class="intro-header">
+    <header class="intro-header" id="header"
+            itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -97,7 +99,9 @@
 
     
     <article>
-      <div class="container">
+      <div class="container" id="main-page"
+         itemprop="mainContentOfPage"
+         itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>The Open Graph protocol was designed by Facebook to help content creators generate a richer preview of links to their content when they get posted in to Facebook. It was originally proposed as a simple mark up that can be adopted in platforms beyond Facebook. The Open Graph Protocol Design Decisions presentation <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> does a very good job of enumerating the motivation and design decisions made for Open Graph. I have lately been reading and experimenting with these tags and I notice a fair bit of differences when it comes to how these tags are used by different platforms.</p>
@@ -172,7 +176,7 @@ og:image
     <hr>
 
     
-<footer>
+<footer id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

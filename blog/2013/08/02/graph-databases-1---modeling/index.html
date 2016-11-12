@@ -46,7 +46,8 @@
   <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
   <body>
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
+     id="site-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
   <div class="container-fluid">
     
     <div class="navbar-header page-scroll">
@@ -81,7 +82,8 @@
 
     
     
-    <header class="intro-header">
+    <header class="intro-header" id="header"
+            itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -97,7 +99,9 @@
 
     
     <article>
-      <div class="container">
+      <div class="container" id="main-page"
+         itemprop="mainContentOfPage"
+         itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>I am making my way through the book <em>Graph Databases</em> <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> which is an introductory book to the subject from Neo Technology <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>, creators of Neo4j <sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>. At work, we are using Neo4j for a cool new thing we are building, and I see it as a great chance to learn some thing new and interesting. In the past, I have gone through a spiral <sup class="footnote-ref" id="fnref:4"><a rel="footnote" href="#fn:4">4</a></sup> when it comes to learning stuff and the constant feedback I get is to pick something that one gets to work with everyday and dig deep into it, in order to avoid the frustration and the inevitable spiral.</p>
@@ -249,7 +253,7 @@
     <hr>
 
     
-<footer>
+<footer id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

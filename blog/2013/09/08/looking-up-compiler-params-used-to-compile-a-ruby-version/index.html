@@ -40,7 +40,8 @@
   <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
   <body>
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
+     id="site-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
   <div class="container-fluid">
     
     <div class="navbar-header page-scroll">
@@ -75,7 +76,8 @@
 
     
     
-    <header class="intro-header">
+    <header class="intro-header" id="header"
+            itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -91,7 +93,9 @@
 
     
     <article>
-      <div class="container">
+      <div class="container" id="main-page"
+         itemprop="mainContentOfPage"
+         itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>Today <a href="https://twitter.com/kgrz">Kashyap</a> asked how one can identify the compiler parameters passed when compiling a Ruby version. I was curious how to achieve this and like any confused developer started searching for and looking in the Ruby documentation. Searching for <strong>compiler parameters in ruby</strong> did not yield any interesting results and the group of constants with the <code>RUBY_</code> prefix <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> loaded in Ruby did not include anything related to compiler flags. Then I came across this blog post <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup> by <a href="https://twitter.com/happycode">Jan Lelis</a> and I was curious what else <code>RbConfig::CONFIG</code> contains. This hash contains all the compiler flags used to compile the current Ruby VM.</p>
@@ -137,7 +141,7 @@ LDFLAGS - -L. -L/Users/sdqali/.rvm/usr/lib -L/usr/local/lib
     <hr>
 
     
-<footer>
+<footer id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

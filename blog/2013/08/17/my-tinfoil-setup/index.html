@@ -52,7 +52,8 @@ This means that when I browse the web, I treat cookies, javascript code and thir
   <meta property="og:image" content="http://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
   <body>
 
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
+     id="site-navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
   <div class="container-fluid">
     
     <div class="navbar-header page-scroll">
@@ -87,7 +88,8 @@ This means that when I browse the web, I treat cookies, javascript code and thir
 
     
     
-    <header class="intro-header">
+    <header class="intro-header" id="header"
+            itemscope="itemscope" itemtype="http://schema.org/WPHeader">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -103,7 +105,9 @@ This means that when I browse the web, I treat cookies, javascript code and thir
 
     
     <article>
-      <div class="container">
+      <div class="container" id="main-page"
+         itemprop="mainContentOfPage"
+         itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <p>I try to be careful when I use the internet. This is not because I do illegal stuff—I just don&rsquo;t like the idea of random websites tracking me across the web, recording everything I do, and then serving me advertisements. I don&rsquo;t like the idea of technocracies like Facebook collecting and storing data about me, even after I have explicitly quit their colourful walled garden. <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup> I don&rsquo;t like Google tracking what websites I read by pretending to provide a service to the creators of those websites in the form of CDN and Analytics. <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup> I don&rsquo;t want marketing optimisation services to track me and put me in their funnel, unless I explicitly want to.</p>
@@ -176,7 +180,7 @@ This means that when I browse the web, I treat cookies, javascript code and thir
     <hr>
 
     
-<footer>
+<footer id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
