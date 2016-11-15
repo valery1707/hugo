@@ -930,7 +930,7 @@ li a {
     text-decoration: underline;
 }
 
-p.comments, p.similar {
+p.comments, .tags {
     font-size: 90%;
     font-style: italic;
 }
@@ -938,6 +938,11 @@ p.comments, p.similar {
 p {
     line-height: 1.55em;
 }
+
+.related-posts > li:nth-of-type(n+6) {
+  display: none;
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
 }
