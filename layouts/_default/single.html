@@ -38,7 +38,6 @@
                 {{ if gt $index 0 }}, {{ end }} <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a>
                 {{ end }}
               </div>
-
             </div>
           </div>
         </div>
@@ -65,7 +64,7 @@
                     {{ $page := . }}
                     {{ $has_common_tags := intersect $tags .Params.tags | len | lt 0 }}
                     {{ if and $has_common_tags (ne $page_link $page.Permalink) }}
-                    <li><a class="related" href="{{ $page.Permalink }}">{{ $page.Title }}</a></li>
+                    <li><a class="related" href="{{ (print $page.Permalink "?utm_source=site&utm_medium=related" )}}">{{ $page.Title }}</a></li>
                     {{ end }}
                     {{ end }}
                 </ul>
