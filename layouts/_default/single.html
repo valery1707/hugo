@@ -32,6 +32,13 @@
             <div class="site-heading">
               <h1> {{ .Title }}</h1>
               <span class="meta">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
+              <div class="tags">
+                <i class="fa fa-tags" aria-hidden="true"></i>
+                {{ range $index, $tag := .Params.tags }}
+                {{ if gt $index 0 }}, {{ end }} <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a>
+                {{ end }}
+              </div>
+
             </div>
           </div>
         </div>
@@ -47,12 +54,21 @@
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             {{ .Content }}
-            <p class="similar"> Similar blog posts tagged:
-              {{ range $index, $tag := .Params.tags }}
-              {{ if gt $index 0 }}, {{ end }} <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a>
-              {{ end }}
-            </p>
             {{ partial "comments.html.snippet" }}
+          </div>
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <h3>If you liked this post, you'll also like...</h3>
+                <ul class="related-posts">
+                    {{ $page_link := .Permalink }}
+                    {{ $tags := .Params.tags }}
+                    {{ range .Site.Pages }}
+                    {{ $page := . }}
+                    {{ $has_common_tags := intersect $tags .Params.tags | len | lt 0 }}
+                    {{ if and $has_common_tags (ne $page_link $page.Permalink) }}
+                    <li><a class="related" href="{{ $page.Permalink }}">{{ $page.Title }}</a></li>
+                    {{ end }}
+                    {{ end }}
+                </ul>
           </div>
         </div>
       </div>
