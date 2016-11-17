@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/tags/cloudfoundry/index.xml</link>
+    <link>https://sdqali.in/tags/cloudfoundry/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/tags/cloudfoundry/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/tags/cloudfoundry/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Making sense of Cloud Foundry security group declarations</title>
-      <link>http://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/</link>
+      <link>https://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/</link>
       <pubDate>Thu, 21 May 2015 22:58:41 -0700</pubDate>
       
-      <guid>http://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/</guid>
+      <guid>https://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/</guid>
       <description>&lt;p&gt;Cloud Foundry allows fine grained declaration of security groups, down to IP address ranges and Ports. While this provides great flexibility, making sense of why each rule in a security group exists and what each does is really difficult because of the limitations of the security group declaration mechanism.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;

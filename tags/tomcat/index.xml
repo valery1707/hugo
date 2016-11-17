@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/tags/tomcat/index.xml</link>
+    <link>https://sdqali.in/tags/tomcat/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/tags/tomcat/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/tags/tomcat/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Running multiple applications in the same Tomcat installation</title>
-      <link>http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/</link>
+      <link>https://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/</link>
       <pubDate>Tue, 09 Jun 2015 01:11:05 -0400</pubDate>
       
-      <guid>http://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/</guid>
+      <guid>https://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/</guid>
       <description>&lt;p&gt;This blog post describes how to set up Tomcat to run multiple applications running as separate JVM processes, using the same Tomcat installation. This method utilizes the &lt;code&gt;CATALINA_HOME&lt;/code&gt; and &lt;code&gt;CATALINA_BASE&lt;/code&gt; environment variables used by Tomcat. I have verified this method against Tomcat versions &lt;code&gt;8.0.x&lt;/code&gt;; other versions should work the same way.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;

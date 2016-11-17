@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/tags/coreos/index.xml</link>
+    <link>https://sdqali.in/tags/coreos/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/tags/coreos/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/tags/coreos/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Setting up a secure etcd cluster behind a proxy</title>
-      <link>http://sdqali.in/blog/2016/11/11/setting-up-a-secure-etcd-cluster-behind-a-proxy/</link>
+      <link>https://sdqali.in/blog/2016/11/11/setting-up-a-secure-etcd-cluster-behind-a-proxy/</link>
       <pubDate>Fri, 11 Nov 2016 13:07:32 -0800</pubDate>
       
-      <guid>http://sdqali.in/blog/2016/11/11/setting-up-a-secure-etcd-cluster-behind-a-proxy/</guid>
+      <guid>https://sdqali.in/blog/2016/11/11/setting-up-a-secure-etcd-cluster-behind-a-proxy/</guid>
       <description>&lt;p&gt;This is a blog post that explains how to set up a highly available etcd cluster behind a proxy and securing the communication between a client and the proxy, between the proxy and the individual member in the cluster and between members in the cluster.
 &lt;/p&gt;
 
@@ -30,7 +30,7 @@
 
 &lt;p&gt;In this example, we will set up a cluster of 3 etcd nodes. We will use a key pair for the nodes and proxy to communicate between each other and another key pair for clients to communicate with the proxy.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/etcd-secure-cluster-proxy.svg&#34; alt=&#34;Secure Etcd Cluster with Proxy&#34; title=&#34;Secure Etcd Cluster with Proxy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/etcd-secure-cluster-proxy.svg&#34; alt=&#34;Secure Etcd Cluster with Proxy&#34; title=&#34;Secure Etcd Cluster with Proxy&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;generating-keys&#34;&gt;Generating Keys&lt;/h2&gt;
 

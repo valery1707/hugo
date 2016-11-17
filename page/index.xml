@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Page-rsses on Sadique Ali</title>
-    <link>http://sdqali.in/page/index.xml</link>
+    <link>https://sdqali.in/page/index.xml</link>
     <description>Recent content in Page-rsses on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/page/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/page/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>About</title>
-      <link>http://sdqali.in/about</link>
+      <link>https://sdqali.in/about</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/about</guid>
+      <guid>https://sdqali.in/about</guid>
       <description>&lt;p&gt;I am a passionate software developer currently working as a Senior Consultant at ThoughtWorks. I am always trying to learn new things.&lt;/p&gt;
 
 &lt;p&gt;This blog uses Google Analytics.&lt;/p&gt;
@@ -21,11 +21,11 @@
     
     <item>
       <title>Talks</title>
-      <link>http://sdqali.in/talks/</link>
+      <link>https://sdqali.in/talks/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/talks/</guid>
-      <description>&lt;p&gt;Once in a while I garner enough courage, go stand in front of a crowd and talk about things that I like and/or have worked on. These are the &lt;a href=&#34;http://sdqali.in/categories/talk&#34;&gt;remnants&lt;/a&gt; of some of those incidents.&lt;/p&gt;
+      <guid>https://sdqali.in/talks/</guid>
+      <description>&lt;p&gt;Once in a while I garner enough courage, go stand in front of a crowd and talk about things that I like and/or have worked on. These are the &lt;a href=&#34;https://sdqali.in/categories/talk&#34;&gt;remnants&lt;/a&gt; of some of those incidents.&lt;/p&gt;
 </description>
     </item>
     
