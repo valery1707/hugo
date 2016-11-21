@@ -1,6 +1,5 @@
 ---
-image:
-  feature: /images/threaded-blue-on-black-cropped.jpg
+image: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "On Halal Burgers"
 date: 2013-09-17

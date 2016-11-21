@@ -1,6 +1,5 @@
 ---
-image:
-  feature: /images/threaded-blue-on-black-cropped.jpg
+image: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "A rainy distraction"
 date: 2013-11-21

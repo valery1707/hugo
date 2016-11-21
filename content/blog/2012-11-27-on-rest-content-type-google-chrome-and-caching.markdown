@@ -1,6 +1,5 @@
 ---
-image:
-  feature: /images/threaded-blue-on-black-cropped.jpg
+image: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "On REST, Content-Type, Google Chrome and Caching"
 date: 2012-11-27

@@ -1,6 +1,5 @@
 ---
-image:
-  feature: /images/threaded-blue-on-black-cropped.jpg
+image: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Micro Journal - simple Git-backed journal in Python"
 date: 2012-06-25

@@ -1,6 +1,5 @@
 ---
-image:
-  feature: /images/threaded-blue-on-black-cropped.jpg
+image: /images/threaded-blue-on-black-cropped.jpg
 layout: post
 title: "Managing security certificates from the console - on Windows, Mac OS X and Linux"
 date: 2012-06-05
