@@ -3,9 +3,9 @@ title: "Sadique Ali"
 layoutdir: "layouts"
 contentdir: "content"
 publishdir: "public"
-indexes:
+taxonomies:
     category: "categories"
-    category: "tags"
+    tag: "tags"
 permalinks:
     blog: /blog/:year/:month/:day/:title/
 metadataformat: "yaml"
