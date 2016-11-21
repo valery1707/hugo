@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-groovy-gradle-android/index.xml</link>
+    <link>https://sdqali.in/categories/code-groovy-gradle-android/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/categories/code-groovy-gradle-android/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/categories/code-groovy-gradle-android/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Reading user input in Gradle scripts</title>
-      <link>http://sdqali.in/blog/2013/10/01/reading-user-input-in-gradle-scripts/</link>
+      <link>https://sdqali.in/blog/2013/10/01/reading-user-input-in-gradle-scripts/</link>
       <pubDate>Tue, 01 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2013/10/01/reading-user-input-in-gradle-scripts/</guid>
+      <guid>https://sdqali.in/blog/2013/10/01/reading-user-input-in-gradle-scripts/</guid>
       <description>
 
-&lt;p&gt;Continuing from the last &lt;a href=&#34;http://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/&#34;&gt;blog post&lt;/a&gt;, I have been looking at reading user input from a Gradle script. This was a result of Stack Overflow user &lt;em&gt;user672009&lt;/em&gt;&amp;rsquo;s &lt;a href=&#34;http://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle/19130098#19130098&#34;&gt;question&lt;/a&gt; about prompting for input from a Gradle script so the one does not have to include passwords in the script while checking in.&lt;/p&gt;
+&lt;p&gt;Continuing from the last &lt;a href=&#34;https://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/&#34;&gt;blog post&lt;/a&gt;, I have been looking at reading user input from a Gradle script. This was a result of Stack Overflow user &lt;em&gt;user672009&lt;/em&gt;&amp;rsquo;s &lt;a href=&#34;http://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle/19130098#19130098&#34;&gt;question&lt;/a&gt; about prompting for input from a Gradle script so the one does not have to include passwords in the script while checking in.&lt;/p&gt;
 
 &lt;p&gt;Just like the last example, the fact that Gradle scripts are written in a Groovy DSL comes to our help. Groovy&amp;rsquo;s &lt;code&gt;System. console(). readLine&lt;/code&gt; can be called from inside Gradle tasks. The same recipe from the last post can be rewritten to prompt for various parameters.&lt;/p&gt;
 

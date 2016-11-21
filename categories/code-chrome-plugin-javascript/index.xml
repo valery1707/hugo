@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-chrome-plugin-javascript/index.xml</link>
+    <link>https://sdqali.in/categories/code-chrome-plugin-javascript/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/categories/code-chrome-plugin-javascript/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/categories/code-chrome-plugin-javascript/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>GetCache - A Chrome plugin to view cached version of the current page</title>
-      <link>http://sdqali.in/blog/2012/11/28/getcache---a-chrome-plugin-to-view-cached-version-of-the-current-page/</link>
+      <link>https://sdqali.in/blog/2012/11/28/getcache---a-chrome-plugin-to-view-cached-version-of-the-current-page/</link>
       <pubDate>Wed, 28 Nov 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2012/11/28/getcache---a-chrome-plugin-to-view-cached-version-of-the-current-page/</guid>
+      <guid>https://sdqali.in/blog/2012/11/28/getcache---a-chrome-plugin-to-view-cached-version-of-the-current-page/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;Download the plugin
-&lt;a href=&#34;http://sdqali.in/downloads/GetCache.crx&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;a href=&#34;https://sdqali.in/downloads/GetCache.crx&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;On numerous occasions, I have ran in to the situation where I had to
@@ -32,7 +32,7 @@ the current page.&lt;/p&gt;
 &lt;h2 id=&#34;installing&#34;&gt;Installing&lt;/h2&gt;
 
 &lt;p&gt;You can download the plugin
-&lt;a href=&#34;http://sdqali.in/downloads/GetCache.crx&#34;&gt;here&lt;/a&gt;. In order to install it, open your
+&lt;a href=&#34;https://sdqali.in/downloads/GetCache.crx&#34;&gt;here&lt;/a&gt;. In order to install it, open your
 Extensions page (&lt;code&gt;Window -&amp;gt; Extensions&lt;/code&gt;) and drag the downloaded &lt;code&gt;CRX&lt;/code&gt;
 file to the page.&lt;/p&gt;
 
@@ -42,11 +42,11 @@ file to the page.&lt;/p&gt;
 
 &lt;p&gt;On any page, click on the GetCache icon to load the cached page.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/get_cache_icon.png&#34; alt=&#34;GetCache icon&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/get_cache_icon.png&#34; alt=&#34;GetCache icon&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Or you could right click on the page and select &lt;code&gt;View Google&#39;s cache&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/get_cache_context_menu.png&#34; alt=&#34;GetCache context menu&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/get_cache_context_menu.png&#34; alt=&#34;GetCache context menu&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;source-code&#34;&gt;Source Code&lt;/h2&gt;
 

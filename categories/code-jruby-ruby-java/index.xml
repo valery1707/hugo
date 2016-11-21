@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-jruby-ruby-java/index.xml</link>
+    <link>https://sdqali.in/categories/code-jruby-ruby-java/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/categories/code-jruby-ruby-java/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/categories/code-jruby-ruby-java/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Java Arrays in JRuby</title>
-      <link>http://sdqali.in/blog/2010/03/16/java-arrays-in-jruby/</link>
+      <link>https://sdqali.in/blog/2010/03/16/java-arrays-in-jruby/</link>
       <pubDate>Tue, 16 Mar 2010 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2010/03/16/java-arrays-in-jruby/</guid>
+      <guid>https://sdqali.in/blog/2010/03/16/java-arrays-in-jruby/</guid>
       <description>&lt;p&gt;Recently my team encountered a frustrating thing while working with a Java library in JRuby. It took us long to figure out what was going wrong. This is an attempt to write down what was happening.&lt;/p&gt;
 
 &lt;p&gt;You are in Ruby world, a world of weak typing, no type casting and pure bliss in coding. You forget that some languages care about the type of elements in an Array. And you end up spending a lot of time figuring out why you are staring at a stupid looking exception.&lt;/p&gt;

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/categories/talk/index.xml</link>
+    <link>https://sdqali.in/categories/talk/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/categories/talk/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/categories/talk/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>D3.js Workshop</title>
-      <link>http://sdqali.in/blog/2012/08/01/d3.js-workshop/</link>
+      <link>https://sdqali.in/blog/2012/08/01/d3.js-workshop/</link>
       <pubDate>Wed, 01 Aug 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2012/08/01/d3.js-workshop/</guid>
+      <guid>https://sdqali.in/blog/2012/08/01/d3.js-workshop/</guid>
       <description>&lt;p&gt;I did a &lt;a href=&#34;http://d3js.org&#34;&gt;d3.js&lt;/a&gt; workshop at ThoughtWorks Bangalore yesterday (31st
 July, 2012). I split the workshop in to two parts. The first was a basic
 introduction to d3.js - SVG, Scaling, Axes etc. The second part
@@ -43,15 +43,15 @@ and collected. I am really happy to see that slowly but surely, I am
 getting better at this.&lt;/p&gt;
 
 &lt;p&gt;I did the slides in &lt;a href=&#34;http://lab.hakim.se/reveal-js/&#34;&gt;reveal.js&lt;/a&gt; and the
-slides are &lt;a href=&#34;http://sdqali.in/visualizations/d3-workshop/index.html&#34;&gt;here&lt;/a&gt;. The examples I used are &lt;a href=&#34;https://github.com/sdqali/d3-dojo&#34;&gt;here&lt;/a&gt;&lt;/p&gt;</description>
+slides are &lt;a href=&#34;https://sdqali.in/visualizations/d3-workshop/index.html&#34;&gt;here&lt;/a&gt;. The examples I used are &lt;a href=&#34;https://github.com/sdqali/d3-dojo&#34;&gt;here&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>XConf 6 - Data, My Heart!</title>
-      <link>http://sdqali.in/blog/2012/07/16/xconf-6---data-my-heart/</link>
+      <link>https://sdqali.in/blog/2012/07/16/xconf-6---data-my-heart/</link>
       <pubDate>Mon, 16 Jul 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2012/07/16/xconf-6---data-my-heart/</guid>
+      <guid>https://sdqali.in/blog/2012/07/16/xconf-6---data-my-heart/</guid>
       <description>&lt;p&gt;Last Saturday,  Srijayanth Sridhar (&lt;a href=&#34;https://twitter.com/craftybones&#34;&gt;@craftybones&lt;/a&gt;) and I gave a talk at XConf, ThoughtWorks India&amp;rsquo;s internal conference series.&lt;/p&gt;
 
 &lt;p&gt;We talked about visualising data, and the various visualisations that one could use to answer questions about the dataset you have. We looked at two particular datasets -  one showing the consumption of juice at the fresh juice counter in office and one about Indian and Pakistani players. We looked at various visualizations like Area charts, Box Plots, Chord Diagrams, Line Charts, Pie Charts, Donut Charts, Small Multiples, Spark Lines, Stack Charts and Treemaps.&lt;/p&gt;
@@ -66,15 +66,15 @@ slides are &lt;a href=&#34;http://sdqali.in/visualizations/d3-workshop/index.htm
 
 &lt;p&gt;As usual, Srijayanth did most of the hardwork, while I helped put together the visualisations and the presentation, which incidentally used &lt;a href=&#34;http://imakewebthings.com/deck.js/&#34;&gt;deck.js&lt;/a&gt;. Thanks, man!&lt;/p&gt;
 
-&lt;p&gt;You can take a look at the presentation &lt;a href=&#34;http://sdqali.in/visualizations/datamyheart/presentation/index.html&#34;&gt;here&lt;/a&gt;. The code for the whole thing can be found &lt;a href=&#34;https://github.com/sdqali/datamyheart&#34;&gt;here&lt;/a&gt; on Github.&lt;/p&gt;</description>
+&lt;p&gt;You can take a look at the presentation &lt;a href=&#34;https://sdqali.in/visualizations/datamyheart/presentation/index.html&#34;&gt;here&lt;/a&gt;. The code for the whole thing can be found &lt;a href=&#34;https://github.com/sdqali/datamyheart&#34;&gt;here&lt;/a&gt; on Github.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>VodQA NCR: Maintaining Large Test Suites</title>
-      <link>http://sdqali.in/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/</link>
+      <link>https://sdqali.in/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/</link>
       <pubDate>Sun, 24 Jun 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/</guid>
+      <guid>https://sdqali.in/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://twitter.com/craftybones&#34;&gt;Srijayanth Sridhar&lt;/a&gt; and I did a talk yesterday at &lt;a href=&#34;http://www.thoughtworks.com/events/the-testing-spirit&#34;&gt;vodQA NCR&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;The talk was about what makes maintenance of large test suites a pain and the
@@ -88,10 +88,10 @@ things that have worked for us and we have seen work for other teams.&lt;/p&gt;
     
     <item>
       <title>Banyan Tree: Football and Politics</title>
-      <link>http://sdqali.in/blog/2011/12/05/banyan-tree-football-and-politics/</link>
+      <link>https://sdqali.in/blog/2011/12/05/banyan-tree-football-and-politics/</link>
       <pubDate>Mon, 05 Dec 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2011/12/05/banyan-tree-football-and-politics/</guid>
+      <guid>https://sdqali.in/blog/2011/12/05/banyan-tree-football-and-politics/</guid>
       <description>&lt;div class=&#39;post&#39;&gt;
 &lt;div&gt;&lt;div dir=&#34;ltr&#34; style=&#34;text-align: left;&#34; trbidi=&#34;on&#34;&gt;&lt;div dir=&#34;ltr&#34; style=&#34;text-align: left;&#34; trbidi=&#34;on&#34;&gt;I recently did a talk on football and the politics behind it, as part of the Banyan Tree talk series at ThoughtWorks. The slides from the talk can be found &lt;a href=&#34;http://speakerdeck.com/u/sdqali/p/football-as-a-lense&#34;&gt;here&lt;/a&gt; on Speakerdeck.&lt;br /&gt;&lt;br /&gt;&lt;/div&gt;It was great fun for me. I thought I did well. It is a topic I know my way around. The history behind the El Clasico - the Spanish civil war, Franco, the trade unions and Di Stefano was discussed. We also looked at The Old Firm. I also talked about Athletic Bilbao&#39;s use of football as a form of cultural resistance. The last parts of the talk were about multiculturalism, united Europe and football as a globalized game.&lt;br /&gt;&lt;br /&gt;&amp;nbsp;About 20 people turned up and while most of them liked it, some had the opinion that they needed to understand more European history to fully appreciate it.&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
 </description>

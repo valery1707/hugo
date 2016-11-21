@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-git/index.xml</link>
+    <link>https://sdqali.in/categories/code-git/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/categories/code-git/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/categories/code-git/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Configure Git&#39;s comment character</title>
-      <link>http://sdqali.in/blog/2013/04/14/configure-gits-comment-character/</link>
+      <link>https://sdqali.in/blog/2013/04/14/configure-gits-comment-character/</link>
       <pubDate>Sun, 14 Apr 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2013/04/14/configure-gits-comment-character/</guid>
+      <guid>https://sdqali.in/blog/2013/04/14/configure-gits-comment-character/</guid>
       <description>&lt;p&gt;TL;DR -
 Use the &lt;code&gt;core.commentchar&lt;/code&gt; configuration to change the character Git uses to mark comment lines in commit messages.&lt;/p&gt;
 

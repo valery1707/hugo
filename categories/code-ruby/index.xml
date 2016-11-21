@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-ruby/index.xml</link>
+    <link>https://sdqali.in/categories/code-ruby/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/categories/code-ruby/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/categories/code-ruby/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Empathy Log Parser</title>
-      <link>http://sdqali.in/blog/2011/03/24/empathy-log-parser/</link>
+      <link>https://sdqali.in/blog/2011/03/24/empathy-log-parser/</link>
       <pubDate>Thu, 24 Mar 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2011/03/24/empathy-log-parser/</guid>
+      <guid>https://sdqali.in/blog/2011/03/24/empathy-log-parser/</guid>
       <description>&lt;p&gt;I use Empathy as my preferred IM application. Today, I wanted to have a look at an IM conversation I had with someone. I pulled out the Empathy log corresponding to that conversation, and boom - it is in XML.&lt;/p&gt;
 
 &lt;p&gt;Just another excuse to write code. So I came up with the following. It was easy to write and it does not do much - It uses the Hpricot gem to parse the XML and prints the name of the people involved in the chat and their messages in a human readable form. What? You are one of those souls who actually enjoy reading XML? Well, I am not one of those.&lt;/p&gt;
@@ -50,10 +50,10 @@ path &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#
     
     <item>
       <title>Binary Signature Art</title>
-      <link>http://sdqali.in/blog/2011/03/23/binary-signature-art/</link>
+      <link>https://sdqali.in/blog/2011/03/23/binary-signature-art/</link>
       <pubDate>Wed, 23 Mar 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2011/03/23/binary-signature-art/</guid>
+      <guid>https://sdqali.in/blog/2011/03/23/binary-signature-art/</guid>
       <description>&lt;p&gt;I was reading this very interesting &lt;a href=&#34;http://forums.xkcd.com/viewtopic.php?f=7&amp;amp;t=11765&#34;&gt;thread&lt;/a&gt; on the xkcd forum when I noticed a post from a user with the following signature in binary:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #FF6600&#34;&gt;01001101&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01100001&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01100100&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01100101&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;00100000&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01011001&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01101111&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01110101&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;00100000&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01001100&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01101111&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01101111&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01101011&lt;/span&gt; 00100001&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;

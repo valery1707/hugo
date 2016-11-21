@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-elisp-emacs-git/index.xml</link>
+    <link>https://sdqali.in/categories/code-elisp-emacs-git/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/categories/code-elisp-emacs-git/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/categories/code-elisp-emacs-git/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Emacs hack: Viewing Git logs while composing commit messages</title>
-      <link>http://sdqali.in/blog/2013/04/29/emacs-hack-viewing-git-logs-while-composing-commit-messages/</link>
+      <link>https://sdqali.in/blog/2013/04/29/emacs-hack-viewing-git-logs-while-composing-commit-messages/</link>
       <pubDate>Mon, 29 Apr 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2013/04/29/emacs-hack-viewing-git-logs-while-composing-commit-messages/</guid>
+      <guid>https://sdqali.in/blog/2013/04/29/emacs-hack-viewing-git-logs-while-composing-commit-messages/</guid>
       <description>&lt;p&gt;I use Emacs as my editor to compose Git commit messages. I almost never commit from the terminal with &lt;code&gt;git commit -m&lt;/code&gt;. This approach has two advantages: I get a chance to verify what is being committed and get to compose the message using a proper editor complete with spell checking provided by &lt;em&gt;flyspell mode&lt;/em&gt;. One thing I wish I had access to while composing commit messages is the git log. This is useful to refer to work items and encourages one to use a consistent style in the messages. This was easier in the terminal as one could do something like &lt;code&gt;git log -n 3&lt;/code&gt; and then commit with the &lt;code&gt;-m&lt;/code&gt; flag.&lt;/p&gt;
 
 &lt;p&gt;I decided to fix this today and some tinkering later came up with a hack tp do this.&lt;/p&gt;
@@ -45,7 +45,7 @@
 
 &lt;p&gt;This is how Emacs looks while committing with this hack in place:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/screenshot_git_commit_log.png&#34; alt=&#34;Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/screenshot_git_commit_log.png&#34; alt=&#34;Screenshot&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;If you want to use this, copy the following snippet to your &lt;code&gt;init.el&lt;/code&gt;.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;;; load-magit-log-when-committing-mode&lt;/span&gt;

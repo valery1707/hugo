@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/categories/test/index.xml</link>
+    <link>https://sdqali.in/categories/test/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/categories/test/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/categories/test/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>VodQA NCR: Maintaining Large Test Suites</title>
-      <link>http://sdqali.in/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/</link>
+      <link>https://sdqali.in/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/</link>
       <pubDate>Sun, 24 Jun 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/</guid>
+      <guid>https://sdqali.in/blog/2012/06/24/vodqa-ncr-maintaining-large-test-suites/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://twitter.com/craftybones&#34;&gt;Srijayanth Sridhar&lt;/a&gt; and I did a talk yesterday at &lt;a href=&#34;http://www.thoughtworks.com/events/the-testing-spirit&#34;&gt;vodQA NCR&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;The talk was about what makes maintenance of large test suites a pain and the

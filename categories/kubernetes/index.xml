@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/categories/kubernetes/index.xml</link>
+    <link>https://sdqali.in/categories/kubernetes/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>A very basic introduction to deploying a Java application using Kubernetes</title>
-      <link>http://sdqali.in/blog/2016/11/04/a-very-basic-introduction-to-deploying-a-java-application-using-kubernetes/</link>
+      <link>https://sdqali.in/blog/2016/11/04/a-very-basic-introduction-to-deploying-a-java-application-using-kubernetes/</link>
       <pubDate>Fri, 04 Nov 2016 22:34:53 -0700</pubDate>
       
-      <guid>http://sdqali.in/blog/2016/11/04/a-very-basic-introduction-to-deploying-a-java-application-using-kubernetes/</guid>
+      <guid>https://sdqali.in/blog/2016/11/04/a-very-basic-introduction-to-deploying-a-java-application-using-kubernetes/</guid>
       <description>
 
 &lt;p&gt;I have been playing around with Kubernetes and Docker lately. To borrow the description of Kubernetes from their website,&lt;/p&gt;

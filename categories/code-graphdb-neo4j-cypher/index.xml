@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sadique Ali</title>
-    <link>http://sdqali.in/categories/code-graphdb-neo4j-cypher/index.xml</link>
+    <link>https://sdqali.in/categories/code-graphdb-neo4j-cypher/index.xml</link>
     <description>Recent content on Sadique Ali</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="http://sdqali.in/categories/code-graphdb-neo4j-cypher/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sdqali.in/categories/code-graphdb-neo4j-cypher/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Graph databases 1 - Modeling</title>
-      <link>http://sdqali.in/blog/2013/08/02/graph-databases-1---modeling/</link>
+      <link>https://sdqali.in/blog/2013/08/02/graph-databases-1---modeling/</link>
       <pubDate>Fri, 02 Aug 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://sdqali.in/blog/2013/08/02/graph-databases-1---modeling/</guid>
+      <guid>https://sdqali.in/blog/2013/08/02/graph-databases-1---modeling/</guid>
       <description>&lt;p&gt;I am making my way through the book &lt;em&gt;Graph Databases&lt;/em&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; which is an introductory book to the subject from Neo Technology &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;, creators of Neo4j &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;. At work, we are using Neo4j for a cool new thing we are building, and I see it as a great chance to learn some thing new and interesting. In the past, I have gone through a spiral &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:4&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt; when it comes to learning stuff and the constant feedback I get is to pick something that one gets to work with everyday and dig deep into it, in order to avoid the frustration and the inevitable spiral.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
@@ -32,7 +32,7 @@
 
 &lt;p&gt;If we were to model football players to have played for European clubs, a section of the graph will look like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://sdqali.in/images/graph_zidane.png&#34; alt=&#34;Graph: Zidane and teams&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/graph_zidane.png&#34; alt=&#34;Graph: Zidane and teams&#34; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&#34;building-the-graph-with-cypher&#34;&gt;Building the graph with Cypher&lt;/h1&gt;
 
