@@ -4,7 +4,14 @@ layout: post
 title: "Why I am not on Facebook"
 date: 2012-08-11
 comments: true
-categories: facebook social-network
+categories:
+- facebook
+- social-network
+- internet
+tags:
+- facebook
+- social-network
+- internet
 ---
 
 Yesterday a colleague of mine asked me if I was on Facebook. He

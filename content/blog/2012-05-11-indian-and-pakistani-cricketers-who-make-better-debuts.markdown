@@ -4,7 +4,26 @@ layout: post
 title: "Indian and Pakistani cricketers - who make better debuts?"
 date: 2012-05-11
 comments: true
-categories: data visualisation javascript d3.js cricket india pakistan
+categories:
+- data
+- development
+- code
+- visualisation
+- javascript
+- d3.js
+- cricket
+- india
+- pakistan
+tags:
+- data
+- development
+- code
+- visualisation
+- javascript
+- d3.js
+- cricket
+- india
+- pakistan
 ---
 Recently a friend and I had an argument about who makes better debuts among Indian and Pakistani cricket players. Now, I am not into cricket. But I do watch the odd matches here and there and am generally aware of what is going on in the game. My stand was that Pakistani players make better debuts compared to Indian players, while my friend was adamant that Indian players make better debuts. My friend is more of a cricket guy than I ever was and he asked me what is the basis of my stand. It was just a gut feel for me and I had to leave it as there was no way for me to prove that my gut feel was correct. But I did want to try, though.
 

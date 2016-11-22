@@ -4,7 +4,16 @@ layout: post
 title: "My experience working remotely"
 date: 2013-04-11
 comments: true
-categories: programming work
+categories:
+- development
+- work
+- learn
+- reflections
+tags:
+- development
+- work
+- learn
+- reflections
 ---
 There has been a lot of debate in the tech community about working remotely and the willingness of employers to allow this option to their employees. At the very beginning of my career as a programmer, I had the opportunity to work on a distributed team. While the team was distributed, I was still working from an office and for almost half of the duration of my work on the team I had team members sitting beside me in the same office. Because of this, my scenario may not be representative of the population of programmers who work remotely. However, there are a number of things I learned from the experience that I would like to share.
 

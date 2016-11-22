@@ -4,7 +4,12 @@ layout: post
 title: "Of Birthdays and Anniversaries"
 date: 2009-01-30
 comments: true
-categories: reflections life
+categories:
+- life
+- reflections
+tags:
+- life
+- reflections
 ---
 Last week, we celebrated the birthday of one of my friends. There was not much of celebration per se, we just went to his place, talked a lot and had food from a restaurant. The restaurant bill was paid by the three guests, and not the host, but that is another story.
 

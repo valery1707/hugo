@@ -4,7 +4,12 @@ layout: post
 title: "Internet in Yemen : A Tale of Woe"
 date: 2013-08-08
 comments: true
-categories: politics internet technology
+categories:
+- internet
+- technology
+tags:
+- internet
+- technology
 ---
 Haykal Bafana paints a [sad picture](http://blog.haykal.sg/index.php/yemen1/20-ec/20-internet-in-yemen-a-tale-of-woe) of the state of internet access in Yemen.
 

@@ -5,6 +5,16 @@ title: "VodQA NCR: Maintaining Large Test Suites"
 date: 2012-06-24
 comments: true
 Categories:
+- development
+- code
+- talk
+- test
+- automation
+- twist
+- cucumber
+tags:
+- development
+- code
 - talk
 - test
 - automation

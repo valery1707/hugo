@@ -4,7 +4,14 @@ layout: post
 title: Binary Signature Art
 date: 2011-03-23
 comments: true
-categories: code ruby
+categories:
+- code
+- ruby
+- development
+tags:
+- code
+- ruby
+- development
 ---
 I was reading this very interesting [thread](http://forums.xkcd.com/viewtopic.php?f=7&t=11765) on the xkcd forum when I noticed a post from a user with the following signature in binary:
 

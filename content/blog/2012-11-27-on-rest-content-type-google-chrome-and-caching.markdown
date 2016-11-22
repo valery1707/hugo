@@ -4,7 +4,22 @@ layout: post
 title: "On REST, Content-Type, Google Chrome and Caching"
 date: 2012-11-27
 comments: true
-categories: code REST HTTP chrome caching content-type
+categories:
+- code
+- development
+- REST
+- HTTP
+- chrome
+- caching
+- content-type
+tags:
+- code
+- development
+- REST
+- HTTP
+- chrome
+- caching
+- content-type
 ---
 Representational State Transfer (REST) is a style of software
 architecture for distributed systems that has replaced technologies like

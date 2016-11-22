@@ -4,7 +4,14 @@ layout: post
 title: "Micro Journal - simple Git-backed journal in Python"
 date: 2012-06-25
 comments: true
-categories: code python release
+categories:
+- python
+- code
+- development
+tags:
+- python
+- code
+- development
 ---
 Today, I pushed out [Microjournal](https://github.com/sdqali/microjournal), a simple and lightweight journal. I wrote Microjournal to reduce the pain of typing a number of commands to create and maintain my daily journal which I type out in Emacs and use Git to store. It is a single file Python script.
 

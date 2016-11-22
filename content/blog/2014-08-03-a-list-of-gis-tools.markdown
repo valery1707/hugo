@@ -4,7 +4,18 @@ layout: post
 title: "A list of GIS tools"
 date: 2014-08-03
 comments: true
-categories: gis maps javascript geojson
+categories:
+- gis
+- maps
+- javascript
+- geojson
+- tools
+tags:
+- gis
+- maps
+- javascript
+- geojson
+- tools
 ---
 I have been playing around with maps a lot these days and have ended up using various tools in the process. This blog post is a way to make a note of these tools for later use.
 

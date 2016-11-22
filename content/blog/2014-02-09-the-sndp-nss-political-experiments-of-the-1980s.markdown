@@ -4,7 +4,14 @@ layout: post
 title: "The SNDP - NSS political experiment of 1980s"
 date: 2014-02-09
 comments: true
-categories: kerala politics sndp
+categories:
+- kerala
+- malabar
+- politics
+tags:
+- kerala
+- malabar
+- politics
 ---
 Last week, at the annual congregation of the Sree Narayana Dharma Paripalana (S.N.D.P.) Yogam, it's leaders - Vellaapalli Nadesan and his son Thushaar announced that the Yogam is about to form their own political party that will unite Hindus of Kerala under one umbrella. [^1] S.N.D.P. and it's leaders are no strangers to threatening to announce their intent to form a political party. [^2] They did the same in 2012, generating much talk in Kerala's political landscape. The latest announcement is likely to suffer the same fate as these earlier announcements. To understand why the Yogam is highly unlikely to form a party of their own, one needs to look at the time when they indeed had their own political party - to the late 1970s; and the 1980 election to the Kerala legislature.
 

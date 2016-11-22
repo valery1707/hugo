@@ -4,7 +4,14 @@ layout: post
 title: A lot to learn
 date: 2009-08-21
 comments: true
-categories: life reflection learn
+categories:
+- life
+- reflections
+- learn
+tags:
+- life
+- reflections
+- learn
 ---
 The past few days have just flown by. I had to learn so much things and did not have much time to do it. Most days, I sleep around 2:00 in the morning.
 

@@ -4,7 +4,16 @@ layout: post
 title: "Reading user input in Gradle scripts"
 date: 2013-10-01
 comments: true
-categories: code groovy gradle android
+categories:
+- code
+- groovy
+- gradle
+- android
+tags:
+- code
+- groovy
+- gradle
+- android
 ---
 Continuing from the last [blog post](/blog/2013/10/01/accessing-environment-variables-in-gradle/), I have been looking at reading user input from a Gradle script. This was a result of Stack Overflow user *user672009*'s [question](http://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle/19130098#19130098) about prompting for input from a Gradle script so the one does not have to include passwords in the script while checking in.
 

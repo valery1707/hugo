@@ -4,7 +4,16 @@ layout: post
 title: TWU Graduation
 date: 2009-09-22
 comments: true
-categories: life thoughtworks
+categories:
+- life
+- reflections
+- learn
+- thoughtworks
+tags:
+- life
+- reflections
+- learn
+- thoughtworks
 ---
 
 As I had predicted, the last week of training was hectic, chaotic and crazy. Although we ended up leaving the whole project simulation in jeopardy, we learned a lot of things, especially how things that work smoothly at one second can go wrong very very wrong the next second.

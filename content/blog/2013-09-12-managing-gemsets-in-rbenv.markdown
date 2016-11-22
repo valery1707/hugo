@@ -4,7 +4,18 @@ layout: post
 title: "Managing Gemsets in Rbenv"
 date: 2013-09-12
 comments: true
-categories: code ruby rbenv bundler
+categories:
+- code
+- development
+- ruby
+- rbenv
+- bundler
+categories:
+- development
+- code
+- ruby
+- rbenv
+- bundler
 ---
 When I was setting up my new laptop today, I decided to use Rbenv [^1] to manage my Ruby versions. I have typically used RVM [^2] and had never used Rbenv. Rbenv is a Ruby version manager written by [Sam Stephenson](https://github.com/sstephenson/) and deliberately tries to do less and do it well. Instead of overriding Bash commands like RVM does, Rbenv chooses to use wrappers or **shims** around Ruby binaries to choose the Ruby executable to run.
 

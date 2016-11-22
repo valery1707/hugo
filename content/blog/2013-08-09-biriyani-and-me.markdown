@@ -4,7 +4,14 @@ layout: post
 title: "Biriyani and me"
 date: 2013-08-09
 comments: true
-categories: life food biriyani
+categories:
+- life
+- food
+- biriyani
+tags:
+- life
+- food
+- biriyani
 ---
 I love Biriyani. That is an understatement. I absolutely love Biriyani.
 

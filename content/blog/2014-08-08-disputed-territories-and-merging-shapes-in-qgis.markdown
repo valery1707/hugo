@@ -4,7 +4,18 @@ layout: post
 title: "Disputed territories and merging shapes and features"
 date: 2014-08-08
 comments: true
-categories: maps gis kashmir india qjis javascript geojson
+categories:
+- gis
+- maps
+- javascript
+- geojson
+- tools
+tags:
+- gis
+- maps
+- javascript
+- geojson
+- tools
 ---
 Making a map that shows a disputed territory can be a tricky business. Nation states vigorously contest maps that appear to portray a boundary that challenges what a border looks like. From the Falkland Islands to Kuril Islands; from Western Sahara to Arunachal Pradesh, disputed territories result in omissions, additions and inaccuracies in maps.
 

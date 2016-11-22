@@ -2,10 +2,12 @@
 Categories:
 - Development
 - CloudFoundry
+- DevOps
 Description: "How to set Java memory parameters for a Cloud Foundry application."
 Tags:
 - Development
-- golang
+- CloudFoundry
+- DevOps
 date: 2015-05-20T19:42:56-07:00
 title: Configuring Cloud Foundry Java Memory Parameters
 ---

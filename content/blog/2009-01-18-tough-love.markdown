@@ -4,7 +4,12 @@ layout: post
 title: "Tough Love"
 date: 2009-01-18
 comments: true
-categories: life reflections
+categories:
+- life
+- reflections
+tags:
+- life
+- reflections
 ---
 I am about to finish my college within five months. As almost everyone at this juncture of life would have done, I am already beginning to look back at it. And nothing resurfaces from my memory like that of how it all began.
 

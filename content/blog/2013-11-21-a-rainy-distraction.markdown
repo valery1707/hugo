@@ -4,7 +4,12 @@ layout: post
 title: "A rainy distraction"
 date: 2013-11-21
 comments: true
-categories: life rain
+categories:
+- life
+- rain
+tags:
+- life
+- rain
 ---
 Far away, the Sutro TV tower was hardly visible in the haze of rain.
 

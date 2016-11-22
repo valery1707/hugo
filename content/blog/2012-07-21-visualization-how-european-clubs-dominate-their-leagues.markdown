@@ -4,10 +4,20 @@ layout: post
 title: "Visualisation - How European clubs dominate their leagues"
 date: 2012-07-21
 comments: true
-categories: football visualisation data d3.js jqueryui code
-aliases: [
-	"/blog/2012/07/21/visualization-how-european-clubs-dominate-their-leagues"
-]
+categories:
+- football
+- visualisation
+- data
+- d3.js
+- code
+tags:
+- football
+- visualisation
+- data
+- d3.js
+- code
+aliases:
+- "/blog/2012/07/21/visualization-how-european-clubs-dominate-their-leagues"
 ---
 *Click [here](/visualizations/league_champions/index.html) to see the visualisation.*
 

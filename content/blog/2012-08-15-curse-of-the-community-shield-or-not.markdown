@@ -4,7 +4,16 @@ layout: post
 title: "Curse of the Community Shield?"
 date: 2012-08-15
 comments: true
-categories: football data visualisation d3.js
+categories:
+- football
+- data
+- visualisation
+- d3.js
+tags:
+- football
+- data
+- visualisation
+- d3.js
 keywords:
 ---
 

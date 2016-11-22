@@ -4,7 +4,14 @@ layout: post
 title: "Giving up the Samba for the Tiki-taka"
 date: 2012-08-21
 comments: true
-categories: football malappuram life
+categories:
+- football
+- malabar
+- life
+tags:
+- football
+- malabar
+- life
 keywords:
 ---
 A shot flew over the bar. The goal keeper showed great urgency in

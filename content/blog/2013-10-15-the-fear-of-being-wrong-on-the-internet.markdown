@@ -4,7 +4,10 @@ layout: post
 title: "The fear of being wrong on the Internet"
 date: 2013-10-15
 comments: true
-categories: Internet
+categories:
+- internet
+tags:
+- internet
 ---
 All of us have opinions-some strong, some weak; some we care deeply about, some we couldn't care less. We often express those opinions to others and sometimes people agree, sometimes they don't. Debating with others about our opinions helps us crystallise or completely discard them.
 

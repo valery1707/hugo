@@ -4,7 +4,14 @@ layout: post
 title: "Shared history in Bash"
 date: 2013-09-15
 comments: true
-categories: code bash
+categories:
+- code
+- bash
+- tools
+tags:
+- code
+- bash
+- tools
 ---
 
 One of the features that I miss most in Bash is the shared history between terminals that Zsh supports. I was hunting down a solution for this and came across this Stack Overflow answer [^1] by user *lesmana*. This code snippet does the trick:

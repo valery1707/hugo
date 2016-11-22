@@ -4,7 +4,14 @@ layout: post
 title: "Python's bool type"
 date: 2013-08-15
 comments: true
-categories: code python
+categories:
+- code
+- python
+- development
+tags:
+- code
+- python
+- development
 ---
 Python does not have a true boolean type. The `True` and `False` built-in values in Python are wrappers around the integers `1` and `0`. This results in some interesting results involving True and False.
 

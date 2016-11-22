@@ -4,7 +4,14 @@ layout: post
 title: "How Browsers Detect If You Are Offline"
 date: 2012-11-22
 comments: true
-categories: code browsers javascript
+categories:
+- code
+- browsers
+- javascript
+tags:
+- code
+- browsers
+- javascript
 ---
 When I saw the newly released
 [Heyoffline.js](http://oskarkrawczyk.github.com/heyoffline.js/) library,

@@ -4,7 +4,14 @@ layout: post
 title: "Dear Content Creator, Your URL Shortener Is Pointless"
 date: 2012-08-23
 comments: true
-categories: social-network twitter
+categories:
+- social-network
+- twitter
+- internet
+tags:
+- social-network
+- twitter
+- internet
 keywords:
 ---
 People love URL shorteners. They are everywhere. You can use one of

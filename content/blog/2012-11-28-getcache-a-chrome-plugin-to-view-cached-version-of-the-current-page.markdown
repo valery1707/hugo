@@ -4,7 +4,18 @@ layout: post
 title: "GetCache - A Chrome plugin to view cached version of the current page"
 date: 2012-11-28
 comments: true
-categories: code chrome plugin javascript
+categories:
+- code
+- development
+- chrome
+- plugin
+- javascript
+tags:
+- code
+- development
+- chrome
+- plugin
+- javascript
 ---
 
 >Download the plugin

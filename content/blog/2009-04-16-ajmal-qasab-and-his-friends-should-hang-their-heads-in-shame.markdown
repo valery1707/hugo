@@ -4,7 +4,12 @@ layout: post
 title: "Ajmal Qasab and his friends should hang their heads in shame"
 date: 2009-04-16
 comments: true
-categories: reflection terrorism
+categories:
+- life
+- reflections
+tags:
+- life
+- reflections
 ---
 Yesterday, I happened to watch the show 'The Buck Stops Here' presented by Barkha Dutt on NDTV 24 X 7.
 

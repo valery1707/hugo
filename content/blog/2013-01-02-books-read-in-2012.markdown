@@ -4,7 +4,12 @@ layout: post
 title: "Books read in 2012"
 date: 2013-01-02
 comments: true
-categories: books
+categories:
+- books
+- life
+tags:
+- books
+- life
 ---
 <style type="text/css" media="screen">
 </style>

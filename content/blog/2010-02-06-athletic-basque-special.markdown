@@ -4,7 +4,14 @@ layout: post
 title: Athletic - The European campaign and a Basque special
 date: 2010-02-06
 comments: true
-categories: football athletic
+categories:
+- football
+- athletic
+- bilbao
+tags:
+- football
+- athletic
+- bilbao
 ---
 The last time I wrote about Athletic, they were relinquishing at the bottom of the La Liga table, their record as one among the only three clubs in La Liga to have never got relegated in threat.
 

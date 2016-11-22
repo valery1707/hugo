@@ -4,7 +4,12 @@ layout: post
 title: "Decomposing URLs in Python"
 date: 2013-09-26
 comments: true
-categories: python code url-parsing
+categories:
+- python
+- code
+tags:
+- python
+- code
 ---
 Python's `urlparse` module breaks down URLs in to components. It supports all the URL schemes specified in RFC 3986 [^1].
 

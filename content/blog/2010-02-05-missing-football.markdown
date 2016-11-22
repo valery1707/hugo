@@ -4,7 +4,14 @@ layout: post
 title: Missing the game
 date: 2010-02-05
 comments: true
-categories: football
+categories:
+- football
+- life
+- reflections
+tags:
+- football
+- life
+- reflections
 ---
 I have continued to watch and follow the beautiful game, save for my first few months in Bangalore. This is supposed to be a metro. Well, apparently a metro where people don't give a damn about football. After taking a cable connection, I soon realized that I will have to beg with the cable guy to put on ESPNStar so that I could watch EPL. Pretty soon, Hathway had some issues with ESPNStar, which meant there was no way I could watch ESPNStar. On the weekends, I tried to pursue the cable operator to put on NEO Sports, at least I could watch Bundes Liga and Serie A. He would not budge, and I had to endure the interesting argument that "NEO Cricket and NEO Sports are the same". It was tough to accept - in the small village of Vadakkethala, where I hail from, I could watch as much football as I wanted. In Malappuram, if you are a cable TV operator and don't put on channels with football on, God save you. So Bangalore's apparent indifference to football was frustrating.
 

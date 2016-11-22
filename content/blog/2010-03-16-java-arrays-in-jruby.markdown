@@ -4,7 +4,18 @@ layout: post
 title: Java Arrays in JRuby
 date: 2010-03-16
 comments: true
-categories: code jruby ruby java
+categories:
+- code
+- jruby
+- ruby
+- java
+- development
+tags:
+- code
+- jruby
+- ruby
+- java
+- development
 ---
 Recently my team encountered a frustrating thing while working with a Java library in JRuby. It took us long to figure out what was going wrong. This is an attempt to write down what was happening.
 

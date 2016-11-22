@@ -4,7 +4,14 @@ layout: post
 title: Understanding Python's "with" statement
 date: 2012-07-09
 comments: true
-categories: code python
+categories:
+- python
+- code
+- development
+tags:
+- python
+- code
+- development
 alias: /blog/2012/07/09/unerstanding-pythons-with/
 ---
 ## What is it?

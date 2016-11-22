@@ -4,7 +4,20 @@ layout: post
 title: "Implementing Rate Limiting in Rails - Part 1"
 date: 2013-10-12
 comments: true
-categories: rails code rate-limiting redis
+categories:
+- rails
+- ruby
+- development
+- code
+- rate-limiting
+- redis
+tags:
+- rails
+- ruby
+- development
+- code
+- rate-limiting
+- redis
 ---
 *The second part of this series can be found [here](/blog/2013/10/13/implementing-rate-limiting-in-rails-part-2/).*
 

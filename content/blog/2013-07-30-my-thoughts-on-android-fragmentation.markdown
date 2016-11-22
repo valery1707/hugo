@@ -4,7 +4,14 @@ layout: post
 title: "My thoughts on Android fragmentation -  It is not a bad thing"
 date: 2013-07-30
 comments: true
-categories: android technology
+categories:
+- android
+- technology
+- internet
+tags:
+- android
+- technology
+- internet
 ---
 OpenSignal released the July 2013 edition [^1] of their State of Android report. Among many things like the dominance of Samsung, HTC's faltering performance and Motorola's struggle, it points out that the Android device landscape is more fragmented than ever. Out of _682000_ devices surveyed for the report, _11868_ distinct devices were seen. This has met with cries of anguish from Developers and the usual suspects [^2].
 

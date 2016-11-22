@@ -4,7 +4,16 @@ layout: post
 title: "Graph databases 1 - Modeling"
 date: 2013-08-02
 comments: true
-categories: code graphdb neo4j cypher
+categories:
+- code
+- graphdb
+- neo4j
+- cypher
+tags:
+- code
+- graphdb
+- neo4j
+- cypher
 ---
 
 I am making my way through the book _Graph Databases_ [^1] which is an introductory book to the subject from Neo Technology [^2], creators of Neo4j [^3]. At work, we are using Neo4j for a cool new thing we are building, and I see it as a great chance to learn some thing new and interesting. In the past, I have gone through a spiral [^4] when it comes to learning stuff and the constant feedback I get is to pick something that one gets to work with everyday and dig deep into it, in order to avoid the frustration and the inevitable spiral.

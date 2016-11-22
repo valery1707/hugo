@@ -4,7 +4,16 @@ layout: post
 title: "Clojure Dojo - Levenshtein edit distance"
 date: 2014-03-20
 comments: true
-categories: code clojure algorithms
+categories:
+- code
+- clojure
+- algorithms
+- development
+tags:
+- code
+- clojure
+- algorithms
+- development
 ---
 I have been playing around with Clojure and after familiarising myself with the core, I decided to start writing little programs that forces me to choose the right idioms. I am starting off with Levenshtein edit distance of two strings.
 

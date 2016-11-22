@@ -4,7 +4,14 @@ layout: post
 title: Empathy Log Parser
 date: 2011-03-24
 comments: true
-categories: code ruby
+categories:
+- code
+- ruby
+- development
+tags:
+- code
+- ruby
+- development
 ---
 I use Empathy as my preferred IM application. Today, I wanted to have a look at an IM conversation I had with someone. I pulled out the Empathy log corresponding to that conversation, and boom - it is in XML.
 

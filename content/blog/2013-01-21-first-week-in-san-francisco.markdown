@@ -4,7 +4,10 @@ layout: post
 title: "First week in San Francisco"
 date: 2013-01-21
 comments: true
-categories: life
+categories:
+- life
+tags:
+- life
 ---
 I moved to San Francisco last week and is just getting acquainted with
 the city. This blog

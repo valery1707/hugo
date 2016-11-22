@@ -11,6 +11,13 @@ categories:
 - javascript
 - data
 - deck.js
+tags:
+- talk
+- visualisation
+- d3.js
+- javascript
+- data
+- deck.js
 ---
 
 Last Saturday,  Srijayanth Sridhar ([@craftybones](https://twitter.com/craftybones)) and I gave a talk at XConf, ThoughtWorks India's internal conference series.

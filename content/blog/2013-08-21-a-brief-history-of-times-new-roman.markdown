@@ -4,7 +4,12 @@ layout: post
 title: "A brief History of Times New Roman"
 date: 2013-08-21
 comments: true
-categories: type
+categories:
+- type
+- technology
+tags:
+- type
+- technology
 ---
 
 Mathew Butterick's Practical Typography [^1] features a section dedicated to the History of Times New Roman [^2]. It is an interesting read.

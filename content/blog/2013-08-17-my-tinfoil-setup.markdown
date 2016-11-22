@@ -4,7 +4,14 @@ layout: post
 title: "My Tinfoil setup"
 date: 2013-08-17
 comments: true
-categories: internet browsers tracking
+categories:
+- internet
+- technology
+- browsers
+tags:
+- internet
+- technology
+- browsers
 ---
 
 I try to be careful when I use the internet. This is not because I do illegal stuff—I just don't like the idea of random websites tracking me across the web, recording everything I do, and then serving me advertisements. I don't like the idea of technocracies like Facebook collecting and storing data about me, even after I have explicitly quit their colourful walled garden. [^1] I don't like Google tracking what websites I read by pretending to provide a service to the creators of those websites in the form of CDN and Analytics. [^2] I don't want marketing optimisation services to track me and put me in their funnel, unless I explicitly want to.

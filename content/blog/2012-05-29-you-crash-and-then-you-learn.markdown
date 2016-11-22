@@ -5,6 +5,13 @@ title: "You Crash and then You Learn"
 date: 2012-05-29
 comments: true
 categories:
+- life
+- reflections
+- learn
+tags:
+- life
+- reflections
+- learn
 ---
 
 As I picked up my bicycle, climbed on it and spotted the blood on my elbows and the bunch of curious onlookers in front of the pan shop nearby, I did not feel fear or embarrassment. I had an immeasurable amount of happiness welling inside me. I had finally done what I should have about 20 years ago - I had finally managed to crash my bicycle and leave with plenty of scars to show for it.

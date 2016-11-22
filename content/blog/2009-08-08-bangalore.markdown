@@ -4,7 +4,14 @@ layout: post
 title: "Bangalore Journal"
 date: 2009-08-08
 comments: true
-categories: life reflection football
+categories:
+- life
+- reflections
+- football
+tags:
+- life
+- reflections
+- football
 ---
 This is my 13th day in Bangalore. And the first week of my training at ToughtWorks has gone by. I learned lots of stuff, talked to some great people and made friends with some of them. I still have not overcome the difficulties of adapting to life in the City. May be I will soon, or I never will.
 

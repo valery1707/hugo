@@ -4,7 +4,14 @@ layout: post
 title: Yet another week in Bangalore
 date: 2009-08-16
 comments: true
-categories: life reflection football
+categories:
+- life
+- reflections
+- football
+tags:
+- life
+- reflections
+- football
 ---
 Yet another week of my Bangalore life has unfolded. It was tougher, and better than the first two weeks.
 

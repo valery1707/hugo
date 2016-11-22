@@ -4,7 +4,16 @@ layout: post
 title: "Fusing the old media and the new"
 date: 2013-08-10
 comments: true
-categories: news media internet
+categories:
+- news
+- media
+- internet
+- technology
+tags:
+- news
+- media
+- internet
+- technology
 ---
 From Kara Swisher's well written [open letter to Jeff Bezos](http://allthingsd.com/20130807/dear-jeff-bezos-heres-what-i-saw-as-an-analog-nobody-in-the-mailroom-of-the-washington-post/?mod=thisweek) in the light of the latter's announcement that he has bought the Washington Post:
 

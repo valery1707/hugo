@@ -4,7 +4,18 @@ layout: post
 title: "Heredocs in Ruby and Python"
 date: 2012-07-04
 comments: true
-categories: code ruby python heredoc
+categories:
+- python
+- code
+- development
+- ruby
+- heredoc
+tags:
+- python
+- code
+- development
+- ruby
+- heredoc
 ---
 I have been doing some coding in Python recently. While playing around with some code, I noticed that the way [heredocs](http://en.wikipedia.org/wiki/Here_document) are used in Python is different from Ruby.
 

@@ -4,7 +4,18 @@ layout: post
 title: "Fixing Flyspell for Emacs in Mac OS X"
 date: 2012-05-04
 comments: true
-categories: mac emacs brew
+categories:
+- mac-osx
+- emacs
+- homebrew
+- development
+- elisp
+tags:
+- mac-osx
+- emacs
+- homebrew
+- development
+- elisp
 ---
 I use the <a href="http://www.emacswiki.org/emacs/FlySpell">flyspell-mode</a> as a spell checking mechanism in emacs. Recently, I moved to Mac OS X, and I began to get this error whenever I started emacs:
 

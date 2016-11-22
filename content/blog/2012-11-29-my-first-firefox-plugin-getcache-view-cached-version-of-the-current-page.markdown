@@ -4,7 +4,18 @@ layout: post
 title: "My first Firefox plugin: GetCache - View cached version of the current page"
 date: 2012-11-29
 comments: true
-categories: code javascript firefox plugin
+categories:
+- code
+- development
+- chrome
+- plugin
+- javascript
+tags:
+- code
+- development
+- chrome
+- plugin
+- javascript
 ---
 
 I released my [first Firefox plugin](https://addons.mozilla.org/en-US/firefox/addon/getcache-ff/) today. It

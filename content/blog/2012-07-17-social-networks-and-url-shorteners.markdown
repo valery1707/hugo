@@ -4,7 +4,16 @@ layout: post
 title: "Social Networks and their URL Shorteners"
 date: 2012-07-17
 comments: true
-categories: social-network twitter google+
+categories:
+- social-network
+- twitter
+- internet
+- google+
+tags:
+- social-network
+- twitter
+- internet
+- google+
 ---
 I have been noticing lately that much of the traffic that my blog
 receives comes from Twitter's **t.co** domain or Google+'s

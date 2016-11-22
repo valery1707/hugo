@@ -4,7 +4,14 @@ layout: post
 title: Autorun.py - Execute stuff on file change
 date: 2010-01-09
 comments: true
-categories: code python
+categories:
+- code
+- python
+- development
+tags:
+- code
+- python
+- development
 ---
 I really liked ZenTest's Autospec in action. Recently, when I was trying to write some Python stuff, I thought it would be nice if I would have a tool that would just run the unit tests, so that I don't have to switch between console windows. Better still, I could run it from inside my Emacs.
 

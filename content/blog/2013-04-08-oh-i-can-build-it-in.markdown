@@ -4,7 +4,14 @@ layout: post
 title: "Oh I can build it in..."
 date: 2013-04-08
 comments: true
-categories: code software
+categories:
+- code
+- software
+- development
+tags:
+- code
+- software
+- development
 ---
 > Oh, is this what you guys have been building for three years? I can build it in a month!
 
