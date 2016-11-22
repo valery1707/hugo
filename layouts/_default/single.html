@@ -33,7 +33,7 @@
               <h1> {{ .Title }}</h1>
               <span class="meta">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
               <div class="tags">
-                <i class="fa fa-tags" aria-hidden="true"></i>
+                <span class="fa fa-tags" aria-hidden="true"></span>
                 {{ range $index, $tag := .Params.tags }}
                 {{ if gt $index 0 }}, {{ end }} <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a>
                 {{ end }}
