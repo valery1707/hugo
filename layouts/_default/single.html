@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" prefix="og: http://ogp.me/ns#">
   {{ partial "head.html" . }}
   <meta name="description" content="{{ .Summary }}" />
-  <meta content="{{ delimit .Keywords ", " }}" name="keywords">
+  <meta content="{{ delimit .Params.tags ", " }}" name="keywords">
 
   <!--Twitter Summary Card -->
   <meta name="twitter:card" content="summary_large_image">

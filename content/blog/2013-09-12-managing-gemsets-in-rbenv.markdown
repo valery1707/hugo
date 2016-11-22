@@ -10,7 +10,7 @@ categories:
 - ruby
 - rbenv
 - bundler
-categories:
+tags:
 - development
 - code
 - ruby
