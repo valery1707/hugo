@@ -146,7 +146,7 @@ imageObj.onload &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;sp
 
 &lt;p&gt;But fitting images with aspect ratios different from the Canvas can be a little tricky. The fundamental problem here is that when aspect ratio is different, there is only one pair of edges-either vertical or horizontal-that can be fitted on to the canvas. The image will have to be placed in the center along the other axis. The following diagram illustrates this.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/canvas_fitting.png&#34; alt=&#34;Canvas fitting&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/canvas_fitting.png&#34; alt=&#34;Canvas fitting&#34; title=&#34;Canvas fitting&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Since fitting depends on the aspect ratio, the code should take it into consideration. The following code compares the ratios and chooses to fit the image horizontally or vertically.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;var&lt;/span&gt; canvas &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #336666&#34;&gt;document&lt;/span&gt;.getElementById(&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;#39;canvas&amp;#39;&lt;/span&gt;);
@@ -391,11 +391,11 @@ file to the page.&lt;/p&gt;
 
 &lt;p&gt;On any page, click on the GetCache icon to load the cached page.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/get_cache_icon.png&#34; alt=&#34;GetCache icon&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/get_cache_icon.png&#34; alt=&#34;GetCache icon&#34; title=&#34;GetCache icon&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Or you could right click on the page and select &lt;code&gt;View Google&#39;s cache&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/get_cache_context_menu.png&#34; alt=&#34;GetCache context menu&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/get_cache_context_menu.png&#34; alt=&#34;GetCache context menu&#34; title=&#34;GetCache context menu&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;source-code&#34;&gt;Source Code&lt;/h2&gt;
 

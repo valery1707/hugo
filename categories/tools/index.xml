@@ -138,17 +138,17 @@ fs.writeFileSync(&amp;quot;full_india.geo.json&amp;quot;, JSON.stringify(india))
 &lt;h3 id=&#34;add-a-thread-group&#34;&gt;Add a Thread Group&lt;/h3&gt;
 
 &lt;p&gt;A Thread Group defines a pool of users that will execute a particular test case against the server. JMeter makes the number of users, and the ramp-rate configurable. For the purpose of this example, Number of Threads is 2 and the ramp up time period is 1 second. This thread group is also configured to run forever.
-&lt;img src=&#34;https://sdqali.in/images/jmeter/thread_group.png&#34; alt=&#34;Thread Group&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://sdqali.in/images/jmeter/thread_group.png&#34; alt=&#34;&amp;quot;Screenshot of Thread Group window&amp;quot;&#34; title=&#34;Thread Groups&#34; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;http-request-defaults&#34;&gt;HTTP Request Defaults&lt;/h3&gt;
 
 &lt;p&gt;The net step is to add an HTTP Request Defaults configuration element to the Thread Group. This configuration element sets up the domain or I.P. address of the server, the port and the protocol (HTTP / HTTPS). In this example, Server Name is &lt;code&gt;127.0.0.1&lt;/code&gt; and Port is &lt;code&gt;3000&lt;/code&gt;.
-&lt;img src=&#34;https://sdqali.in/images/jmeter/request_defaults.png&#34; alt=&#34;HTTP Request Defaults&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://sdqali.in/images/jmeter/request_defaults.png&#34; alt=&#34;&amp;quot;Screenshot of HTTP Request Defaults&amp;quot;&#34; title=&#34;HTTP Request Defaults&#34; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;http-cookie-manager&#34;&gt;HTTP Cookie Manager&lt;/h3&gt;
 
 &lt;p&gt;A cookie manager stores and sends cookies, as a web browser would do if an actual user was hitting the server. For the purposes of this example, the default configurations are enough.
-&lt;img src=&#34;https://sdqali.in/images/jmeter/cookie_manager.png&#34; alt=&#34;Cookie Manager&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://sdqali.in/images/jmeter/cookie_manager.png&#34; alt=&#34;&amp;quot;Screenshot of Cookie Manager&amp;quot;&#34; title=&#34;Cookie Manager&#34; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;implement-normal-page-actions&#34;&gt;Implement normal page actions&lt;/h3&gt;
 
@@ -315,7 +315,7 @@ _bash_history_sync&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt
 
 &lt;p&gt;This is how Emacs looks while committing with this hack in place:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/screenshot_git_commit_log.png&#34; alt=&#34;Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/screenshot_git_commit_log.png&#34; alt=&#34;&amp;quot;Screenshot showing git commit log&amp;quot;&#34; title=&#34;Screenshot showing git commit log&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;If you want to use this, copy the following snippet to your &lt;code&gt;init.el&lt;/code&gt;.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #0099FF; font-style: italic&#34;&gt;;; load-magit-log-when-committing-mode&lt;/span&gt;

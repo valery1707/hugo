@@ -8,6 +8,15 @@
     <atom:link href="https://sdqali.in/categories/development/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Learnings from implementing feature toggles</title>
+      <link>https://sdqali.in/blog/2016/11/21/learnings-from-implementing-feature-toggles/</link>
+      <pubDate>Mon, 21 Nov 2016 17:03:03 -0800</pubDate>
+      
+      <guid>https://sdqali.in/blog/2016/11/21/learnings-from-implementing-feature-toggles/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Setting up a secure etcd cluster behind a proxy</title>
       <link>https://sdqali.in/blog/2016/11/11/setting-up-a-secure-etcd-cluster-behind-a-proxy/</link>
       <pubDate>Fri, 11 Nov 2016 13:07:32 -0800</pubDate>
@@ -30,7 +39,7 @@
 
 &lt;p&gt;In this example, we will set up a cluster of 3 etcd nodes. We will use a key pair for the nodes and proxy to communicate between each other and another key pair for clients to communicate with the proxy.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/etcd-secure-cluster-proxy.svg&#34; alt=&#34;Secure Etcd Cluster with Proxy&#34; title=&#34;Secure Etcd Cluster with Proxy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/etcd-secure-cluster-proxy.svg&#34; alt=&#34;Diagram of a Secure Etcd Cluster with Proxy&#34; title=&#34;Secure Etcd Cluster with Proxy&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;generating-keys&#34;&gt;Generating Keys&lt;/h2&gt;
 
@@ -2743,97 +2752,6 @@ $ &lt;span style=&#34;color: #336666&#34;&gt;echo&lt;/span&gt; &lt;span style=&#
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This allows us to delegate how the application should exit to the command line runners themselves, without having to throw exceptions.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Programmable exit codes for Spring command line applications</title>
-      <link>https://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/</link>
-      <pubDate>Sun, 17 Apr 2016 23:36:48 -0400</pubDate>
-      
-      <guid>https://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/</guid>
-      <description>&lt;p&gt;Spring&amp;rsquo;s &lt;code&gt;CommandLineRunner&lt;/code&gt; provides a great mechanism to build command line applications. While this convenience is great, applications that use &lt;code&gt;CommandLineRunner&lt;/code&gt; require extra effort in some areas like integration testing. Exit codes are such an area - applications that use command line runners always report their exit code as &lt;code&gt;0&lt;/code&gt; even if there are exceptions thrown. This blog post explains a way to get to programmable exit codes for such applications.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;The following example demonstrates this problem. Here we have a simple implementation of &lt;code&gt;CommandLineRunner&lt;/code&gt; that simply throws a &lt;code&gt;RuntimeException&lt;/code&gt; when started.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@Profile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;exception&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;WillThrow&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; CommandLineRunner &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;...&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; RuntimeException&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;This should kill the application&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;When this application runs, we will see that the exit code is &lt;code&gt;0&lt;/code&gt;, as expected.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ java -Dspring.profiles.active=exception -jar build/libs/exit-code-demo-1.0-SNAPSHOT.jar &amp;gt;&amp;gt; /dev/null 2&amp;amp;&amp;gt;1
-$ echo $?
-0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;A simple way to propagate the right exit code is to use &lt;code&gt;java.lang.System#exit&lt;/code&gt; and specify an error code. The following snippet shows this:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@Profile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;exit&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;WillExit&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; CommandLineRunner &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;...&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        System&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;exit&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #FF6600&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;When run:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ java -Dspring.profiles.active=exit -jar build/libs/exit-code-demo-1.0-SNAPSHOT.jar &amp;gt;&amp;gt; /dev/null 2&amp;amp;&amp;gt;1
-$ echo $?
-3
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This looks straightforward and easy. However, exiting the application from within the &lt;code&gt;CommandLineRunner&lt;/code&gt; makes integration testing of this application difficult. Our tests will simply stop execution at that point without giving us the opportunity to assert anything.&lt;/p&gt;
-
-&lt;p&gt;At work, while looking for a solution to this, we stumbled across Spring&amp;rsquo;s &lt;code&gt;ExitCodeGenerator&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. It is an interface whose implementations Spring uses to look up what exit code to use. There are at least two ways to make use of &lt;code&gt;ExitCodeGenerator&lt;/code&gt; - one involves making the application&amp;rsquo;s Exceptions implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt; and the other involves making the command line runners themselves implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt;. We will look at the first approach here.&lt;/p&gt;
-
-&lt;p&gt;Our new command line runner will be as:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@Profile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;exception&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;WillThrow&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; CommandLineRunner&lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color: #555555&#34;&gt;...&lt;/span&gt; args&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;new&lt;/span&gt; ExceptionWithExitCode&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;Hello&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;And the exception will resemble:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ExceptionWithExitCode&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;extends&lt;/span&gt; RuntimeException &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; ExitCodeGenerator &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;ExceptionWithExitCode&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;String message&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;message&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;getExitCode&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;13&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;When the application runs:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ java -Dspring.profiles.active=exception -jar build/libs/exit-code-demo-1.0-SNAPSHOT.jar &amp;gt;&amp;gt; /dev/null 2&amp;amp;&amp;gt;1
-$ echo $?
-13
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Obviously, this is a rather simple example, but you can see how &lt;code&gt;ExitCodeGenerator&lt;/code&gt; allows us to have programmable exit codes. This allows us to have tests for our applications, while giving us the flexibility to control the exit code.&lt;/p&gt;
-
-&lt;p&gt;We will take a look at the second approach of using &lt;code&gt;ExitCodeGenerator&lt;/code&gt; in another blog post.&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:1&#34;&gt;&lt;code&gt;ExitCodeGenerator&lt;/code&gt; is an &amp;ldquo;Interface used to generate an &amp;lsquo;exit code&amp;rsquo; from a running command line SpringApplication.&amp;rdquo;. You can find the JavaDocs &lt;a href=&#34;http://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/ExitCodeGenerator.html&#34;&gt;here&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;</description>
     </item>
     
   </channel>

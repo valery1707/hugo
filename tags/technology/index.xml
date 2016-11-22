@@ -110,7 +110,7 @@
 
 &lt;p&gt;Remember how tweets are of 140 characters each? Similarly, all URLs piped through &lt;em&gt;t.co&lt;/em&gt; are of 22 characters. That means when you post a tweet that has a URL in it, 22 characters get used for the URL. This catch-all shortening results in scenarios like the following:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/aggressive_url_shortening.gif&#34; alt=&#34;Twitter client shortening qz.com&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/aggressive_url_shortening.gif&#34; alt=&#34;&amp;quot;Twitter client shortening qz.com&amp;quot;&#34; title=&#34;Twitter client shortening qz.com&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Typing the 6 characters in &lt;em&gt;qz.com&lt;/em&gt; resulted in number of characters left to go from &lt;code&gt;107&lt;/code&gt; to &lt;code&gt;85&lt;/code&gt;.&lt;/p&gt;
 

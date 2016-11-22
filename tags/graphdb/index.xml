@@ -32,7 +32,7 @@
 
 &lt;p&gt;If we were to model football players to have played for European clubs, a section of the graph will look like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/graph_zidane.png&#34; alt=&#34;Graph: Zidane and teams&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/graph_zidane.png&#34; alt=&#34;&amp;quot;Graph: Zidane and teams&amp;quot;&#34; title=&#34;Graph: Zidane and teams&#34; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&#34;building-the-graph-with-cypher&#34;&gt;Building the graph with Cypher&lt;/h1&gt;
 
