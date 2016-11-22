@@ -1,17 +1,17 @@
 ---
 Categories:
-- Development
-- Java
-- Spring
-- JWT
-- Spring Security
+- development
+- java
+- spring
+- jwt
+- spring security
 Description: ""
 Tags:
-- Development
-- Java
-- Spring
-- JWT
-- Spring Security
+- development
+- java
+- spring
+- jwt
+- spring security
 date: 2016-07-02T18:42:04-07:00
 title: JWT authentication with Spring Web - Part 1
 image: "images/spring-security.png"

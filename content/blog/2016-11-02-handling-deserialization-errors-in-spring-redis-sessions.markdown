@@ -1,15 +1,15 @@
 ---
 Categories:
-- Development
-- Java
-- Spring
-- Redis
+- development
+- java
+- spring
+- redis
 Description: ""
 Tags:
-- Development
-- Java
-- Spring
-- Redis
+- development
+- java
+- spring
+- redis
 date: 2016-11-02T13:10:33-07:00
 image: "img/redis-spring-boot.png"
 title: Handling Deserialization errors in Spring Redis Sessions

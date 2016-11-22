@@ -1,13 +1,13 @@
 ---
 Categories:
-- Development
-- Java
+- development
+- java
 Description: ""
 Tags:
-- Development
-- Spring
-- MockMvc
-- Java
+- development
+- spring
+- mockmvc
+- java
 date: 2015-11-24T05:45:06-05:00
 title: Testing async responses using MockMvc
 image: "images/spring-by-pivotal.png"

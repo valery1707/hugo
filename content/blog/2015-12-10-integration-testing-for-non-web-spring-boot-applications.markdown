@@ -1,12 +1,12 @@
 ---
 Categories:
-- Development
-- Java
+- development
+- java
 Description: ""
 Tags:
-- Development
-- Java
-- Spring
+- development
+- java
+- spring
 date: 2015-12-10T21:45:59-05:00
 title: Integration testing challenges for non-web Spring applications
 image: "images/spring-by-pivotal.png"

@@ -1,11 +1,11 @@
 ---
 Categories:
-- Development
-- Java
+- development
+- java
 Description: ""
 Tags:
-- Development
-- Java
+- development
+- java
 date: 2016-06-28T23:17:51-04:00
 title: Injecting dependencies into a Spring @Configuration
 image: "images/spring-by-pivotal.png"

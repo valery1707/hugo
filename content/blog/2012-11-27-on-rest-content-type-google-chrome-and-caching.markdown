@@ -7,16 +7,16 @@ comments: true
 categories:
 - code
 - development
-- REST
-- HTTP
+- rest
+- http
 - chrome
 - caching
 - content-type
 tags:
 - code
 - development
-- REST
-- HTTP
+- rest
+- http
 - chrome
 - caching
 - content-type

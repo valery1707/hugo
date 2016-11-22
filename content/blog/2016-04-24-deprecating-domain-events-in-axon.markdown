@@ -1,12 +1,12 @@
 ---
 Categories:
-- Development
-- Java
+- development
+- java
 Description: ""
 Tags:
-- Development
-- Java
-- Axon
+- development
+- java
+- axon
 date: 2016-04-24T18:35:43-05:00
 title: Deprecating domain events in Axon
 image: "images/axon.png"

@@ -1,11 +1,11 @@
 ---
 Categories:
-- Development
-- Java
+- development
+- java
 Description: ""
 Tags:
-- Development
-- Java
+- development
+- java
 date: 2016-01-29T17:41:49-08:00
 title: Using custom arguments in Spring MVC controllers
 image: "images/spring-by-pivotal.png"

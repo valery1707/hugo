@@ -1,10 +1,10 @@
 ---
 Categories:
-- Development
-- GoLang
+- development
+- golang
 Description: ""
 Tags:
-- Development
+- development
 - golang
 date: 2015-12-14T21:47:06-05:00
 title: Thoughts on Open Graph tags

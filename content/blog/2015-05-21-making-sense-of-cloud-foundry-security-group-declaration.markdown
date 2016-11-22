@@ -1,15 +1,15 @@
 ---
 Categories:
-- Development
-- CloudFoundry
-- DevOps
+- development
+- cloudfoundry
+- devops
 Description: ""
 Tags:
-- Development
-- CloudFoundry
-- PaaS
-- JSON
-- DevOps
+- development
+- cloudfoundry
+- paas
+- json
+- devops
 date: 2015-05-21T22:58:41-07:00
 title: Making sense of Cloud Foundry security group declarations
 ---

@@ -1,9 +1,9 @@
 ---
 Categories:
-- Development
+- development
 Description: ""
 Tags:
-- Development
+- development
 date: 2015-12-07T20:43:02-05:00
 title: How thinking of Documentation as Legislation helped me become a better programmer
 image: "images/document.png"

@@ -1,12 +1,12 @@
 ---
 Categories:
-- Development
-- Java
+- development
+- java
 Description: ""
 Tags:
-- Development
-- Java
-- Spring
+- development
+- java
+- spring
 date: 2015-12-06T13:28:26-08:00
 title: Implementing custom annotations for Spring MVC
 image: "images/spring-by-pivotal.png"

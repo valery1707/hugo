@@ -1,13 +1,13 @@
 ---
 Categories:
-- Development
-- Java
-- Spring
+- development
+- java
+- spring
 Description: ""
 Tags:
-- Development
-- Java
-- Spring
+- development
+- java
+- spring
 date: 2016-06-30T19:43:07-04:00
 image: "images/spring-by-pivotal.png"
 title: JSON logging for Spring applications

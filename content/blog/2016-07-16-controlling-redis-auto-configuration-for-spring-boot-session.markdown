@@ -1,15 +1,15 @@
 ---
 Categories:
-- Development
-- Spring
-- Java
-- Redis
+- development
+- spring
+- java
+- redis
 Description: "This blog post describes how to control the auto-configuration of Redis in a Spring Boot application using Spring Session, thereby making it possible to use the default in-memory session store in environments where Redis is not present. This is useful in Continuous Integration environments and development environments."
 Tags:
-- Development
-- Spring
-- Java
-- Redis
+- development
+- spring
+- java
+- redis
 date: 2016-07-16T15:42:05-07:00
 image: "/images/redis-spring-boot.png"
 title: Controlling Redis auto-configuration for Spring Boot Session

@@ -1,25 +1,25 @@
 ---
 Categories:
-- Etcd
-- Development
+- etcd
+- development
 Description: ""
 Tags:
-- Etcd
-- Cluster
-- CoreOS
-- Configuration
-- Proxy
-- Secure
-- Development
+- etcd
+- cluster
+- coreos
+- configuration
+- proxy
+- secure
+- development
 date: 2016-11-11T13:07:32-08:00
 image: "images/etcd2-0.png"
 keywords:
-- Etcd
-- Cluster
-- CoreOS
-- Configuration
-- Proxy
-- Secure
+- etcd
+- cluster
+- coreos
+- configuration
+- proxy
+- secure
 title: Setting up a secure etcd cluster behind a proxy
 ---
 This is a blog post that explains how to set up a highly available etcd cluster behind a proxy and securing the communication between a client and the proxy, between the proxy and the individual member in the cluster and between members in the cluster.

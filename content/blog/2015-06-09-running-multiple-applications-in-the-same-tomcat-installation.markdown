@@ -1,12 +1,12 @@
 ---
 Categories:
-- Development
-- Java
+- development
+- java
 Description: ""
 Tags:
-- Development
-- Tomcat
-- Java
+- development
+- tomcat
+- java
 date: 2015-06-09T01:11:05-04:00
 title: Running multiple applications in the same Tomcat installation
 image: "images/1280px-Tomcat-logo.svg.png"

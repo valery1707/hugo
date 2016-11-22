@@ -1,11 +1,11 @@
 ---
 Categories:
-- Development
-- Java
+- development
+- java
 Description: ""
 Tags:
-- Development
-- Java
+- development
+- java
 date: 2016-04-19T22:29:12-04:00
 title: Programmable exit codes for spring command line applications - 2
 image: "images/spring-by-pivotal.png"

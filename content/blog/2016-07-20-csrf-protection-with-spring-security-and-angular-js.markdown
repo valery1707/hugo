@@ -1,9 +1,9 @@
 ---
 Categories:
-- Development
+- development
 Description: ""
 Tags:
-- Development
+- development
 date: 2016-07-20T21:57:01-04:00
 image: "images/angular-spring-boot.png"
 title: CSRF Protection with Spring Security and Angular JS

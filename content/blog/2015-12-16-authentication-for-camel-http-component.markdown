@@ -1,14 +1,14 @@
 ---
 Categories:
-- Development
-- Java
-- Camel
+- development
+- java
+- camel
 Description: ""
 Tags:
-- Development
-- Camel
-- Java
-- Spring
+- development
+- camel
+- java
+- spring
 date: 2015-12-16T01:07:01-05:00
 title: Authentication for Apache Camel HTTP components
 image: "images/apache-camel.png"

@@ -1,13 +1,13 @@
 ---
 Categories:
-- Development
-- Java
+- development
+- java
 Description: ""
 Tags:
-- Development
-- Java
-- Spring
-- JSR-303
+- development
+- java
+- spring
+- jsr-303
 date: 2015-12-04T22:50:24-08:00
 title: Validating RequestParams and PathVariables in Spring MVC
 image: "images/spring-by-pivotal.png"

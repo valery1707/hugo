@@ -1,14 +1,14 @@
 ---
 Categories:
-- Travel
-- Football
-- Memories
+- travel
+- football
+- memories
 Description: ""
 Tags:
-- Travel
-- Inverness
-- Scotland
-- Football
+- travel
+- inverness
+- scotland
+- football
 date: 2016-06-05T14:08:27-07:00
 title: On Inverness
 image: "images/inverness.jpg"

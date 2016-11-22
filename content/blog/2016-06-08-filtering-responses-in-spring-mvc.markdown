@@ -1,12 +1,12 @@
 ---
 Categories:
-- Development
-- Java
+- development
+- java
 Description: ""
 Tags:
-- Development
-- Java
-- Spring
+- development
+- java
+- spring
 date: 2016-06-08T13:23:16-04:00
 title: Filtering responses in Spring MVC
 image: "images/spring-by-pivotal.png"
