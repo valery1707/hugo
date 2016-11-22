@@ -34,11 +34,11 @@
               <h2 class="post-title">
                 {{ .Title }}
               </h2>
+              <h4 class="post-meta">Posted on {{ .Date.Format "Mon, Jan 2, 2006" }}</h4>
             </a>
             <p class="post-subtitle">
               {{ .Summary }}
             </p>
-            <p class="post-meta">Posted on {{ .Date.Format "Mon, Jan 2, 2006" }}</p>
           </div>
           {{ end }}
           <!-- Pager -->
