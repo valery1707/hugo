@@ -53,7 +53,7 @@ The minor mode does not need to do anything. The definition would be like this:
 
 This is how Emacs looks while committing with this hack in place:
 
-![Screenshot](/images/screenshot_git_commit_log.png)
+!["Screenshot showing git commit log"](/images/screenshot_git_commit_log.png "Screenshot showing git commit log")
 
 If you want to use this, copy the following snippet to your `init.el`.
 

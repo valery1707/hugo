@@ -26,7 +26,7 @@ The next day was luckier for me, as the pair I was part of actually managed to c
 
 We had a graduation ceremony at the office. Receiving the certificate from the MD, wearing our special edition t-shirts and graduation hats was a great experience. I wonder why Kerala University cannot have a graduation ceremony for B.Tech students.
 
-![TWU-14 graduates](http://2.bp.blogspot.com/_bZ_kjFIgY0w/Srh7h88cjtI/AAAAAAAABQA/uq5OEtmKWkc/s320/DSC06527.JPG)
+![TWU-14 graduates](http://2.bp.blogspot.com/_bZ_kjFIgY0w/Srh7h88cjtI/AAAAAAAABQA/uq5OEtmKWkc/s320/DSC06527.JPG "TWU-14 graduates")
 
 *TWU-14 graduates. I am somewhere in there, even I dont know where I am!*
 

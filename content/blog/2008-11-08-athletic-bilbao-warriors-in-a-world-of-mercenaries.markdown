@@ -18,7 +18,7 @@ Modern day football has become a professional game of the highest order, where m
 
 Amidst all these there still stand a club, who recruit players from their locality, born to their tribe and is even ready to forsake their top-flight status, in order to stick to their principles. Athletic Bilbao, the Spanish club, is a Basque institution that adheres to their 'la cantera' policy so passionately that, no non-Basque player has played for them since 1912.
 
-!["For now and forever, Hooray Athletic !"](http://lh6.ggpht.com/_bZ_kjFIgY0w/SRVbQyFlrRI/AAAAAAAAAj0/zIOTJ0x1f1Y/athletic.jpg)
+!["For now and forever, Hooray Athletic !"](http://lh6.ggpht.com/_bZ_kjFIgY0w/SRVbQyFlrRI/AAAAAAAAAj0/zIOTJ0x1f1Y/athletic.jpg "For now and forever, Hooray Athletic !")
 
 "For now and forever, Hooray Athletic !" Image courtesy : www.athletic-club.net
 

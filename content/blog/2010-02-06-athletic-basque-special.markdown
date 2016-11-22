@@ -28,5 +28,3 @@ In the subsequent group phase, Athletic was put in a group that had Austria Wien
 ## The Euskadi sponsorship deal:
 
 The Basque Country government wanted Athletic to play in the knockout rounds of their European campaigns with Euskadi displayed on their shirts. But EUFA regulations restrict a team shirt from displaying more than one main sponsor's name. So what would the Basque Country and Athletic do? In true Basque fashion, the club's main sponsors Petronor - the Basque petroleum company agreed to willingly forgo the space they 'own' in the front side of the Athletic shirt, to display Euskadi instead, for nothing in return. Athletic has already notified UEFA about the sponsorship change, and they have already unveiled the new kit.
-
-![](http://www.athletic-club.net/fotogaleria/galeria28794.jpg)

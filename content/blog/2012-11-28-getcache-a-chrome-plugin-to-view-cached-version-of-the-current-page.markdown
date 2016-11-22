@@ -43,12 +43,12 @@ file to the page.
 
 On any page, click on the GetCache icon to load the cached page.
 
-![GetCache icon](/images/get_cache_icon.png)
+![GetCache icon](/images/get_cache_icon.png "GetCache icon")
 
 
 Or you could right click on the page and select `View Google's cache`.
 
-![GetCache context menu](/images/get_cache_context_menu.png)
+![GetCache context menu](/images/get_cache_context_menu.png "GetCache context menu")
 
 ## Source Code
 The source code for the plugin is dead simple. All it does is to append

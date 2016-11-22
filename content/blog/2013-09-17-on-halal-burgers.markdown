@@ -31,7 +31,7 @@ I start by mixing (or am I supposed to say incorporating?) portions of my collec
 
 I don't grill my burgers mostly because I don't have a grill. I would like to try it, but for the time being, I do fine with a frying pan coated with the thinnest layer of oil possible. The purist may laugh at this, but I would like to believe that the end justifies the means in this case.
 
-![Masala Burger](/images/burger.png "Evidently, food photography is not my thing.")
+![Masala Burger](/images/burger.png "Masala Burger")
 
 [^1]: *Porotta* is a layered flat bread from Kerala. Read more [here](http://riascollection.blogspot.com/2013/04/homemade-kerala-porotta-with-video.html).
 [^2]: In Islam, *Halal* refers to anything that is permissible. When applied to food, there are rules as to what is allowed and what is not. More information can be found at the Islamic Food and Nutrition Council of America's [website](http://www.ifanca.org/cms/wpages/detail/4ca47c89-ec4c-41ba-ac38-1c111b830f0c).

@@ -54,7 +54,7 @@ Kottakkal is in Malappuram, one of the handful of football crazy islands
 in a sea of Cricket named India. I am immensely proud of the fact that I
 was born and raised here and learned to play football here.
 
-![Flags](/images/football_flags.jpg)
+!["L to R - Flags of England, Brazil and Portugal"](/images/football_flags.jpg "L to R - Flags of England, Brazil and Portugal")
 
 Malappuram loves football and that is a proper understatement. Makeshift
 stadiums on paddy fields attract 10k+ crowd during the hot
@@ -68,7 +68,7 @@ support. 12 foot cut-outs of players adorn streets when major
 tournaments are around the corner. Elderly men discuss the role of a
 withdrawn forward while sipping glasses of tea in tea shops.
 
-![Portugal](/images/poster_portugal.jpg)
+!["Poster of the Portugal team"](/images/poster_portugal.jpg "Poster of the Portugal team")
 
 People of Malappuram madly love Brazil. While there is a significant
 minority that subscribes to the other Latin American school of football
@@ -79,7 +79,7 @@ Malappuram are large in number, immensely proud and deafeningly
 vocal. The Brazilian way of playing is revered and kids copy moves and
 fashion their game around Brazilian legends.
 
-![Brazil](/images/poster_brazil.jpg)
+!["Poster of the Brazil team"](/images/poster_brazil.jpg "Poster of the Brazil team")
 
 But one can not escape the growing feeling that things are
 changing. While it would be ridiculous to even suggest that Brazil's fan

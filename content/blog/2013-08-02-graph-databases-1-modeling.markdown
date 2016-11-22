@@ -33,7 +33,7 @@ I am presently reading chapter 3, which deals with _Data Modeling with Graphs_. 
 # Example - European football players
 If we were to model football players to have played for European clubs, a section of the graph will look like this:
 
-![Graph: Zidane and teams](/images/graph_zidane.png)
+!["Graph: Zidane and teams"](/images/graph_zidane.png "Graph: Zidane and teams")
 
 
 # Building the graph with Cypher

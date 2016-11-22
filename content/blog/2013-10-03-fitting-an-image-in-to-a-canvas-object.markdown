@@ -28,7 +28,7 @@ imageObj.onload = function() {
 ```
 But fitting images with aspect ratios different from the Canvas can be a little tricky. The fundamental problem here is that when aspect ratio is different, there is only one pair of edges-either vertical or horizontal-that can be fitted on to the canvas. The image will have to be placed in the center along the other axis. The following diagram illustrates this.
 
-![Canvas fitting](/images/canvas_fitting.png)
+![Canvas fitting](/images/canvas_fitting.png "Canvas fitting")
 
 Since fitting depends on the aspect ratio, the code should take it into consideration. The following code compares the ratios and chooses to fit the image horizontally or vertically.
 ```javascript

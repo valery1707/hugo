@@ -22,7 +22,7 @@ You see, as far as I can remember, I have always wanted to go to Inverness. That
 
 When I was growing up, I didn't have access to a television. Initially it was because my family couldn't afford one and later when we could, my mom felt that it would have bad influence on her kids. My portal to the world was a Sony radio that my father had brought us from Jeddah where he was working at that time. It had the ability to receive both AM and FM signals and you could listen to the BBC World Service, Deutsche Welle Radio, Voice of America and many many more stations in languages that I did not understand. Not that I understood English well.
 
-![Sunset in Inverness](/images/inverness-sunset.jpg)
+!["Sunset in Inverness"](/images/inverness-sunset.jpg "Sunset in Inverness")
 _A sunset in Inverness_
 
 The BBC World Service had a Premier League program on Saturdays and Sundays. The program was a multi-cast of games around England, switching from stadium to stadium as goals were being scored, fouls were being awarded and referees were raising very late offside flags. Occasionally, they will switch to a stadium in Scotland when the Glasgow derby was in play. So many of my early memories of being a football fan happened around that radio.

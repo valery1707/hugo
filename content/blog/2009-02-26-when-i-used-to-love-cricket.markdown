@@ -17,7 +17,7 @@ tags:
 ---
 Taking a tour through the orkut albums of some of my friends from my school, I happened to see a photo of us in the playground, shot after a game of cricket. And there I was - thin, short and most surprisingly for me, with a cricket bat in my hand. True, I have seen the photo a number of times, I had even commented on it, but today, the bat in my hand reminding me solidly that I once used to play cricket and love it.
 
-![Good-old days: With friends after a game](https://lh5.googleusercontent.com/-hWsuR3VWy9I/SabRvGVCWSI/AAAAAAAAAyc/oSjcdEsGsmE/s673/ckt.JPG)
+![Good-old days: With friends after a game](https://lh5.googleusercontent.com/-hWsuR3VWy9I/SabRvGVCWSI/AAAAAAAAAyc/oSjcdEsGsmE/s673/ckt.JPG "Good-old days: With friends after a game")
 
 *Good-old days: With friends after a game*
 

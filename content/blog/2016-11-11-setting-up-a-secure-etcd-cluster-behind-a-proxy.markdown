@@ -37,7 +37,7 @@ Communications to an etcd cluster and between members in a cluster can be secure
 
 In this example, we will set up a cluster of 3 etcd nodes. We will use a key pair for the nodes and proxy to communicate between each other and another key pair for clients to communicate with the proxy.
 
-![Secure Etcd Cluster with Proxy](/images/etcd-secure-cluster-proxy.svg "Secure Etcd Cluster with Proxy")
+![Diagram of a Secure Etcd Cluster with Proxy](/images/etcd-secure-cluster-proxy.svg "Secure Etcd Cluster with Proxy")
 
 ## Generating Keys
 This section borrows heavily from Kelsey Hightower's [Kubernetes the Hard Way tutorial](https://github.com/kelseyhightower/kubernetes-the-hard-way). For the purposes of this blog post, we are going to assume that we will be running the three nodes and the proxy on a local machine. There will be changes that need to be made to the key configurations if these are deployed elsewhere. The instructions also assume that you are on OS X. Please make the necessary adjustments if you are on Linux.

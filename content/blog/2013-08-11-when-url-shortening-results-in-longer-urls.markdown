@@ -20,7 +20,7 @@ I have previously [written](/blog/2012/07/17/social-networks-and-url-shorteners/
 
 Remember how tweets are of 140 characters each? Similarly, all URLs piped through _t.co_ are of 22 characters. That means when you post a tweet that has a URL in it, 22 characters get used for the URL. This catch-all shortening results in scenarios like the following:
 
-![Twitter client shortening qz.com](/images/aggressive_url_shortening.gif)
+!["Twitter client shortening qz.com"](/images/aggressive_url_shortening.gif "Twitter client shortening qz.com")
 
 Typing the 6 characters in _qz.com_ resulted in number of characters left to go from `107` to `85`.
 

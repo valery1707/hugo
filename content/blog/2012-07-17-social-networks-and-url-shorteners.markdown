@@ -55,7 +55,7 @@ To understand the impact of this, lets look at another
 scenario. [Francis Keogh](https://twitter.com/HonestFrank), a journalist
 with the BBC shares a piece of Football transfer news on Twitter:
 
-![West Ham close on deal to sign Mali striker Modibo Maiga](http://i.imgur.com/e2tqA.png)
+!["Screenshot of tweet saying 'West Ham close on deal to sign Mali striker Modibo Maiga'"](http://i.imgur.com/e2tqA.png "Screenshot of tweet saying 'West Ham close on deal to sign Mali striker Modibo Maiga'")
 
 He obviously uses a shortened URL generated with BBC's **bbc.in**
 shortener. BBC, being the media company they are have huge interest in
