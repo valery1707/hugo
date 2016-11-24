@@ -13,7 +13,7 @@ Tags:
 - java
 - spring
 date: 2016-11-21T17:03:03-08:00
-image: ""
+image: "images/feature-toggles.png"
 series:
 - feature-toggles
 title: Implementing feature toggles for a Spring Boot application - Part 1
