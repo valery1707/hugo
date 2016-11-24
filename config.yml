@@ -6,6 +6,7 @@ publishdir: "public"
 taxonomies:
     category: "categories"
     tag: "tags"
+    series: "series"
 permalinks:
     blog: /blog/:year/:month/:day/:title/
 metadataformat: "yaml"
