@@ -21,6 +21,8 @@
 
 &lt;p&gt;Feature Toggles are a mechanism to change the behavior of software without having to re-deploy code. Pete Hogdson has a comprehensive &lt;a href=&#34;http://martinfowler.com/articles/feature-toggles.html&#34;&gt;blog post&lt;/a&gt; explaining the complexities of feature toggles.&lt;/p&gt;
 
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/feature-toggles.png&#34; alt=&#34;Feature toggles&#34; title=&#34;Feature toggles&#34; /&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;requirements&#34;&gt;Requirements&lt;/h2&gt;
 
 &lt;p&gt;Our application is a Spring Boot web application that gets deployed in a Tomcat instance. The application is deployed via Chef and chef sets up the appropriate configuration parameters for the application as Tomcat &lt;a href=&#34;https://tomcat.apache.org/tomcat-8.0-doc/config/context.html#Environment_Entries&#34;&gt;Environment&lt;/a&gt; entries. Since feature toggles are ultimately application parameters &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;, we started by setting them as Tomcat environment variables. Having considered this, we identified the following requirements:&lt;/p&gt;
