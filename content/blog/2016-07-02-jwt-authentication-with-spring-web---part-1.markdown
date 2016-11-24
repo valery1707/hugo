@@ -12,6 +12,8 @@ Tags:
 - spring
 - jwt
 - spring security
+series:
+- spring-jwt
 date: 2016-07-02T18:42:04-07:00
 title: JWT authentication with Spring Web - Part 1
 image: "images/spring-security.png"
