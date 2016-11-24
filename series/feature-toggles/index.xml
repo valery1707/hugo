@@ -20,7 +20,7 @@
 
 &lt;p&gt;Feature Toggles are a mechanism to change the behavior of software without having to re-deploy code. Pete Hogdson has a comprehensive &lt;a href=&#34;http://martinfowler.com/articles/feature-toggles.html&#34;&gt;blog post&lt;/a&gt; explaining the complexities of feature toggles.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/feature-toggles.png&#34; alt=&#34;Feature toggles&#34; title=&#34;Feature toggles&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sdqali.in/images/feature-toggles.svg&#34; alt=&#34;Feature toggles&#34; title=&#34;Feature toggles&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;requirements&#34;&gt;Requirements&lt;/h2&gt;
 
