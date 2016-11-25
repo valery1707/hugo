@@ -11,7 +11,7 @@ permalinks:
     blog: /blog/:year/:month/:day/:title/
 metadataformat: "yaml"
 params:
-  description: "A blog about the Code I write and the Technologies I use. And other things that interest me."
+  description: "My posts with working code - tested and verified - and actionable explanations for specific programming problems."
   author: "Sadique Ali"
   keywords:
     - Programming
