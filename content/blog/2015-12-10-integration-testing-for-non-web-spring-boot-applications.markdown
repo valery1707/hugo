@@ -80,6 +80,7 @@ public class ApplicationIntegrationTest {
 ```
 
 That test is straightforward—it loads the Spring context with all the beans, runs the application with parameters and expects the parameter to be printed to the console.
+{{< mailchimp >}}
 
 Except, it does not work. If we were to execute the above test, we will get the following error:
 

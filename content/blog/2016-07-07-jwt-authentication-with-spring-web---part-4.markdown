@@ -126,7 +126,7 @@ public class JwtAuthToken implements Authentication {
     }
 }
 ```
-
+{{< mailchimp >}}
 At this point, we need to tell Spring Security how to verify the tokens. This can be done by providing a custom `AuthenticationProvider`. This can be done by overriding the `configure` method.
 
 ```java

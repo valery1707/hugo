@@ -89,7 +89,7 @@ public class LoginController {
 ```
 
 We use the login service to verify the credentials and it returns an `Optional<MinimalProfile>`. If there is a valid `MinimalProfile`, we ask the `JwtService` to issue a token.
-
+{{< mailchimp >}}
 The `LoginService` uses the `ProfileService` to load a profile matching the user name and the password presented by the user.
 
 ```java

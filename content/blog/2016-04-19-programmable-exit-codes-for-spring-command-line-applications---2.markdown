@@ -25,6 +25,7 @@ public class Application  {
 }
 ```
 The command line runner will now implement `ExitCodeGenerator`:
+{{< mailchimp >}}
 
 ```java
 @Component

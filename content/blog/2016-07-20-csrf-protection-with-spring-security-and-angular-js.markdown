@@ -92,7 +92,7 @@ And the controllers are changed to use these services.
 ```
 
 It can be noted that there are no CSRF specific code in there. We will be relying on Angular's CSRF (or XSRF as Angular refers to it) protection.
-
+{{< mailchimp >}}
 ### The back end
 
 The main API returns a greeting:

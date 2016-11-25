@@ -35,6 +35,8 @@ $ .gems
 * The gems will be installed in `.gems` directory under the project root.
 * Ruby will look for gems in the `.gems` directory.
 
+{{< mailchimp >}}
+
 ## Use bundler to manage gemsets
 In this approach, we will be using bundler's `--path` flag to install the gemset to a local directory and then wrap all calls with `bundle exec`. A typical workflow in this case will look like this.
 

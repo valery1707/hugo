@@ -61,6 +61,7 @@ public class DataStreamService {
 ```
 
 Our challenge is to ensure that this continue to work when the HTTP end point in question requires authentication. For the purposes of this blog post, we will be restricting our discussion to Basic Authentication. There are three ways to do this authentication–through Camel authentication query parameters, through the use of the `Authorization` header and by overriding the `HttpConfiguration` in the current Camel context.
+{{< mailchimp >}}
 
 ### Camel authentication query parameters
 

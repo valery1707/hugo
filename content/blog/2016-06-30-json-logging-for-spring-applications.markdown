@@ -28,6 +28,7 @@ We will be using the `logstash-logback-encoder` [encoder](https://github.com/log
 ```
 
 The next step is to configure logback to log using the new encoder. This can be done by placing a `logback.xml` configuration file in the application's class path - for example in the `main/resources` directory.
+{{< mailchimp >}}
 
 If we want the application to log to the console in JSON format, we will use a `ConsoleAppender` with the encoder as follows:
 

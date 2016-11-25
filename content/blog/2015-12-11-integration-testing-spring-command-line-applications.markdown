@@ -69,6 +69,7 @@ For the purposes of what we are trying to achieve, the listener we are really in
 ```
 
 As we can see, the value of the `value` element [^2] of our `@IntegrationTest` gets injected to the configuration of the test context.
+{{< mailchimp >}}
 
 Now that we have understood and used the `@IntegrationTest` annotation to push in configuration, it is time to make our application consume this configuration.
 

@@ -74,6 +74,7 @@ public class MetaDataResolver implements HandlerMethodArgumentResolver {
 }
 ```
 This resolver will try and compute the value for the argument if the arguments type is `MetaData`. It computes it by extracting all the headers representing the meta data from the request.
+{{< mailchimp >}}
 
 ## Using in a controller method
 

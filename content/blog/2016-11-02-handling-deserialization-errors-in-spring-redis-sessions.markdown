@@ -51,7 +51,7 @@ When this code is deployed and a user tries to access a protected resource by pr
 org.springframework.data.redis.serializer.SerializationException: Cannot deserialize; nested exception is org.springframework.core.serializer.support.SerializationFailedException: Failed to deserialize payload. Is the byte array a result of corresponding serialization for DefaultDeserializer?; nested exception is java.io.InvalidClassException: in.sdqali.spring.vo.Customer; local class incompatible: stream classdesc serialVersionUID = 5161850915957547690, local class serialVersionUID = 1045726772100761661
 ```
 This happens because the serialized object in the session and the current structure of the session differ.
-
+{{< mailchimp >}}
 ## Solutions
 This issue was raised on the Spring Session issue tracker [^1] and there were a lot of work-arounds discussed. Of the work arounds, wrapping the session repository offers the least disruption to the end user.
 This approach ensures that every time a de-serialization error is thrown while trying to read an object from the session, that object is deleted, preventing subsequent errors.
@@ -97,7 +97,6 @@ public class SafeDeserializationRepository<S extends ExpiringSession> implements
   }
 }
 ```
-
 However, it is not easy to wire up this repository in the configuration. Since Spring Redis Session is auto configured, the only way to override beans for Redis Session is to extend `RedisHttpSessionConfiguration` and specify beans. Ideally, we want to override the method `RedisHttpSessionConfiguration#sessionRepository`. This would mean that `SafeDeserializationRepository` inherits from `RedisOperationsSessionRepository`. That does not sound too complicated till you realize that `RedisOperationsSessionRepository#getSession(java.lang.String)` returns `RedisSession` which is a final class declared inside `RedisOperationsSessionRepository`.
 
 On closer look, the repository is hooked in to `SessionRepositoryFilter` and it is indeed possible to override the `SpringHttpSessionConfiguration#springSessionRepositoryFilter` method to create a new filter that takes our `SafeDeserializationRepository`.

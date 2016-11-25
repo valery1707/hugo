@@ -115,7 +115,7 @@ Caused by: java.net.ConnectException: Connection refused
 ...
 ```
 It appears that the application is trying to make connections to Redis, even though we configured it not to. What is going on? It looks like some where along the chain, some configuration with the annotation `@EnableSpringHttpSession` is being loaded. Why could that happen?
-
+{{< mailchimp >}}
 ### Spring Boot Autoconfig
 Like a lot of Spring Boot applications, we are using the `@SpringBootApplication` annotation in our application. This is a meta-annotation [^3] that takes the following form:
 ```java

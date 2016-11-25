@@ -150,7 +150,7 @@ We will need two controllers in `app/controller.js` - one for the login page to 
 ```
 
 The `LoginController` has two methods - login and logout. The login method uses the `LoginService` to make a request and saves the JWT and user profile returned up on successful login. It also sets the `Authorization` header default to the JWT returned so that every subsequent request uses it to authenticate. The user is then navigated to the home page. Logout is performed by removing the JWT and profile from local storage and clearing the header defaults.
-
+{{< mailchimp >}}
 The next step is to create `app/app.js` to wire up the Angular application together:
 
 ```javascript

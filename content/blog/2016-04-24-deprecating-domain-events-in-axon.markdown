@@ -43,6 +43,7 @@ public class DeprecateValidationForFirstNameFailedEventUpcaster extends Abstract
 }
 ```
 As expected, this upcaster does not look at the revision of the intermediate representation and simply looks at the type of the event. And it completely discards any fields in the event and returns a simple type of the `NoOpEvent` class. Note that in this case, we are serializing the event as JSON using Jackson, hence the expected representation type is `com.fasterxml.jackson.databind.JsonNode`. If we were to use Axon's default XML serialization, the expected representation type will be `org.dom4j.Document`
+{{< mailchimp >}}
 
 ### Upcasting to an empty list
 Upcasting to an empty list can be easily achieved by implementing `Upcaster<T>` instead of extending `AbstractSingleEntryUpcaster`.

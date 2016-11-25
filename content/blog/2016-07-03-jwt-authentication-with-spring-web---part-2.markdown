@@ -194,7 +194,7 @@ public class ProfileController {
 }
 ```
 It delegates querying for profiles to the `ProfileService` and throws exceptions if a Profile is not present. Notice the use of Java's `Optional` to throw exceptions.
-
+{{< mailchimp >}}
 ### The ProfileService
 
 ```java

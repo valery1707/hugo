@@ -8,10 +8,13 @@ Tags:
 - java
 - spring
 - jsr-303
+- validation
+- request-parameters
 date: 2015-12-04T22:50:24-08:00
 title: Validating RequestParams and PathVariables in Spring MVC
 image: "images/spring-by-pivotal.png"
 ---
+<meta content="spring, validate, request, parameters, @requestparam, spring mvc, param, validation" name="keywords">
 Spring MVC provides a convenient way to validate inputs to API end points through the use of `JSR-303` annotations. While this mechanism works great for end points that consume a `RequestBody` (as is the case with most `POST` and `PUT` requests), it is not easy to achieve the same effect for end points that consume primitives in the form of path variables or request parameters (as is the case with most `GET` requests).
 
 <!--more-->
@@ -61,6 +64,7 @@ If we were to attempt a similar approach for a `GET` end point that accepts a `R
         return emailMessage(email);
     }
 ```
+{{< mailchimp >}}
 
 This is where Spring's `@Validated` annotation is useful. With `@Validated`, we can validate request parameters and path variables.
 

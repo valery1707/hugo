@@ -54,6 +54,7 @@ $ echo $?
 ```
 
 This looks straightforward and easy. However, exiting the application from within the `CommandLineRunner` makes integration testing of this application difficult. Our tests will simply stop execution at that point without giving us the opportunity to assert anything.
+{{< mailchimp >}}
 
 At work, while looking for a solution to this, we stumbled across Spring's `ExitCodeGenerator` [^1]. It is an interface whose implementations Spring uses to look up what exit code to use. There are at least two ways to make use of `ExitCodeGenerator` - one involves making the application's Exceptions implement `ExitCodeGenerator` and the other involves making the command line runners themselves implement `ExitCodeGenerator`. We will look at the first approach here.
 

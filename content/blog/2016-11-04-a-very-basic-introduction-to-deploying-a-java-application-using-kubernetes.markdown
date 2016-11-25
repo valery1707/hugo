@@ -53,6 +53,7 @@ Now that we have a local docker registry, we can go ahead and tell minikube to c
 > minikube delete
 > minikube start --vm-driver="virtualbox" --insecure-registry=192.168.99.100:80
 ```
+{{< mailchimp >}}
 ## Create a container image for the application
 The application in this case is a simple Spring Boot application that has exactly one controller.
 ```java

@@ -63,7 +63,7 @@ public class ReposController {
 ```
 
 What we want to do is to provide a convenient mechanism so that this end point can respond for request made with url parameters which it uses to filter repositories. For example, we expect the request to `http://localhost:8080/repos?fork=true&language=Ruby` to have a JSON response with an array containing only those repositories that are forks and have Ruby as their primary language. Of course, it is worth pointing out that in actual system, you would want to do these kind of filtering at the data layer instead of the web layer, but this is an exercise to see how we could do it at the Spring layer.
-
+{{< mailchimp >}}
 We want our mechanism to be easy to use and I came with annotation that we would use as follows:
 
 ```java

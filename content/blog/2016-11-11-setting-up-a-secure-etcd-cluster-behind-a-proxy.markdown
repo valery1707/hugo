@@ -136,7 +136,7 @@ cfssl gencert \
   etcd-node-csr.json | cfssljson -bare etcd-node
 ```
 This will create three files: `etcd-node.pem`- the node certificate, `etcd-node-key.pem` the key for this certificate and `etcd-node.csr` - the certificate signing request.
-
+{{< mailchimp >}}
 ### Create Proxy certificate and key
 We can now generate the TLS key for securing the communications between the client and the proxy. We will start by creating a configuration for this certificate. Since our client and proxy are running locally, the hosts allowed to authenticate with this certificate include only `localhost`.
 ```bash

@@ -30,6 +30,7 @@ I do not currently have a Facebook account with which I could test and this and 
 Twitter primarily uses it‘s [Twitter Cards](https://dev.twitter.com/cards/overview) functionality to help content creators display richer previews. Twitter Cards defines it‘s own custom tags. However, if these tags are not present in a shared page‘s markup, Twitter does [fall back](https://dev.twitter.com/cards/markup) to using the corresponding Open Graph tags.
 
 However, one of the interesting things about sharing content through Twitter cards is that it allows the content to be attributed to the Twitter accounts of the content author and the site where the content is hosted. This is done via the Twitter Card tags `twitter:creator` and `twitter:site`. There are no equivalents in the Open Graph world and hence these needs to be explicitly specified for Twitter.
+{{< mailchimp >}}
 
 ## Slack
 Slack generates rich preview of content using the four Open Graph tags. Slack does this by using it‘s [Link Expanding Bot](https://api.slack.com/robots). In addition to Open Graph tags, Slack looks for oEmbed [^2] and Twitter Cards.

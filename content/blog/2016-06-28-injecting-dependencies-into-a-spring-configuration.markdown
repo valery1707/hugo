@@ -70,6 +70,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
 ```
 
 As you can see, the interceptor checks every request for a `session` header and responds with a `BAD_REQUEST (400)` in the absence of it.
+{{< mailchimp >}}
 
 This code compiles fine, but when you run it, you will be confronted with the following stack trace:
 

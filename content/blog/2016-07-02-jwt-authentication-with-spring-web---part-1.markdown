@@ -56,6 +56,8 @@ A JWT header is a JSON object that typically has the following values:
 * `alg` - The algorithm used for signing the token.
 * `typ` - This optional parameter, set to `JWT` declares this JSON object as a JWT.
 
+{{< mailchimp >}}
+
 An example JWT header when the algorithm used is HMA-SHA256:
 
 ```json
