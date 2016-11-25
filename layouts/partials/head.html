@@ -9,9 +9,9 @@
 
     {{ $isHomePage := eq .Title .Site.Title }}
     {{ if eq $isHomePage true }}
-      {{ $.Scratch.Set "title" .Title }}
+      {{ $.Scratch.Set "title" (print .Title " by " .Site.Params.author) }}
     {{else}}
-      {{ $.Scratch.Set "title" (print .Title " - " .Site.Title) }}
+      {{ $.Scratch.Set "title" (print .Title " - " .Site.Title " by " .Site.Params.author) }}
     {{ end }}
     {{ $title := $.Scratch.Get "title"}}
 

@@ -1,5 +1,5 @@
 baseurl: "https://sdqali.in"
-title: "Sadique Ali"
+title: "{code that works}"
 layoutdir: "layouts"
 contentdir: "content"
 publishdir: "public"
@@ -12,6 +12,7 @@ permalinks:
 metadataformat: "yaml"
 params:
   description: "A blog about the Code I write and the Technologies I use. And other things that interest me."
+  author: "Sadique Ali"
   keywords:
     - Programming
     - Software Development
