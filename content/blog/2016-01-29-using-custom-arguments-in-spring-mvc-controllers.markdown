@@ -10,6 +10,7 @@ date: 2016-01-29T17:41:49-08:00
 title: Using custom arguments in Spring MVC controllers
 image: "images/spring-by-pivotal.png"
 ---
+<meta content="spring, arguments, handlermethodargumentresolver, spring mvc, spring boot" name="keywords">
 Most of the Spring controllers in the real world accept a lot of different types of parameters - Path variables, URL parameters, request headers, request body and sometimes even the entire HTTP Request object. This provides a flexible mechanism to create APIs. Spring is really good at parsing these parameters in to Java types as long as there is an ObjectMapper (like Jackson) configured to take care of the de-serialization.
 
 However, there are situations where you want methods to receive a parameter of a particular type that has to resolved from a set of parameters–for example, an API can expect consumers to send meta data about a request in the form of headers and need a custom type to hold this information. Spring provides a convenient way to provide such custom arguments. This blog post explores this feature and how to implement it and test it.
