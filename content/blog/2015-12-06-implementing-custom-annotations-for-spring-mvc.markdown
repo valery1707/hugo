@@ -11,7 +11,8 @@ date: 2015-12-06T13:28:26-08:00
 title: Implementing custom annotations for Spring MVC
 image: "images/spring-by-pivotal.png"
 ---
-I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of `@RequestMapping` and `@ResponseStatus` to set the expected request and response `Content-Type`, the request Method, response status etc. This blog post describes how to compose Spring annotations that produce the same effect as multiple Spring annotations acting together.
+<meta content="spring, annotation, custom annotation, spring mvc, spring boot" name="keywords">
+I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of `@RequestMapping` and `@ResponseStatus` to set the expected request and response `Content-Type`, the request Method, response status etc. This blog post describes how to create custom Spring annotationshow to create custom annotation in spring mvc that produce the same effect as multiple Spring annotations acting together.
 <!--more-->
 Among the new things introduced in Spring 4 was the idea of meta-annotations. [^1] Meta annotations are annotations that can act up on other annotations by modifying and overriding attributes of the target annotations.
 
