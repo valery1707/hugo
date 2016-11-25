@@ -1,6 +1,12 @@
+---
+type: page
+title: "{code that works} newsletter"
+comments: true
+url: /newsletter
+---
 <div class="signup col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0">
   <div class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0">
-    <h3>Found this article useful?</h3>
+    <h3>Subscribe to the {code that works} newsletter</h3>
     <div>
       My posts with working code - tested and verified - and explanations for specific Java, Spring and other programming problems. Delivered each week for free.
     </div>
