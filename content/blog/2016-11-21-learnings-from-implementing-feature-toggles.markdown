@@ -116,7 +116,9 @@ public class MessageController {
   }
 }
 ```
-The `FeatureRepository` has to look at all the properties that are available in the applications environment and filter out the ones that start with `feature.`. Collecting all the properties available in an environment is [surprisingly complex](https://stackoverflow.com/questions/23506471/spring-access-all-environment-properties-as-a-map-or-properties-object), owing to the number of ways properties can be injected. Based on the approach discussed in that question, we can create a `FeatureRepository` as follows:
+The `FeatureRepository` has to look at all the properties that are available in the applications environment and filter out the ones that start with `feature.`.
+{{< mailchimp >}}
+Collecting all the properties available in an environment is [surprisingly complex](https://stackoverflow.com/questions/23506471/spring-access-all-environment-properties-as-a-map-or-properties-object), owing to the number of ways properties can be injected. Based on the approach discussed in that question, we can create a `FeatureRepository` as follows:
 ```java
 public class FeatureRepository {
   private static final String FEATURE_PREFIX = "feature.";
