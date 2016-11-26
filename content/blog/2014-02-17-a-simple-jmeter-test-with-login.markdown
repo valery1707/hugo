@@ -19,6 +19,7 @@ tags:
 - performance-test
 - tools
 ---
+<meta content="jmeter, login" name="keywords">
 I had to set up a JMeter test last week - the test included logging in to a site, and then hitting a bunch of URLs, all of them being GET requests. I found it hard to find a simple documentation that described how to do this - the ones I found were either incomplete or were trying to teach me a large number of things at the same time. So when I figured it out, I decided to write this down, for anyone else finding themselves in the same place as me.
 
 For this example, the application under test is a simple Rails application, with the login form at `/login` and a `POST` request to `/login` does the authentication.

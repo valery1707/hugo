@@ -16,7 +16,9 @@ tags:
 - emacs
 - tools
 - development
+- validation
 ---
+<meta content="validate" name="keywords">
 At work, I have to deal with Amazon CloudFormation [^1] templates a fair bit. These templates are JSON files. More and more members of our team are moving away from TextMate to Emacs which makes me really happy. We would like to validate these CloudFormation templates in Emacs. Today we set this up and I hope this turns out to be of help to some one else trying to do the same.
 
 <!--more-->

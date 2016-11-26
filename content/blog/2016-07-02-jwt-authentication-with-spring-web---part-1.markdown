@@ -11,14 +11,15 @@ Tags:
 - java
 - spring
 - jwt
-- spring security
+- spring-security
+- authentication
 series:
 - spring-jwt
 date: 2016-07-02T18:42:04-07:00
 title: JWT authentication with Spring Web - Part 1
 image: "images/spring-security.png"
 ---
-
+<meta content="jwt authentication example" name="keywords">
 JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.
 
 <!--more-->
