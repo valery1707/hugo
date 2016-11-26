@@ -13,7 +13,7 @@
       <pubDate>Mon, 21 Nov 2016 17:03:03 -0800</pubDate>
       
       <guid>https://sdqali.in/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/</guid>
-      <description>&lt;p&gt;In one of our recent projects at work, we implemented feature toggles and this &lt;a href=&#34;https://sdqali.in/series/feature-toggles&#34;&gt;series of blog posts&lt;/a&gt; discusses our motivations and requirements, the approach we took and what we learned from it.
+      <description>&lt;p&gt;In one of our recent projects at work, we implemented feature toggles for a Spring MVC / Angular JS code base and this &lt;a href=&#34;https://sdqali.in/series/feature-toggles&#34;&gt;series of blog posts&lt;/a&gt; discusses our motivations and requirements, the approach we took and what we learned from it.
 &lt;/p&gt;
 
 &lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
