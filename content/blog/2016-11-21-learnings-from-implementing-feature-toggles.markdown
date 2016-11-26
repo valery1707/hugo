@@ -18,7 +18,7 @@ series:
 - feature-toggles
 title: Implementing feature toggles for a Spring Boot application - Part 1
 ---
-In one of our recent projects at work, we implemented feature toggles and this [series of blog posts](/series/feature-toggles) discusses our motivations and requirements, the approach we took and what we learned from it.
+In one of our recent projects at work, we implemented feature toggles for a Spring MVC / Angular JS code base and this [series of blog posts](/series/feature-toggles) discusses our motivations and requirements, the approach we took and what we learned from it.
 <!--more-->
 ## Introduction
 Feature Toggles are a mechanism to change the behavior of software without having to re-deploy code. Pete Hogdson has a comprehensive [blog post](http://martinfowler.com/articles/feature-toggles.html) explaining the complexities of feature toggles.
