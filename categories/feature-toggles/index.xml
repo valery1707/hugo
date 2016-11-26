@@ -148,7 +148,6 @@
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 
 Collecting all the properties available in an environment is &lt;a href=&#34;https://stackoverflow.com/questions/23506471/spring-access-all-environment-properties-as-a-map-or-properties-object&#34;&gt;surprisingly complex&lt;/a&gt;, owing to the number of ways properties can be injected. Based on the approach discussed in that question, we can create a &lt;code&gt;FeatureRepository&lt;/code&gt; as follows:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;FeatureRepository&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;

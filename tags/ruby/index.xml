@@ -590,7 +590,6 @@ $ .gems
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 
 
 &lt;h2 id=&#34;use-bundler-to-manage-gemsets&#34;&gt;Use bundler to manage gemsets&lt;/h2&gt;

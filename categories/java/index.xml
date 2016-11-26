@@ -148,7 +148,6 @@
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 
 Collecting all the properties available in an environment is &lt;a href=&#34;https://stackoverflow.com/questions/23506471/spring-access-all-environment-properties-as-a-map-or-properties-object&#34;&gt;surprisingly complex&lt;/a&gt;, owing to the number of ways properties can be injected. Based on the approach discussed in that question, we can create a &lt;code&gt;FeatureRepository&lt;/code&gt; as follows:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;FeatureRepository&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
@@ -355,7 +354,6 @@ Collecting all the properties available in an environment is &lt;a href=&#34;htt
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 
 
 &lt;h2 id=&#34;create-a-container-image-for-the-application&#34;&gt;Create a container image for the application&lt;/h2&gt;
@@ -569,7 +567,6 @@ hello-world   1         1         1            1           4m
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 &lt;/p&gt;
 
 &lt;h2 id=&#34;solutions&#34;&gt;Solutions&lt;/h2&gt;
@@ -784,7 +781,6 @@ Caused by: java.net.ConnectException: Connection refused
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 &lt;/p&gt;
 
 &lt;h3 id=&#34;spring-boot-autoconfig&#34;&gt;Spring Boot Autoconfig&lt;/h3&gt;
@@ -1048,7 +1044,6 @@ These are the blog posts in this series:&lt;/p&gt;
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 
 The next step is to create &lt;code&gt;app/app.js&lt;/code&gt; to wire up the Angular application together:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;(&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;function&lt;/span&gt;(angular) {
@@ -1292,7 +1287,6 @@ These are the blog posts in this series:&lt;/p&gt;
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 
 At this point, we need to tell Spring Security how to verify the tokens. This can be done by providing a custom &lt;code&gt;AuthenticationProvider&lt;/code&gt;. This can be done by overriding the &lt;code&gt;configure&lt;/code&gt; method.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Configuration&lt;/span&gt;
@@ -1583,7 +1577,6 @@ These are the blog posts in this series:&lt;/p&gt;
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 
 The &lt;code&gt;LoginService&lt;/code&gt; uses the &lt;code&gt;ProfileService&lt;/code&gt; to load a profile matching the user name and the password presented by the user.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
@@ -1930,7 +1923,6 @@ These are the blog posts in this series:&lt;/p&gt;
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 &lt;/p&gt;
 
 &lt;h3 id=&#34;the-profileservice&#34;&gt;The ProfileService&lt;/h3&gt;
@@ -2098,7 +2090,6 @@ These are the blog posts in this series:&lt;/p&gt;
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 
 
 &lt;p&gt;An example JWT header when the algorithm used is HMA-SHA256:&lt;/p&gt;
@@ -2190,7 +2181,6 @@ These are the blog posts in this series:&lt;/p&gt;
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 &lt;/p&gt;
 
 &lt;p&gt;If we want the application to log to the console in JSON format, we will use a &lt;code&gt;ConsoleAppender&lt;/code&gt; with the encoder as follows:&lt;/p&gt;
@@ -2362,7 +2352,6 @@ These are the blog posts in this series:&lt;/p&gt;
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 &lt;/p&gt;
 
 &lt;p&gt;This code compiles fine, but when you run it, you will be confronted with the following stack trace:&lt;/p&gt;
@@ -2495,7 +2484,6 @@ For the purposes of this blog post, the response of the end point will be a coll
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 
 We want our mechanism to be easy to use and I came with annotation that we would use as follows:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;ReposController&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
@@ -2652,7 +2640,6 @@ We want our mechanism to be easy to use and I came with annotation that we would
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 &lt;/p&gt;
 
 &lt;h3 id=&#34;upcasting-to-an-empty-list&#34;&gt;Upcasting to an empty list&lt;/h3&gt;
@@ -2765,7 +2752,6 @@ So you achieve the same thing, but explicit always beats implicit in DDD ;-)&lt;
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 &lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Component&lt;/span&gt;
 &lt;span style=&#34;color: #9999FF&#34;&gt;@Profile&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;hello&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
@@ -2864,7 +2850,6 @@ $ echo $?
     &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;script type=&#39;text/javascript&#39; src=&#39;//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js&#39;&gt;&lt;/script&gt;&lt;script type=&#39;text/javascript&#39;&gt;(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]=&#39;FNAME&#39;;ftypes[1]=&#39;text&#39;;fnames[0]=&#39;EMAIL&#39;;ftypes[0]=&#39;email&#39;;}(jQuery));var $mcj = jQuery.noConflict(true);&lt;/script&gt;
 &lt;/p&gt;
 
 &lt;p&gt;At work, while looking for a solution to this, we stumbled across Spring&amp;rsquo;s &lt;code&gt;ExitCodeGenerator&lt;/code&gt; &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. It is an interface whose implementations Spring uses to look up what exit code to use. There are at least two ways to make use of &lt;code&gt;ExitCodeGenerator&lt;/code&gt; - one involves making the application&amp;rsquo;s Exceptions implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt; and the other involves making the command line runners themselves implement &lt;code&gt;ExitCodeGenerator&lt;/code&gt;. We will look at the first approach here.&lt;/p&gt;
