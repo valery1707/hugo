@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{code that works}</title>
-    <link>https://sdqali.in/tags/ruby/index.xml</link>
+    <link>https://sdqali.in/tags/ruby/index.xml?utm_source=site&amp;utm_medium=feed</link>
     <description>Recent content on {code that works}</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://sdqali.in/tags/ruby/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/ruby/index.xml?utm_source=site&amp;utm_medium=feed" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Importing the Yelp dataset into MongoDB</title>
-      <link>https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/</link>
+      <link>https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sat, 02 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/</guid>
+      <guid>https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Today Yelp announced their dataset challenge &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. The dataset they released includes data from 5 cities (Phoenix, Las Vegas, Madison, Waterloo and Edinburgh) and consists of&lt;/p&gt;
 
 &lt;ul&gt;
@@ -86,10 +86,10 @@ businesses &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span st
     
     <item>
       <title>Implementing Rate Limiting in Rails - Part 2</title>
-      <link>https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/</link>
+      <link>https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sun, 13 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/</guid>
+      <guid>https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;&lt;em&gt;The first part of this series can be found &lt;a href=&#34;https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails-part-1/&#34;&gt;here&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
@@ -257,10 +257,10 @@ X-Rate-Limit-Reset: 1381717124
     
     <item>
       <title>Implementing Rate Limiting in Rails - Part 1</title>
-      <link>https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/</link>
+      <link>https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sat, 12 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/</guid>
+      <guid>https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;&lt;em&gt;The second part of this series can be found &lt;a href=&#34;https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails-part-2/&#34;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
@@ -419,10 +419,10 @@ bash$ less log/development.log | grep &lt;span style=&#34;color: #CC3300&#34;&gt
     
     <item>
       <title>Ruby, Named Capture Groups and Local Variables</title>
-      <link>https://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/</link>
+      <link>https://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 01 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/</guid>
+      <guid>https://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;Ruby&amp;rsquo;s regular expressions support &lt;a href=&#34;https://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/&#34;&gt;named capture groups&lt;/a&gt;, since 1.9. However, there is a weird behaviour while using named capture groups with the &lt;code&gt;Regexp#=~&lt;/code&gt; method. When named capture groups are used with &lt;code&gt;=~&lt;/code&gt;, the captured values are placed in local variables with the same name as the capture group. The following example demonstrates this:&lt;/p&gt;
@@ -484,10 +484,10 @@ test_string &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span s
     
     <item>
       <title>Named Capture Groups in Regular Expressions</title>
-      <link>https://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/</link>
+      <link>https://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sun, 29 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/</guid>
+      <guid>https://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;I will admit that I find regular expressions somewhat hard to parse. While the thinking process needed to write a regular expression is iterative and hence results in the correct expression suitable for the situation, once it is written it lacks readability. I have faced that pain of trying to grok a complex regular expression written years ago. So I was pleasantly surprised when I saw &lt;a href=&#34;https://news.ycombinator.com/item?id=6463144&#34;&gt;this example&lt;/a&gt; from Hacker News user &lt;em&gt;WestCoastJustin&lt;/em&gt;. I found it very easy to understand because of the names he had assigned to each capture group in the expression.&lt;/p&gt;
@@ -536,10 +536,10 @@ match_dict &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; pattern&lt;
     
     <item>
       <title>Managing Gemsets in Rbenv</title>
-      <link>https://sdqali.in/blog/2013/09/12/managing-gemsets-in-rbenv/</link>
+      <link>https://sdqali.in/blog/2013/09/12/managing-gemsets-in-rbenv/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Thu, 12 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/09/12/managing-gemsets-in-rbenv/</guid>
+      <guid>https://sdqali.in/blog/2013/09/12/managing-gemsets-in-rbenv/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;When I was setting up my new laptop today, I decided to use Rbenv &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; to manage my Ruby versions. I have typically used RVM &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; and had never used Rbenv. Rbenv is a Ruby version manager written by &lt;a href=&#34;https://github.com/sstephenson/&#34;&gt;Sam Stephenson&lt;/a&gt; and deliberately tries to do less and do it well. Instead of overriding Bash commands like RVM does, Rbenv chooses to use wrappers or &lt;strong&gt;shims&lt;/strong&gt; around Ruby binaries to choose the Ruby executable to run.&lt;/p&gt;
 
 &lt;p&gt;This works well, until you have to manage Gemsets &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;. Often, one is working on two projects that use the same version of Ruby, but has entirely different chain of dependency on Gems. RVM&amp;rsquo;s gemsets work really well for this use case. I was looking around to see how one would manage gemsets with Rbenv. There are three ways to do it.&lt;/p&gt;
@@ -635,10 +635,10 @@ bundle exec rake --version
     
     <item>
       <title>Looking up Compiler params used to compile a Ruby version</title>
-      <link>https://sdqali.in/blog/2013/09/08/looking-up-compiler-params-used-to-compile-a-ruby-version/</link>
+      <link>https://sdqali.in/blog/2013/09/08/looking-up-compiler-params-used-to-compile-a-ruby-version/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sun, 08 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/09/08/looking-up-compiler-params-used-to-compile-a-ruby-version/</guid>
+      <guid>https://sdqali.in/blog/2013/09/08/looking-up-compiler-params-used-to-compile-a-ruby-version/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Today &lt;a href=&#34;https://twitter.com/kgrz&#34;&gt;Kashyap&lt;/a&gt; asked how one can identify the compiler parameters passed when compiling a Ruby version. I was curious how to achieve this and like any confused developer started searching for and looking in the Ruby documentation. Searching for &lt;strong&gt;compiler parameters in ruby&lt;/strong&gt; did not yield any interesting results and the group of constants with the &lt;code&gt;RUBY_&lt;/code&gt; prefix &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; loaded in Ruby did not include anything related to compiler flags. Then I came across this blog post &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; by &lt;a href=&#34;https://twitter.com/happycode&#34;&gt;Jan Lelis&lt;/a&gt; and I was curious what else &lt;code&gt;RbConfig::CONFIG&lt;/code&gt; contains. This hash contains all the compiler flags used to compile the current Ruby VM.&lt;/p&gt;
 
 &lt;p&gt;This code snippet prints the hash.&lt;/p&gt;
@@ -674,10 +674,10 @@ LDFLAGS - -L. -L/Users/sdqali/.rvm/usr/lib -L/usr/local/lib
     
     <item>
       <title>Heredocs in Ruby and Python</title>
-      <link>https://sdqali.in/blog/2012/07/04/heredocs-in-ruby-and-python/</link>
+      <link>https://sdqali.in/blog/2012/07/04/heredocs-in-ruby-and-python/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Wed, 04 Jul 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/07/04/heredocs-in-ruby-and-python/</guid>
+      <guid>https://sdqali.in/blog/2012/07/04/heredocs-in-ruby-and-python/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;I have been doing some coding in Python recently. While playing around with some code, I noticed that the way &lt;a href=&#34;http://en.wikipedia.org/wiki/Here_document&#34;&gt;heredocs&lt;/a&gt; are used in Python is different from Ruby.&lt;/p&gt;
 
 &lt;h2 id=&#34;python&#34;&gt;Python&lt;/h2&gt;
@@ -770,10 +770,10 @@ and &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;then&lt;/span&
     
     <item>
       <title>Know Your Tools - Don&#39;t Shoot Yourself in the Foot</title>
-      <link>https://sdqali.in/blog/2012/06/06/know-your-tools---dont-shoot-yourself-in-the-foot/</link>
+      <link>https://sdqali.in/blog/2012/06/06/know-your-tools---dont-shoot-yourself-in-the-foot/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Wed, 06 Jun 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/06/06/know-your-tools---dont-shoot-yourself-in-the-foot/</guid>
+      <guid>https://sdqali.in/blog/2012/06/06/know-your-tools---dont-shoot-yourself-in-the-foot/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Imagine this - Your build is taking forever. You put in a lot of effort and restructure it. Things improve a lot, but it is far from where you would like it to be. You try hard to identify things that could improve the build time, but fail. You blame the platforms you use, you blame Ruby and you even blame the relative position of the Moon to Venus. Slowly you learn to accept the slow build as a part of your life. Months later a new developer joins the team and proves that there is a bug in the build scripts that causes certain tasks to be run twice.&lt;/p&gt;
 
 &lt;p&gt;This happened to us recently, and the subsequent debugging/postmortem revealed that there were things about our tools that we simply did not know.&lt;/p&gt;
@@ -906,10 +906,10 @@ zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo
     
     <item>
       <title>Wikipedia Page Hopping</title>
-      <link>https://sdqali.in/blog/2011/05/17/wikipedia-page-hopping/</link>
+      <link>https://sdqali.in/blog/2011/05/17/wikipedia-page-hopping/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 17 May 2011 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2011/05/17/wikipedia-page-hopping/</guid>
+      <guid>https://sdqali.in/blog/2011/05/17/wikipedia-page-hopping/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;I have realized that like most users of Wikipedia, I do a lot of Wikipedia page-hopping [1]. Wikipedia is sort of addictive that way. You start reading about a piece of Flamenco music and after twenty minutes find yourself staring at the page about &lt;a href=&#34;http://en.wikipedia.org/wiki/ETA&#34;&gt;ETA&lt;/a&gt;, a Basque nationalist organization. So I decided to figure out how I exactly do I get lost in the huge list of interconnected articles. I use Chromium, and it stores its history in a SQLite3 database file. I wrote a small Ruby script that parses the history, splits them to chunks of articles accessed per day, and filter only Wikipedia links from this.&lt;/p&gt;
 
 &lt;p&gt;This is basically what I had to do:&lt;/p&gt;
@@ -1070,10 +1070,10 @@ daily_chunks &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span 
     
     <item>
       <title>Empathy Log Parser</title>
-      <link>https://sdqali.in/blog/2011/03/24/empathy-log-parser/</link>
+      <link>https://sdqali.in/blog/2011/03/24/empathy-log-parser/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Thu, 24 Mar 2011 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2011/03/24/empathy-log-parser/</guid>
+      <guid>https://sdqali.in/blog/2011/03/24/empathy-log-parser/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;I use Empathy as my preferred IM application. Today, I wanted to have a look at an IM conversation I had with someone. I pulled out the Empathy log corresponding to that conversation, and boom - it is in XML.&lt;/p&gt;
 
 &lt;p&gt;Just another excuse to write code. So I came up with the following. It was easy to write and it does not do much - It uses the Hpricot gem to parse the XML and prints the name of the people involved in the chat and their messages in a human readable form. What? You are one of those souls who actually enjoy reading XML? Well, I am not one of those.&lt;/p&gt;
@@ -1111,10 +1111,10 @@ path &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#
     
     <item>
       <title>Binary Signature Art</title>
-      <link>https://sdqali.in/blog/2011/03/23/binary-signature-art/</link>
+      <link>https://sdqali.in/blog/2011/03/23/binary-signature-art/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Wed, 23 Mar 2011 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2011/03/23/binary-signature-art/</guid>
+      <guid>https://sdqali.in/blog/2011/03/23/binary-signature-art/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;I was reading this very interesting &lt;a href=&#34;http://forums.xkcd.com/viewtopic.php?f=7&amp;amp;t=11765&#34;&gt;thread&lt;/a&gt; on the xkcd forum when I noticed a post from a user with the following signature in binary:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #FF6600&#34;&gt;01001101&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01100001&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01100100&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01100101&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;00100000&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01011001&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01101111&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01110101&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;00100000&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01001100&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01101111&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01101111&lt;/span&gt; &lt;span style=&#34;color: #FF6600&#34;&gt;01101011&lt;/span&gt; 00100001&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -1139,10 +1139,10 @@ text &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; parts&lt;span sty
     
     <item>
       <title>Java Arrays in JRuby</title>
-      <link>https://sdqali.in/blog/2010/03/16/java-arrays-in-jruby/</link>
+      <link>https://sdqali.in/blog/2010/03/16/java-arrays-in-jruby/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 16 Mar 2010 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2010/03/16/java-arrays-in-jruby/</guid>
+      <guid>https://sdqali.in/blog/2010/03/16/java-arrays-in-jruby/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Recently my team encountered a frustrating thing while working with a Java library in JRuby. It took us long to figure out what was going wrong. This is an attempt to write down what was happening.&lt;/p&gt;
 
 &lt;p&gt;You are in Ruby world, a world of weak typing, no type casting and pure bliss in coding. You forget that some languages care about the type of elements in an Array. And you end up spending a lot of time figuring out why you are staring at a stupid looking exception.&lt;/p&gt;

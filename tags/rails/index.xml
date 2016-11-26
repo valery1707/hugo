@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{code that works}</title>
-    <link>https://sdqali.in/tags/rails/index.xml</link>
+    <link>https://sdqali.in/tags/rails/index.xml?utm_source=site&amp;utm_medium=feed</link>
     <description>Recent content on {code that works}</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://sdqali.in/tags/rails/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/rails/index.xml?utm_source=site&amp;utm_medium=feed" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Implementing Rate Limiting in Rails - Part 2</title>
-      <link>https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/</link>
+      <link>https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sun, 13 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/</guid>
+      <guid>https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;&lt;em&gt;The first part of this series can be found &lt;a href=&#34;https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails-part-1/&#34;&gt;here&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
@@ -180,10 +180,10 @@ X-Rate-Limit-Reset: 1381717124
     
     <item>
       <title>Implementing Rate Limiting in Rails - Part 1</title>
-      <link>https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/</link>
+      <link>https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sat, 12 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/</guid>
+      <guid>https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;&lt;em&gt;The second part of this series can be found &lt;a href=&#34;https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails-part-2/&#34;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
@@ -342,10 +342,10 @@ bash$ less log/development.log | grep &lt;span style=&#34;color: #CC3300&#34;&gt
     
     <item>
       <title>Why your project should have a Getting Started guide.</title>
-      <link>https://sdqali.in/blog/2012/01/17/why-your-project-should-have-a-getting-started-guide./</link>
+      <link>https://sdqali.in/blog/2012/01/17/why-your-project-should-have-a-getting-started-guide./?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 17 Jan 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/01/17/why-your-project-should-have-a-getting-started-guide./</guid>
+      <guid>https://sdqali.in/blog/2012/01/17/why-your-project-should-have-a-getting-started-guide./?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;div class=&#39;post&#39;&gt;
 &lt;div&gt;&lt;p&gt;My new team at work is writing a bunch of Rails applications. This is one of those codebases that one would call &#34;legacy&#34; without much argument. Most of these apps have their own patched, vendorized Rails versions.&lt;/p&gt;&lt;p&gt;Getting up and running was an absolute pain. This project existed before Bundler and the list of gem dependencies are not checked in. I got the output of running &lt;i&gt;&lt;b&gt;gem list&lt;/b&gt;&lt;/i&gt; on a colleague&#39;s box, wrote a Ruby script to generate a shell script that installs all the gems. When I tried running the tests in one of those apps, I got a nice error. &lt;/p&gt;&lt;p&gt;It looked obvious that we were using patched Rails versions. Surprisingly, theses were not checked in to the vendor/ directory. This was proving to be a pain, and today I sat with a team member and wrote a developer guide to get started on the project. We actually had to pull patched Rails tar balls from a remote box and untar them to vendor/ directory. I was really surprised that these patches had not been checked in. We checked in all the patches. Apart from the Rails patches, there was a gem that had to be checked in.&lt;/p&gt;&lt;p&gt;This is why I think every project needs a Getting Started guide:&lt;br&gt;1. As a developer joining a new team, I want to look at the code as soon as I can. For me, this involves reading and running the tests.&lt;br&gt;2. Due to various reasons, a project may have patches and dependencies. Being very specific to the project, there is no way a new developer on the team would figure out these hidden dependencies.&lt;br&gt;3. There needs to be a single place where all the dependencies are specified.&lt;br&gt;4. While spoon-feeding someone may not be the best way to get them started, a little bit of hand-holding will not do anyone any harm. &lt;/p&gt;&lt;p&gt;One of the biggest problems I see with things like these guides is that as the application and it&#39;s dependencies evolve, the guides are not updated to reflect these changes. The only possible time the guide will be updated is when a new developer joins the team, follows these instructions and finds the need to update the guide.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
@@ -353,10 +353,10 @@ bash$ less log/development.log | grep &lt;span style=&#34;color: #CC3300&#34;&gt
     
     <item>
       <title>Debugging: C Sharp&#39;s HttpWebRequest, 100-Continue and nginx</title>
-      <link>https://sdqali.in/blog/2012/01/16/debugging-c-sharps-httpwebrequest-100-continue-and-nginx/</link>
+      <link>https://sdqali.in/blog/2012/01/16/debugging-c-sharps-httpwebrequest-100-continue-and-nginx/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Mon, 16 Jan 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/01/16/debugging-c-sharps-httpwebrequest-100-continue-and-nginx/</guid>
+      <guid>https://sdqali.in/blog/2012/01/16/debugging-c-sharps-httpwebrequest-100-continue-and-nginx/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;div class=&#39;post&#39;&gt;
 &lt;div dir=&#34;ltr&#34; style=&#34;text-align: left;&#34; trbidi=&#34;on&#34;&gt;&lt;div&gt;Recently I spent some time debugging an issue our team was facing around some C# code making a request on one of our servers. The request was throwing a &#34;The server committed a protocol violation. Section=ResponseStatusLine&#34; error.&lt;br /&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;Initial investigation suggested that this could happen if we are making HTTP/1.1 requests to a server configured for HTTP/1.0. Our Rails application runs on Mongrel fronted with nginx 0.6.5. We modified the C# code to use HTTP/1.0 and the error went away. The following line does the trick.&lt;/div&gt;&lt;div&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;&lt;blockquote class=&#34;tr_bq&#34;&gt;&lt;span class=&#34;Apple-tab-span&#34; style=&#34;white-space: pre;&#34;&gt; &lt;/span&gt;request.ProtocolVersion = HttpVersion.Version10;&lt;/blockquote&gt;&lt;/div&gt;&lt;div&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;But wait! This means that somewhere in the chain, a server is configured to use HTTP/1.0. It looked unlikely and further debugging revealed that it was indeed not the case. Further staring at the Rails logs showed that one of the headers that the app expects was not being set, when the request was done using HTTP/1.1 from the code.&lt;/div&gt;&lt;div&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;After some time, we figured &lt;a href=&#34;http://stackoverflow.com/questions/2482715/the-server-committed-a-protocol-violation-section-responsestatusline-error&#34;&gt;out&lt;/a&gt;[1] that the .Net library throws the &#34;server committed ...&#34; error if it is expecting the HTTP 100 (Continue) response in the wrong way. We set the code to not expect the HTTP 100 response from the server using&lt;/div&gt;&lt;div&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;&lt;blockquote class=&#34;tr_bq&#34;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; request.ServicePoint.Expect100Continue = false;&lt;/blockquote&gt;&lt;/div&gt;&lt;div&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;and voila, it worked. The Rails app received all the headers it expected and things worked fine. The code looked like this:&lt;br /&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;&lt;script src=&#34;https://gist.github.com/1623042.js?file=gistfile1.cs&#34;&gt;&lt;/script&gt;&lt;/div&gt;&lt;div&gt;So what is happening?&lt;/div&gt;&lt;div&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;The HTTP 100 status is supposed to work like this. When a client has to send some data, instead of sending it upfront, it can send some headers along with the &#34;Expect:100-Continue&#34; header. The server responds with a 100 if it is willing to accept the request or send a final status. The spec is &lt;a href=&#34;http://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html#sec8.2.3&#34;&gt;here&lt;/a&gt;[2].&lt;/div&gt;&lt;div&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;We are using nginx as a proxy. The specification says that the proxy should forward the request if it knows that the next-hop server is HTTP/1.1 compliant. The proxy is supposed to ignore the &#34;Expect:100-Continue&#34; header, if the request came from a client using HTTP/1.0.&lt;/div&gt;&lt;div&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;In our case, the default behavior of the .Net HTTP client library is to set &#34;Expect:100-Continue&#34; header on every request for HTTP/1.1. So the client sends only some headers and waits for the 100 response from nginx. Nginx sees the request, knows that Mongrel supports HTTP/1.1 and just forwards the request. The app sends a 401 because it could not authenticate. The client is expecting a 100 and gets a 401. It thinks the server committed a protocol violation.&lt;/div&gt;&lt;div&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;When we ask the client to use HTTP/1.0, the .Net library does not use the Expect header, sends all the headers and nginx forwards the request to Mongrel. The authentication goes through.&lt;/div&gt;&lt;div&gt;When we explicitly set the Expect 100 property of the library to false, it sends all the headers at once and the authentication goes through fine.&lt;/div&gt;&lt;div&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;Looks like there is a way to tell .Net not to expect 100 from the server through configuration, by putting this in &lt;app&gt;.exe.conf&lt;/app&gt;&lt;/div&gt;&lt;div&gt;&lt;br /&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;&lt;script src=&#34;https://gist.github.com/1623007.js?file=gistfile1.xml&#34;&gt;&lt;/script&gt;&lt;/div&gt;&lt;div&gt;1. http://stackoverflow.com/questions/2482715/the-server-committed-a-protocol-violation-section-responsestatusline-error&lt;/div&gt;&lt;div&gt;2. http://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html#sec8.2.3&lt;/div&gt;&lt;div&gt;&lt;br /&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
 </description>

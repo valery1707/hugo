@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{code that works}</title>
-    <link>https://sdqali.in/categories/jmeter/index.xml</link>
+    <link>https://sdqali.in/categories/jmeter/index.xml?utm_source=site&amp;utm_medium=feed</link>
     <description>Recent content on {code that works}</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://sdqali.in/categories/jmeter/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/categories/jmeter/index.xml?utm_source=site&amp;utm_medium=feed" rel="self" type="application/rss+xml" />
     
     <item>
       <title>A simple JMeter test with login</title>
-      <link>https://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/</link>
+      <link>https://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Mon, 17 Feb 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/</guid>
+      <guid>https://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;&lt;meta content=&#34;jmeter, login&#34; name=&#34;keywords&#34;&gt;

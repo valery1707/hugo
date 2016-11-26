@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{code that works}</title>
-    <link>https://sdqali.in/tags/code/index.xml</link>
+    <link>https://sdqali.in/tags/code/index.xml?utm_source=site&amp;utm_medium=feed</link>
     <description>Recent content on {code that works}</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://sdqali.in/tags/code/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/code/index.xml?utm_source=site&amp;utm_medium=feed" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Implementing feature toggles for a Spring Boot application - Part 1</title>
-      <link>https://sdqali.in/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/</link>
+      <link>https://sdqali.in/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Mon, 21 Nov 2016 17:03:03 -0800</pubDate>
       
-      <guid>https://sdqali.in/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/</guid>
+      <guid>https://sdqali.in/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;In one of our recent projects at work, we implemented feature toggles for a Spring MVC / Angular JS code base and this &lt;a href=&#34;https://sdqali.in/series/feature-toggles&#34;&gt;series of blog posts&lt;/a&gt; discusses our motivations and requirements, the approach we took and what we learned from it.
 &lt;/p&gt;
 
@@ -278,10 +278,10 @@ Collecting all the properties available in an environment is &lt;a href=&#34;htt
     
     <item>
       <title>Importing the Yelp dataset into MongoDB</title>
-      <link>https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/</link>
+      <link>https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sat, 02 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/</guid>
+      <guid>https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Today Yelp announced their dataset challenge &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. The dataset they released includes data from 5 cities (Phoenix, Las Vegas, Madison, Waterloo and Edinburgh) and consists of&lt;/p&gt;
 
 &lt;ul&gt;
@@ -355,10 +355,10 @@ businesses &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span st
     
     <item>
       <title>Clojure Dojo - Levenshtein edit distance</title>
-      <link>https://sdqali.in/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/</link>
+      <link>https://sdqali.in/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Thu, 20 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/</guid>
+      <guid>https://sdqali.in/blog/2014/03/20/clojure-dojo---levenshtein-edit-distance/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;I have been playing around with Clojure and after familiarising myself with the core, I decided to start writing little programs that forces me to choose the right idioms. I am starting off with Levenshtein edit distance of two strings.&lt;/p&gt;
@@ -420,10 +420,10 @@ businesses &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span st
     
     <item>
       <title>A simple JMeter test with login</title>
-      <link>https://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/</link>
+      <link>https://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Mon, 17 Feb 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/</guid>
+      <guid>https://sdqali.in/blog/2014/02/17/a-simple-jmeter-test-with-login/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;&lt;meta content=&#34;jmeter, login&#34; name=&#34;keywords&#34;&gt;
@@ -454,10 +454,10 @@ I had to set up a JMeter test last week - the test included logging in to a site
     
     <item>
       <title>Implementing Rate Limiting in Rails - Part 2</title>
-      <link>https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/</link>
+      <link>https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sun, 13 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/</guid>
+      <guid>https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails---part-2/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;&lt;em&gt;The first part of this series can be found &lt;a href=&#34;https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails-part-1/&#34;&gt;here&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
@@ -625,10 +625,10 @@ X-Rate-Limit-Reset: 1381717124
     
     <item>
       <title>Implementing Rate Limiting in Rails - Part 1</title>
-      <link>https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/</link>
+      <link>https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sat, 12 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/</guid>
+      <guid>https://sdqali.in/blog/2013/10/12/implementing-rate-limiting-in-rails---part-1/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;&lt;em&gt;The second part of this series can be found &lt;a href=&#34;https://sdqali.in/blog/2013/10/13/implementing-rate-limiting-in-rails-part-2/&#34;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
@@ -787,10 +787,10 @@ bash$ less log/development.log | grep &lt;span style=&#34;color: #CC3300&#34;&gt
     
     <item>
       <title>Python Hack - Dynamically override an object&#39;s attribute</title>
-      <link>https://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</link>
+      <link>https://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Mon, 07 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/</guid>
+      <guid>https://sdqali.in/blog/2013/10/07/python-hack---dynamically-override-an-objects-attribute/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;While working with Locust &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; recently, we ran into a situation where we had to dynamically override an attribute in a class in the Locust library so as to control what value it got assigned. After a lot of scratching our heads and reading the Python documentation, we came across the &lt;code&gt;property&lt;/code&gt; function. We were able to use this to hack together a solution that ensures that every time an attribute is read, it returns the result of executing a method.&lt;/p&gt;
@@ -852,10 +852,10 @@ After override
     
     <item>
       <title>Fitting an Image in to a Canvas object</title>
-      <link>https://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</link>
+      <link>https://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Thu, 03 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/</guid>
+      <guid>https://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;I have been playing around with Canvas objects and images for a side project I am doing. One of the first things I had to figure out for this project was how to fit an image of arbitrary height and width on to a Canvas object of arbitrary, but known dimensions while preserving the aspect ratios of the image. This blog post is an explanation of the solution I came up with for this.&lt;/p&gt;
@@ -924,10 +924,10 @@ imageObj.onload &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;sp
     
     <item>
       <title>Accessing Environment Variables in Gradle</title>
-      <link>https://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/</link>
+      <link>https://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 01 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/</guid>
+      <guid>https://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;I have been writing a fun Android App. &lt;a href=&#34;https://play.google.com/store/apps/details?id=in.sdqali.sharewithtitle&#34;&gt;Share With Title&lt;/a&gt; is a small application that allows you to share web pages you are reading to other applications without having to jump through the messy copy-paste hoop. (You should try it. If you share stuff from the web like I do, it will save you a lot of time and frustration). I have been coding on &lt;a href=&#34;https://developer.android.com/sdk/installing/studio.html&#34;&gt;Android Studio&lt;/a&gt;, Google&amp;rsquo;s IntelliJ based IDE for Android development. It uses Gradle for build scripts. Gradle is a Groovy based DSL &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; for declaratively specifying build tasks. From what I have seen so far, it looks like an improvement over Ant.&lt;/p&gt;
 
 &lt;p&gt;While attempting to build a signed version of my app, I found a &lt;a href=&#34;http://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle&#34;&gt;Gradle recipe&lt;/a&gt; for signing Android applications. However, it used hard coded parameters including passwords. This lead me to figuring out how to use environment variables in Gradle scripts.&lt;/p&gt;
@@ -963,10 +963,10 @@ buildTypes {
     
     <item>
       <title>Reading user input in Gradle scripts</title>
-      <link>https://sdqali.in/blog/2013/10/01/reading-user-input-in-gradle-scripts/</link>
+      <link>https://sdqali.in/blog/2013/10/01/reading-user-input-in-gradle-scripts/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 01 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/10/01/reading-user-input-in-gradle-scripts/</guid>
+      <guid>https://sdqali.in/blog/2013/10/01/reading-user-input-in-gradle-scripts/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;Continuing from the last &lt;a href=&#34;https://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/&#34;&gt;blog post&lt;/a&gt;, I have been looking at reading user input from a Gradle script. This was a result of Stack Overflow user &lt;em&gt;user672009&lt;/em&gt;&amp;rsquo;s &lt;a href=&#34;http://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle/19130098#19130098&#34;&gt;question&lt;/a&gt; about prompting for input from a Gradle script so the one does not have to include passwords in the script while checking in.&lt;/p&gt;
@@ -1006,10 +1006,10 @@ buildTypes {
     
     <item>
       <title>Ruby, Named Capture Groups and Local Variables</title>
-      <link>https://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/</link>
+      <link>https://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 01 Oct 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/</guid>
+      <guid>https://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;Ruby&amp;rsquo;s regular expressions support &lt;a href=&#34;https://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/&#34;&gt;named capture groups&lt;/a&gt;, since 1.9. However, there is a weird behaviour while using named capture groups with the &lt;code&gt;Regexp#=~&lt;/code&gt; method. When named capture groups are used with &lt;code&gt;=~&lt;/code&gt;, the captured values are placed in local variables with the same name as the capture group. The following example demonstrates this:&lt;/p&gt;
@@ -1071,10 +1071,10 @@ test_string &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span s
     
     <item>
       <title>Named Capture Groups in Regular Expressions</title>
-      <link>https://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/</link>
+      <link>https://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sun, 29 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/</guid>
+      <guid>https://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;I will admit that I find regular expressions somewhat hard to parse. While the thinking process needed to write a regular expression is iterative and hence results in the correct expression suitable for the situation, once it is written it lacks readability. I have faced that pain of trying to grok a complex regular expression written years ago. So I was pleasantly surprised when I saw &lt;a href=&#34;https://news.ycombinator.com/item?id=6463144&#34;&gt;this example&lt;/a&gt; from Hacker News user &lt;em&gt;WestCoastJustin&lt;/em&gt;. I found it very easy to understand because of the names he had assigned to each capture group in the expression.&lt;/p&gt;
@@ -1123,10 +1123,10 @@ match_dict &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; pattern&lt;
     
     <item>
       <title>Decomposing URLs in Python</title>
-      <link>https://sdqali.in/blog/2013/09/26/decomposing-urls-in-python/</link>
+      <link>https://sdqali.in/blog/2013/09/26/decomposing-urls-in-python/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Thu, 26 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/09/26/decomposing-urls-in-python/</guid>
+      <guid>https://sdqali.in/blog/2013/09/26/decomposing-urls-in-python/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Python&amp;rsquo;s &lt;code&gt;urlparse&lt;/code&gt; module breaks down URLs in to components. It supports all the URL schemes specified in RFC 3986 &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;bash linenos:false
@@ -1155,10 +1155,10 @@ ParseResult(scheme=&#39;news&#39;, netloc=&#39;&#39;, path=&#39;comp.infosystems
     
     <item>
       <title>Shared history in Bash</title>
-      <link>https://sdqali.in/blog/2013/09/15/shared-history-in-bash/</link>
+      <link>https://sdqali.in/blog/2013/09/15/shared-history-in-bash/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sun, 15 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/09/15/shared-history-in-bash/</guid>
+      <guid>https://sdqali.in/blog/2013/09/15/shared-history-in-bash/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;One of the features that I miss most in Bash is the shared history between terminals that Zsh supports. I was hunting down a solution for this and came across this Stack Overflow answer &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; by user &lt;em&gt;lesmana&lt;/em&gt;. This code snippet does the trick:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;HISTSIZE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;9000
 &lt;span style=&#34;color: #003333&#34;&gt;HISTFILESIZE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #003333&#34;&gt;$HISTSIZE&lt;/span&gt;
@@ -1194,10 +1194,10 @@ _bash_history_sync&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt
     
     <item>
       <title>Managing Gemsets in Rbenv</title>
-      <link>https://sdqali.in/blog/2013/09/12/managing-gemsets-in-rbenv/</link>
+      <link>https://sdqali.in/blog/2013/09/12/managing-gemsets-in-rbenv/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Thu, 12 Sep 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/09/12/managing-gemsets-in-rbenv/</guid>
+      <guid>https://sdqali.in/blog/2013/09/12/managing-gemsets-in-rbenv/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;When I was setting up my new laptop today, I decided to use Rbenv &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; to manage my Ruby versions. I have typically used RVM &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; and had never used Rbenv. Rbenv is a Ruby version manager written by &lt;a href=&#34;https://github.com/sstephenson/&#34;&gt;Sam Stephenson&lt;/a&gt; and deliberately tries to do less and do it well. Instead of overriding Bash commands like RVM does, Rbenv chooses to use wrappers or &lt;strong&gt;shims&lt;/strong&gt; around Ruby binaries to choose the Ruby executable to run.&lt;/p&gt;
 
 &lt;p&gt;This works well, until you have to manage Gemsets &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;. Often, one is working on two projects that use the same version of Ruby, but has entirely different chain of dependency on Gems. RVM&amp;rsquo;s gemsets work really well for this use case. I was looking around to see how one would manage gemsets with Rbenv. There are three ways to do it.&lt;/p&gt;

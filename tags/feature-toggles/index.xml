@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{code that works}</title>
-    <link>https://sdqali.in/tags/feature-toggles/index.xml</link>
+    <link>https://sdqali.in/tags/feature-toggles/index.xml?utm_source=site&amp;utm_medium=feed</link>
     <description>Recent content on {code that works}</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://sdqali.in/tags/feature-toggles/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/feature-toggles/index.xml?utm_source=site&amp;utm_medium=feed" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Implementing feature toggles for a Spring Boot application - Part 1</title>
-      <link>https://sdqali.in/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/</link>
+      <link>https://sdqali.in/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Mon, 21 Nov 2016 17:03:03 -0800</pubDate>
       
-      <guid>https://sdqali.in/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/</guid>
+      <guid>https://sdqali.in/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;In one of our recent projects at work, we implemented feature toggles for a Spring MVC / Angular JS code base and this &lt;a href=&#34;https://sdqali.in/series/feature-toggles&#34;&gt;series of blog posts&lt;/a&gt; discusses our motivations and requirements, the approach we took and what we learned from it.
 &lt;/p&gt;
 

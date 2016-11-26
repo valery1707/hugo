@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{code that works}</title>
-    <link>https://sdqali.in/tags/request-parameters/index.xml</link>
+    <link>https://sdqali.in/tags/request-parameters/index.xml?utm_source=site&amp;utm_medium=feed</link>
     <description>Recent content on {code that works}</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://sdqali.in/tags/request-parameters/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/request-parameters/index.xml?utm_source=site&amp;utm_medium=feed" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Validating RequestParams and PathVariables in Spring MVC</title>
-      <link>https://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/</link>
+      <link>https://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Fri, 04 Dec 2015 22:50:24 -0800</pubDate>
       
-      <guid>https://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/</guid>
+      <guid>https://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;&lt;meta content=&#34;spring, validate, request, parameters, @requestparam, spring mvc, param, validation&#34; name=&#34;keywords&#34;&gt;
 Spring MVC provides a convenient way to validate inputs to API end points through the use of &lt;code&gt;JSR-303&lt;/code&gt; annotations. While this mechanism works great for end points that consume a &lt;code&gt;RequestBody&lt;/code&gt; (as is the case with most &lt;code&gt;POST&lt;/code&gt; and &lt;code&gt;PUT&lt;/code&gt; requests), it is not easy to achieve the same effect for end points that consume primitives in the form of path variables or request parameters (as is the case with most &lt;code&gt;GET&lt;/code&gt; requests).&lt;/p&gt;
 

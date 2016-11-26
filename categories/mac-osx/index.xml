@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{code that works}</title>
-    <link>https://sdqali.in/categories/mac-osx/index.xml</link>
+    <link>https://sdqali.in/categories/mac-osx/index.xml?utm_source=site&amp;utm_medium=feed</link>
     <description>Recent content on {code that works}</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://sdqali.in/categories/mac-osx/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/categories/mac-osx/index.xml?utm_source=site&amp;utm_medium=feed" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Reducing Emacs startup time while committing</title>
-      <link>https://sdqali.in/blog/2013/01/22/reducing-emacs-startup-time-while-committing/</link>
+      <link>https://sdqali.in/blog/2013/01/22/reducing-emacs-startup-time-while-committing/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 22 Jan 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/01/22/reducing-emacs-startup-time-while-committing/</guid>
+      <guid>https://sdqali.in/blog/2013/01/22/reducing-emacs-startup-time-while-committing/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;I use Emacs as my primary text editor and I use it to edit
@@ -76,10 +76,10 @@ changes.&lt;/p&gt;
     
     <item>
       <title>Managing security certificates from the console - on Windows, Mac OS X and Linux</title>
-      <link>https://sdqali.in/blog/2012/06/05/managing-security-certificates-from-the-console---on-windows-mac-os-x-and-linux/</link>
+      <link>https://sdqali.in/blog/2012/06/05/managing-security-certificates-from-the-console---on-windows-mac-os-x-and-linux/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 05 Jun 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/06/05/managing-security-certificates-from-the-console---on-windows-mac-os-x-and-linux/</guid>
+      <guid>https://sdqali.in/blog/2012/06/05/managing-security-certificates-from-the-console---on-windows-mac-os-x-and-linux/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;For me the last two weeks or so have involved a lot of wrestling with SSL certificates. One of the things that took some time to figure out was how to piggy-back on the tools provided by different Operating Systems to manage certificates. We did not want to rewrite &lt;a href=&#34;https://www.mozilla.org/projects/security/pki/nss/&#34; title=&#34;NSS&#34;&gt;NSS&lt;/a&gt;. Luckily for us, all the major OSes provide tools to manage certificates from the command line.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
@@ -168,10 +168,10 @@ security add-trusted-cert foo.crt{% endcodeblock %}&lt;/p&gt;
     
     <item>
       <title>Fixing Flyspell for Emacs in Mac OS X</title>
-      <link>https://sdqali.in/blog/2012/05/04/fixing-flyspell-for-emacs-in-mac-os-x/</link>
+      <link>https://sdqali.in/blog/2012/05/04/fixing-flyspell-for-emacs-in-mac-os-x/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Fri, 04 May 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/05/04/fixing-flyspell-for-emacs-in-mac-os-x/</guid>
+      <guid>https://sdqali.in/blog/2012/05/04/fixing-flyspell-for-emacs-in-mac-os-x/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;I use the &lt;a href=&#34;http://www.emacswiki.org/emacs/FlySpell&#34;&gt;flyspell-mode&lt;/a&gt; as a spell checking mechanism in emacs. Recently, I moved to Mac OS X, and I began to get this error whenever I started emacs:&lt;/p&gt;

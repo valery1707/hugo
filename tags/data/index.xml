@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{code that works}</title>
-    <link>https://sdqali.in/tags/data/index.xml</link>
+    <link>https://sdqali.in/tags/data/index.xml?utm_source=site&amp;utm_medium=feed</link>
     <description>Recent content on {code that works}</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://sdqali.in/tags/data/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/data/index.xml?utm_source=site&amp;utm_medium=feed" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Importing the Yelp dataset into MongoDB</title>
-      <link>https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/</link>
+      <link>https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sat, 02 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/</guid>
+      <guid>https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Today Yelp announced their dataset challenge &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. The dataset they released includes data from 5 cities (Phoenix, Las Vegas, Madison, Waterloo and Edinburgh) and consists of&lt;/p&gt;
 
 &lt;ul&gt;
@@ -86,10 +86,10 @@ businesses &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span st
     
     <item>
       <title>Curse of the Community Shield?</title>
-      <link>https://sdqali.in/blog/2012/08/15/curse-of-the-community-shield/</link>
+      <link>https://sdqali.in/blog/2012/08/15/curse-of-the-community-shield/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Wed, 15 Aug 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/08/15/curse-of-the-community-shield/</guid>
+      <guid>https://sdqali.in/blog/2012/08/15/curse-of-the-community-shield/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Click on the image to see the visualisation:
 &lt;a href=&#34;https://sdqali.in/visualizations/community_shield/index.html&#34;&gt;&lt;img src=&#34;https://sdqali.in/images/community_shield.png&#34; alt=&#34;Community Shield visualisation&#34; title=&#34;Community Shield Visualisation&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
 
@@ -182,10 +182,10 @@ feedback on this.&lt;/p&gt;</description>
     
     <item>
       <title>Visualisation - How European clubs dominate their leagues</title>
-      <link>https://sdqali.in/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/</link>
+      <link>https://sdqali.in/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sat, 21 Jul 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/</guid>
+      <guid>https://sdqali.in/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;&lt;em&gt;Click &lt;a href=&#34;https://sdqali.in/visualizations/league_champions/index.html&#34;&gt;here&lt;/a&gt; to see the visualisation.&lt;/em&gt;&lt;/p&gt;
@@ -264,10 +264,10 @@ to take the data and code and make more awesome visualizations.&lt;/p&gt;
     
     <item>
       <title>XConf 6 - Data, My Heart!</title>
-      <link>https://sdqali.in/blog/2012/07/16/xconf-6---data-my-heart/</link>
+      <link>https://sdqali.in/blog/2012/07/16/xconf-6---data-my-heart/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Mon, 16 Jul 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/07/16/xconf-6---data-my-heart/</guid>
+      <guid>https://sdqali.in/blog/2012/07/16/xconf-6---data-my-heart/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Last Saturday,  Srijayanth Sridhar (&lt;a href=&#34;https://twitter.com/craftybones&#34;&gt;@craftybones&lt;/a&gt;) and I gave a talk at XConf, ThoughtWorks India&amp;rsquo;s internal conference series.&lt;/p&gt;
 
 &lt;p&gt;We talked about visualising data, and the various visualisations that one could use to answer questions about the dataset you have. We looked at two particular datasets -  one showing the consumption of juice at the fresh juice counter in office and one about Indian and Pakistani players. We looked at various visualizations like Area charts, Box Plots, Chord Diagrams, Line Charts, Pie Charts, Donut Charts, Small Multiples, Spark Lines, Stack Charts and Treemaps.&lt;/p&gt;
@@ -287,10 +287,10 @@ to take the data and code and make more awesome visualizations.&lt;/p&gt;
     
     <item>
       <title>Indian and Pakistani cricketers - who make better debuts?</title>
-      <link>https://sdqali.in/blog/2012/05/11/indian-and-pakistani-cricketers---who-make-better-debuts/</link>
+      <link>https://sdqali.in/blog/2012/05/11/indian-and-pakistani-cricketers---who-make-better-debuts/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Fri, 11 May 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/05/11/indian-and-pakistani-cricketers---who-make-better-debuts/</guid>
+      <guid>https://sdqali.in/blog/2012/05/11/indian-and-pakistani-cricketers---who-make-better-debuts/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Recently a friend and I had an argument about who makes better debuts among Indian and Pakistani cricket players. Now, I am not into cricket. But I do watch the odd matches here and there and am generally aware of what is going on in the game. My stand was that Pakistani players make better debuts compared to Indian players, while my friend was adamant that Indian players make better debuts. My friend is more of a cricket guy than I ever was and he asked me what is the basis of my stand. It was just a gut feel for me and I had to leave it as there was no way for me to prove that my gut feel was correct. But I did want to try, though.&lt;/p&gt;
 
 &lt;p&gt;I decided to see if I could prove my theory. Luckily, Cricinfo has all this data, although they dont make it easy for you to get it. I wrote some scripts to pull this data and decided to visualise this using the awesome d3 library. In the end, this became more about figuring out d3 than winning the argument, but doing this was fun.&lt;/p&gt;

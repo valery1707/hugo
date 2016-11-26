@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{code that works}</title>
-    <link>https://sdqali.in/categories/heredoc/index.xml</link>
+    <link>https://sdqali.in/categories/heredoc/index.xml?utm_source=site&amp;utm_medium=feed</link>
     <description>Recent content on {code that works}</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://sdqali.in/categories/heredoc/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/categories/heredoc/index.xml?utm_source=site&amp;utm_medium=feed" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Heredocs in Ruby and Python</title>
-      <link>https://sdqali.in/blog/2012/07/04/heredocs-in-ruby-and-python/</link>
+      <link>https://sdqali.in/blog/2012/07/04/heredocs-in-ruby-and-python/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Wed, 04 Jul 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/07/04/heredocs-in-ruby-and-python/</guid>
+      <guid>https://sdqali.in/blog/2012/07/04/heredocs-in-ruby-and-python/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;I have been doing some coding in Python recently. While playing around with some code, I noticed that the way &lt;a href=&#34;http://en.wikipedia.org/wiki/Here_document&#34;&gt;heredocs&lt;/a&gt; are used in Python is different from Ruby.&lt;/p&gt;
 
 &lt;h2 id=&#34;python&#34;&gt;Python&lt;/h2&gt;

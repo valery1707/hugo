@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{code that works}</title>
-    <link>https://sdqali.in/tags/reflections/index.xml</link>
+    <link>https://sdqali.in/tags/reflections/index.xml?utm_source=site&amp;utm_medium=feed</link>
     <description>Recent content on {code that works}</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://sdqali.in/tags/reflections/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/reflections/index.xml?utm_source=site&amp;utm_medium=feed" rel="self" type="application/rss+xml" />
     
     <item>
       <title>My experience working remotely</title>
-      <link>https://sdqali.in/blog/2013/04/11/my-experience-working-remotely/</link>
+      <link>https://sdqali.in/blog/2013/04/11/my-experience-working-remotely/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Thu, 11 Apr 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/04/11/my-experience-working-remotely/</guid>
+      <guid>https://sdqali.in/blog/2013/04/11/my-experience-working-remotely/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;There has been a lot of debate in the tech community about working remotely and the willingness of employers to allow this option to their employees. At the very beginning of my career as a programmer, I had the opportunity to work on a distributed team. While the team was distributed, I was still working from an office and for almost half of the duration of my work on the team I had team members sitting beside me in the same office. Because of this, my scenario may not be representative of the population of programmers who work remotely. However, there are a number of things I learned from the experience that I would like to share.&lt;/p&gt;
@@ -62,10 +62,10 @@ We used ThoughtWorks&amp;rsquo; &lt;a href=&#34;http://www.thoughtworks-studios.
     
     <item>
       <title>The Spiral of Learning</title>
-      <link>https://sdqali.in/blog/2012/05/30/the-spiral-of-learning/</link>
+      <link>https://sdqali.in/blog/2012/05/30/the-spiral-of-learning/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Wed, 30 May 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/05/30/the-spiral-of-learning/</guid>
+      <guid>https://sdqali.in/blog/2012/05/30/the-spiral-of-learning/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;An hour ago, I was staring at a problem on the &lt;a href=&#34;http://www.4clojure.com/&#34; title=&#34;4clojure&#34;&gt;4clojure&lt;/a&gt; website. Last weekend, I found myself wandering through Zed Shaw&amp;rsquo;s &lt;a href=&#34;http://c.learncodethehardway.org/&#34; title=&#34;Learn C The Hard Way&#34;&gt;Learn C the Hard Way&lt;/a&gt;. Three days before that, I was taking a stab at figuring what kind of visualizations would make sense if you want to come up with the mother of all comparison&amp;rsquo;s between two of football&amp;rsquo;s greatest ever players. Four days before that, I was looking at some classifiers. Five weeks ago, I was totally lost in &lt;a href=&#34;http://learnyousomeerlang.com/&#34; title=&#34;Learn You Some Erlang For Great Good&#34;&gt;Learn You Some Erlang&lt;/a&gt;, and three weeks before that I was trying to make sense of all the hype around Node.js.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
@@ -122,10 +122,10 @@ I have been thinking about this a lot lately and increasingly getting concerned.
     
     <item>
       <title>You Crash and then You Learn</title>
-      <link>https://sdqali.in/blog/2012/05/29/you-crash-and-then-you-learn/</link>
+      <link>https://sdqali.in/blog/2012/05/29/you-crash-and-then-you-learn/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 29 May 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/05/29/you-crash-and-then-you-learn/</guid>
+      <guid>https://sdqali.in/blog/2012/05/29/you-crash-and-then-you-learn/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;As I picked up my bicycle, climbed on it and spotted the blood on my elbows and the bunch of curious onlookers in front of the pan shop nearby, I did not feel fear or embarrassment. I had an immeasurable amount of happiness welling inside me. I had finally done what I should have about 20 years ago - I had finally managed to crash my bicycle and leave with plenty of scars to show for it.&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -184,10 +184,10 @@ When I was growing up, I spent most of my time in a residential school. In there
     
     <item>
       <title>Saying Good Bye is tough</title>
-      <link>https://sdqali.in/blog/2010/05/10/saying-good-bye-is-tough/</link>
+      <link>https://sdqali.in/blog/2010/05/10/saying-good-bye-is-tough/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Mon, 10 May 2010 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2010/05/10/saying-good-bye-is-tough/</guid>
+      <guid>https://sdqali.in/blog/2010/05/10/saying-good-bye-is-tough/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;&lt;em&gt;Njaan Varaam, Assalamu Alaikum&lt;/em&gt; (I will be back, Peace Be Upon You). I felt myself choking as those words escaped my mouth. And as I reached the gate and took my first step out, I heard my mother say &lt;em&gt;Wa Alaikum Assalaam&lt;/em&gt; (Peace Be Upon You, too). And then I felt the straps of the laptop bag sink into my shoulders, and it felt so heavy. It should not be. It still had the same stuff as it did when I set on my journey home on the Friday evening. In fact, it should feel lighter, as I had moved some stuff into another bag, which I was holding in my right hand. Sigh! I knew why I choked and the bag felt heavier.&lt;/p&gt;
 
 &lt;p&gt;I had been performing this almost teary-eyed, choking Good Bye scene endless number of times, ever since I was 12. The first, if I remember correctly, was when I set on my journey to be part of the residential school which would end up as my world for the subsequent seven years. I remember being sad, and being happy and excited with anticipation at living at the school. My good bye was not drenched in tears, nor were I choking.&lt;/p&gt;
@@ -202,10 +202,10 @@ When I was growing up, I spent most of my time in a residential school. In there
     
     <item>
       <title>Missing the game</title>
-      <link>https://sdqali.in/blog/2010/02/05/missing-the-game/</link>
+      <link>https://sdqali.in/blog/2010/02/05/missing-the-game/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Fri, 05 Feb 2010 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2010/02/05/missing-the-game/</guid>
+      <guid>https://sdqali.in/blog/2010/02/05/missing-the-game/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;I have continued to watch and follow the beautiful game, save for my first few months in Bangalore. This is supposed to be a metro. Well, apparently a metro where people don&amp;rsquo;t give a damn about football. After taking a cable connection, I soon realized that I will have to beg with the cable guy to put on ESPNStar so that I could watch EPL. Pretty soon, Hathway had some issues with ESPNStar, which meant there was no way I could watch ESPNStar. On the weekends, I tried to pursue the cable operator to put on NEO Sports, at least I could watch Bundes Liga and Serie A. He would not budge, and I had to endure the interesting argument that &amp;ldquo;NEO Cricket and NEO Sports are the same&amp;rdquo;. It was tough to accept - in the small village of Vadakkethala, where I hail from, I could watch as much football as I wanted. In Malappuram, if you are a cable TV operator and don&amp;rsquo;t put on channels with football on, God save you. So Bangalore&amp;rsquo;s apparent indifference to football was frustrating.&lt;/p&gt;
 
 &lt;p&gt;I have enjoyed playing the game since I was a small kid, and that habit too has taken a hit since I came to Bangalore. The first time I went to play on a weekend, a guy with a Red and Gold shawl draped around his neck came to the ground and ordered everyone who couldn&amp;rsquo;t speak Kannada out of the ground. Since then, I have come to realize and acknowledge the power of the Red and Gold colors in Bangalore.&lt;/p&gt;
@@ -220,10 +220,10 @@ When I was growing up, I spent most of my time in a residential school. In there
     
     <item>
       <title>TWU Graduation</title>
-      <link>https://sdqali.in/blog/2009/09/22/twu-graduation/</link>
+      <link>https://sdqali.in/blog/2009/09/22/twu-graduation/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 22 Sep 2009 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2009/09/22/twu-graduation/</guid>
+      <guid>https://sdqali.in/blog/2009/09/22/twu-graduation/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;As I had predicted, the last week of training was hectic, chaotic and crazy. Although we ended up leaving the whole project simulation in jeopardy, we learned a lot of things, especially how things that work smoothly at one second can go wrong very very wrong the next second.&lt;/p&gt;
 
 &lt;p&gt;I had decided beforehand that I would volunteer for roles that I want to do in my career, and that at the same time would leave me out of my comfort zone. I played the BA role for two days, and although I made lots of mistakes, I did certain things well. I was appreciated for the e-mails I sent out that day. And I got some nice feedback from the head of training, and I am sure his words will help me in my way forward.&lt;/p&gt;
@@ -246,10 +246,10 @@ When I was growing up, I spent most of my time in a residential school. In there
     
     <item>
       <title>A lot to learn</title>
-      <link>https://sdqali.in/blog/2009/08/21/a-lot-to-learn/</link>
+      <link>https://sdqali.in/blog/2009/08/21/a-lot-to-learn/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Fri, 21 Aug 2009 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2009/08/21/a-lot-to-learn/</guid>
+      <guid>https://sdqali.in/blog/2009/08/21/a-lot-to-learn/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;The past few days have just flown by. I had to learn so much things and did not have much time to do it. Most days, I sleep around 2:00 in the morning.&lt;/p&gt;
 
 &lt;p&gt;When I was in college, I had friends who were already working. I used to wonder why sometimes they did not reply to a mail I sent, or did not ping me back when I pinged them on IM. Well, now I know! If any of you are reading this, guys, please pardon me for not understanding.&lt;/p&gt;
@@ -262,10 +262,10 @@ When I was growing up, I spent most of my time in a residential school. In there
     
     <item>
       <title>Yet another week in Bangalore</title>
-      <link>https://sdqali.in/blog/2009/08/16/yet-another-week-in-bangalore/</link>
+      <link>https://sdqali.in/blog/2009/08/16/yet-another-week-in-bangalore/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sun, 16 Aug 2009 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2009/08/16/yet-another-week-in-bangalore/</guid>
+      <guid>https://sdqali.in/blog/2009/08/16/yet-another-week-in-bangalore/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Yet another week of my Bangalore life has unfolded. It was tougher, and better than the first two weeks.&lt;/p&gt;
 
 &lt;p&gt;I learned lots of new stuff, stuff that would greatly help me in my profession. I made friends with new people. But most important of all, I got some feedback on some of the things I do in life. It was kind of very scary, to be honest. But then I realized that the feedback will let me improve. I am trying hard to use the feedback in the most positive way possible.&lt;/p&gt;
@@ -282,10 +282,10 @@ When I was growing up, I spent most of my time in a residential school. In there
     
     <item>
       <title>Bangalore Journal</title>
-      <link>https://sdqali.in/blog/2009/08/08/bangalore-journal/</link>
+      <link>https://sdqali.in/blog/2009/08/08/bangalore-journal/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sat, 08 Aug 2009 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2009/08/08/bangalore-journal/</guid>
+      <guid>https://sdqali.in/blog/2009/08/08/bangalore-journal/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;This is my 13th day in Bangalore. And the first week of my training at ToughtWorks has gone by. I learned lots of stuff, talked to some great people and made friends with some of them. I still have not overcome the difficulties of adapting to life in the City. May be I will soon, or I never will.&lt;/p&gt;
 
 &lt;p&gt;I had planned to post everyday about my experiences in TWU. But I did not have much time. The sessions last till 5:00 pm, and then I will be very tired to do much. I am really missing football. I had hoped to play with my friend Aneesh on last Sunday, but we were not allowed to play as one old guy who turned up decided that only regulars could play there. Sigh !!&lt;/p&gt;
@@ -306,10 +306,10 @@ When I was growing up, I spent most of my time in a residential school. In there
     
     <item>
       <title>Ajmal Qasab and his friends should hang their heads in shame</title>
-      <link>https://sdqali.in/blog/2009/04/16/ajmal-qasab-and-his-friends-should-hang-their-heads-in-shame/</link>
+      <link>https://sdqali.in/blog/2009/04/16/ajmal-qasab-and-his-friends-should-hang-their-heads-in-shame/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Thu, 16 Apr 2009 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2009/04/16/ajmal-qasab-and-his-friends-should-hang-their-heads-in-shame/</guid>
+      <guid>https://sdqali.in/blog/2009/04/16/ajmal-qasab-and-his-friends-should-hang-their-heads-in-shame/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Yesterday, I happened to watch the show &amp;lsquo;The Buck Stops Here&amp;rsquo; presented by Barkha Dutt on NDTV 24 X 7.&lt;/p&gt;
 
 &lt;p&gt;The trial of Ajmal Qasab, the lone terrorist captured during the Nov.27 attack on Mumbai and fellow defendants had begun in Mumbai and the court relieved Anjali Waghmare, the lawyer appointed by the court to defend Qasab, because of what it saw as a conflict of interest. Anjali Waghmare is the wife of a policeman. Qasab asked for a Pakistani lawyer to represent him.&lt;/p&gt;
@@ -330,10 +330,10 @@ When I was growing up, I spent most of my time in a residential school. In there
     
     <item>
       <title>When I used to love Cricket</title>
-      <link>https://sdqali.in/blog/2009/02/26/when-i-used-to-love-cricket/</link>
+      <link>https://sdqali.in/blog/2009/02/26/when-i-used-to-love-cricket/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Thu, 26 Feb 2009 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2009/02/26/when-i-used-to-love-cricket/</guid>
+      <guid>https://sdqali.in/blog/2009/02/26/when-i-used-to-love-cricket/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Taking a tour through the orkut albums of some of my friends from my school, I happened to see a photo of us in the playground, shot after a game of cricket. And there I was - thin, short and most surprisingly for me, with a cricket bat in my hand. True, I have seen the photo a number of times, I had even commented on it, but today, the bat in my hand reminding me solidly that I once used to play cricket and love it.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://lh5.googleusercontent.com/-hWsuR3VWy9I/SabRvGVCWSI/AAAAAAAAAyc/oSjcdEsGsmE/s673/ckt.JPG&#34; alt=&#34;Good-old days: With friends after a game&#34; title=&#34;Good-old days: With friends after a game&#34; /&gt;&lt;/p&gt;
@@ -366,10 +366,10 @@ When I was growing up, I spent most of my time in a residential school. In there
     
     <item>
       <title>Of Birthdays and Anniversaries</title>
-      <link>https://sdqali.in/blog/2009/01/30/of-birthdays-and-anniversaries/</link>
+      <link>https://sdqali.in/blog/2009/01/30/of-birthdays-and-anniversaries/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Fri, 30 Jan 2009 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2009/01/30/of-birthdays-and-anniversaries/</guid>
+      <guid>https://sdqali.in/blog/2009/01/30/of-birthdays-and-anniversaries/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;Last week, we celebrated the birthday of one of my friends. There was not much of celebration per se, we just went to his place, talked a lot and had food from a restaurant. The restaurant bill was paid by the three guests, and not the host, but that is another story.&lt;/p&gt;
 
 &lt;p&gt;It had been a long since the four of us had come together, and so we talked about all stuff. My friend,the birthday boy, a student of nursing was apparently neck-deep in politics and was planning an agitation against the State governments decision to scrap Entrance Exams for some of the medical courses. Like every time we had a conversation back in school, our discussions turned a bit philosophical and soon we were arguing about the relevance of birthdays, anniversaries and New Years.&lt;/p&gt;
@@ -386,10 +386,10 @@ When I was growing up, I spent most of my time in a residential school. In there
     
     <item>
       <title>Tough Love</title>
-      <link>https://sdqali.in/blog/2009/01/18/tough-love/</link>
+      <link>https://sdqali.in/blog/2009/01/18/tough-love/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Sun, 18 Jan 2009 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2009/01/18/tough-love/</guid>
+      <guid>https://sdqali.in/blog/2009/01/18/tough-love/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;I am about to finish my college within five months. As almost everyone at this juncture of life would have done, I am already beginning to look back at it. And nothing resurfaces from my memory like that of how it all began.&lt;/p&gt;
 
 &lt;p&gt;I still remember those days after I had finished school, when I had not decided what I wanted to do. Of course, I wanted to study, but higher education did not look a feasible prospect. There were talks in the family about how costly college education was. And worse still, the discussions were being led by my father&amp;rsquo;s elder brother who was my Godfather, and easily the person whose words the family dared not to questions.&lt;/p&gt;

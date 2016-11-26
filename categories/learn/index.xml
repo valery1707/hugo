@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{code that works}</title>
-    <link>https://sdqali.in/categories/learn/index.xml</link>
+    <link>https://sdqali.in/categories/learn/index.xml?utm_source=site&amp;utm_medium=feed</link>
     <description>Recent content on {code that works}</description>
     <generator>Hugo -- gohugo.io</generator>
-    <atom:link href="https://sdqali.in/categories/learn/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/categories/learn/index.xml?utm_source=site&amp;utm_medium=feed" rel="self" type="application/rss+xml" />
     
     <item>
       <title>My experience working remotely</title>
-      <link>https://sdqali.in/blog/2013/04/11/my-experience-working-remotely/</link>
+      <link>https://sdqali.in/blog/2013/04/11/my-experience-working-remotely/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Thu, 11 Apr 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2013/04/11/my-experience-working-remotely/</guid>
+      <guid>https://sdqali.in/blog/2013/04/11/my-experience-working-remotely/?utm_source=site&amp;utm_medium=feed</guid>
       <description>
 
 &lt;p&gt;There has been a lot of debate in the tech community about working remotely and the willingness of employers to allow this option to their employees. At the very beginning of my career as a programmer, I had the opportunity to work on a distributed team. While the team was distributed, I was still working from an office and for almost half of the duration of my work on the team I had team members sitting beside me in the same office. Because of this, my scenario may not be representative of the population of programmers who work remotely. However, there are a number of things I learned from the experience that I would like to share.&lt;/p&gt;
@@ -62,10 +62,10 @@ We used ThoughtWorks&amp;rsquo; &lt;a href=&#34;http://www.thoughtworks-studios.
     
     <item>
       <title>The Spiral of Learning</title>
-      <link>https://sdqali.in/blog/2012/05/30/the-spiral-of-learning/</link>
+      <link>https://sdqali.in/blog/2012/05/30/the-spiral-of-learning/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Wed, 30 May 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/05/30/the-spiral-of-learning/</guid>
+      <guid>https://sdqali.in/blog/2012/05/30/the-spiral-of-learning/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;An hour ago, I was staring at a problem on the &lt;a href=&#34;http://www.4clojure.com/&#34; title=&#34;4clojure&#34;&gt;4clojure&lt;/a&gt; website. Last weekend, I found myself wandering through Zed Shaw&amp;rsquo;s &lt;a href=&#34;http://c.learncodethehardway.org/&#34; title=&#34;Learn C The Hard Way&#34;&gt;Learn C the Hard Way&lt;/a&gt;. Three days before that, I was taking a stab at figuring what kind of visualizations would make sense if you want to come up with the mother of all comparison&amp;rsquo;s between two of football&amp;rsquo;s greatest ever players. Four days before that, I was looking at some classifiers. Five weeks ago, I was totally lost in &lt;a href=&#34;http://learnyousomeerlang.com/&#34; title=&#34;Learn You Some Erlang For Great Good&#34;&gt;Learn You Some Erlang&lt;/a&gt;, and three weeks before that I was trying to make sense of all the hype around Node.js.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
@@ -122,10 +122,10 @@ I have been thinking about this a lot lately and increasingly getting concerned.
     
     <item>
       <title>You Crash and then You Learn</title>
-      <link>https://sdqali.in/blog/2012/05/29/you-crash-and-then-you-learn/</link>
+      <link>https://sdqali.in/blog/2012/05/29/you-crash-and-then-you-learn/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 29 May 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/05/29/you-crash-and-then-you-learn/</guid>
+      <guid>https://sdqali.in/blog/2012/05/29/you-crash-and-then-you-learn/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;As I picked up my bicycle, climbed on it and spotted the blood on my elbows and the bunch of curious onlookers in front of the pan shop nearby, I did not feel fear or embarrassment. I had an immeasurable amount of happiness welling inside me. I had finally done what I should have about 20 years ago - I had finally managed to crash my bicycle and leave with plenty of scars to show for it.&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -184,10 +184,10 @@ When I was growing up, I spent most of my time in a residential school. In there
     
     <item>
       <title>Bullet proof Jenkins setup</title>
-      <link>https://sdqali.in/blog/2012/02/03/bullet-proof-jenkins-setup/</link>
+      <link>https://sdqali.in/blog/2012/02/03/bullet-proof-jenkins-setup/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Fri, 03 Feb 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/02/03/bullet-proof-jenkins-setup/</guid>
+      <guid>https://sdqali.in/blog/2012/02/03/bullet-proof-jenkins-setup/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;div class=&#39;post&#39;&gt;
 &lt;div&gt;&lt;div dir=&#34;ltr&#34; style=&#34;text-align: left;&#34; trbidi=&#34;on&#34;&gt;&lt;div&gt;In this
       post, I will describe how a neat setup and some discipline will
@@ -225,10 +225,10 @@ These are the steps to setup a bullet proof Jenkins setup. This assumes that Jen
     
     <item>
       <title>Why your project should have a Getting Started guide.</title>
-      <link>https://sdqali.in/blog/2012/01/17/why-your-project-should-have-a-getting-started-guide./</link>
+      <link>https://sdqali.in/blog/2012/01/17/why-your-project-should-have-a-getting-started-guide./?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 17 Jan 2012 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2012/01/17/why-your-project-should-have-a-getting-started-guide./</guid>
+      <guid>https://sdqali.in/blog/2012/01/17/why-your-project-should-have-a-getting-started-guide./?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;div class=&#39;post&#39;&gt;
 &lt;div&gt;&lt;p&gt;My new team at work is writing a bunch of Rails applications. This is one of those codebases that one would call &#34;legacy&#34; without much argument. Most of these apps have their own patched, vendorized Rails versions.&lt;/p&gt;&lt;p&gt;Getting up and running was an absolute pain. This project existed before Bundler and the list of gem dependencies are not checked in. I got the output of running &lt;i&gt;&lt;b&gt;gem list&lt;/b&gt;&lt;/i&gt; on a colleague&#39;s box, wrote a Ruby script to generate a shell script that installs all the gems. When I tried running the tests in one of those apps, I got a nice error. &lt;/p&gt;&lt;p&gt;It looked obvious that we were using patched Rails versions. Surprisingly, theses were not checked in to the vendor/ directory. This was proving to be a pain, and today I sat with a team member and wrote a developer guide to get started on the project. We actually had to pull patched Rails tar balls from a remote box and untar them to vendor/ directory. I was really surprised that these patches had not been checked in. We checked in all the patches. Apart from the Rails patches, there was a gem that had to be checked in.&lt;/p&gt;&lt;p&gt;This is why I think every project needs a Getting Started guide:&lt;br&gt;1. As a developer joining a new team, I want to look at the code as soon as I can. For me, this involves reading and running the tests.&lt;br&gt;2. Due to various reasons, a project may have patches and dependencies. Being very specific to the project, there is no way a new developer on the team would figure out these hidden dependencies.&lt;br&gt;3. There needs to be a single place where all the dependencies are specified.&lt;br&gt;4. While spoon-feeding someone may not be the best way to get them started, a little bit of hand-holding will not do anyone any harm. &lt;/p&gt;&lt;p&gt;One of the biggest problems I see with things like these guides is that as the application and it&#39;s dependencies evolve, the guides are not updated to reflect these changes. The only possible time the guide will be updated is when a new developer joins the team, follows these instructions and finds the need to update the guide.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
@@ -236,10 +236,10 @@ These are the steps to setup a bullet proof Jenkins setup. This assumes that Jen
     
     <item>
       <title>TWU Graduation</title>
-      <link>https://sdqali.in/blog/2009/09/22/twu-graduation/</link>
+      <link>https://sdqali.in/blog/2009/09/22/twu-graduation/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Tue, 22 Sep 2009 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2009/09/22/twu-graduation/</guid>
+      <guid>https://sdqali.in/blog/2009/09/22/twu-graduation/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;As I had predicted, the last week of training was hectic, chaotic and crazy. Although we ended up leaving the whole project simulation in jeopardy, we learned a lot of things, especially how things that work smoothly at one second can go wrong very very wrong the next second.&lt;/p&gt;
 
 &lt;p&gt;I had decided beforehand that I would volunteer for roles that I want to do in my career, and that at the same time would leave me out of my comfort zone. I played the BA role for two days, and although I made lots of mistakes, I did certain things well. I was appreciated for the e-mails I sent out that day. And I got some nice feedback from the head of training, and I am sure his words will help me in my way forward.&lt;/p&gt;
@@ -262,10 +262,10 @@ These are the steps to setup a bullet proof Jenkins setup. This assumes that Jen
     
     <item>
       <title>A lot to learn</title>
-      <link>https://sdqali.in/blog/2009/08/21/a-lot-to-learn/</link>
+      <link>https://sdqali.in/blog/2009/08/21/a-lot-to-learn/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Fri, 21 Aug 2009 00:00:00 +0000</pubDate>
       
-      <guid>https://sdqali.in/blog/2009/08/21/a-lot-to-learn/</guid>
+      <guid>https://sdqali.in/blog/2009/08/21/a-lot-to-learn/?utm_source=site&amp;utm_medium=feed</guid>
       <description>&lt;p&gt;The past few days have just flown by. I had to learn so much things and did not have much time to do it. Most days, I sleep around 2:00 in the morning.&lt;/p&gt;
 
 &lt;p&gt;When I was in college, I had friends who were already working. I used to wonder why sometimes they did not reply to a mail I sent, or did not ping me back when I pinged them on IM. Well, now I know! If any of you are reading this, guys, please pardon me for not understanding.&lt;/p&gt;
