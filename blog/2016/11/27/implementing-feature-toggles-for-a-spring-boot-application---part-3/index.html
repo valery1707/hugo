@@ -14,7 +14,7 @@
     
     
 
-    <title>JWT authentication with Spring Web - Part 1 - {code that works} by Sadique Ali</title>
+    <title>Implementing feature toggles for a Spring Boot application - Part 3 - {code that works} by Sadique Ali</title>
 
     
     
@@ -22,21 +22,24 @@
 
 </head>
 
-  <meta name="description" content="JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end." />
-  <meta content="development, java, spring, jwt, spring-security, authentication" name="keywords">
+  <meta name="description" content="Finding this article useful?  My posts with working code - tested and verified - and actionable explanations for specific programming problems. Delivered each week for free.   First Name  Email Address     Join the Newsletter    I won&#39;t send you spam. Unsubscribe at any time.
+  " />
+  <meta content="development, code, feature-toggles, java, spring" name="keywords">
 
   
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@sdqali">
   <meta name="twitter:creator" content="@sdqali">
-  <meta name="twitter:title" content="JWT authentication with Spring Web - Part 1">
-  <meta name="twitter:description" content="JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.">
-  <meta name="twitter:image" content="https://sdqali.in/images/spring-security.png">
+  <meta name="twitter:title" content="Implementing feature toggles for a Spring Boot application - Part 3">
+  <meta name="twitter:description" content="Finding this article useful?  My posts with working code - tested and verified - and actionable explanations for specific programming problems. Delivered each week for free.   First Name  Email Address     Join the Newsletter    I won&#39;t send you spam. Unsubscribe at any time.
+  ">
+  <meta name="twitter:image" content="https://sdqali.in/images/feature-toggles.png">
 
-  <meta property="og:title" content="JWT authentication with Spring Web - Part 1" />
-  <meta property="og:description" content="JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end." itemprop="description"/>
-  <meta property="og:url" content="https://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/" />
-  <meta property="og:image" content="https://sdqali.in/images/spring-security.png" />
+  <meta property="og:title" content="Implementing feature toggles for a Spring Boot application - Part 3" />
+  <meta property="og:description" content="Finding this article useful?  My posts with working code - tested and verified - and actionable explanations for specific programming problems. Delivered each week for free.   First Name  Email Address     Join the Newsletter    I won&#39;t send you spam. Unsubscribe at any time.
+  " itemprop="description"/>
+  <meta property="og:url" content="https://sdqali.in/blog/2016/11/27/implementing-feature-toggles-for-a-spring-boot-application---part-3/" />
+  <meta property="og:image" content="https://sdqali.in/images/feature-toggles.png" />
   <body>
 
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
@@ -82,22 +85,20 @@
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="post-heading for-post">
-              <h1> JWT authentication with Spring Web - Part 1</h1>
-              <span class="meta">Sat, Jul 2, 2016</span>
+              <h1> Implementing feature toggles for a Spring Boot application - Part 3</h1>
+              <span class="meta">Sun, Nov 27, 2016</span>
               <div class="tags">
                 <span class="fa fa-tags" aria-hidden="true"></span>
                 
                  <a href="/tags/development">development</a>
                 
+                ,  <a href="/tags/code">code</a>
+                
+                ,  <a href="/tags/feature-toggles">feature-toggles</a>
+                
                 ,  <a href="/tags/java">java</a>
                 
                 ,  <a href="/tags/spring">spring</a>
-                
-                ,  <a href="/tags/jwt">jwt</a>
-                
-                ,  <a href="/tags/spring-security">spring-security</a>
-                
-                ,  <a href="/tags/authentication">authentication</a>
                 
               </div>
             </div>
@@ -114,49 +115,7 @@
          itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <p>JSON Web Tokens (JWTs) are signed tokens issued by a server that it can use to verify a claim made by a client. This blog post is the first in a series where I implement authentication based on JWT in a Spring Web application with an Angular JS front end.</p>
-
-<p>
-These are the blog posts in this series:</p>
-
-<ul>
-<li><a href="/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/">Part 1</a> - Discussion of JWT and implementation</li>
-<li><a href="/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/">Part 2</a> - A Spring User Profiles API</li>
-<li><a href="/blog/2016/07/05/jwt-authentication-with-spring-web---part-3/">Part 3</a> - Issuing a token from the server</li>
-<li><a href="/blog/2016/07/07/jwt-authentication-with-spring-web---part-4/">Part 4</a> - Verifying the token sent back by the client</li>
-<li><a href="/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/">Part 5</a> - Securing the front end</li>
-</ul>
-
-<h2 id="what-is-jwt">What is JWT?</h2>
-
-<p>The official JWT <a href="https://jwt.io/">website</a> defines JWT as:</p>
-
-<blockquote>
-<p>JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.</p>
-</blockquote>
-
-<p>A <code>JWT</code> contains 3 parts - a <code>header</code>, a <code>payload</code> and a <code>signature</code>. A <code>JWT</code> can in turn be represented as a <code>JWS</code> or <code>JWE</code>. <code>JWS</code> stands for JSON Web Signature as defined in RFC 7515 and <code>JWE</code> stands for JSON Web Encryption defined by RFC 7516. In a <code>JWS</code>, the payload being sent is not encrypted, whereas it is encrypted in a <code>JWE</code> <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>. This blog post will deal only with <code>JWS</code>.</p>
-
-<h2 id="structure-of-a-jwt">Structure of a JWT</h2>
-
-<p>A JWT has the following structure:</p>
-
-<pre><code>base64(header) + &quot;.&quot; + base64(payload) + &quot;.&quot; + signature(header, payload, key)
-</code></pre>
-
-<p>The signature itself is generated by signing the header and payload with a key, for example using the HMAC-SHA256 algorithm:</p>
-
-<pre><code>HMASHA256(base64(header) + &quot;.&quot; + base64(payload), key)
-</code></pre>
-
-<p>A JWT header is a JSON object that typically has the following values:</p>
-
-<ul>
-<li><code>alg</code> - The algorithm used for signing the token.</li>
-<li><code>typ</code> - This optional parameter, set to <code>JWT</code> declares this JSON object as a JWT.</li>
-</ul>
-
-<div class="signup col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0">
+            <div class="signup col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0">
   <div class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0">
     <h3>Finding this article useful?</h3>
     <div>
@@ -187,45 +146,6 @@ These are the blog posts in this series:</p>
 </div>
 
 
-<p>An example JWT header when the algorithm used is HMA-SHA256:</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>{
-    <span style="color: #330099; font-weight: bold">&quot;alg&quot;</span>: <span style="color: #CC3300">&quot;HM256&quot;</span>,
-    <span style="color: #330099; font-weight: bold">&quot;typ&quot;</span>: <span style="color: #CC3300">&quot;JWT&quot;</span>
-}
-</pre></div>
-
-<p>A JWT payload contains a series of <a href="https://tools.ietf.org/html/rfc7519#section-4">claims</a>. There is an IANA &ldquo;JSON Web Token Claims&rdquo; registry that has a number of claim names reserved for specific purposes. Applications are free to use any other names, except these for their claims. Claim names that are important include <code>exp</code> that represents the expiration time on or after which the JWT MUST NOT be accepted for processing. The following payload sets issuer, expiry date and a username.</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>{
-  <span style="color: #330099; font-weight: bold">&quot;exp&quot;</span>: <span style="color: #FF6600">1467509846</span>,
-  <span style="color: #330099; font-weight: bold">&quot;iss&quot;</span>: <span style="color: #CC3300">&quot;in.sdqali.jwt&quot;</span>,
-  <span style="color: #330099; font-weight: bold">&quot;username&quot;</span>: <span style="color: #CC3300">&quot;greenrabbit948&quot;</span>
-}
-</pre></div>
-
-<h2 id="generating-a-jwt">Generating a JWT</h2>
-
-<p>For the header and payload shown above, if we were to generate a JWT with the HMAC256 algorithm and key <code>secretKey</code>, it will look like this:</p>
-
-<pre><code>* Header - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-* Payload - eyJleHAiOjE0Njc1MDk4NDYsImlzcyI6ImluLnNkcWFsaS5qd3QiLCJ1c2VybmFtZSI6ImdyZWVucmFiYml0OTQ4In0
-* Signature - rStkUmx0SRWjBxKFVF2-lwwZNxlkGRJ4uH49TCIIN7o
-</code></pre>
-
-<p>The end token will have the following form:</p>
-
-<pre><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0Njc1MDk4NDYsImlzcyI6ImluLnNkcWFsaS5qd3QiLCJ1c2VybmFtZSI6ImdyZWVucmFiYml0OTQ4In0.rStkUmx0SRWjBxKFVF2-lwwZNxlkGRJ4uH49TCIIN7o
-</code></pre>
-
-<p>I have been implementing the JWT RFC to learn about it and it was fairly straight forward. I did the token generation part and did not finish the token verification part. The code for that exercise can be found <a href="https://github.com/sdqali/jwt">here</a>. A more complete implementation of the RFC for the JVM is <a href="https://github.com/jwtk/jjwt">jjwt</a> and the rest of the series will be using that implementation. The JWT website has a <a href="https://jwt.io/#debugger">debugger</a> that allows for creation and verification of tokens.</p>
-<div class="footnotes">
-
-<hr />
-
-<ol>
-<li id="fn:1">A detailed explanation of the differences between JWS and JWE can be found <a href="https://securedb.co/community/jwt-vs-jws-vs-jwe/">here</a>.
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-</ol>
-</div>
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>
@@ -264,6 +184,10 @@ These are the blog posts in this series:</p>
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <h3>If you liked this post, you'll also like...</h3>
                 <ul class="related-posts">
+                    
+                    
+                    
+                    
                     
                     
                     
@@ -335,6 +259,8 @@ These are the blog posts in this series:</p>
                     
                     
                     
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/?utm_source=site&amp;utm_medium=related">JWT authentication with Spring Web - Part 1</a></li>
                     
                     
                     
@@ -460,6 +386,8 @@ These are the blog posts in this series:</p>
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/?utm_source=site&amp;utm_medium=related">Importing the Yelp dataset into MongoDB</a></li>
+                    
                     
                     
                     
@@ -510,6 +438,37 @@ These are the blog posts in this series:</p>
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/?utm_source=site&amp;utm_medium=related">Fitting an Image in to a Canvas object</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/?utm_source=site&amp;utm_medium=related">Accessing Environment Variables in Gradle</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/10/01/reading-user-input-in-gradle-scripts/?utm_source=site&amp;utm_medium=related">Reading user input in Gradle scripts</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/?utm_source=site&amp;utm_medium=related">Ruby, Named Capture Groups and Local Variables</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/?utm_source=site&amp;utm_medium=related">Named Capture Groups in Regular Expressions</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/09/26/decomposing-urls-in-python/?utm_source=site&amp;utm_medium=related">Decomposing URLs in Python</a></li>
                     
                     
                     
@@ -519,24 +478,7 @@ These are the blog posts in this series:</p>
                     
                     
                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/09/15/shared-history-in-bash/?utm_source=site&amp;utm_medium=related">Shared history in Bash</a></li>
                     
                     
                     
@@ -553,6 +495,8 @@ These are the blog posts in this series:</p>
                     
                     
                     
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/08/22/navigating-stacktraces-in-emacs/?utm_source=site&amp;utm_medium=related">Navigating Stacktraces in Emacs</a></li>
                     
                     
                     
@@ -591,6 +535,8 @@ These are the blog posts in this series:</p>
                     
                     
                     
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/08/02/graph-databases-1---modeling/?utm_source=site&amp;utm_medium=related">Graph databases 1 - Modeling</a></li>
                     
                     
                     
@@ -676,6 +622,7 @@ These are the blog posts in this series:</p>
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2012/11/22/how-browsers-detect-if-you-are-offline/?utm_source=site&amp;utm_medium=related">How Browsers Detect If You Are Offline</a></li>
                     
                     
                     
@@ -697,8 +644,13 @@ These are the blog posts in this series:</p>
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2012/08/01/d3.js-workshop/?utm_source=site&amp;utm_medium=related">D3.js Workshop</a></li>
                     
                     
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/?utm_source=site&amp;utm_medium=related">Visualisation - How European clubs dominate their leagues</a></li>
                     
                     
                     
