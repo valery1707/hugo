@@ -14,7 +14,7 @@
     
     
 
-    <title>Programmable exit codes for spring command line applications - 2 - {code that works} by Sadique Ali</title>
+    <title>Implementing feature toggles for a Spring Boot application - Part 2 - {code that works} by Sadique Ali</title>
 
     
     
@@ -22,27 +22,24 @@
 
 </head>
 
-  <meta name="description" content="In the last blog post, we took a look at how to implement programmable exit codes for spring command line applications by using exceptions that implement ExitCodeGenerator. This time, we will take a look at how to achieve the same without having to depend on an exception.
-
+  <meta name="description" content="In the second part of this series about implementing feature toggles for a Spring Boot application, we will look at exposing the features to the Angular front-end so that features can be toggled in UI components.
 " />
-  <meta content="development, java" name="keywords">
+  <meta content="development, code, feature-toggles, java, spring" name="keywords">
 
   
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@sdqali">
   <meta name="twitter:creator" content="@sdqali">
-  <meta name="twitter:title" content="Programmable exit codes for spring command line applications - 2">
-  <meta name="twitter:description" content="In the last blog post, we took a look at how to implement programmable exit codes for spring command line applications by using exceptions that implement ExitCodeGenerator. This time, we will take a look at how to achieve the same without having to depend on an exception.
-
+  <meta name="twitter:title" content="Implementing feature toggles for a Spring Boot application - Part 2">
+  <meta name="twitter:description" content="In the second part of this series about implementing feature toggles for a Spring Boot application, we will look at exposing the features to the Angular front-end so that features can be toggled in UI components.
 ">
-  <meta name="twitter:image" content="https://sdqali.in/images/spring-by-pivotal.png">
+  <meta name="twitter:image" content="https://sdqali.in/images/feature-toggles.png">
 
-  <meta property="og:title" content="Programmable exit codes for spring command line applications - 2" />
-  <meta property="og:description" content="In the last blog post, we took a look at how to implement programmable exit codes for spring command line applications by using exceptions that implement ExitCodeGenerator. This time, we will take a look at how to achieve the same without having to depend on an exception.
-
+  <meta property="og:title" content="Implementing feature toggles for a Spring Boot application - Part 2" />
+  <meta property="og:description" content="In the second part of this series about implementing feature toggles for a Spring Boot application, we will look at exposing the features to the Angular front-end so that features can be toggled in UI components.
 " itemprop="description"/>
-  <meta property="og:url" content="https://sdqali.in/blog/2016/04/19/programmable-exit-codes-for-spring-command-line-applications---2/" />
-  <meta property="og:image" content="https://sdqali.in/images/spring-by-pivotal.png" />
+  <meta property="og:url" content="https://sdqali.in/blog/2016/11/26/implementing-feature-toggles-for-a-spring-boot-application---part-2/" />
+  <meta property="og:image" content="https://sdqali.in/images/feature-toggles.png" />
   <body>
 
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
@@ -88,14 +85,20 @@
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="post-heading for-post">
-              <h1> Programmable exit codes for spring command line applications - 2</h1>
-              <span class="meta">Tue, Apr 19, 2016</span>
+              <h1> Implementing feature toggles for a Spring Boot application - Part 2</h1>
+              <span class="meta">Sat, Nov 26, 2016</span>
               <div class="tags">
                 <span class="fa fa-tags" aria-hidden="true"></span>
                 
                  <a href="/tags/development">development</a>
                 
+                ,  <a href="/tags/code">code</a>
+                
+                ,  <a href="/tags/feature-toggles">feature-toggles</a>
+                
                 ,  <a href="/tags/java">java</a>
+                
+                ,  <a href="/tags/spring">spring</a>
                 
               </div>
             </div>
@@ -112,20 +115,28 @@
          itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <p>In the last <a href="/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/">blog post</a>, we took a look at how to implement programmable exit codes for spring command line applications by using exceptions that implement <code>ExitCodeGenerator</code>. This time, we will take a look at how to achieve the same without having to depend on an exception.</p>
+            <p>In the second part of this <a href="/series/feature-toggles/">series</a> about implementing feature toggles for a Spring Boot application, we will look at exposing the features to the Angular front-end so that features can be toggled in UI components.
+</p>
 
-<p></p>
+<h2 id="toggling-at-the-front-end">Toggling at the front end</h2>
 
-<p>This approach depends on the command line runner implementing the <code>ExitCodeGenerator</code>. This does require the usage of <code>System.exit</code>, but instead of it being invoked from different command line runners, it will be used in a single place as follows:</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Application</span>  <span style="color: #555555">{</span>
-    <span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">static</span> <span style="color: #007788; font-weight: bold">void</span> <span style="color: #CC00FF">main</span><span style="color: #555555">(</span>String<span style="color: #555555">[]</span> args<span style="color: #555555">)</span> <span style="color: #555555">{</span>
-        ConfigurableApplicationContext ctx <span style="color: #555555">=</span> SpringApplication<span style="color: #555555">.</span><span style="color: #330099">run</span><span style="color: #555555">(</span>Application<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">,</span> args<span style="color: #555555">);</span>
-        System<span style="color: #555555">.</span><span style="color: #330099">exit</span><span style="color: #555555">(</span>SpringApplication<span style="color: #555555">.</span><span style="color: #330099">exit</span><span style="color: #555555">(</span>ctx<span style="color: #555555">));</span>
-    <span style="color: #555555">}</span>
-<span style="color: #555555">}</span>
+<p>We decided to use the <a href="https://github.com/mjt01/angular-feature-flags">angular-feature-flags</a> library to toggle features at the front end because it provided us the three features that we were looking for:</p>
+
+<ul>
+<li>The ability to load the state of feature flags <a href="https://github.com/mjt01/angular-feature-flags#setting-flag-data">from an HTTP end point</a> instead of having to generate JS code through templates.</li>
+<li>The ability to toggle entire html components through the <code>feature-flag</code> attribute directive.</li>
+<li>The ability to expose these features to services and components to make if-else decisions through <code>featureFlagsProvider</code>.</li>
+</ul>
+
+<h2 id="features-end-point">Features end point</h2>
+
+<p>The library expects feature flags to be provided to <code>featureFlagsProvider</code> in the following format:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>[
+    { <span style="color: #330099; font-weight: bold">&quot;key&quot;</span>: <span style="color: #CC3300">&quot;...&quot;</span>, <span style="color: #330099; font-weight: bold">&quot;active&quot;</span>: <span style="color: #CC3300">&quot;...&quot;</span>, <span style="color: #330099; font-weight: bold">&quot;name&quot;</span>: <span style="color: #CC3300">&quot;...&quot;</span>, <span style="color: #330099; font-weight: bold">&quot;description&quot;</span>: <span style="color: #CC3300">&quot;...&quot;</span> },
+    <span style="color: #AA0000; background-color: #FFAAAA">...</span>
+]
 </pre></div>
 
-<p>The command line runner will now implement <code>ExitCodeGenerator</code>:
 <div class="signup col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0">
   <div class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0">
     <h3>Finding this article useful?</h3>
@@ -155,28 +166,71 @@
     <p class="no-spam">I won't send you spam. Unsubscribe at any time.</p>
   </div>
 </div>
-</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Component</span>
-<span style="color: #9999FF">@Profile</span><span style="color: #555555">(</span><span style="color: #CC3300">&quot;hello&quot;</span><span style="color: #555555">)</span>
-<span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">HelloWorld</span> <span style="color: #006699; font-weight: bold">implements</span> CommandLineRunner<span style="color: #555555">,</span> ExitCodeGenerator <span style="color: #555555">{</span>
 
-    <span style="color: #006699; font-weight: bold">public</span> <span style="color: #007788; font-weight: bold">void</span> <span style="color: #CC00FF">run</span><span style="color: #555555">(</span>String<span style="color: #555555">...</span> args<span style="color: #555555">)</span> <span style="color: #006699; font-weight: bold">throws</span> Exception <span style="color: #555555">{</span>
-        System<span style="color: #555555">.</span><span style="color: #330099">out</span><span style="color: #555555">.</span><span style="color: #330099">println</span><span style="color: #555555">(</span><span style="color: #CC3300">&quot;Hello World!&quot;</span><span style="color: #555555">);</span>
-    <span style="color: #555555">}</span>
 
-    <span style="color: #006699; font-weight: bold">public</span> <span style="color: #007788; font-weight: bold">int</span> <span style="color: #CC00FF">getExitCode</span><span style="color: #555555">()</span> <span style="color: #555555">{</span>
-        <span style="color: #006699; font-weight: bold">return</span> <span style="color: #FF6600">45</span><span style="color: #555555">;</span>
-    <span style="color: #555555">}</span>
+<p>The <code>FeatureController</code> will use the <code>FeatureRepository</code> to expose this will look like this:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@RestController</span>
+<span style="color: #9999FF">@RequestMapping</span><span style="color: #555555">(</span><span style="color: #CC3300">&quot;/features&quot;</span><span style="color: #555555">)</span>
+<span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">FeatureController</span> <span style="color: #555555">{</span>
+  <span style="color: #9999FF">@Autowired</span>
+  FeatureRepository featureRepository<span style="color: #555555">;</span>
+
+  <span style="color: #9999FF">@RequestMapping</span><span style="color: #555555">(</span><span style="color: #CC3300">&quot;&quot;</span><span style="color: #555555">)</span>
+  <span style="color: #006699; font-weight: bold">public</span> List<span style="color: #555555">&lt;</span>Map<span style="color: #555555">&gt;</span> <span style="color: #CC00FF">features</span><span style="color: #555555">()</span> <span style="color: #555555">{</span>
+    <span style="color: #006699; font-weight: bold">return</span> featureRepository<span style="color: #555555">.</span><span style="color: #330099">allFeatures</span><span style="color: #555555">()</span>
+        <span style="color: #555555">.</span><span style="color: #330099">entrySet</span><span style="color: #555555">()</span>
+        <span style="color: #555555">.</span><span style="color: #330099">stream</span><span style="color: #555555">()</span>
+        <span style="color: #555555">.</span><span style="color: #330099">map</span><span style="color: #555555">(</span>entry <span style="color: #555555">-&gt;</span> <span style="color: #006699; font-weight: bold">new</span> HashMap<span style="color: #555555">&lt;</span>String<span style="color: #555555">,</span> Object<span style="color: #555555">&gt;()</span> <span style="color: #555555">{</span>
+          <span style="color: #555555">{</span>
+            put<span style="color: #555555">(</span><span style="color: #CC3300">&quot;key&quot;</span><span style="color: #555555">,</span> entry<span style="color: #555555">.</span><span style="color: #330099">getKey</span><span style="color: #555555">());</span>
+            put<span style="color: #555555">(</span><span style="color: #CC3300">&quot;active&quot;</span><span style="color: #555555">,</span> entry<span style="color: #555555">.</span><span style="color: #330099">getValue</span><span style="color: #555555">());</span>
+            put<span style="color: #555555">(</span><span style="color: #CC3300">&quot;name&quot;</span><span style="color: #555555">,</span> entry<span style="color: #555555">.</span><span style="color: #330099">getKey</span><span style="color: #555555">());</span>
+            put<span style="color: #555555">(</span><span style="color: #CC3300">&quot;description&quot;</span><span style="color: #555555">,</span> entry<span style="color: #555555">.</span><span style="color: #330099">getKey</span><span style="color: #555555">());</span>
+          <span style="color: #555555">}</span>
+        <span style="color: #555555">})</span>
+        <span style="color: #555555">.</span><span style="color: #330099">collect</span><span style="color: #555555">(</span>Collectors<span style="color: #555555">.</span><span style="color: #330099">toList</span><span style="color: #555555">());</span>
+  <span style="color: #555555">}</span>
 <span style="color: #555555">}</span>
 </pre></div>
 
-<p>This is how the application behaves when run:</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>$ java -Dspring.profiles.active<span style="color: #555555">=</span>hello -jar build/libs/exit-code-demo-1.0-SNAPSHOT.jar &gt; /dev/null 2&gt;&amp;1
-$ <span style="color: #336666">echo</span> <span style="color: #003333">$?</span>
-45
+<p>We are using the double brace initialization technique to construct the map representing each feature. Initializing a map given a set of keys and values is still an exercise that requires a bunch of <a href="https://minborgsjavapot.blogspot.com/2014/12/java-8-initializing-maps-in-smartest-way.html">boiler plate</a> code in Java. You can get around this by using the convenient ImmutableMap.of() provided by <a href="https://mvnrepository.com/artifact/com.google.collections/google-collections/1.0">Google Collections</a>.</p>
+
+<p>It is also important to change our <code>AppConfig</code> to initialize the instance of <code>Featurerepository</code> as a bean.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Configuration</span>
+<span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">AppConfig</span> <span style="color: #006699; font-weight: bold">extends</span> WebMvcConfigurerAdapter <span style="color: #555555">{</span>
+  <span style="color: #9999FF">@Autowired</span>
+  Environment env<span style="color: #555555">;</span>
+
+  <span style="color: #0099FF; font-style: italic">// ...</span>
+
+  <span style="color: #9999FF">@Bean</span>
+  <span style="color: #006699; font-weight: bold">public</span> FeatureRepository <span style="color: #CC00FF">featureRepository</span><span style="color: #555555">()</span> <span style="color: #555555">{</span>
+    <span style="color: #006699; font-weight: bold">return</span> <span style="color: #006699; font-weight: bold">new</span> FeatureRepository<span style="color: #555555">(</span>env<span style="color: #555555">);</span>
+  <span style="color: #555555">}</span>
+<span style="color: #555555">}</span>
 </pre></div>
 
-<p>This allows us to delegate how the application should exit to the command line runners themselves, without having to throw exceptions.</p>
+<p>With this configuration, we can get the feature state from the end point:</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>&gt; curl -s <span style="color: #CC3300">&quot;http://localhost:8080/features&quot;</span> | jq .
+<span style="color: #555555">[</span>
+  <span style="color: #555555">{</span>
+    <span style="color: #CC3300">&quot;name&quot;</span>: <span style="color: #CC3300">&quot;feature.foo&quot;</span>,
+    <span style="color: #CC3300">&quot;active&quot;</span>: false,
+    <span style="color: #CC3300">&quot;description&quot;</span>: <span style="color: #CC3300">&quot;feature.foo&quot;</span>,
+    <span style="color: #CC3300">&quot;key&quot;</span>: <span style="color: #CC3300">&quot;feature.foo&quot;</span>
+  <span style="color: #555555">}</span>,
+  <span style="color: #555555">{</span>
+    <span style="color: #CC3300">&quot;name&quot;</span>: <span style="color: #CC3300">&quot;feature.hello&quot;</span>,
+    <span style="color: #CC3300">&quot;active&quot;</span>: true,
+    <span style="color: #CC3300">&quot;description&quot;</span>: <span style="color: #CC3300">&quot;feature.hello&quot;</span>,
+    <span style="color: #CC3300">&quot;key&quot;</span>: <span style="color: #CC3300">&quot;feature.hello&quot;</span>
+  <span style="color: #555555">}</span>
+<span style="color: #555555">]</span>
+</pre></div>
+
+<p>For our use case, we were comfortable re-using the feature key as the name and description of the feature. You may want to capture these meta data in your application configuration and expose this using Spring Boot&rsquo;s <a href="http://docs.spring.io/spring-boot/docs/1.1.7.RELEASE/api/org/springframework/boot/context/properties/ConfigurationProperties.html">ConfigurationProperties</a>. You can find an example of how use structured configurations in <a href="https://github.com/sdqali/config-properties">my example project</a>.</p>
+
+<p>In the next part of this <a href="/series/feature-toggles/">series</a>, we will take a look at how to expose the feature information as an <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html">admin end point</a>.</p>
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
 </p>
@@ -220,8 +274,6 @@ $ <span style="color: #336666">echo</span> <span style="color: #003333">$?</span
                     
                     
                     
-                    
-                    <li><a class="related" href="https://sdqali.in/blog/2016/11/26/implementing-feature-toggles-for-a-spring-boot-application---part-2/?utm_source=site&amp;utm_medium=related">Implementing feature toggles for a Spring Boot application - Part 2</a></li>
                     
                     
                     
@@ -321,6 +373,8 @@ $ <span style="color: #336666">echo</span> <span style="color: #003333">$?</span
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/04/19/programmable-exit-codes-for-spring-command-line-applications---2/?utm_source=site&amp;utm_medium=related">Programmable exit codes for spring command line applications - 2</a></li>
+                    
                     
                     
                     
@@ -411,6 +465,8 @@ $ <span style="color: #336666">echo</span> <span style="color: #003333">$?</span
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/?utm_source=site&amp;utm_medium=related">Importing the Yelp dataset into MongoDB</a></li>
+                    
                     
                     
                     
@@ -461,6 +517,37 @@ $ <span style="color: #336666">echo</span> <span style="color: #003333">$?</span
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2013/10/03/fitting-an-image-in-to-a-canvas-object/?utm_source=site&amp;utm_medium=related">Fitting an Image in to a Canvas object</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/10/01/accessing-environment-variables-in-gradle/?utm_source=site&amp;utm_medium=related">Accessing Environment Variables in Gradle</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/10/01/reading-user-input-in-gradle-scripts/?utm_source=site&amp;utm_medium=related">Reading user input in Gradle scripts</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/10/01/ruby-named-capture-groups-and-local-variables/?utm_source=site&amp;utm_medium=related">Ruby, Named Capture Groups and Local Variables</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/09/29/named-capture-groups-in-regular-expressions/?utm_source=site&amp;utm_medium=related">Named Capture Groups in Regular Expressions</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/09/26/decomposing-urls-in-python/?utm_source=site&amp;utm_medium=related">Decomposing URLs in Python</a></li>
                     
                     
                     
@@ -470,24 +557,7 @@ $ <span style="color: #336666">echo</span> <span style="color: #003333">$?</span
                     
                     
                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/09/15/shared-history-in-bash/?utm_source=site&amp;utm_medium=related">Shared history in Bash</a></li>
                     
                     
                     
@@ -504,6 +574,8 @@ $ <span style="color: #336666">echo</span> <span style="color: #003333">$?</span
                     
                     
                     
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/08/22/navigating-stacktraces-in-emacs/?utm_source=site&amp;utm_medium=related">Navigating Stacktraces in Emacs</a></li>
                     
                     
                     
@@ -542,6 +614,8 @@ $ <span style="color: #336666">echo</span> <span style="color: #003333">$?</span
                     
                     
                     
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2013/08/02/graph-databases-1---modeling/?utm_source=site&amp;utm_medium=related">Graph databases 1 - Modeling</a></li>
                     
                     
                     
@@ -627,6 +701,7 @@ $ <span style="color: #336666">echo</span> <span style="color: #003333">$?</span
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2012/11/22/how-browsers-detect-if-you-are-offline/?utm_source=site&amp;utm_medium=related">How Browsers Detect If You Are Offline</a></li>
                     
                     
                     
@@ -648,8 +723,13 @@ $ <span style="color: #336666">echo</span> <span style="color: #003333">$?</span
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2012/08/01/d3.js-workshop/?utm_source=site&amp;utm_medium=related">D3.js Workshop</a></li>
                     
                     
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2012/07/21/visualisation---how-european-clubs-dominate-their-leagues/?utm_source=site&amp;utm_medium=related">Visualisation - How European clubs dominate their leagues</a></li>
                     
                     
                     
