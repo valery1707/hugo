@@ -1677,10 +1677,17 @@ h3.post-meta {
 }
 .signup {
     border: 1px solid green;
-    border-top: 4px solid green;
-    border-bottom: 4px solid green;
     font-size: 90%;
     margin-bottom: 30px;
+    margin-top: 30px;
+    border-radius: 4px;
+}
+.signup.bw {
+    border: 1px solid #ccc;
+    font-size: 90%;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    border-radius: 4px;
 }
 form#mc-embedded-subscribe-form {
     margin-top: 1em;
@@ -1697,7 +1704,9 @@ div.page-heading.for-page {
 div.post-heading.for-post {
   padding-bottom: 10px;
 }
-
+button#mc-embedded-subscribe {
+    border-radius: 4px;
+}
 </style>
 
 <script>
@@ -2610,7 +2619,41 @@ $(function(){$("#contactFrom input,#contactForm textarea").jqBootstrapValidation
 
 
 </script>
-</script><script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]='FNAME';ftypes[1]='text';fnames[0]='EMAIL';ftypes[0]='email';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+</script><script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[1]='FNAME';ftypes[1]='text';fnames[0]='EMAIL';ftypes[0]='email';}(jQuery));var $mcj = jQuery.noConflict(true);
+jQuery("#mc-embedded-subscribe-form").submit(function() {
+  if(jQuery("#mce-EMAIL").jqBootstrapValidation().attr("class").match("valid") !== null &&
+     jQuery("#mce-FNAME").jqBootstrapValidation().attr("class").match("valid") !== null) {
+    console.log("test")
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Newletter',
+      eventAction: 'Subscribed',
+      eventLabel: 'EmbeddedMC'
+    });
+  }
+});
+</script>
+
+<script src="//www.google-analytics.com/cx/api.js?experiment=qd_lh9nMRlOfsYDtJqm7DA"></script>
+
+<script>
+  
+var chosenVariation = cxApi.chooseVariation();
+if(chosenVariation === 0) {
+  
+} else if (chosenVariation === 1) {
+  jQuery("#mc-embedded-subscribe").removeClass("btn-success");
+  jQuery("#mc-embedded-subscribe").addClass("btn-secondary");
+  jQuery(".signup").addClass("bw");
+} else if (chosenVariation === 2) {
+  $(".signup-desc").hide();
+} else if (chosenVariation === 3) {
+  jQuery("#mc-embedded-subscribe").removeClass("btn-success");
+  jQuery("#mc-embedded-subscribe").addClass("btn-secondary");
+  jQuery(".signup").addClass("bw");
+  $(".signup-desc").hide();
+}
+</script>
 
 
   </body>
