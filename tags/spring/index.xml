@@ -8,6 +8,136 @@
     <atom:link href="/tags/spring/index.xml?utm_source=site&amp;utm_medium=feed" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Implementing feature toggles for a Spring Boot application - Part 4</title>
+      <link>https://sdqali.in/blog/2016/11/29/implementing-feature-toggles-for-a-spring-boot-application---part-4/?utm_source=site&amp;utm_medium=feed</link>
+      <pubDate>Tue, 29 Nov 2016 15:30:03 -0800</pubDate>
+      
+      <guid>https://sdqali.in/blog/2016/11/29/implementing-feature-toggles-for-a-spring-boot-application---part-4/?utm_source=site&amp;utm_medium=feed</guid>
+      <description>&lt;p&gt;In the fourth part of this &lt;a href=&#34;https://sdqali.in/series/feature-toggles/&#34;&gt;series&lt;/a&gt; about implementing &lt;a href=&#34;https://sdqali.in/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/&#34;&gt;feature toggles&lt;/a&gt; for a Spring Boot application, we will take a look at how our implementation so far introduced a dependency on the application being restarted for changes to take place.&lt;/p&gt;
+
+&lt;!--More--&gt;
+
+&lt;p&gt;In &lt;a href=&#34;https://sdqali.in/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/&#34;&gt;part 1&lt;/a&gt;, we modified the &lt;code&gt;FeatureToggle&lt;/code&gt; annotation to support toggling beans and decided to use that for toggling features at the controller level. If we had a system capable of providing the feature toggle information to the application without restarts, the change in the state of the controller level toggles will have no effect because the controller is not going to be re-wired for request mapping, unless the application is restarted.&lt;/p&gt;
+
+&lt;p&gt;This raises the interesting question - Are bean level switches really feature toggles, considering that they can never be altered without application restarts? A better approach would be to consider bean switches as purely configurations and use facades that route commands to either of the beans based on a feature flag. In the example configuration provided, is treating the choice between storing sessions in-memory / Redis an actual feature, considering it does not provide any value to the end-user?&lt;/p&gt;
+
+&lt;p&gt;To ensure that we are not tying feature toggling to restarts, we will remove the meta-annotation we introduced to &lt;code&gt;FeatureToggle&lt;/code&gt; in &lt;a href=&#34;https://sdqali.in/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/&#34;&gt;part 1&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Target&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;({&lt;/span&gt;ElementType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;TYPE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ElementType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;METHOD&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;})&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@Retention&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;RetentionPolicy&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;RUNTIME&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@Documented&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #9999FF&#34;&gt;@interface&lt;/span&gt; FeatureToggle &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  String &lt;span style=&#34;color: #CC00FF&#34;&gt;feature&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;();&lt;/span&gt;
+
+  &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;expectedToBeOn&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;default&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;With this change, we no longer have the ability to toggle off an entire controller. Having to annotate all handler methods in a controller is going to be a painful, error-prone approach. In order to provide the ability to toggle entire controllers, we can modify the &lt;code&gt;FeatureInterceptor&lt;/code&gt; to look for annotations present on the controller class in addition to annotations present on the handler methods.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;FeatureInterceptor&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;implements&lt;/span&gt; HandlerInterceptor &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;final&lt;/span&gt; FeatureRepository featureRepository&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;FeatureInterceptor&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;FeatureRepository featureRepository&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;this&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;featureRepository&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; featureRepository&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;preHandle&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HttpServletRequest httpServletRequest&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; HttpServletResponse httpServletResponse&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object handler&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    HandlerMethod handlerMethod &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HandlerMethod&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; handler&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;handleMethodAnnotation&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;handlerMethod&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+        handleTypeAnnotation&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;handlerMethod&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getBeanType&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()))&lt;/span&gt;  &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+    httpServletResponse&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;setStatus&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HttpServletResponse&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;SC_NOT_FOUND&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;false&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;handleTypeAnnotation&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;Class&lt;span style=&#34;color: #555555&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; controllerType&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    FeatureToggle controllerTypeAnnotation &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; controllerType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getAnnotation&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;FeatureToggle&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; checkFeatureState&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;controllerTypeAnnotation&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;handleMethodAnnotation&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HandlerMethod handlerMethod&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    FeatureToggle methodAnnotation &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; handlerMethod&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;getMethodAnnotation&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;FeatureToggle&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; checkFeatureState&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;methodAnnotation&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;checkFeatureState&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;FeatureToggle methodAnnotation&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;methodAnnotation &lt;span style=&#34;color: #555555&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;featureRepository&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;isOn&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;methodAnnotation&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;feature&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;())&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;if&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;methodAnnotation&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;expectedToBeOn&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;==&lt;/span&gt; featureRepository&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;isOn&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;methodAnnotation&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;feature&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()))&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+      &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;false&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;;&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;postHandle&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HttpServletRequest httpServletRequest&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; HttpServletResponse httpServletResponse&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object o&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; ModelAndView modelAndView&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@Override&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #007788; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;afterCompletion&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HttpServletRequest httpServletRequest&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; HttpServletResponse httpServletResponse&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Object o&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; Exception e&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;throws&lt;/span&gt; Exception &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This will correctly intercept requests routed to handler methods even if the annotation is at the controller level instead of the method level.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RestController&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/foo&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #9999FF&#34;&gt;@FeatureToggle&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;feature &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;feature.foo&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #00AA88; font-weight: bold&#34;&gt;FooController&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
+  &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Map &lt;span style=&#34;color: #CC00FF&#34;&gt;hello&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; Collections&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;singletonMap&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;message&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;hello foo!&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
+  &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&#34;signup col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0&#34;&gt;
+  &lt;div class=&#34;col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 signup-desc&#34;&gt;
+    &lt;h3&gt;Programming problems explained:&lt;/h3&gt;
+    &lt;div&gt;
+      &lt;ul&gt;
+        &lt;li&gt;Working&lt;/li&gt;
+        &lt;li&gt;Tested&lt;/li&gt;
+        &lt;li&gt;Reusable&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&#34;col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0&#34; id=&#34;mc_embed_signup&#34;&gt;
+    &lt;form action=&#34;//codethatworks.us14.list-manage.com/subscribe/post?u=52d266a23636b031a38de6d70&amp;amp;id=b7e69e463e&#34; method=&#34;post&#34; id=&#34;mc-embedded-subscribe-form&#34; name=&#34;mc-embedded-subscribe-form&#34; class=&#34;validate&#34; target=&#34;_blank&#34; novalidate&gt;
+      &lt;div id=&#34;mc_embed_signup_scroll&#34;&gt;
+        &lt;div class=&#34;mc-field-group form-group&#34;&gt;
+          &lt;input type=&#34;text&#34; value=&#34;&#34; name=&#34;FNAME&#34; class=&#34;form-control&#34; id=&#34;mce-FNAME&#34; placeholder=&#34;First name&#34;&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;mc-field-group form-group&#34;&gt;
+          &lt;input type=&#34;email&#34; value=&#34;&#34; name=&#34;EMAIL&#34; class=&#34;email form-control&#34; id=&#34;mce-EMAIL&#34; placeholder=&#34;Email&#34;&gt;
+        &lt;/div&gt;
+        &lt;div id=&#34;mce-responses&#34; class=&#34;form-group&#34;&gt;
+          &lt;div class=&#34;response&#34; id=&#34;mce-error-response&#34; style=&#34;display:none&#34; class=&#34;alert alert-success&#34; role=&#34;alert&#34;&gt;&lt;/div&gt;
+          &lt;div class=&#34;response&#34; id=&#34;mce-success-response&#34; style=&#34;display:none&#34; class=&#34;alert alert-success&#34; role=&#34;alert&#34;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;button type=&#34;submit&#34; class=&#34;btn btn-success&#34; id=&#34;mc-embedded-subscribe&#34; name=&#34;subscribe&#34;&gt;Subscribe to my blog&lt;/button&gt;
+        &lt;div style=&#34;position: absolute; left: -5000px;&#34; aria-hidden=&#34;true&#34;&gt;&lt;input type=&#34;text&#34; name=&#34;b_52d266a23636b031a38de6d70_b7e69e463e&#34; tabindex=&#34;-1&#34; value=&#34;&#34;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+    &lt;p class=&#34;no-spam&#34;&gt;I won&#39;t send you spam. Unsubscribe at any time.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Now that we have a feature toggling mechanism in place that no longer depends on application restarts, in the next part, we will look at providing this information to the application from a source that does not require restarts.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Implementing feature toggles for a Spring Boot application - Part 3</title>
       <link>https://sdqali.in/blog/2016/11/28/implementing-feature-toggles-for-a-spring-boot-application---part-3/?utm_source=site&amp;utm_medium=feed</link>
       <pubDate>Mon, 28 Nov 2016 08:30:03 -0800</pubDate>
@@ -2797,73 +2927,6 @@ ConfigurableApplicationContext applicationContext &lt;span style=&#34;color: #55
 &lt;ol&gt;
 &lt;li id=&#34;fn:1&#34;&gt;Meta annotations. &lt;a href=&#34;http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html#beans-meta-annotations&#34;&gt;Spring documentation&lt;/a&gt;. To see how to use meta-annotations to write custom annoations, see &lt;a href=&#34;https://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/&#34;&gt;this blog post&lt;/a&gt;.
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>Implementing custom annotations for Spring MVC</title>
-      <link>https://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/?utm_source=site&amp;utm_medium=feed</link>
-      <pubDate>Sun, 06 Dec 2015 13:28:26 -0800</pubDate>
-      
-      <guid>https://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/?utm_source=site&amp;utm_medium=feed</guid>
-      <description>&lt;p&gt;I often have to work with Spring MVC based code bases that have been living for a while. One of the common trait of these code bases I have observed is the repeated use of the same Spring annotations to achieve the same effect again and again. A really good example of this is annotating a controller method with a combination of &lt;code&gt;@RequestMapping&lt;/code&gt; and &lt;code&gt;@ResponseStatus&lt;/code&gt; to set the expected request and response &lt;code&gt;Content-Type&lt;/code&gt;, the request Method, response status etc. This blog post describes how to create custom Spring annotationshow to create custom annotation in spring mvc that produce the same effect as multiple Spring annotations acting together.
-
-Among the new things introduced in Spring 4 was the idea of meta-annotations. &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; Meta annotations are annotations that can act up on other annotations by modifying and overriding attributes of the target annotations.&lt;/p&gt;
-
-&lt;p&gt;This allows us to build composed annotations &lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; that combine the behavior of multiple annotations. The &lt;code&gt;@AliasFor&lt;/code&gt; annotation allows us to override attribute names, thereby adding great flexibility while composing.&lt;/p&gt;
-
-&lt;p&gt;This is a common pattern in code bases that use Spring MVC.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;    &lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;path &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/register&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
-            method &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; RequestMethod&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;POST&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
-            consumes &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; MediaType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;APPLICATION_JSON_VALUE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
-            produces &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; MediaType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;APPLICATION_JSON_VALUE&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@ResponseStatus&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HttpStatus&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;CREATED&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Map &lt;span style=&#34;color: #CC00FF&#34;&gt;register&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RequestBody&lt;/span&gt; &lt;span style=&#34;color: #9999FF&#34;&gt;@Valid&lt;/span&gt; EmailRequest emailRequest&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; registrationService&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;register&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;emailRequest&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The two annotations as applied on this method represent the fact that this is an end point that a client can &lt;code&gt;POST&lt;/code&gt; JSON to and produces JSON and a &lt;code&gt;201 Created&lt;/code&gt; HTTP status when it succeeds. If we had 20 end points that did the similar operations, it would be really useful to have a &lt;code&gt;@PostJson&lt;/code&gt; annotation that did the same thing.&lt;/p&gt;
-
-&lt;p&gt;The following is one way of writing such an annotation.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@Target&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;METHOD&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@Retention&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;RUNTIME&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@Documented&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;method &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; RequestMethod&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;POST&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
-        consumes &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; MediaType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;APPLICATION_JSON_VALUE&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt;
-        produces &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; MediaType&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;APPLICATION_JSON_VALUE&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #9999FF&#34;&gt;@ResponseStatus&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;HttpStatus&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;CREATED&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-&lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #9999FF&#34;&gt;@interface&lt;/span&gt; PostJson &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-    &lt;span style=&#34;color: #9999FF&#34;&gt;@AliasFor&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;annotation &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; RequestMapping&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; attribute &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;path&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-    String&lt;span style=&#34;color: #555555&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;default&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{};&lt;/span&gt;
-&lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This annotation takes a single parameter &lt;code&gt;path&lt;/code&gt; that represents that URL path to which it will respond to. This can now be applied on the register end point.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;    &lt;span style=&#34;color: #9999FF&#34;&gt;@PostJson&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;path &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;/register&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-    &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;public&lt;/span&gt; Map &lt;span style=&#34;color: #CC00FF&#34;&gt;register&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #9999FF&#34;&gt;@RequestBody&lt;/span&gt; &lt;span style=&#34;color: #9999FF&#34;&gt;@Valid&lt;/span&gt; EmailRequest emailRequest&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{&lt;/span&gt;
-        &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;return&lt;/span&gt; registrationService&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;register&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;emailRequest&lt;span style=&#34;color: #555555&#34;&gt;);&lt;/span&gt;
-    &lt;span style=&#34;color: #555555&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;If we wanted to allow the consumers of &lt;code&gt;@PostJson&lt;/code&gt; to override other parameters of &lt;code&gt;@RequestMapping&lt;/code&gt; or &lt;code&gt;@ResponseStatus&lt;/code&gt;, it can be achieved by adding more aliases. For example, the following will allow users to specify a reason phrase.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f0f3f3&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;    &lt;span style=&#34;color: #9999FF&#34;&gt;@AliasFor&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;(&lt;/span&gt;annotation &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; ResponseStatus&lt;span style=&#34;color: #555555&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #330099&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;,&lt;/span&gt; attribute &lt;span style=&#34;color: #555555&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #CC3300&#34;&gt;&amp;quot;reason&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;)&lt;/span&gt;
-    String&lt;span style=&#34;color: #555555&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color: #CC00FF&#34;&gt;reason&lt;/span&gt;&lt;span style=&#34;color: #555555&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color: #006699; font-weight: bold&#34;&gt;default&lt;/span&gt; &lt;span style=&#34;color: #555555&#34;&gt;{};&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This pattern can easily be extended to introduce annotations like &lt;code&gt;@GetJson&lt;/code&gt;, &lt;code&gt;@PutJson&lt;/code&gt;, &lt;code&gt;@PostXml&lt;/code&gt; and so on and so forth.&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:1&#34;&gt;Meta annotations. &lt;a href=&#34;http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html#beans-meta-annotations&#34;&gt;Spring documentation&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li id=&#34;fn:2&#34;&gt;Composed annotations. &lt;a href=&#34;https://github.com/spring-projects/spring-framework/wiki/Spring-Annotation-Programming-Model#composed-annotations&#34;&gt;Spring documentation&lt;/a&gt;.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</description>
     </item>

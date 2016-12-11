@@ -14,7 +14,7 @@
     
     
 
-    <title>Importing the Yelp dataset into MongoDB - {code that works} by Sadique Ali</title>
+    <title>Implementing feature toggles for a Spring Boot application - Part 4 - {code that works} by Sadique Ali</title>
 
     
     
@@ -22,27 +22,24 @@
 
 </head>
 
-  <meta name="description" content="Today Yelp announced their dataset challenge 1. The dataset they released includes data from 5 cities (Phoenix, Las Vegas, Madison, Waterloo and Edinburgh) and consists of
- 42,153 businesses 320,002 business attributes 31,617 check-in sets 252,898 users 955,999 edge social graph 403,210 tips 1,125,458 reviews  The data is available for public consumption, although Yelp owns any derivative dataset you create from the original 2.
-The data is available as files with each line representing a JSON object." />
-  <meta content="mongo, code, ruby, yelp, data" name="keywords">
+  <meta name="description" content="In the fourth part of this series about implementing feature toggles for a Spring Boot application, we will take a look at how our implementation so far introduced a dependency on the application being restarted for changes to take place.
+ In part 1, we modified the FeatureToggle annotation to support toggling beans and decided to use that for toggling features at the controller level. If we had a system capable of providing the feature toggle information to the application without restarts, the change in the state of the controller level toggles will have no effect because the controller is not going to be re-wired for request mapping, unless the application is restarted." />
+  <meta content="development, code, feature-toggles, java, spring, tomcat" name="keywords">
 
   
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@sdqali">
   <meta name="twitter:creator" content="@sdqali">
-  <meta name="twitter:title" content="Importing the Yelp dataset into MongoDB">
-  <meta name="twitter:description" content="Today Yelp announced their dataset challenge 1. The dataset they released includes data from 5 cities (Phoenix, Las Vegas, Madison, Waterloo and Edinburgh) and consists of
- 42,153 businesses 320,002 business attributes 31,617 check-in sets 252,898 users 955,999 edge social graph 403,210 tips 1,125,458 reviews  The data is available for public consumption, although Yelp owns any derivative dataset you create from the original 2.
-The data is available as files with each line representing a JSON object.">
-  <meta name="twitter:image" content="https://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]">
+  <meta name="twitter:title" content="Implementing feature toggles for a Spring Boot application - Part 4">
+  <meta name="twitter:description" content="In the fourth part of this series about implementing feature toggles for a Spring Boot application, we will take a look at how our implementation so far introduced a dependency on the application being restarted for changes to take place.
+ In part 1, we modified the FeatureToggle annotation to support toggling beans and decided to use that for toggling features at the controller level. If we had a system capable of providing the feature toggle information to the application without restarts, the change in the state of the controller level toggles will have no effect because the controller is not going to be re-wired for request mapping, unless the application is restarted.">
+  <meta name="twitter:image" content="https://sdqali.in/images/feature-toggles.png">
 
-  <meta property="og:title" content="Importing the Yelp dataset into MongoDB" />
-  <meta property="og:description" content="Today Yelp announced their dataset challenge 1. The dataset they released includes data from 5 cities (Phoenix, Las Vegas, Madison, Waterloo and Edinburgh) and consists of
- 42,153 businesses 320,002 business attributes 31,617 check-in sets 252,898 users 955,999 edge social graph 403,210 tips 1,125,458 reviews  The data is available for public consumption, although Yelp owns any derivative dataset you create from the original 2.
-The data is available as files with each line representing a JSON object." itemprop="description"/>
-  <meta property="og:url" content="https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/" />
-  <meta property="og:image" content="https://sdqali.in/map[feature:/images/threaded-blue-on-black-cropped.jpg]" />
+  <meta property="og:title" content="Implementing feature toggles for a Spring Boot application - Part 4" />
+  <meta property="og:description" content="In the fourth part of this series about implementing feature toggles for a Spring Boot application, we will take a look at how our implementation so far introduced a dependency on the application being restarted for changes to take place.
+ In part 1, we modified the FeatureToggle annotation to support toggling beans and decided to use that for toggling features at the controller level. If we had a system capable of providing the feature toggle information to the application without restarts, the change in the state of the controller level toggles will have no effect because the controller is not going to be re-wired for request mapping, unless the application is restarted." itemprop="description"/>
+  <meta property="og:url" content="https://sdqali.in/blog/2016/11/29/implementing-feature-toggles-for-a-spring-boot-application---part-4/" />
+  <meta property="og:image" content="https://sdqali.in/images/feature-toggles.png" />
   <body>
 
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top"
@@ -88,20 +85,22 @@ The data is available as files with each line representing a JSON object." itemp
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="post-heading for-post">
-              <h1> Importing the Yelp dataset into MongoDB</h1>
-              <span class="meta">Sat, Aug 2, 2014</span>
+              <h1> Implementing feature toggles for a Spring Boot application - Part 4</h1>
+              <span class="meta">Tue, Nov 29, 2016</span>
               <div class="tags">
                 <span class="fa fa-tags" aria-hidden="true"></span>
                 
-                 <a href="/tags/mongo">mongo</a>
+                 <a href="/tags/development">development</a>
                 
                 ,  <a href="/tags/code">code</a>
                 
-                ,  <a href="/tags/ruby">ruby</a>
+                ,  <a href="/tags/feature-toggles">feature-toggles</a>
                 
-                ,  <a href="/tags/yelp">yelp</a>
+                ,  <a href="/tags/java">java</a>
                 
-                ,  <a href="/tags/data">data</a>
+                ,  <a href="/tags/spring">spring</a>
+                
+                ,  <a href="/tags/tomcat">tomcat</a>
                 
               </div>
             </div>
@@ -118,74 +117,127 @@ The data is available as files with each line representing a JSON object." itemp
          itemscope="itemscope" itemtype="http://schema.org/WebPageElement">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <p>Today Yelp announced their dataset challenge <sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>. The dataset they released includes data from 5 cities (Phoenix, Las Vegas, Madison, Waterloo and Edinburgh) and consists of</p>
+            <p>In the fourth part of this <a href="/series/feature-toggles/">series</a> about implementing <a href="/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/">feature toggles</a> for a Spring Boot application, we will take a look at how our implementation so far introduced a dependency on the application being restarted for changes to take place.</p>
 
-<ul>
-<li>42,153 businesses</li>
-<li>320,002 business attributes</li>
-<li>31,617 check-in sets</li>
-<li>252,898 users</li>
-<li>955,999 edge social graph</li>
-<li>403,210 tips</li>
-<li>1,125,458 reviews</li>
-</ul>
+<!--More-->
 
-<p>The data is available for public consumption, although Yelp owns any derivative dataset you create from the original <sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>.</p>
+<p>In <a href="/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/">part 1</a>, we modified the <code>FeatureToggle</code> annotation to support toggling beans and decided to use that for toggling features at the controller level. If we had a system capable of providing the feature toggle information to the application without restarts, the change in the state of the controller level toggles will have no effect because the controller is not going to be re-wired for request mapping, unless the application is restarted.</p>
 
-<p>The data is available as files with each line representing a JSON object. Since I am using MongoDB these days to analyze geospatial data, I wanted to convert this into an easy format that I could import into Mongo. Mongo puts a strict constraint on how a location needs to be specified - It expects a location field in a document to be an array in the format <code>[longitude, latitude]</code>.</p>
+<p>This raises the interesting question - Are bean level switches really feature toggles, considering that they can never be altered without application restarts? A better approach would be to consider bean switches as purely configurations and use facades that route commands to either of the beans based on a feature flag. In the example configuration provided, is treating the choice between storing sessions in-memory / Redis an actual feature, considering it does not provide any value to the end-user?</p>
 
-<p>With this in mind, the first step is to convert and transform the objects into objects that Mongo can make sense of. The following Ruby script does the job:</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #0099FF; font-style: italic">#!/usr/bin/env ruby</span>
+<p>To ensure that we are not tying feature toggling to restarts, we will remove the meta-annotation we introduced to <code>FeatureToggle</code> in <a href="/blog/2016/11/21/implementing-feature-toggles-for-a-spring-boot-application---part-1/">part 1</a>.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@Target</span><span style="color: #555555">({</span>ElementType<span style="color: #555555">.</span><span style="color: #330099">TYPE</span><span style="color: #555555">,</span> ElementType<span style="color: #555555">.</span><span style="color: #330099">METHOD</span><span style="color: #555555">})</span>
+<span style="color: #9999FF">@Retention</span><span style="color: #555555">(</span>RetentionPolicy<span style="color: #555555">.</span><span style="color: #330099">RUNTIME</span><span style="color: #555555">)</span>
+<span style="color: #9999FF">@Documented</span>
+<span style="color: #006699; font-weight: bold">public</span> <span style="color: #9999FF">@interface</span> FeatureToggle <span style="color: #555555">{</span>
+  String <span style="color: #CC00FF">feature</span><span style="color: #555555">();</span>
 
-<span style="color: #336666">require</span> <span style="color: #CC3300">&quot;json&quot;</span>
-
-businesses <span style="color: #555555">=</span> <span style="color: #336600">IO</span><span style="color: #555555">.</span>readlines(<span style="color: #CC3300">&quot;yelp.business.json&quot;</span>)<span style="color: #555555">.</span>map <span style="color: #006699; font-weight: bold">do</span> <span style="color: #555555">|</span>line<span style="color: #555555">|</span>
-  b <span style="color: #555555">=</span> <span style="color: #336600">JSON</span><span style="color: #555555">.</span>parse(line)
-  b<span style="color: #555555">[</span><span style="color: #CC3300">&quot;location&quot;</span><span style="color: #555555">]</span> <span style="color: #555555">=</span> {
-    <span style="color: #CC3300">&quot;type&quot;</span> <span style="color: #555555">=&gt;</span> <span style="color: #CC3300">&quot;Point&quot;</span>,
-    <span style="color: #CC3300">&quot;coordinates&quot;</span> <span style="color: #555555">=&gt;</span> <span style="color: #555555">[</span>b<span style="color: #555555">[</span><span style="color: #CC3300">&quot;longitude&quot;</span><span style="color: #555555">]</span>, b<span style="color: #555555">[</span><span style="color: #CC3300">&quot;latitude&quot;</span><span style="color: #555555">]]</span>
-  }
-  b
-<span style="color: #006699; font-weight: bold">end</span>
-<span style="color: #336600">IO</span><span style="color: #555555">.</span>write <span style="color: #CC3300">&quot;businesses.mongo.json&quot;</span>, businesses<span style="color: #555555">.</span>to_json
+  <span style="color: #007788; font-weight: bold">boolean</span> <span style="color: #CC00FF">expectedToBeOn</span><span style="color: #555555">()</span> <span style="color: #006699; font-weight: bold">default</span> <span style="color: #006699; font-weight: bold">true</span><span style="color: #555555">;</span>
+<span style="color: #555555">}</span>
 </pre></div>
 
-<p>The next step is to import this data into Mongo using the <code>mongoimport</code> tool.</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>mongoimport --collection businesses --file businesses.mongo.json --jsonArray
+<p>With this change, we no longer have the ability to toggle off an entire controller. Having to annotate all handler methods in a controller is going to be a painful, error-prone approach. In order to provide the ability to toggle entire controllers, we can modify the <code>FeatureInterceptor</code> to look for annotations present on the controller class in addition to annotations present on the handler methods.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">FeatureInterceptor</span> <span style="color: #006699; font-weight: bold">implements</span> HandlerInterceptor <span style="color: #555555">{</span>
+  <span style="color: #006699; font-weight: bold">private</span> <span style="color: #006699; font-weight: bold">final</span> FeatureRepository featureRepository<span style="color: #555555">;</span>
+
+  <span style="color: #006699; font-weight: bold">public</span> <span style="color: #CC00FF">FeatureInterceptor</span><span style="color: #555555">(</span>FeatureRepository featureRepository<span style="color: #555555">)</span> <span style="color: #555555">{</span>
+    <span style="color: #006699; font-weight: bold">this</span><span style="color: #555555">.</span><span style="color: #330099">featureRepository</span> <span style="color: #555555">=</span> featureRepository<span style="color: #555555">;</span>
+  <span style="color: #555555">}</span>
+
+  <span style="color: #9999FF">@Override</span>
+  <span style="color: #006699; font-weight: bold">public</span> <span style="color: #007788; font-weight: bold">boolean</span> <span style="color: #CC00FF">preHandle</span><span style="color: #555555">(</span>HttpServletRequest httpServletRequest<span style="color: #555555">,</span> HttpServletResponse httpServletResponse<span style="color: #555555">,</span> Object handler<span style="color: #555555">)</span> <span style="color: #006699; font-weight: bold">throws</span> Exception <span style="color: #555555">{</span>
+    HandlerMethod handlerMethod <span style="color: #555555">=</span> <span style="color: #555555">(</span>HandlerMethod<span style="color: #555555">)</span> handler<span style="color: #555555">;</span>
+    <span style="color: #006699; font-weight: bold">if</span> <span style="color: #555555">(</span>handleMethodAnnotation<span style="color: #555555">(</span>handlerMethod<span style="color: #555555">)</span> <span style="color: #555555">&amp;&amp;</span>
+        handleTypeAnnotation<span style="color: #555555">(</span>handlerMethod<span style="color: #555555">.</span><span style="color: #330099">getBeanType</span><span style="color: #555555">()))</span>  <span style="color: #555555">{</span>
+      <span style="color: #006699; font-weight: bold">return</span> <span style="color: #006699; font-weight: bold">true</span><span style="color: #555555">;</span>
+    <span style="color: #555555">}</span>
+    httpServletResponse<span style="color: #555555">.</span><span style="color: #330099">setStatus</span><span style="color: #555555">(</span>HttpServletResponse<span style="color: #555555">.</span><span style="color: #330099">SC_NOT_FOUND</span><span style="color: #555555">);</span>
+    <span style="color: #006699; font-weight: bold">return</span> <span style="color: #006699; font-weight: bold">false</span><span style="color: #555555">;</span>
+  <span style="color: #555555">}</span>
+
+  <span style="color: #006699; font-weight: bold">private</span> <span style="color: #007788; font-weight: bold">boolean</span> <span style="color: #CC00FF">handleTypeAnnotation</span><span style="color: #555555">(</span>Class<span style="color: #555555">&lt;?&gt;</span> controllerType<span style="color: #555555">)</span> <span style="color: #555555">{</span>
+    FeatureToggle controllerTypeAnnotation <span style="color: #555555">=</span> controllerType<span style="color: #555555">.</span><span style="color: #330099">getAnnotation</span><span style="color: #555555">(</span>FeatureToggle<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">);</span>
+    <span style="color: #006699; font-weight: bold">return</span> checkFeatureState<span style="color: #555555">(</span>controllerTypeAnnotation<span style="color: #555555">);</span>
+  <span style="color: #555555">}</span>
+
+  <span style="color: #006699; font-weight: bold">private</span> <span style="color: #007788; font-weight: bold">boolean</span> <span style="color: #CC00FF">handleMethodAnnotation</span><span style="color: #555555">(</span>HandlerMethod handlerMethod<span style="color: #555555">)</span> <span style="color: #555555">{</span>
+    FeatureToggle methodAnnotation <span style="color: #555555">=</span> handlerMethod<span style="color: #555555">.</span><span style="color: #330099">getMethodAnnotation</span><span style="color: #555555">(</span>FeatureToggle<span style="color: #555555">.</span><span style="color: #330099">class</span><span style="color: #555555">);</span>
+    <span style="color: #006699; font-weight: bold">return</span> checkFeatureState<span style="color: #555555">(</span>methodAnnotation<span style="color: #555555">);</span>
+  <span style="color: #555555">}</span>
+
+  <span style="color: #006699; font-weight: bold">private</span> <span style="color: #007788; font-weight: bold">boolean</span> <span style="color: #CC00FF">checkFeatureState</span><span style="color: #555555">(</span>FeatureToggle methodAnnotation<span style="color: #555555">)</span> <span style="color: #555555">{</span>
+    <span style="color: #006699; font-weight: bold">if</span> <span style="color: #555555">(</span>methodAnnotation <span style="color: #555555">==</span> <span style="color: #006699; font-weight: bold">null</span><span style="color: #555555">)</span> <span style="color: #555555">{</span>
+      <span style="color: #006699; font-weight: bold">return</span> <span style="color: #006699; font-weight: bold">true</span><span style="color: #555555">;</span>
+    <span style="color: #555555">}</span>
+
+    <span style="color: #006699; font-weight: bold">if</span><span style="color: #555555">(</span>featureRepository<span style="color: #555555">.</span><span style="color: #330099">isOn</span><span style="color: #555555">(</span>methodAnnotation<span style="color: #555555">.</span><span style="color: #330099">feature</span><span style="color: #555555">())</span> <span style="color: #555555">==</span> <span style="color: #006699; font-weight: bold">null</span><span style="color: #555555">)</span> <span style="color: #555555">{</span>
+      <span style="color: #006699; font-weight: bold">return</span> <span style="color: #006699; font-weight: bold">true</span><span style="color: #555555">;</span>
+    <span style="color: #555555">}</span>
+
+    <span style="color: #006699; font-weight: bold">if</span><span style="color: #555555">(</span>methodAnnotation<span style="color: #555555">.</span><span style="color: #330099">expectedToBeOn</span><span style="color: #555555">()</span> <span style="color: #555555">==</span> featureRepository<span style="color: #555555">.</span><span style="color: #330099">isOn</span><span style="color: #555555">(</span>methodAnnotation<span style="color: #555555">.</span><span style="color: #330099">feature</span><span style="color: #555555">()))</span> <span style="color: #555555">{</span>
+      <span style="color: #006699; font-weight: bold">return</span> <span style="color: #006699; font-weight: bold">true</span><span style="color: #555555">;</span>
+    <span style="color: #555555">}</span>
+    <span style="color: #006699; font-weight: bold">return</span> <span style="color: #006699; font-weight: bold">false</span><span style="color: #555555">;</span>
+  <span style="color: #555555">}</span>
+
+  <span style="color: #9999FF">@Override</span>
+  <span style="color: #006699; font-weight: bold">public</span> <span style="color: #007788; font-weight: bold">void</span> <span style="color: #CC00FF">postHandle</span><span style="color: #555555">(</span>HttpServletRequest httpServletRequest<span style="color: #555555">,</span> HttpServletResponse httpServletResponse<span style="color: #555555">,</span> Object o<span style="color: #555555">,</span> ModelAndView modelAndView<span style="color: #555555">)</span> <span style="color: #006699; font-weight: bold">throws</span> Exception <span style="color: #555555">{</span>
+
+  <span style="color: #555555">}</span>
+
+  <span style="color: #9999FF">@Override</span>
+  <span style="color: #006699; font-weight: bold">public</span> <span style="color: #007788; font-weight: bold">void</span> <span style="color: #CC00FF">afterCompletion</span><span style="color: #555555">(</span>HttpServletRequest httpServletRequest<span style="color: #555555">,</span> HttpServletResponse httpServletResponse<span style="color: #555555">,</span> Object o<span style="color: #555555">,</span> Exception e<span style="color: #555555">)</span> <span style="color: #006699; font-weight: bold">throws</span> Exception <span style="color: #555555">{</span>
+
+  <span style="color: #555555">}</span>
+<span style="color: #555555">}</span>
 </pre></div>
 
-<p>We need the <code>--jsonArray</code> parameter because our data is an array.</p>
-
-<p>Since there are 42153 businesses, it will take some time. On my Macbook Pro, it took around 2 minutes, 10 seconds. Once the import is done, make sure that we have a Geospatial index on the <code>location</code> field.</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>db.businesses.ensureIndex({location<span style="color: #555555">:</span> <span style="color: #CC3300">&quot;2dsphere&quot;</span>})
+<p>This will correctly intercept requests routed to handler methods even if the annotation is at the controller level instead of the method level.</p>
+<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span><span style="color: #9999FF">@RestController</span>
+<span style="color: #9999FF">@RequestMapping</span><span style="color: #555555">(</span><span style="color: #CC3300">&quot;/foo&quot;</span><span style="color: #555555">)</span>
+<span style="color: #9999FF">@FeatureToggle</span><span style="color: #555555">(</span>feature <span style="color: #555555">=</span> <span style="color: #CC3300">&quot;feature.foo&quot;</span><span style="color: #555555">)</span>
+<span style="color: #006699; font-weight: bold">public</span> <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">FooController</span> <span style="color: #555555">{</span>
+  <span style="color: #9999FF">@RequestMapping</span><span style="color: #555555">(</span><span style="color: #CC3300">&quot;&quot;</span><span style="color: #555555">)</span>
+  <span style="color: #006699; font-weight: bold">public</span> Map <span style="color: #CC00FF">hello</span><span style="color: #555555">()</span> <span style="color: #555555">{</span>
+    <span style="color: #006699; font-weight: bold">return</span> Collections<span style="color: #555555">.</span><span style="color: #330099">singletonMap</span><span style="color: #555555">(</span><span style="color: #CC3300">&quot;message&quot;</span><span style="color: #555555">,</span> <span style="color: #CC3300">&quot;hello foo!&quot;</span><span style="color: #555555">);</span>
+  <span style="color: #555555">}</span>
+<span style="color: #555555">}</span>
 </pre></div>
 
-<p>Once the indexing is done, we can use Mongo&rsquo;s Geospatial queries to find interesting things. As an example, here we look up all the restaurants within 1 kilometer distance from downtown Phoenix.</p>
-<div class="highlight" style="background: #f0f3f3"><pre style="line-height: 125%"><span></span>db.businesses.find({
-  location<span style="color: #555555">:</span> {
-    $near<span style="color: #555555">:</span> {
-      $geometry<span style="color: #555555">:</span> {
-	type<span style="color: #555555">:</span> <span style="color: #CC3300">&quot;Point&quot;</span>,
-	coordinates<span style="color: #555555">:</span> [<span style="color: #555555">-</span><span style="color: #FF6600">112.0667</span>, <span style="color: #FF6600">33.4500</span>]
-      },
-      $maxDistance<span style="color: #555555">:</span> <span style="color: #FF6600">1000</span>
-    }
-  }
-})
-</pre></div>
-
-<p>Happy hacking.</p>
-<div class="footnotes">
-
-<hr />
-
-<ol>
-<li id="fn:1"><a href="http://www.yelp.com/dataset_challenge">Yelp Dataset Challenge, 2014</a>.
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-<li id="fn:2">DATASET CHALLENGE ACADEMIC DATASET TERMS OF USE <a href="https://www.yelp.com/html/pdf/Dataset_Challenge_Academic_Dataset_Agreement.pdf">Section 5, Ownership</a>.
- <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
-</ol>
+<div class="signup col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0">
+  <div class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 signup-desc">
+    <h3>Programming problems explained:</h3>
+    <div>
+      <ul>
+        <li>Working</li>
+        <li>Tested</li>
+        <li>Reusable</li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0" id="mc_embed_signup">
+    <form action="//codethatworks.us14.list-manage.com/subscribe/post?u=52d266a23636b031a38de6d70&amp;id=b7e69e463e" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+      <div id="mc_embed_signup_scroll">
+        <div class="mc-field-group form-group">
+          <input type="text" value="" name="FNAME" class="form-control" id="mce-FNAME" placeholder="First name">
+        </div>
+        <div class="mc-field-group form-group">
+          <input type="email" value="" name="EMAIL" class="email form-control" id="mce-EMAIL" placeholder="Email">
+        </div>
+        <div id="mce-responses" class="form-group">
+          <div class="response" id="mce-error-response" style="display:none" class="alert alert-success" role="alert"></div>
+          <div class="response" id="mce-success-response" style="display:none" class="alert alert-success" role="alert"></div>
+        </div>
+        <button type="submit" class="btn btn-success" id="mc-embedded-subscribe" name="subscribe">Subscribe to my blog</button>
+        <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_52d266a23636b031a38de6d70_b7e69e463e" tabindex="-1" value=""></div>
+      </div>
+    </form>
+    <p class="no-spam">I won't send you spam. Unsubscribe at any time.</p>
+  </div>
 </div>
+
+
+<p>Now that we have a feature toggling mechanism in place that no longer depends on application restarts, in the next part, we will look at providing this information to the application from a source that does not require restarts.</p>
 
             <p class="comments">
   If you have questions or comments about this blog post, you can get in touch with me on Twitter <a href="https://twitter.com/sdqali">@sdqali</a>.
@@ -200,8 +252,6 @@ businesses <span style="color: #555555">=</span> <span style="color: #336600">IO
                     
                     
                     
-                    
-                    <li><a class="related" href="https://sdqali.in/blog/2016/11/29/implementing-feature-toggles-for-a-spring-boot-application---part-4/?utm_source=site&amp;utm_medium=related">Implementing feature toggles for a Spring Boot application - Part 4</a></li>
                     
                     
                     
@@ -225,66 +275,79 @@ businesses <span style="color: #555555">=</span> <span style="color: #336600">IO
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/11/11/setting-up-a-secure-etcd-cluster-behind-a-proxy/?utm_source=site&amp;utm_medium=related">Setting up a secure etcd cluster behind a proxy</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/11/04/a-very-basic-introduction-to-deploying-a-java-application-using-kubernetes/?utm_source=site&amp;utm_medium=related">A very basic introduction to deploying a Java application using Kubernetes</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/11/02/handling-deserialization-errors-in-spring-redis-sessions/?utm_source=site&amp;utm_medium=related">Handling Deserialization errors in Spring Redis Sessions</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/07/20/csrf-protection-with-spring-security-and-angular-js/?utm_source=site&amp;utm_medium=related">CSRF Protection with Spring Security and Angular JS</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/07/16/controlling-redis-auto-configuration-for-spring-boot-session/?utm_source=site&amp;utm_medium=related">Controlling Redis auto-configuration for Spring Boot Session</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/?utm_source=site&amp;utm_medium=related">JWT authentication with Spring Web - Part 5</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/07/07/jwt-authentication-with-spring-web---part-4/?utm_source=site&amp;utm_medium=related">JWT authentication with Spring Web - Part 4</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/07/05/jwt-authentication-with-spring-web---part-3/?utm_source=site&amp;utm_medium=related">JWT authentication with Spring Web - Part 3</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/07/03/jwt-authentication-with-spring-web---part-2/?utm_source=site&amp;utm_medium=related">JWT authentication with Spring Web - Part 2</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/07/02/jwt-authentication-with-spring-web---part-1/?utm_source=site&amp;utm_medium=related">JWT authentication with Spring Web - Part 1</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/06/30/json-logging-for-spring-applications/?utm_source=site&amp;utm_medium=related">JSON logging for Spring applications</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/06/28/injecting-dependencies-into-a-spring-configuration/?utm_source=site&amp;utm_medium=related">Injecting dependencies into a Spring @Configuration</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/06/08/filtering-responses-in-spring-mvc/?utm_source=site&amp;utm_medium=related">Filtering responses in Spring MVC</a></li>
                     
                     
                     
@@ -294,60 +357,105 @@ businesses <span style="color: #555555">=</span> <span style="color: #336600">IO
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/04/24/deprecating-domain-events-in-axon/?utm_source=site&amp;utm_medium=related">Deprecating domain events in Axon</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/04/19/programmable-exit-codes-for-spring-command-line-applications---2/?utm_source=site&amp;utm_medium=related">Programmable exit codes for spring command line applications - 2</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/04/17/programmable-exit-codes-for-spring-command-line-applications/?utm_source=site&amp;utm_medium=related">Programmable exit codes for Spring command line applications</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2016/01/29/using-custom-arguments-in-spring-mvc-controllers/?utm_source=site&amp;utm_medium=related">Using custom arguments in Spring MVC controllers</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2015/12/16/authentication-for-apache-camel-http-components/?utm_source=site&amp;utm_medium=related">Authentication for Apache Camel HTTP components</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2015/12/14/thoughts-on-open-graph-tags/?utm_source=site&amp;utm_medium=related">Thoughts on Open Graph tags</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2015/12/11/integration-testing-spring-command-line-applications/?utm_source=site&amp;utm_medium=related">Integration testing Spring command line applications</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2015/12/10/integration-testing-challenges-for-non-web-spring-applications/?utm_source=site&amp;utm_medium=related">Integration testing challenges for non-web Spring applications</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2015/12/07/how-thinking-of-documentation-as-legislation-helped-me-become-a-better-programmer/?utm_source=site&amp;utm_medium=related">How thinking of Documentation as Legislation helped me become a better programmer</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2015/12/06/implementing-custom-annotations-for-spring-mvc/?utm_source=site&amp;utm_medium=related">Implementing custom annotations for Spring MVC</a></li>
                     
                     
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2015/12/04/validating-requestparams-and-pathvariables-in-spring-mvc/?utm_source=site&amp;utm_medium=related">Validating RequestParams and PathVariables in Spring MVC</a></li>
                     
                     
                     
                     
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2015/11/24/testing-async-responses-using-mockmvc/?utm_source=site&amp;utm_medium=related">Testing async responses using MockMvc</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2015/06/09/running-multiple-applications-in-the-same-tomcat-installation/?utm_source=site&amp;utm_medium=related">Running multiple applications in the same Tomcat installation</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/?utm_source=site&amp;utm_medium=related">Making sense of Cloud Foundry security group declarations</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2015/05/20/configuring-cloud-foundry-java-memory-parameters/?utm_source=site&amp;utm_medium=related">Configuring Cloud Foundry Java Memory Parameters</a></li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2014/08/02/importing-the-yelp-dataset-into-mongodb/?utm_source=site&amp;utm_medium=related">Importing the Yelp dataset into MongoDB</a></li>
                     
                     
                     
@@ -533,6 +641,8 @@ businesses <span style="color: #555555">=</span> <span style="color: #336600">IO
                     
                     
                     
+                    <li><a class="related" href="https://sdqali.in/blog/2013/04/11/my-experience-working-remotely/?utm_source=site&amp;utm_medium=related">My experience working remotely</a></li>
+                    
                     
                     
                     
@@ -595,8 +705,6 @@ businesses <span style="color: #555555">=</span> <span style="color: #336600">IO
                     
                     
                     
-                    <li><a class="related" href="https://sdqali.in/blog/2012/08/15/curse-of-the-community-shield/?utm_source=site&amp;utm_medium=related">Curse of the Community Shield?</a></li>
-                    
                     
                     
                     
@@ -620,8 +728,6 @@ businesses <span style="color: #555555">=</span> <span style="color: #336600">IO
                     
                     
                     
-                    
-                    <li><a class="related" href="https://sdqali.in/blog/2012/07/16/xconf-6---data-my-heart/?utm_source=site&amp;utm_medium=related">XConf 6 - Data, My Heart!</a></li>
                     
                     
                     
@@ -676,6 +782,8 @@ businesses <span style="color: #555555">=</span> <span style="color: #336600">IO
                     
                     
                     
+                    
+                    <li><a class="related" href="https://sdqali.in/blog/2012/05/04/fixing-flyspell-for-emacs-in-mac-os-x/?utm_source=site&amp;utm_medium=related">Fixing Flyspell for Emacs in Mac OS X</a></li>
                     
                     
                     
